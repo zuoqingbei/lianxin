@@ -80,7 +80,9 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 			sql+=" and t.is_detail='0'";
 		}else if(type.equals("3")){//查质检的
 			sql+=" and t.is_quality='0'";
-		}
+		}else if(type.equals("4")){
+            sql+=" and t.is_word='0'";
+        }
 		sql+=" order by t.sort,t.id";
 		return dao.find(sql, parent_temp,report);
         //缓存2个小时

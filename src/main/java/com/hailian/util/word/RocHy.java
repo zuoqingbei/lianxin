@@ -78,10 +78,10 @@ public class RocHy {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(child, rows);
+                    //table = BaseWord.createTableS(child, rows);
                     map.put(key, table);
                 } else if ("h".equals(tableType)) {
-                    table = BaseWord.createTableH(child, rows);
+                    //table = BaseWord.createTableH(child, rows);
                     map.put(key, table);
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child, rows, map);

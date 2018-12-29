@@ -12,6 +12,7 @@ import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.*;
 import com.deepoove.poi.data.style.Style;
 import com.deepoove.poi.data.style.TableStyle;
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
@@ -262,7 +263,7 @@ public class BaseWord {
      * @param rows
      * @return
      */
-    public static MiniTableRenderData createTableS(List<CreditReportModuleConf> child,List rows){
+    public static MiniTableRenderData createTableS(String reportType,List<CreditReportModuleConf> child,List rows){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         //取列值
@@ -295,6 +296,10 @@ public class BaseWord {
                 Style style = new Style();
                 style.setColor("000000");
                 style.setFontFamily("宋体");
+                //102红印用14号字体
+                if("15".equals(reportType)){
+                    style.setFontSize(14);
+                }
                 rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
             }
         }
@@ -308,7 +313,7 @@ public class BaseWord {
      * @param rows
      * @return
      */
-    public static MiniTableRenderData createTableH(List<CreditReportModuleConf> child,List rows){
+    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows){
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         List<LinkedHashMap<String,String>> datas = new ArrayList<LinkedHashMap<String,String>>();
@@ -349,24 +354,34 @@ public class BaseWord {
         tableStyle.setAlign(STJc.CENTER);
         Object[] colSize = cols.keySet().toArray();
         //组装表格-表头
-        TextRenderData[] header = new TextRenderData[colSize.length];
-        int i=0;
-        for(String column : cols.keySet()) {
-            String value = cols.get(column).split("\\|")[0];
-            Style style = new Style();
-            style.setBold(true);
-            header[i] = new TextRenderData(value,style);
-            i++;
+        RowRenderData rowRenderData = null;
+        //102红印的不现实表头
+        if(!ReportTypeCons.ROC_HY.equals(reportType)){
+            TextRenderData[] header = new TextRenderData[colSize.length];
+            int i=0;
+            for(String column : cols.keySet()) {
+                String value = cols.get(column).split("\\|")[0];
+                Style style = new Style();
+                style.setBold(true);
+                header[i] = new TextRenderData(value,style);
+                i++;
+            }
+            //表头居中
+            rowRenderData = RowRenderData.build(header);
+            rowRenderData.setStyle(tableStyle);
         }
-        //表头居中
-        RowRenderData rowRenderData = RowRenderData.build(header);
-        rowRenderData.setStyle(tableStyle);
         //组装表格-数据
         for(LinkedHashMap<String,String> m:datas) {
             int j=0;
-            String[] row = new String[colSize.length];
+            TextRenderData[] row = new TextRenderData[colSize.length];
             for(String column : cols.keySet()) {
-                row[j] = m.get(cols.get(column).split("\\|")[0]);
+                String value = m.get(cols.get(column).split("\\|")[0]);
+                Style style = new Style();
+                if(ReportTypeCons.ROC_HY.equals(reportType)){
+                    style.setFontFamily("宋体");
+                    style.setFontSize(14);
+                }
+                row[j] = new TextRenderData(value,style);
                 j++;
             }
             RowRenderData rowData = RowRenderData.build(row);

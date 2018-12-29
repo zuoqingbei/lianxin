@@ -167,6 +167,13 @@ var bodyContent = {
                 <input type="radio" name="model.is_quality" value="1" <%if (model.is_quality=='1') {%>checked<%}%>/>否
             </td>
         </tr>
+        <tr>
+            <td>模板</td>
+            <td>
+                <input type="radio" name="model.is_word" value="0" <%if (model.is_word=='0') {%>checked<%}%>/>显示 &nbsp;&nbsp;
+                <input type="radio" name="model.is_word" value="1" <%if (model.is_word=='1') {%>checked<%}%>/>不显示
+            </td>
+        </tr>
 
     </table>
 

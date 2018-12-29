@@ -93,7 +93,7 @@ public class BaseInfoZh {
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
         for (CreditReportModuleConf crmc : crmcs) {
             //找到当前父节点下的子节点  type=2表示详情
-            List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "2");
+            List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "4");
             //String tempName = crmc.getStr("temp_name");
             String source = crmc.getStr("get_source");
             String confId = crmc.getInt("id") + "";
@@ -121,9 +121,9 @@ public class BaseInfoZh {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(reportType,child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = BaseWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(reportType,child, rows);
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map);
                 }
@@ -384,6 +384,8 @@ public class BaseInfoZh {
         if(customerId!=null) {
             try {
                 String email = customInfo.getStr("email");
+                System.out.println("email==================:"+email);
+                email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
