@@ -507,7 +507,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
-						"select t.*,u.name as customName,c.name as country,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
+						"select t.*,u.name as customName,c.name as country,c.id as countryId,s.realname as createName,s8.realname as reportName,s9.realname as translateName,s0.realname as analyzeName"
 								+ ",s2.detail_name as continentName,s3.name as reportType,s4.detail_name as reportLanguage,"
 								+ "s5.detail_name as speed,s5.detail_id as speedId,s6.detail_name as orderType,s7.detail_name as statuName,c1.price as price,c2.name as companyName,c2.name_en as englishName,s10.use_time as useTime  ",
 						sql.toString(), params.toArray());
