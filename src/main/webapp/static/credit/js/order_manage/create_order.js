@@ -161,7 +161,7 @@ let
 					return;
 				}
 				isTheSameCompany();
-			
+			    $('#exampleModalCenter3 .close').trigger('click')
 			}
 		},
 		/*formSave: function(){
