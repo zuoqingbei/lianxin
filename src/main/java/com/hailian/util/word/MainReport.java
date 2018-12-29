@@ -8,7 +8,8 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 public class MainReport {
 
     public void build(int orderId,Integer userid) {
-        CreditOrderInfo order = CreditOrderInfo.dao.findById(orderId);
+        String sql = "select t.*,s1.detail_name as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
+        CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql,orderId);
         String reportType = order.getStr("report_type");
         String report_language = order.getStr("report_language");
 
