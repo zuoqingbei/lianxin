@@ -421,14 +421,14 @@ let Index = {
                           let da=row.create_date;
                           $("#client_order_date").val(da.split(' ')[0]);
                           $('#right_company_name_en').val(row.companyName);
-                          $('#client_reportTime').val(row.useTime);
+                          $('#client_reportTime').val(row.user_time);
                             $('#client_referenceNumber').val(row.reference_num);
                             $('#client_address').val(row.address);
                             $('#client_telephone').val(row.telphone);
                             $('#client_contact').val(row.contacts);
                             $('#client_fax').val(row.fax);
                             $('#client_email').val(row.email);
-                            $('#client_country').append(`<option selected value="${row.country}">${row.countryName}</option>`)
+                            $('#client_country').append(`<option selected value="${row.country}">${row.country}</option>`)
 
                             layui.use('form', function(){
                                 var form = layui.form;
@@ -439,7 +439,7 @@ let Index = {
                                 $('#client_ID').val(row.custom_id);
                                 $('#right_company_name_en').val(row.englishName);
                                 $('#client_reportLanguage').val(row.report_language);
-                                $('#client_speed').val(row.speed);
+                                $('#client_speed').val(row.speedId);
                                 $('#client_referenceNumber').val(row.reference_num);
                                 $('#client_address').val(row.address);
                                 $('#client_telephone').val(row.telphone);

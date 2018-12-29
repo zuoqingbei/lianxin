@@ -442,6 +442,7 @@ $(document).ready(function () {
 	 var companyname=$("#right_company_name_en").val();
 	 var report_type=$("select[name='attr.report_type']").find("option:selected").val();
 	 var report_language=$("select[name='attr.report_language']").find("option:selected").val();
+	 console.log('samecompany',companyname,report_type,report_language)
    	 $.ajax({
    		 	type: "get",
    		 	contentType: "application/json; charset=utf-8",
