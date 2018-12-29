@@ -52,7 +52,7 @@ let Index = {
              	})
         		 }
         	 }),
-         $("#exampleModalCenter3").click(function(){
+         $("#exampleModalCenter33").click(function(){
         	let ids=_this.numarr;
         	console.log(ids+"=====");
         	 if(numarr.length===0){
@@ -283,7 +283,7 @@ let Index = {
      	});
         const $table = $('#table');
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.7,
+            height: $(".table-content").height()*0.6,
             columns: [
                       {
                           checkbox: true,

@@ -78,9 +78,16 @@ let OrderDetail = {
             }else{
                 location.reload();
             }
+        });
+    if(tis.isQuality){
+        $(".position-fixed").append(`<div class="col-md-12 d-flex justify-content-end">
+                            <button class="btn btn-light m-3" id="save" type="button">保存</button>
+                            <button class="btn btn-primary m-3" id="submit" type="button">提交</button>
+                        </div>`)
+    }else {
+        $(".position-fixed").hide()
+    }
 
-
-        })
     },
     // 页面结构
     initContent() {
@@ -404,7 +411,7 @@ let OrderDetail = {
                             });
                     };
                     dealQualityData();
-                    $wrap.find("#save").click(function (e, param) {
+                    $("#save").click(function (e, param) {
                         _this.getQualitySelectData('update'); //质检结果
                         dealQualityData('update', param); //质检意见、分数等
                         setTimeout(function () {
@@ -412,7 +419,7 @@ let OrderDetail = {
                         }, 1500);
                         Public.message('success', '保存成功！')
                     });
-                    $wrap.find("#submit").click(function () {
+                    $("#submit").click(function () {
                         $("#save").trigger('click', 'submit');
                     });
                     break;
