@@ -497,7 +497,7 @@ public class HomeController extends BaseProjectController {
 		
 		//非快速递交时创建报告
 		if(is_fastsubmmit.equals("-1")){
-			System.out.println(model.get("id"));
+			//System.out.println(model.get("id"));
 			if(modelid==null){
 				int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
 				CreditOrderInfo order = new CreditOrderInfo();

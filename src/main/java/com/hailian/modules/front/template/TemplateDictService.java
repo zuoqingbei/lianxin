@@ -184,10 +184,14 @@ public class TemplateDictService extends BaseService {
             listDetail.add(getDefaultDictDetail(type));
             listDetail.addAll(DictCache.getSysDictDetailByType(type));
             for(SysDictDetail detail:listDetail){
-                if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
-                    sb.append(new String(new int[]{0x2611}, 0, 1)+detail.get("detail_name")+" ");
-                }else{
-                    sb.append(new String(new int[]{0x2610}, 0, 1)+detail.get("detail_name")+" ");
+                String detail_id = detail.get("detail_id").toString();
+                System.out.println("detail_id="+detail_id);
+                if(!"".equals(detail_id)) {
+                    if (selectedId != null && selectedId.toString().equals(detail_id)) {
+                        sb.append(new String(new int[]{0x2611}, 0, 1) + detail.get("detail_name") + " ");
+                    } else {
+                        sb.append(new String(new int[]{0x2610}, 0, 1) + detail.get("detail_name") + " ");
+                    }
                 }
             }
         //}

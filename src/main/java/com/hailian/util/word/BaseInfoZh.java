@@ -60,9 +60,11 @@ public class BaseInfoZh {
     /**
      * 报告生成
      * @param order  订单
+     * @param reportType 报告类型
+     * @param sysLanguage 报告内容语言
      * @param userid 当前登录人
      */
-    public static void reportTable(CreditOrderInfo order,String reportType, Integer userid) {
+    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -75,14 +77,17 @@ public class BaseInfoZh {
         //报告名称
         String reportName = reportTypeModel.getStr("name");
 
+
+
         //获取订单信息
-        String companyId = order.getStr("company_id");
         String customId = order.getStr("custom_id");
         String orderId = order.getInt("id") + "";
 
         //获取公司信息
-        CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findById(companyId);
-        String sysLanguage = companyInfo.getInt("sys_language") + "";
+        String sql = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
+        CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
+        String companyId = companyInfo.getInt("id")+"";
+        //String sysLanguage = companyInfo.getInt("sys_language") + "";
         String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
         //报告速度
         map.put("speed",order.getStr("speedName"));
