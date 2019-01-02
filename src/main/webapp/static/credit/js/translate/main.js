@@ -477,10 +477,10 @@ let ReportConfig = {
     				//radio类型绑数
     				let obid = tempData.id;
     				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-    				let overall_rating =  tempData.overall_rating;
-    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-    				
-    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+    				 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+					 let val =  temp.rows[0][name];
+					 
+					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
     				return
     			}
     			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
