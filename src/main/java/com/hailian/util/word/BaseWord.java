@@ -20,6 +20,7 @@ import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.SendMailUtil;
+import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
@@ -60,6 +61,8 @@ public class BaseWord {
     public static final String userName = Config.getStr("ftp_userName");//域用户名
     public static final String password = Config.getStr("ftp_password");//域用户密码
     public static final String ftpStore = Config.getStr("ftp_store");//ftp文件夹
+
+    private static TemplateDictService template = new TemplateDictService();
 
     public static void main(String args[]) throws Exception{
         //创建主题样式 ,以下代码用于解决中文乱码问题
@@ -275,10 +278,7 @@ public class BaseWord {
             String word_key = module.getStr("word_key");
             if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
             }else {
-                //此if判断适用105
-                //if(word_key!=null&&!"".equals(word_key)){
                 cols.put(column_name, temp_name + "|" + field_type);
-                //}
             }
         }
         //取数据
@@ -401,7 +401,7 @@ public class BaseWord {
      * @param sysLanguage
      * @return
      */
-    public static void createTableZ(List<CreditReportModuleConf> child,List rows,HashMap<String, Object> map,String sysLanguage){
+    public static void createTableZ(List<CreditReportModuleConf> child,List rows,HashMap<String, Object> map,String reportType,String sysLanguage){
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         //取列值
         for(int i=0;i< child.size();i++) {
@@ -409,20 +409,34 @@ public class BaseWord {
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
             String field_type = module.getStr("field_type");
+            String get_source = module.getStr("get_source");
             if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
             }else {
-                cols.put(column_name, temp_name + "|" + field_type);
+                cols.put(column_name, temp_name + "|" + field_type+"|"+get_source);
             }
         }
         //取数据
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
+                if("year_result".equals(column)){
+                    System.out.println(1);
+                }
                 String[] strs = cols.get(column).split("\\|");
-                String fieldType = strs.length == 2 ? strs[1] : "";
+                String fieldType = strs.length == 3 ? strs[1] : "";
+                String getSource = strs.length == 3 ? strs[2] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,sysLanguage) : "N/A";
+                    //102chiness 等级状态
+                    //System.out.println(ReportTypeCons.ROC_ZH.equals(reportType));
+                    //System.out.println("registration_status".equals(column));
+                    if(ReportTypeCons.ROC_ZH.equals(reportType) && ("registration_status".equals(column) || "year_result".equals(column))){
+                        Map<String,String> params = parseUrl(getSource);
+                        String type = params.get("type");
+                        value = !"".equals(value) ? template.getSysDictDetailStringWord(type,value) : "N/A";
+                    }else{
+                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, sysLanguage) : "N/A";
+                    }
                 } else {
                     value = !"".equals(value) ? value : "N/A";
                 }

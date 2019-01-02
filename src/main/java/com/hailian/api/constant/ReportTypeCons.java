@@ -17,7 +17,7 @@ public class ReportTypeCons {
 
     public static final String CRED_EN = "";
 
-    public static final String ROC_ZH = "";
+    public static final String ROC_ZH = "12";
 
     public static final String ROC_EN = "";
 

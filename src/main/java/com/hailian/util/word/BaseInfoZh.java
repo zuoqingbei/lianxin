@@ -128,7 +128,7 @@ public class BaseInfoZh {
                 } else if ("h".equals(tableType)) {
                     table = BaseWord.createTableH(reportType,child, rows,sysLanguage);
                 }else if("z".equals(tableType)){
-                    BaseWord.createTableZ(child,rows,map,sysLanguage);
+                    BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
                 map.put(key, table);
             }
@@ -211,12 +211,37 @@ public class BaseInfoZh {
                 for (int i = 0; i < child.size(); i++) {
                     CreditReportModuleConf module = child.get(i);
                     String column_name = module.getStr("column_name");
+                    String get_source = module.getStr("get_source");
+                    cols.put(column_name, get_source);
+                }
+                /*for (int i = 0; i < child.size(); i++) {
+                    CreditReportModuleConf module = child.get(i);
+                    String column_name = module.getStr("column_name");
                     String temp_name = module.getStr("temp_name");
                     String field_type = module.getStr("field_type");
                     cols.put(column_name, temp_name + "|" + field_type);
-                }
+                }*/
                 //取数据
-                if (rows!=null && rows.size()>0) {
+                for (int i = 0; i < rows.size(); i++) {
+                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
+                    for (String column : cols.keySet()) {
+                        //取值
+                        String value = model.get(column) != null ? model.get(column) + "" : "";
+                        String get_source = cols.get(column);
+                        String[] items = get_source.split("&");
+                        StringBuffer html = new StringBuffer();
+                        for(int j=0;j<items.length;j++) {
+                            String[] item = items[j].split("-");
+                            if (value.equals(item[0])) {
+                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            } else {
+                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            }
+                        }
+                        map.put(column, html.toString());
+                    }
+                }
+                /*if (rows!=null && rows.size()>0) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     //取单选数据
                     String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
@@ -240,7 +265,7 @@ public class BaseInfoZh {
                         }
                     }
                     map.put("overall_rating", html.toString());
-                }
+                }*/
             }
 
             //图形表
@@ -396,7 +421,7 @@ public class BaseInfoZh {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
-                email = "hu_cheng86@126.com";
+                //email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();

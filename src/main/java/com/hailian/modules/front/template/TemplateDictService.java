@@ -2,6 +2,7 @@ package com.hailian.modules.front.template;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.hailian.jfinal.base.BaseService;
 import com.hailian.modules.admin.ordermanager.model.CreditCountry;
@@ -166,6 +167,32 @@ public class TemplateDictService extends BaseService {
 		}
 		return sb.toString();
 	}
+
+    /**
+     * 生成word时显示所有选项
+     * @param type
+     * @param selectedId
+     * @return
+     */
+    public String getSysDictDetailStringWord(String type,Object selectedId) {
+        StringBuffer sb=new StringBuffer();
+        Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
+        //SysDictDetail sysDict = cache.get(Integer.parseInt(selectedId+""));
+        //if(sysDict!=null){
+            //String type = sysDict.get("dict_type");
+            List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+            listDetail.add(getDefaultDictDetail(type));
+            listDetail.addAll(DictCache.getSysDictDetailByType(type));
+            for(SysDictDetail detail:listDetail){
+                if(selectedId!=null&&selectedId.toString().equals(detail.get("detail_id").toString())){
+                    sb.append(new String(new int[]{0x2611}, 0, 1)+detail.get("detail_name")+" ");
+                }else{
+                    sb.append(new String(new int[]{0x2610}, 0, 1)+detail.get("detail_name")+" ");
+                }
+            }
+        //}
+        return sb.toString();
+    }
 	
 	public String getSysDictDetailString3(String type,Object selectedId,String disPalyCol) {
 		StringBuffer sb=new StringBuffer();
