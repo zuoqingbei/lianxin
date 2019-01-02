@@ -1312,7 +1312,7 @@ let ReportConfig = {
     			let dataJsonObj = {}
     			let formArr = Array.from($("#modal"+item).find(".form-inline"))
 				formArr.forEach((item,index)=>{
-					let id = $(item).children("label").siblings().attr("id");
+					let id = $(item).children("label").next().attr("id");
 					if($("#"+id).is("button")) {
 						//商标
 						let name = $('#'+$('#'+id).find("input").attr("id")).attr("name")
