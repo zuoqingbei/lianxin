@@ -87,7 +87,7 @@ public class Word105 {
                 } else if ("h".equals(tableType)) {
                     //table = BaseWord.createTableH(child, rows);
                 }else if("z".equals(tableType)){
-                    BaseWord.createTableZ(child, rows, map,sysLanguage);
+                    //BaseWord.createTableZ(child, rows, map,sysLanguage);
                 }
                 map.put(key, table);
             }
