@@ -396,6 +396,7 @@ public class HomeController extends BaseProjectController {
 	    String year=String.valueOf(calendar.get(Calendar.YEAR));
 	    String month=String.valueOf(calendar.get(Calendar.MONTH)+1);
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		Object modelid=model.get("id");
 		toString(model,380);
 		if((String)model.get("continent")==null) {
 			renderJson(new ResultType(0,"缺失 "+"地区参数"+" ,订单创建失败!"));
@@ -496,7 +497,8 @@ public class HomeController extends BaseProjectController {
 		
 		//非快速递交时创建报告
 		if(is_fastsubmmit.equals("-1")){
-			if(model.get("id")==null){
+			System.out.println(model.get("id"));
+			if(modelid==null){
 				int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
 				CreditOrderInfo order = new CreditOrderInfo();
 				order.set("company_id",companInfoId);
