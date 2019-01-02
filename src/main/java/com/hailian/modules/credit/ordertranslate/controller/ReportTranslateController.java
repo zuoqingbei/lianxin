@@ -27,6 +27,7 @@ public class ReportTranslateController extends BaseProjectController {
 	public void translate() {
 		String json = getPara("dataJson");
 		String targetlanguage=getPara("targetlanguage");//目标语言
+		String reporttype=getPara("reporttype");//报告类型
 		JSONObject jsonObject = JSONObject.fromObject(json);
 		try {
 			if(StringUtils.isBlank(targetlanguage)){
@@ -42,6 +43,12 @@ public class ReportTranslateController extends BaseProjectController {
 				if(!isValidDate(value)){
 					try {
 						value_en = TransApi.Trans(value,"en");
+						if("12".equals(reporttype) || "14".equals(reporttype)){
+							if("address".equals(key)){
+								
+							}
+						}
+						
 					} catch (Exception e) {
 						value_en="Translation failure!";
 					}
