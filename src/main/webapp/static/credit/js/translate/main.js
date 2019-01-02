@@ -5,6 +5,7 @@
  */
 let ReportConfig = {
 	cwConfigAlterSource:'',
+	currentDom:'',
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -2218,6 +2219,7 @@ let ReportConfig = {
     	},1500)
     },
     showTranslateMadal(){
+    	let _this = this
     	//翻译校正模态窗
     	this.formIndexEn.forEach((item,index)=>{
     		let $ele = $("#titleEn"+item);
@@ -2226,6 +2228,9 @@ let ReportConfig = {
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
     				$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
+    				_this.currentDom = $(e.target)
+    				$(".correctEn").val('')
+    				$(".correctCh").val('')
     			}
     		})
     		$ele.siblings().find("textarea").focus((e)=>{
@@ -2233,6 +2238,9 @@ let ReportConfig = {
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
+    				_this.currentDom = $(e.target)
+    				$(".correctEn").val('')
+    				$(".correctCh").val('')
     			}
     		})
     	})
@@ -2246,6 +2254,7 @@ let ReportConfig = {
     			Public.message("info","错误的英文和正确的英文不能为空")
     			return
     		}
+    		this.currentDom.val(correct_phrase_en)
     		$.ajax({
     			url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
     			type:'post',
