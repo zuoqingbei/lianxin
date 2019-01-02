@@ -58,6 +58,7 @@ public class ReportTranslateController extends BaseProjectController {
 								}
 							}
 							if("12".equals(reporttype)){
+								value_en="";
 								value_cht=TransApi.Trans(value,targetlanguage);
 							}
 							
