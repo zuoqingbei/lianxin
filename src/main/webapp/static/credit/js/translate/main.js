@@ -1871,7 +1871,9 @@ let ReportConfig = {
     			 //表格翻译
 	   			 let oneTableData = []
 	   			$("body").mLoading("show")
+	   			console.log(tableTitlesEn,index)
 	   			if(!_this.tableDataArr[index]){return}
+	   			 if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {$("body").mLoading("hide")}
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				//循环每个表格中的条数进行翻译
 //	   				console.log(tableDataArrEn[index],index)
