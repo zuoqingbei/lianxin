@@ -1885,7 +1885,7 @@ let ReportConfig = {
 	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
 	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
 	   					//102报告类型需要传参
-	   					url += `?targetlanguage=cht`
+	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}`
 	   				}
 	   				$.ajax({
 	   					url,
