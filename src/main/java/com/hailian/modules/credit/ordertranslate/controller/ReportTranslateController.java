@@ -27,7 +27,7 @@ public class ReportTranslateController extends BaseProjectController {
 	public void translate() {
 		String json = getPara("dataJson");
 		String targetlanguage=getPara("targetlanguage");//目标语言
-		String reporttype=getPara("reporttype");//报告类型
+		String reporttype=getPara("reportType");//报告类型
 		JSONObject jsonObject = JSONObject.fromObject(json);
 		try {
 			if(StringUtils.isBlank(targetlanguage)){
@@ -43,11 +43,7 @@ public class ReportTranslateController extends BaseProjectController {
 				if(!isValidDate(value)){
 					try {
 						value_en = TransApi.Trans(value,"en");
-						if("12".equals(reporttype) || "14".equals(reporttype)){
-							if("address".equals(key)){
-								
-							}
-						}
+						
 						
 					} catch (Exception e) {
 						value_en="Translation failure!";
@@ -55,6 +51,18 @@ public class ReportTranslateController extends BaseProjectController {
 					if("cht".equals(targetlanguage)){
 						try {
 							value_cht=TransApi.Trans(value,targetlanguage);
+							if("14".equals(reporttype)){
+								value_en="";
+								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
+										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)){
+									value_en="";
+								}
+							}
+							if("12".equals(reporttype)){
+								value_en="";
+								value_cht=TransApi.Trans(value,targetlanguage);
+							}
+							
 						} catch (Exception e) {
 							value_cht="翻譯失敗!";
 						}
