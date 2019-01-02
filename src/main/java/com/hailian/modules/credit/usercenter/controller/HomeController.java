@@ -429,7 +429,9 @@ public class HomeController extends BaseProjectController {
 			Db.update("update credit_country set `scale`=`scale`+1 where id="+countryId);
 		}
 		toString(model,405);
-		model.set("num", num);
+		if(model.get("id")==null){
+			model.set("num", num);
+		}
 		model.set("receiver_date", date);
 		model.set("year", year);
 		model.set("month", month);
@@ -494,13 +496,13 @@ public class HomeController extends BaseProjectController {
 		
 		//非快速递交时创建报告
 		if(is_fastsubmmit.equals("-1")){
-		int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
-		
-		CreditOrderInfo order = new CreditOrderInfo();
-		order.set("company_id",companInfoId);
-		order.set("id",id);
-		order.update();
-		model.set("company_id",companInfoId);
+			if(model.get("id")==null){
+				int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
+				CreditOrderInfo order = new CreditOrderInfo();
+				order.set("company_id",companInfoId);
+				order.set("id",id);
+				order.update();
+			}
 		}
 		
 		CreditOperationLog.dao.addOneEntry(userid, model, "","/credit/front/home/saveOrder");//操作日志记录
