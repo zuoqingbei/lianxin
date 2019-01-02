@@ -21,12 +21,45 @@ import com.jfinal.plugin.activerecord.Record;
 public class CreditReportController extends BaseProjectController{
 
     //登录
-    public void report(){
+    public void report() {
         String sql = "select t.*,s1.detail_name as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
         Integer userid = getSessionUser().getUserid();
-        CreditOrderInfo order =  CreditOrderInfo.dao.findFirst(sql,"778300");
+        CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, "778300");
+        String reportType = order.getStr("report_type");
+        String report_language = order.getStr("report_language");
+
+        //中文简体
+        if ("213".equals(report_language)) {
+            BaseInfoZh.reportTable(order, reportType, "612", userid);
+        } else if ("215".equals(report_language)) {
+            //英文
+            BaseInfoZh.reportTable(order, reportType, "613", userid);
+        } else if ("216".equals(report_language)) {
+            //中文简体+英文
+            if ("1".equals(reportType)) {
+                BaseInfoZh.reportTable(order, "1", "612", userid);
+                BaseInfoZh.reportTable(order, "7", "613", userid);
+            } else if ("8".equals(reportType)) {
+                BaseInfoZh.reportTable(order, "8", "612", userid);
+                BaseInfoZh.reportTable(order, "9", "613", userid);
+            } else if ("10".equals(reportType)) {
+                BaseInfoZh.reportTable(order, "10", "612", userid);
+                BaseInfoZh.reportTable(order, "11", "613", userid);
+            } else {
+                BaseInfoZh.reportTable(order, reportType, "", userid);
+            }
+        } else if ("217".equals(report_language)) {
+            //中文繁体+英文
+            if ("12".equals(reportType)||"14".equals(reportType)) {
+                BaseInfoZh.reportTable(order, reportType, "613", userid);
+            }
+        } else {
+            BaseInfoZh.reportTable(order, reportType, "", userid);
+        }
+
+
         //BaseInfoZh test = new BaseInfoZh();
-        BaseInfoZh.reportTable(order,"14",userid);
+        //BaseInfoZh.reportTable(order, "12", userid);
         //BaseInfoZh.reportTable(order,"8",userid);
         //红印
         //BaseInfoZh.reportTable(order,"15",userid);
