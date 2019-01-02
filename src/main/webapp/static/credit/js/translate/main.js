@@ -5,6 +5,7 @@
  */
 let ReportConfig = {
 	cwConfigAlterSource:'',
+	currentDom:'',
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -159,7 +160,7 @@ let ReportConfig = {
     						console.log(row)
     						let formArr = Array.from($("#modalEn"+tempId).find(".form-inline"))
     						formArr.forEach((item,index)=>{
-    							let id = $(item).children("label").siblings().attr("id");
+    							let id = $(item).children("label").next().attr("id");
     							let anotherIdArr = id.split("_")
     							anotherIdArr.pop();
     							let anotherId = anotherIdArr.join('_')
@@ -182,8 +183,8 @@ let ReportConfig = {
     								//如果是select
     								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
     							}else {
+//    								console.log($("#"+id),row[anotherId])
     								$("#"+id).val(row[anotherId])
-//    								$("#"+id).attr("en_bak",row[anotherId])
     							}
     						})
     					}
@@ -1871,7 +1872,9 @@ let ReportConfig = {
     			 //表格翻译
 	   			 let oneTableData = []
 	   			$("body").mLoading("show")
+	   			console.log(tableTitlesEn,index)
 	   			if(!_this.tableDataArr[index]){return}
+	   			 if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {$("body").mLoading("hide")}
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				//循环每个表格中的条数进行翻译
 //	   				console.log(tableDataArrEn[index],index)
@@ -1923,7 +1926,7 @@ let ReportConfig = {
     		$(".position-fixed").on("click","#save",(e)=>{
     			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
     			 if(data.length === 0 || !Array.isArray(data)){return}
-//    			 console.log(data)
+    			 console.log(data)
     			 data.forEach((ele,i)=>{
     				 delete ele["mySort"]
     				 if(alterSource.split("*")[1]) {
@@ -2216,6 +2219,7 @@ let ReportConfig = {
     	},1500)
     },
     showTranslateMadal(){
+    	let _this = this
     	//翻译校正模态窗
     	this.formIndexEn.forEach((item,index)=>{
     		let $ele = $("#titleEn"+item);
@@ -2224,6 +2228,9 @@ let ReportConfig = {
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
     				$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
+    				_this.currentDom = $(e.target)
+    				$(".correctEn").val('')
+    				$(".correctCh").val('')
     			}
     		})
     		$ele.siblings().find("textarea").focus((e)=>{
@@ -2231,6 +2238,9 @@ let ReportConfig = {
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
+    				_this.currentDom = $(e.target)
+    				$(".correctEn").val('')
+    				$(".correctCh").val('')
     			}
     		})
     	})
@@ -2244,6 +2254,7 @@ let ReportConfig = {
     			Public.message("info","错误的英文和正确的英文不能为空")
     			return
     		}
+    		this.currentDom.val(correct_phrase_en)
     		$.ajax({
     			url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
     			type:'post',
