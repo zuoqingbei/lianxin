@@ -52,7 +52,6 @@ public class ReportTranslateController extends BaseProjectController {
 						try {
 							value_cht=TransApi.Trans(value,targetlanguage);
 							if("14".equals(reporttype)){
-								value_en="";
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
 										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)){
 									value_en="";
