@@ -31,7 +31,7 @@ public class MainReport {
                 BaseInfoZh.reportTable(order, "10", userid);
                 BaseInfoZh.reportTable(order, "11", userid);
             }else if("12".equals(reportType)){
-                BaseInfoZh.reportTable(order, "12", userid);
+                //BaseInfoZh.reportTable(order, "12", userid);
                 BaseInfoZh.reportTable(order, "14", userid);
             }else{
                 BaseInfoZh.reportTable(order, reportType, userid);

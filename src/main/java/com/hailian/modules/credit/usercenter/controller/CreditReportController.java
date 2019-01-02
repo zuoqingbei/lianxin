@@ -24,9 +24,9 @@ public class CreditReportController extends BaseProjectController{
     public void report(){
         String sql = "select t.*,s1.detail_name as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
         Integer userid = getSessionUser().getUserid();
-        CreditOrderInfo order =  CreditOrderInfo.dao.findFirst(sql,"778283");
+        CreditOrderInfo order =  CreditOrderInfo.dao.findFirst(sql,"778300");
         //BaseInfoZh test = new BaseInfoZh();
-        BaseInfoZh.reportTable(order,"12",userid);
+        BaseInfoZh.reportTable(order,"14",userid);
         //BaseInfoZh.reportTable(order,"8",userid);
         //红印
         //BaseInfoZh.reportTable(order,"15",userid);
