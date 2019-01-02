@@ -51,15 +51,16 @@ public class ReportTranslateController extends BaseProjectController {
 					if("cht".equals(targetlanguage)){
 						try {
 							value_cht=TransApi.Trans(value,targetlanguage);
-							if("12".equals(reporttype) || "14".equals(reporttype)){
+							if("14".equals(reporttype)){
+								value_en="";
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
-										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || 
-										"vice_general_manager".equals(key) || "managing_partner".equals(key) || "company_type".equals(key) || "members_of_the_supervisors".equals(key)){
+										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)){
 									value_en="";
 								}
-								if("registration_authority".equals(key) || "type_of_enterprise_remark".equals(key)){
-									value_cht="";
-								}
+							}
+							if("12".equals(reporttype)){
+								value_en="";
+								value_cht=TransApi.Trans(value,targetlanguage);
 							}
 							
 						} catch (Exception e) {
