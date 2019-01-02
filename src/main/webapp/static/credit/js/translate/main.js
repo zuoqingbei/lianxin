@@ -159,7 +159,7 @@ let ReportConfig = {
     						console.log(row)
     						let formArr = Array.from($("#modalEn"+tempId).find(".form-inline"))
     						formArr.forEach((item,index)=>{
-    							let id = $(item).children("label").siblings().attr("id");
+    							let id = $(item).children("label").next().attr("id");
     							let anotherIdArr = id.split("_")
     							anotherIdArr.pop();
     							let anotherId = anotherIdArr.join('_')
@@ -182,8 +182,8 @@ let ReportConfig = {
     								//如果是select
     								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
     							}else {
+//    								console.log($("#"+id),row[anotherId])
     								$("#"+id).val(row[anotherId])
-//    								$("#"+id).attr("en_bak",row[anotherId])
     							}
     						})
     					}
@@ -1925,7 +1925,7 @@ let ReportConfig = {
     		$(".position-fixed").on("click","#save",(e)=>{
     			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
     			 if(data.length === 0 || !Array.isArray(data)){return}
-//    			 console.log(data)
+    			 console.log(data)
     			 data.forEach((ele,i)=>{
     				 delete ele["mySort"]
     				 if(alterSource.split("*")[1]) {
