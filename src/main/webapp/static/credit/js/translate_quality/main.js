@@ -1696,7 +1696,7 @@ let ReportConfig = {
                     },1500);
                     Public.message('success', '保存成功！')
                 });
-                $("#submit").click(function () {
+                $("#commit").click(function () {
                     $("#save").trigger('click', 'submit');
                 });
 
