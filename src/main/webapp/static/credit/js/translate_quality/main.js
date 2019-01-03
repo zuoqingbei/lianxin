@@ -420,12 +420,10 @@ let ReportConfig = {
             arr.forEach((item, index) => {
                 if ($(item).siblings(".radio-con").length !== 0) {
                     //radio类型绑数
-                    let obid = temp.rows[0].id;
-                    $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid", obid)
-                     let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-					 let val =  temp.rows[0][name];
-					 
-					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
+                    let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+    				 let rightName = name.replace("En",'')
+					 let val =  tempData[rightName];
+					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);    
                     return
                 }
                 if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
@@ -436,16 +434,12 @@ let ReportConfig = {
                 }
                 if ($(item).next().hasClass("textarea-module")) {
                     //无标题多行文本输入框
-                    let obid = temp.rows[0].id;
-                    $(item).next().find("textarea").attr("entityid", obid)
                     let name = $(item).next().find("textarea").attr("name")
                     $(item).next().find("textarea").val(tempData[name])
                     return;
                 }
                 if (($(item).next().find("input").hasClass("float-date"))) {
                     //浮动非财务
-                    let obid = temp.rows[0].id;
-                    $(item).next().find("input").attr("entityid", obid)
                     let name = $(item).next().find("input").attr("name")
                     $(item).next().find("input").val(tempData[name])
                     return;
@@ -477,7 +471,7 @@ let ReportConfig = {
                 })
             })
             return;
-        }
+        }else if(!i){
 
 
         formIndexEn.forEach((item, index) => {
@@ -520,15 +514,14 @@ let ReportConfig = {
             arr.forEach((item, index) => {
                 if ($(item).siblings(".radio-con").length !== 0) {
                     //radio类型绑数
-                    if (temp.rows.length === 0) {
-                        return
-                    }
-                    let obid = temp.rows[0].id;
-                    $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid", obid)
-                    let overall_rating = temp.rows[0].overall_rating;
-                    let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-
-                    $("input:radio[name=" + name + "][value=" + overall_rating + "]").attr("checked", true);
+                	if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+    				let rightName = name.replace("En","")
+					 let val =  temp.rows[0][rightName];
+					 
+					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
                     return
                 }
                 if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
@@ -583,7 +576,7 @@ let ReportConfig = {
             })
 
         })
-
+        }
     },
     tabChange() {
         /**tab切换事件 */
@@ -1635,7 +1628,7 @@ let ReportConfig = {
 				                        	<div class="radio-box">`
                             strItem.forEach((item, index) => {
                                 contentHtml += ` <div class="form-check form-check-inline mr-5">
-				                                <input disabled="disabled" class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+				                                <input disabled="disabled" class="form-check-input" type="radio" name="${this_item.contents[0].column_name}En" id="inlineRadio${index}" value=${item.split("-")[0]}>
 				                                <label disabled="disabled" class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
 				                            </div>`
                             })
