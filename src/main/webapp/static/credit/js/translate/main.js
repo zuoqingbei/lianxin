@@ -89,7 +89,8 @@ let ReportConfig = {
 	    					$table.parents(".fixed-table-container").css("height","180px")
 	    				}
     				 }, 200);
-    				console.log(_this.total,index,this.idArr.length)
+    				console.log(this.idArr)
+    				console.log(_this.total,index,this.idArr.length,tableNum)
     				if( this.idArr.length === tableNum) {
     					//中文表格数据加载完成，可以点翻译按钮啦
     					$("#translateBtn").removeClass("disable")
@@ -149,7 +150,7 @@ let ReportConfig = {
 			}
 			if(lang === 'en' && (ele.temp_name === '操作' || ele.temp_name === 'Operation')){
 				arr.push({
-					title:'Operation',
+					title:ele['temp_name'],
 					field: 'operate',
 					width: 1/a.length,
 					events: {
