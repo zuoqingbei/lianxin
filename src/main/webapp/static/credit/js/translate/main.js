@@ -89,8 +89,7 @@ let ReportConfig = {
 	    					$table.parents(".fixed-table-container").css("height","180px")
 	    				}
     				 }, 200);
-    				console.log(this.idArr)
-    				console.log(_this.total,index,this.idArr.length,tableNum)
+    				console.log(_this.total,index,this.idArr.length)
     				if( this.idArr.length === tableNum) {
     					//中文表格数据加载完成，可以点翻译按钮啦
     					$("#translateBtn").removeClass("disable")
@@ -150,7 +149,7 @@ let ReportConfig = {
 			}
 			if(lang === 'en' && (ele.temp_name === '操作' || ele.temp_name === 'Operation')){
 				arr.push({
-					title:ele['temp_name'],
+					title:'Operation',
 					field: 'operate',
 					width: 1/a.length,
 					events: {
@@ -1883,7 +1882,7 @@ let ReportConfig = {
 	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
 	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
 	   					//102报告类型需要传参
-	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}`
+	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
 	   				}
 	   				$.ajax({
 	   					url,
@@ -2052,7 +2051,7 @@ let ReportConfig = {
     			let url = BASE_PATH + `credit/ordertranslate/translate`;
    				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
    					//102报告类型需要传参
-   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}`
+   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
    				}
    				console.log(_this.formDataArr,index)
     			 $.ajax({
