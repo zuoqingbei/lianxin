@@ -1666,7 +1666,7 @@ let ReportConfig = {
                     contentHtml += `</div>`
                 })
 
-                // $(".position-fixed").html(bottomBtn)
+                 $(".position-fixed").html(bottomBtn)
                 $(".main-content").html(contentHtml).append(`<div class="module-wrap bg-f company-info mb-4">
                     <div class="l-title">质检评分</div>${type23_html}</div></div`);
                 $('.type23-content').find("[for=grade]").text('扣分：')
