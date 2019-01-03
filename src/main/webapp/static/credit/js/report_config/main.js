@@ -1282,13 +1282,14 @@ let ReportConfig = {
     		})
     		//自动计算出生年月和年龄
     		if($("#modal"+item).find(".modal-header").text().trim() === '自然人股东详情' || $("#modal"+item).find(".modal-header").text().trim() === '管理层') {
-    			let $idCard = $("#id_no_"+(item-9))
+    			let arr = $("#modal"+item).find(".modal-body").find("label").next().attr("id").split("_")
+    			let index  = arr[arr.length-1];
+    			let $idCard = $("#id_no_"+index)
 				if($("#modal"+item).find(".modal-header").text().trim() === '管理层'){
-					$idCard = $("#id_card_"+(item-9))
+					$idCard = $("#id_card_"+index)
 				}
-    			let $age = $("#age_"+(item-9))
-    			let $birth = $("#birth_date_"+(item-9))
-    			console.log($idCard,item)
+    			let $age = $("#age_"+index)
+    			let $birth = $("#birth_date_"+index)
     			$idCard.blur(()=>{
     				let val = $idCard.val()
     				if(val.length === 18 && typeof Number(val) === 'number' && Number(val) !== NaN) {
