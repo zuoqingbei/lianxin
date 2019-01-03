@@ -396,10 +396,10 @@ let ReportConfig = {
 	    						 if(temp.rows.length === 0){return}
 	    						 let obid = temp.rows[0].id;
 	    						 $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-	    						 let overall_rating =  temp.rows[0].overall_rating;
 	    						 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-	    						 
-	    						 $("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+								 let val =  temp.rows[0][name];
+								 
+								 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);   
 	    						 return
 	    					 }
 	    					 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
@@ -470,24 +470,26 @@ let ReportConfig = {
     	let formIndexEn = this.formIndexEn;
     	let _this = this
     	if(tempData ){
+    		console.log(tempData)
     		let arr = Array.from($("#titleEn"+i))
     		console.log($("#titleEn"+i))
 			arr.forEach((item,index)=>{
     			if($(item).siblings(".radio-con").length !== 0) {
     				//radio类型绑数
+//    				 if(tempData.rows.length === 0){return}
     				let obid = tempData.id;
     				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
     				 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-					 let val =  temp.rows[0][name];
-					 
+    				 let rightName = name.replace("En",'')
+					 let val =  tempData[rightName];
 					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
     				return
     			}
     			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     				//信用等级
-    				 if(temp.rows.length === 0){return}
+    				 if(tempData.rows.length === 0){return}
 					 let name =$(item).next().find("select").attr("name")
-					 $(item).next().find("select").val(temp.rows[0][name])
+					 $(item).next().find("select").val(tempData.rows[0][name])
     				return;
     			}
     			if($(item).next().hasClass("textarea-module")) {
@@ -577,7 +579,8 @@ let ReportConfig = {
 	    	    				let obid = temp.rows[0].id;
 	    	    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
 	    	    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-								 let val =  temp.rows[0][name];
+	    	    				let rightName = name.replace("En","")
+								 let val =  temp.rows[0][rightName];
 								 
 								 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);   
 	    	    				return
@@ -1704,7 +1707,7 @@ let ReportConfig = {
 				                        	<div class="radio-box">`
             				strItem.forEach((item,index)=>{
             				contentHtml += ` <div class="form-check form-check-inline mr-5">
-				                                <input class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+				                                <input class="form-check-input" type="radio" name="${this_item.contents[0].column_name}En" id="inlineRadio${index}" value=${item.split("-")[0]}>
 				                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
 				                            </div>`
             			})
@@ -2082,7 +2085,8 @@ let ReportConfig = {
     					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
     					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
     					 let val = $('input[name='+radioName+']:checked').val();
-    					 dataJsonObj[radioName] = val
+    					 let rightName = radioName.replace("En",'')
+    					 dataJsonObj[rightName] = val
     					 dataJsonObj["id"] = id
     				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     					 //信用等级
@@ -2149,7 +2153,8 @@ let ReportConfig = {
     					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
     					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
     					 let val = $('input[name='+radioName+']:checked').val();
-    					 dataJsonObj[radioName] = val
+    					 let rightName = radioName.replace("En",'')
+    					 dataJsonObj[rightName] = val
     					 dataJsonObj["id"] = id
     				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     					 //信用等级
