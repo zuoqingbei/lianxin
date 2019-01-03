@@ -477,8 +477,6 @@ let ReportConfig = {
     			if($(item).siblings(".radio-con").length !== 0) {
     				//radio类型绑数
 //    				 if(tempData.rows.length === 0){return}
-    				let obid = tempData.id;
-    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
     				 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
     				 let rightName = name.replace("En",'')
 					 let val =  tempData[rightName];
@@ -494,16 +492,12 @@ let ReportConfig = {
     			}
     			if($(item).next().hasClass("textarea-module")) {
     				//无标题多行文本输入框
-    				let obid = tempData.id;
-    				$(item).next().find("textarea").attr("entityid",obid)
     				let name =$(item).next().find("textarea").attr("name")
     				$(item).next().find("textarea").val(tempData[name])
     				return;
     			}
     			if(($(item).next().find("input").hasClass("float-date"))) {
     				//浮动非财务
-    				let obid = tempData.id;
-    				$(item).next().find("input").attr("entityid",obid)
     				let name =$(item).next().find("input").attr("name")
     				$(item).next().find("input").val(tempData[name])
     				return;
