@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.usercenter.controller;
 
+import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,7 +16,9 @@ import com.hailian.system.dict.DictCache;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.sun.star.sdb.application.CopyTableContinuation;
+import org.apache.xmlbeans.impl.piccolo.util.DuplicateKeyException;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
   /**
@@ -141,7 +144,21 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			
 			//批量执行
 			if(!exitsId){
-				Db.batchSave(list, list.size());
+                try {
+                    Db.batchSave(list, list.size());
+                }catch (Exception e){
+                    if(e.getMessage().contains("Duplicate")){
+                        if(!isMainTable) {
+                            for (BaseProjectModel m : list) {
+                                List<BaseProjectModel> ms = m.findByWhere(" where del_flag=0 and company_id=?", entrys.get(0).get("company_id"));
+                                if (ms.size() > 0) {
+                                    m.set("id", ms.get(0).getInt("id"));
+                                }
+                            }
+                            Db.batchUpdate(list, list.size());
+                        }
+                    }
+                }
 			}else{
 				Db.batchUpdate(list, list.size());
 			}
