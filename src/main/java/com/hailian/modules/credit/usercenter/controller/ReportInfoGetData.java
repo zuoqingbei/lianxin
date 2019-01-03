@@ -160,8 +160,14 @@ public abstract class ReportInfoGetData extends BaseProjectController {
                     }
                 }
 			}else{
-				Db.batchUpdate(list, list.size());
-			}
+                //子表将company_id移除掉
+                if(!isMainTable) {
+                    for (BaseProjectModel m : list) {
+                        m.remove("company_id");
+                    }
+                }
+                Db.batchUpdate(list, list.size());
+            }
 			return list;
 		}
 	/**
