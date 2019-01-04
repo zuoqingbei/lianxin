@@ -336,7 +336,7 @@ public class BaseWord {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for(String column : cols.keySet()) {
                 String[] strs = cols.get(column).split("\\|");
-                String fieldType = strs.length == 2 ? strs[1] : "";
+                String fieldType = strs.length > 1 ? strs[1] : "";
                 Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if("select".equals(fieldType)) {
@@ -346,7 +346,8 @@ public class BaseWord {
                 } else {
                     value = !"".equals(value) ? value : "";
                 }
-                row.put(strs.length == 2 ? strs[0] : "", value);
+                row.put(strs.length > 0 ? strs[0] : "", value);
+                //row.put(column, value);
             }
             datas.add(row);
         }
