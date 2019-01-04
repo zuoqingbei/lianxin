@@ -43,9 +43,8 @@ public class ReportTranslateController extends BaseProjectController {
 				if(!isValidDate(value)){
 					try {
 						value_en = TransApi.Trans(value,"en");
-						
-						
 					} catch (Exception e) {
+                        e.printStackTrace();
 						value_en="Translation failure!";
 					}
 					if("cht".equals(targetlanguage)){
