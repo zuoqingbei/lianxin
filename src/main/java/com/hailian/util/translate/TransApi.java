@@ -94,6 +94,7 @@ public class TransApi {
 	}
 	//解析百度服务器平台返回的相关数据信息
 	public static String getDate(String result){
+        System.out.println(result);
 		String date="";
 		
 		JSONObject object=JSONObject.fromObject(result);
