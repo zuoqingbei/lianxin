@@ -62,7 +62,7 @@ public class OrderManagerService {
 				coi.save();
 				
 			} else {
-				coi.set("status", "293");//信息录入状态
+				coi.set("status", "291");//信息录入状态
 				coi.update();
 			}
 			return coi.get("id")+"";

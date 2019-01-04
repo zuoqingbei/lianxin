@@ -355,22 +355,7 @@ public class BaseWord {
         tableStyle.setAlign(STJc.CENTER);
         Object[] colSize = cols.keySet().toArray();
         //组装表格-表头
-        RowRenderData rowRenderData = null;
-        //102红印的不现实表头
-        if(!ReportTypeCons.ROC_HY.equals(reportType)){
-            TextRenderData[] header = new TextRenderData[colSize.length];
-            int i=0;
-            for(String column : cols.keySet()) {
-                String value = cols.get(column).split("\\|")[0];
-                Style style = new Style();
-                style.setBold(true);
-                header[i] = new TextRenderData(value,style);
-                i++;
-            }
-            //表头居中
-            rowRenderData = RowRenderData.build(header);
-            rowRenderData.setStyle(tableStyle);
-        }
+        RowRenderData rowRenderData = tableHeaderH(cols, reportType);
         //组装表格-数据
         for(LinkedHashMap<String,String> m:datas) {
             int j=0;
@@ -381,6 +366,9 @@ public class BaseWord {
                 if(ReportTypeCons.ROC_HY.equals(reportType)){
                     style.setFontFamily("宋体");
                     style.setFontSize(14);
+                }else if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                    //style.setFontFamily("新细明体（PMingLiU）");
+                    style.setFontSize(11);
                 }
                 row[j] = new TextRenderData(value,style);
                 j++;
@@ -390,6 +378,39 @@ public class BaseWord {
             rowsList.add(rowData);
         }
         return new MiniTableRenderData(rowRenderData,rowsList);
+    }
+
+    /**
+     * 生成表头
+     * @param cols
+     * @param reportType
+     */
+    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType){
+        RowRenderData rowRenderData = null;
+        TableStyle tableStyle = new TableStyle();
+        Object[] colSize = cols.keySet().toArray();
+        //102红印的不显示表头，其他显示表头
+        if(!ReportTypeCons.ROC_HY.equals(reportType)){
+            TextRenderData[] header = new TextRenderData[colSize.length];
+            int i=0;
+            for(String column : cols.keySet()) {
+                String value = cols.get(column).split("\\|")[0];
+                Style style = new Style();
+                style.setBold(true);
+                //102下划线
+                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                    style.setFontFamily("新细明体（PMingLiU）");
+                    style.setUnderLine(true);
+                    style.setFontSize(11);
+                }
+                header[i] = new TextRenderData(value,style);
+                i++;
+            }
+            //表头居中
+            rowRenderData = RowRenderData.build(header);
+            rowRenderData.setStyle(tableStyle);
+        }
+        return rowRenderData;
     }
 
     /**
@@ -444,6 +465,8 @@ public class BaseWord {
             }
         }
     }
+
+
 
     /**
      * 将模块的数据，整理成类似table格式

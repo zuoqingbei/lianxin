@@ -19,7 +19,7 @@ public class ReportTypeCons {
 
     public static final String ROC_ZH = "12";
 
-    public static final String ROC_EN = "";
+    public static final String ROC_EN = "14";
 
     public static final String ROC_HY = "15";
 
