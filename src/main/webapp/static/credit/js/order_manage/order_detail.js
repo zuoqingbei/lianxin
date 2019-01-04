@@ -346,6 +346,8 @@ let OrderDetail = {
                     break;
                 // 23-质检表单
                 case '23':
+//                	console.log(item)
+                	if(item.contents.length === 0){return}
                     $wrap.append(type23_html);
                     $wrap.find("[for=grade]").text(item.contents[0].temp_name + ' : ')
                         .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
