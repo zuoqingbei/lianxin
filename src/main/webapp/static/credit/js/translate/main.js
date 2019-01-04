@@ -485,7 +485,6 @@ let ReportConfig = {
     			}
     			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     				//信用等级
-    				 if(tempData.rows.length === 0){return}
 					 let name =$(item).next().find("select").attr("name")
 					 $(item).next().find("select").val(tempData.rows[0][name])
     				return;
