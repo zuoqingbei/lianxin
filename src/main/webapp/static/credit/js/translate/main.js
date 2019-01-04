@@ -1882,7 +1882,7 @@ let ReportConfig = {
 	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
 	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
 	   					//102报告类型需要传参
-	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}`
+	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
 	   				}
 	   				$.ajax({
 	   					url,
@@ -2051,7 +2051,7 @@ let ReportConfig = {
     			let url = BASE_PATH + `credit/ordertranslate/translate`;
    				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
    					//102报告类型需要传参
-   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}`
+   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
    				}
    				console.log(_this.formDataArr,index)
     			 $.ajax({
