@@ -115,15 +115,8 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		  Date date;
-		try {
-			 date = new SimpleDateFormat("yyyy-MM-dd").parse("2005-06-09 12:00:00");
-			 String now = new SimpleDateFormat("yyyy年MM月dd日").format(date);
-			 System.out.println(now);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String  value_cht=TransApi.Trans("张宁","cht");
+		System.out.println(value_cht);
 
 		 
 	}
