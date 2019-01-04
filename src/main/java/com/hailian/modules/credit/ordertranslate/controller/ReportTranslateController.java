@@ -44,6 +44,7 @@ public class ReportTranslateController extends BaseProjectController {
 					try {
 						value_en = TransApi.Trans(value,"en");
 					} catch (Exception e) {
+                        System.out.println(json);
                         e.printStackTrace();
 						value_en="Translation failure!";
 					}
