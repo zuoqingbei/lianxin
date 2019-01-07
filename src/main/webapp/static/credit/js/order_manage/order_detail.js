@@ -63,6 +63,31 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         this.creditLevel = this.english ? creditLevel_en : creditLevel_cn;
         this.initContent();
+        let tis=this
+        $('.return_back').on('click',function () {
+            if(tis.isQuality){
+                layer.confirm('是否保存已录入信息？', {
+                    btn: ['保存','取消'] //按钮
+                }, function(){
+                    $('#save').trigger('click')
+
+                    location.reload();
+                }, function(){
+                    location.reload();
+                });
+            }else{
+                location.reload();
+            }
+        });
+        if(tis.isQuality){
+            $(".position-fixed").append(`<div class="col-md-12 d-flex justify-content-end">
+                            <button class="btn btn-light m-3" id="save" type="button">保存</button>
+                            <button class="btn btn-primary m-3" id="submit" type="button">提交</button>
+                        </div>`)
+        }else {
+            $(".position-fixed").hide()
+        }
+
     },
     // 页面结构
     initContent() {
@@ -386,7 +411,7 @@ let OrderDetail = {
                             });
                     };
                     dealQualityData();
-                    $wrap.find("#save").click(function (e, param) {
+                    $("#save").click(function (e, param) {
                         _this.getQualitySelectData('update'); //质检结果
                         dealQualityData('update', param); //质检意见、分数等
                         setTimeout(function () {
@@ -394,7 +419,7 @@ let OrderDetail = {
                         }, 1500);
                         Public.message('success', '保存成功！')
                     });
-                    $wrap.find("#submit").click(function () {
+                    $("#submit").click(function () {
                         $("#save").trigger('click', 'submit');
                     });
                     break;
@@ -426,6 +451,7 @@ let OrderDetail = {
                     if(!isSameLevel1){
                         level1Str = ''
                     }
+
                     // 逗号问题
                     let newData = [];
                     data = data.forEach(function (item) {
