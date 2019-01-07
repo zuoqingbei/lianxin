@@ -73,7 +73,7 @@ public class OrderPoiController extends BaseProjectController {
 		String errormark="";
 		String isTheSameOrder="";
 		int isTheSameOrderNum=0;
-		int errornum=1;
+		int errornum=0;
 		List<UploadFile> upLoadFile = getFiles();
 		List<CreditOrderInfo> orderList = new ArrayList<CreditOrderInfo>();
 		List<CreditOrderInfo> orderListReal = new ArrayList<CreditOrderInfo>();
@@ -120,7 +120,7 @@ public class OrderPoiController extends BaseProjectController {
 						if (row.getCell(0) != null) {
 							row.getCell(0).setCellType(Cell.CELL_TYPE_STRING);
 							String custom_id=row.getCell(0).getStringCellValue();
-							List<CustomInfoModel> customById = CustomInfoModel.dao.getCustom(Integer.parseInt(custom_id));
+							List<CustomInfoModel> customById = CustomInfoModel.dao.getCustomByid(Integer.parseInt(custom_id));
 							if(CollectionUtils.isEmpty(customById)){
 								errornum++;
 								errormark+=errornum+".第"+(r+1)+"行，第A列信息填写错误;";
@@ -428,9 +428,10 @@ public class OrderPoiController extends BaseProjectController {
 			
 			 for(CreditOrderInfo model:modellist){
 				 model.save();//保存订单
-				 if(model.get("agent_id")!= null){
+				 //发送邮件
+				 /*if(model.get("agent_id")!= null){
 					 MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
-				 }
+				 }*/
 					int companInfoId = new HomeController().crateReportByOrder(userid, model,  model.get("id")+"");
 					model.set("company_id",companInfoId);
 					model.update();
