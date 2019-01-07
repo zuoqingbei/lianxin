@@ -428,9 +428,10 @@ public class OrderPoiController extends BaseProjectController {
 			
 			 for(CreditOrderInfo model:modellist){
 				 model.save();//保存订单
-				 if(model.get("agent_id")!= null){
+				 //发送邮件
+				 /*if(model.get("agent_id")!= null){
 					 MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
-				 }
+				 }*/
 					int companInfoId = new HomeController().crateReportByOrder(userid, model,  model.get("id")+"");
 					model.set("company_id",companInfoId);
 					model.update();

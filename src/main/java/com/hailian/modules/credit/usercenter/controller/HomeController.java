@@ -581,7 +581,7 @@ public class HomeController extends BaseProjectController {
 					ResultType resultType=new ResultType(3,"提交成功，但该订单没有找到合适的代理，请注意!");
 					renderJson(resultType);
 				}else{	//发送邮件
-							MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
+							//MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
 				}
 			}
 			
