@@ -115,6 +115,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 		List<CustomInfoModel> find = CustomInfoModel.dao.find(sql.toString(),params.toArray());
 		return find;
 	}
+	
 	//根据客户编码查找
 	public List<CustomInfoModel> getCustomByid(Integer id){
 		StringBuffer sql=new StringBuffer("select * from credit_custom_info where del_flag=0");
