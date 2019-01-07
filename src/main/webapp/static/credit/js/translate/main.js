@@ -1921,10 +1921,12 @@ let ReportConfig = {
     		
     		$(".position-fixed").on("click","#save",(e)=>{
     			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
+    			 console.log(data)
     			 if(data.length === 0 || !Array.isArray(data)){return}
     			 console.log(data)
     			 data.forEach((ele,i)=>{
     				 delete ele["mySort"]
+    				 console.log(alterSource)
     				 if(alterSource.split("*")[1]) {
 		    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
 		    			tempParam.forEach((item,index)=>{
