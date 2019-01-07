@@ -147,6 +147,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
                 try {
                     Db.batchSave(list, list.size());
                 }catch (Exception e){
+                    e.printStackTrace();
                     if(e.getMessage().contains("Duplicate")){
                         if(!isMainTable) {
                             for (BaseProjectModel m : list) {

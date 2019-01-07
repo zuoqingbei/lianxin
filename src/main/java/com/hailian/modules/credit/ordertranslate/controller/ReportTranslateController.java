@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,7 +26,7 @@ import com.hailian.util.translate.TransApi;
 @ControllerBind(controllerKey = "/credit/ordertranslate")
 public class ReportTranslateController extends BaseProjectController {
 	public void translate() {
-		String json = getPara("dataJson");
+		String json = getPara("dataJson").replace("null", "");
 		String targetlanguage=getPara("targetlanguage");//目标语言
 		String reporttype=getPara("reportType");//报告类型
 		JSONObject jsonObject = JSONObject.fromObject(json);
@@ -37,6 +38,7 @@ public class ReportTranslateController extends BaseProjectController {
 			while(iterator.hasNext()){
 			String   key = (String) iterator.next();
 			String value = jsonObject.getString(key);
+			Object object = jsonObject.get(key);
 			String value_en="";
 			String value_cht="";
 			if(isChinese(value)){
@@ -75,7 +77,7 @@ public class ReportTranslateController extends BaseProjectController {
 			}
 			jsonObject.put(key, value);
 			}
-			System.out.println(jsonObject.toString());
+			System.out.println(jsonObject.toString().replace("\"null\"", ""));
 			renderJson(jsonObject.toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
