@@ -339,6 +339,7 @@ let Verify = {
         //点击发起查档提交
         $("#modal_submit2").click(function(){
             $("#status2").val("295");
+
             let remarks = $("#remarks").val();
             let id = $("#orderId").val();
             console.log('dasdsadasdas',$("#agent_category").val());
