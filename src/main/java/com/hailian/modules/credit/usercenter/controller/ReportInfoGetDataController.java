@@ -375,6 +375,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
              if (opintion2.size() <= 0) {
                  //如果根据订单id 与质检类型 查询为空 则新增
                  CreditQualityOpintion model = new CreditQualityOpintion();
+                 model.clear();
+                 opintion2.clear();
                  model.set("quality_opinion", opintion);
                  model.set("quality_type", type);
                  model.set("order_id", orderId);
@@ -390,6 +392,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                  renderJson(record.set("rows", opintion2).set("total", opintion2 != null ? opintion2.size() : null));
              }else{
             CreditQualityOpintion model = new CreditQualityOpintion();
+            model.clear();
+            opintion2.clear();
             model.set("quality_opinion", opintion);
             model.set("quality_type", type);
             model.set("order_id", orderId);
