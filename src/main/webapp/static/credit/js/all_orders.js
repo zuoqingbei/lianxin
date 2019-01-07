@@ -1,12 +1,15 @@
 
 let Index = {
     init(){
+    	this.num="";
+    	this.numarr=[];
         this.initTable();
         this.dateForm();
         this.popperFilter();
         this.hideShowStyle();
         this.searchEvent();
         this.fileEvent();
+        this.modalSubmit(this.numarr);
 
     },
     dateForm(){
@@ -14,6 +17,71 @@ let Index = {
         laydate.render({
             elem: '#txt_search_date'
         });
+    },
+    
+    modalSubmit(numarr){
+    	console.log(numarr,"abcccc")
+        /**模态框提交事件 */
+    	let _this = this
+        	 $("#modal_submit_allocation2").click(function(){
+        		 
+        		 let ids=_this.numarr
+        		 console.log(ids+"come on");
+        		 if(numarr.length===0){
+        		 	Public.message("error","请选择需要催问的订单");
+        		 	$(".modal-header .close").trigger("click");
+        		 }else{
+        		  $.ajax({
+             		url:'/credit/front/orderProcess/askOrder?ids='+ids,
+             		data:{
+             			status:'003',
+             			
+             		},
+             		type:'post',
+             		success:(data)=>{
+             			console.log(data)
+             			if(data.statusCode === 1) {
+             				   Public.message("success",data.message)
+                               //提交成功关闭模态窗
+                             	$(".modal-header .close").trigger("click");
+             				    $("#table").bootstrapTable("refresh");
+             			}else {
+             				Public.message("error",data.message)
+             			}
+             		}
+             	})
+        		 }
+        	 }),
+         $("#exampleModalCenter33").click(function(){
+        	let ids=_this.numarr;
+        	console.log(ids+"=====");
+        	 if(numarr.length===0){
+     		 	Public.message("error","请选择需要撤销的订单");
+     		 	$(".modal-header .close").trigger("click");
+     		 }else{
+        	 $.ajax({
+        			type:"post",
+        			url:"/credit/front/home/cheXiao?ids="+ids,
+        			data:{
+        				"revoke_reason":$("#revoke_reason").val(),
+        				},
+        			 dataType:"json",
+        		        success: function (data) {
+        		        	if(data.statusCode===1){
+        	               	Public.message("success",data.message);
+                            //提交成功关闭模态窗
+                          	$(".modal-header .close").trigger("click");
+          				    $("#table").bootstrapTable("refresh");
+        	               }else{
+        	               	Public.message("error",data.message);
+        	                $("#exampleModalCenter2 .close").trigger("click")
+        	                loadtable();
+        	               }
+        		        }
+        		        
+        		});
+     		 }
+        	 })
     },
     fileEvent(){
     	this.fileNum = 0;
@@ -215,8 +283,14 @@ let Index = {
      	});
         const $table = $('#table');
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.7,
+            height: $(".table-content").height()*0.6,
             columns: [
+                      {
+                          checkbox: true,
+                          visible: true,                  //是否显示复选框
+                          filed:'state',
+                          width: '18rem',
+                      }, 
             	{
                   title: '订单号',
                   field: 'num',
@@ -347,15 +421,16 @@ let Index = {
                           let da=row.create_date;
                           $("#client_order_date").val(da.split(' ')[0]);
                           $('#right_company_name_en').val(row.companyName);
-                          $('#client_reportTime').val(row.useTime);
+                          $('#client_reportTime').val(row.user_time);
                             $('#client_referenceNumber').val(row.reference_num);
                             $('#client_address').val(row.address);
                             $('#client_telephone').val(row.telphone);
                             $('#client_contact').val(row.contacts);
                             $('#client_fax').val(row.fax);
                             $('#client_email').val(row.email);
-                            $('#client_country').append(`<option selected value="${row.country}">${row.countryName}</option>`)
-
+                            $('#client_country').append(`<option selected value="${row.countryId}">${row.country}</option>`)
+                            $('#createBy').val(row.create_by);
+                            $('#myId').val(row.id);
                             layui.use('form', function(){
                                 var form = layui.form;
                                 $('#client_area').val(row.continent);
@@ -365,7 +440,7 @@ let Index = {
                                 $('#client_ID').val(row.custom_id);
                                 $('#right_company_name_en').val(row.englishName);
                                 $('#client_reportLanguage').val(row.report_language);
-                                $('#client_speed').val(row.speed);
+                                $('#client_speed').val(row.speedId);
                                 $('#client_referenceNumber').val(row.reference_num);
                                 $('#client_address').val(row.address);
                                 $('#client_telephone').val(row.telphone);
@@ -416,7 +491,7 @@ let Index = {
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-            fixedColumns: true,
+            fixedColumns: false,
             fixedNumber: 1,
             queryParamsType:'',
             sortable: true,                     //是否启用排序
@@ -465,6 +540,28 @@ let Index = {
             			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ask")
             		}
             	})
+            },
+            onCheck:(row)=>{
+            	console.log(row)
+            	this.numarr.push(row.id)
+             //  this.numarr.split().join(",");
+            	console.log(this.numarr);
+            },
+            onUncheck:(rows)=>{
+            	let index =this.numarr.indexOf(rows.id)
+                this.numarr.splice(index,1);
+            	console.log(this.numarr);
+            },onCheckAll:(rows)=>{
+           	 for(var i=0;i<rows.length;i++){
+           		this.numarr.push(rows[i].id) 
+           		console.log(this.numarr);
+           	 }
+            },onUncheckAll:(rows)=>{
+	           	 for(var i=0;i<rows.length;i++){
+	           		let index =this.numarr.indexOf(rows[i].id)
+	                this.numarr.splice(index,1); 
+	           		console.log(this.numarr);
+	           	 }
             }
         });
         // sometimes footer render error.

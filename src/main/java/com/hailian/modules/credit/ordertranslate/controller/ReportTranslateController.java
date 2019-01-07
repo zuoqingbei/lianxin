@@ -2,11 +2,8 @@ package com.hailian.modules.credit.ordertranslate.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,13 +13,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.modules.credit.translate.service.TranslateService;
-import com.hailian.modules.credit.usercenter.model.ModuleJsonData;
-import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.util.translate.TransApi;
 
 /**
@@ -35,6 +27,7 @@ public class ReportTranslateController extends BaseProjectController {
 	public void translate() {
 		String json = getPara("dataJson");
 		String targetlanguage=getPara("targetlanguage");//目标语言
+		String reporttype=getPara("reportType");//报告类型
 		JSONObject jsonObject = JSONObject.fromObject(json);
 		try {
 			if(StringUtils.isBlank(targetlanguage)){
@@ -51,11 +44,24 @@ public class ReportTranslateController extends BaseProjectController {
 					try {
 						value_en = TransApi.Trans(value,"en");
 					} catch (Exception e) {
+                        System.out.println(json);
+                        e.printStackTrace();
 						value_en="Translation failure!";
 					}
 					if("cht".equals(targetlanguage)){
 						try {
 							value_cht=TransApi.Trans(value,targetlanguage);
+							if("14".equals(reporttype)){
+								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
+										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)){
+									value_en="";
+								}
+							}
+							if("12".equals(reporttype)){
+								value_en="";
+								value_cht=TransApi.Trans(value,targetlanguage);
+							}
+							
 						} catch (Exception e) {
 							value_cht="翻譯失敗!";
 						}
@@ -99,7 +105,7 @@ public class ReportTranslateController extends BaseProjectController {
 	   }
 	 public static boolean isValidDate(String str) {
 	      boolean convertSuccess=true;
-	       SimpleDateFormat format = new SimpleDateFormat("yyyy年MM月dd日");
+	       SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	       try {
 	          format.setLenient(false);
 	          format.parse(str);
@@ -109,15 +115,8 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		  Date date;
-		try {
-			 date = new SimpleDateFormat("yyyy-MM-dd").parse("2005-06-09 12:00:00");
-			 String now = new SimpleDateFormat("yyyy年MM月dd日").format(date);
-			 System.out.println(now);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		String  value_cht=TransApi.Trans("张宁","cht");
+		System.out.println(value_cht);
 
 		 
 	}

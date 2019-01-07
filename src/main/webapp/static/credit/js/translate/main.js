@@ -5,6 +5,7 @@
  */
 let ReportConfig = {
 	cwConfigAlterSource:'',
+	currentDom:'',
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -159,7 +160,7 @@ let ReportConfig = {
     						console.log(row)
     						let formArr = Array.from($("#modalEn"+tempId).find(".form-inline"))
     						formArr.forEach((item,index)=>{
-    							let id = $(item).children("label").siblings().attr("id");
+    							let id = $(item).children("label").next().attr("id");
     							let anotherIdArr = id.split("_")
     							anotherIdArr.pop();
     							let anotherId = anotherIdArr.join('_')
@@ -182,9 +183,8 @@ let ReportConfig = {
     								//如果是select
     								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
     							}else {
-    								
+//    								console.log($("#"+id),row[anotherId])
     								$("#"+id).val(row[anotherId])
-    								$("#"+id).attr("en_bak",row[anotherId])
     							}
     						})
     					}
@@ -396,10 +396,10 @@ let ReportConfig = {
 	    						 if(temp.rows.length === 0){return}
 	    						 let obid = temp.rows[0].id;
 	    						 $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-	    						 let overall_rating =  temp.rows[0].overall_rating;
 	    						 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-	    						 
-	    						 $("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+								 let val =  temp.rows[0][name];
+								 
+								 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);   
 	    						 return
 	    					 }
 	    					 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
@@ -448,7 +448,13 @@ let ReportConfig = {
 											 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
 										 }
 									 }else {
-										 $("#"+id).val(obj[anotherId])
+										 if($("#"+id).attr("name") === 'emp_num_date'&& obj[anotherId]==='') {
+											 //2、报告摘要--员工人数统计时间默认填报当天
+											 let nowDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()
+											 $("#"+id).val(nowDate)
+										 }else {
+											 $("#"+id).val(obj[anotherId])
+										 }
 									 }
 	    	    				}
 	    					 })
@@ -464,38 +470,33 @@ let ReportConfig = {
     	let formIndexEn = this.formIndexEn;
     	let _this = this
     	if(tempData ){
+    		console.log(tempData)
     		let arr = Array.from($("#titleEn"+i))
     		console.log($("#titleEn"+i))
 			arr.forEach((item,index)=>{
     			if($(item).siblings(".radio-con").length !== 0) {
     				//radio类型绑数
-    				let obid = tempData.id;
-    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-    				let overall_rating =  tempData.overall_rating;
-    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-    				
-    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+//    				 if(tempData.rows.length === 0){return}
+    				 let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+    				 let rightName = name.replace("En",'')
+					 let val =  tempData[rightName];
+					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
     				return
     			}
     			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     				//信用等级
-    				 if(temp.rows.length === 0){return}
 					 let name =$(item).next().find("select").attr("name")
-					 $(item).next().find("select").val(temp.rows[0][name])
+					 $(item).next().find("select").val(tempData.rows[0][name])
     				return;
     			}
     			if($(item).next().hasClass("textarea-module")) {
     				//无标题多行文本输入框
-    				let obid = tempData.id;
-    				$(item).next().find("textarea").attr("entityid",obid)
     				let name =$(item).next().find("textarea").attr("name")
     				$(item).next().find("textarea").val(tempData[name])
     				return;
     			}
     			if(($(item).next().find("input").hasClass("float-date"))) {
     				//浮动非财务
-    				let obid = tempData.id;
-    				$(item).next().find("input").attr("entityid",obid)
     				let name =$(item).next().find("input").attr("name")
     				$(item).next().find("input").val(tempData[name])
     				return;
@@ -513,6 +514,7 @@ let ReportConfig = {
     				let anotherId = anotherIdArr.join('_')
     				$("#"+id).attr("entryid",obid)
     				if($(item).is('select')){
+//    					console.log($(item),obj[anotherId])
     					//如果是select
     					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
     				}else {
@@ -522,9 +524,15 @@ let ReportConfig = {
 								 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
 							 }
 						 }else {
-							 $("#"+id).val(obj[anotherId])
+							 if($("#"+id).attr("name") === 'emp_num_date'&& obj[anotherId]==='') {
+								 //2、报告摘要--员工人数统计时间默认填报当天
+								 let nowDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()
+								 $("#"+id).val(nowDate)
+							 }else {
+								 $("#"+id).val(obj[anotherId])
+							 }
 						 }
-    					$("#"+id).attr("en_bak",obj[anotherId])
+//    					$("#"+id).attr("en_bak",obj[anotherId])
     				}
     			})
     		})
@@ -563,10 +571,11 @@ let ReportConfig = {
 	    	    				if(temp.rows.length === 0){return}
 	    	    				let obid = temp.rows[0].id;
 	    	    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-	    	    				let overall_rating =  temp.rows[0].overall_rating;
 	    	    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-	    	    				
-	    	    				$("input:radio[name="+name+"][value="+overall_rating+"]").attr("checked",true);  
+	    	    				let rightName = name.replace("En","")
+								 let val =  temp.rows[0][rightName];
+								 
+								 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);   
 	    	    				return
 	    	    			}
 	    	    			if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
@@ -611,7 +620,7 @@ let ReportConfig = {
 	    	    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
 	    	    				}else {
 	    	    					$("#"+id).val(obj[anotherId])
-	    	    					$("#"+id).attr("en_bak",obj[anotherId])
+//	    	    					$("#"+id).attr("en_bak",obj[anotherId])
 	    	    				}
 	    	    			})
 	    	    		})
@@ -644,7 +653,10 @@ let ReportConfig = {
     	if(floatIndex.length === 0){return}
     	let cw_title = []
     	let cw_contents = []
+    	let ds_cw_title = []
+    	let ds_cw_contents = []
     	let cw_dom;
+    	let ds_dom;
     	_this.tableTitle = []
     	floatIndexEn.forEach((item,index)=>{
     		let floatParentIdEn = this.floatTitleEn[index]['float_parent'];//浮动的父节点id
@@ -665,27 +677,103 @@ let ReportConfig = {
     		let titleId;
 //    		console.log(this.entityTitle, this.floatTitle)
     		this.entityTitle.forEach((item,i)=>{
-    			console.log(item.id,floatParentId)
+//    			console.log(item.id,floatParentId)
     			if(item.id === floatParentId ) {
-    				console.log(floatParentId)
-    				if(floatParentId !== 12411) {
+    				console.log(_this.entityModalType,i)
+    				if(_this.entityModalType[i] !== '10') {
     					//非财务模块浮动
     					let html = this.notMoneyFloatHtml[i+1]
     					$("#title"+i).after(html)
     					this.formIndex.push(i)
     					this.formTitle.push(this.floatTitle[index])
     				}else {
-    					//财务模块浮动
-    					console.log(this.floatTitle[index])
-    					cw_title.push(this.floatTitle[index])
-    					cw_contents.push(this.floatContents[index])
-    					cw_dom = $("#titleCw"+i)
+    					console.log(_this.entityTitle[i]["get_source"])
+    					if(_this.entityTitle[i]["get_source"].includes("type=3")){
+    						//大数财务模块浮动
+    						ds_cw_title.push(this.floatTitle[index])
+    						ds_cw_contents.push(this.floatContents[index])
+    						ds_dom = $("#titleDs"+i)
+    					}else {
+    						//财务模块浮动
+    						cw_title.push(this.floatTitle[index])
+    						cw_contents.push(this.floatContents[index])
+    						cw_dom = $("#titleCw"+i)
+    					}
     				}
     				
     			}
     		})
     	})
-    	console.log(cw_title,cw_contents)
+    	//大数财务逻辑
+    	let ds_top_html = ''
+		let ds_table_html = ''
+		if(ds_cw_title.length!==0){
+			ds_cw_title.forEach((item,index)=>{
+				//初始化大数财务模块
+				let this_content = ds_cw_contents[index];
+	    		let moneySource = ds_cw_contents[0][0].get_source;
+	    		let moneyStr = ''
+				let unitSource = ds_cw_contents[0][1].get_source;
+	    		let unitStr = ''
+				$.ajax({
+					url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
+					async:false,
+					type:'post',
+					success:(data)=>{
+						moneyStr = data.selectStr
+					}
+				})
+				$.ajax({
+					url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
+					async:false,
+					type:'post',
+					success:(data)=>{
+						unitStr = data.selectStr
+					}
+				})
+				if(item.sort === 1) {
+					ds_top_html += `<div class="top-html mx-4">
+						<div class="d-flex justify-content-between align-items-center mt-4">
+							<!-- 单位 -->
+							<div class="ds-unit" style="width:100%">
+								<div class="form-inline my-3" >
+									<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[0].temp_name}</label>
+									<select class="form-control mr-3" id="${this_content[0].column_name}ds" style="width:10rem" name=${this_content[0].column_name}>${moneyStr}</select>
+									<select class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${unitStr}</select>
+								</div>
+							</div>
+						</div>
+						<div class="d-flex justify-content-between align-items-center mt-4">
+							<!-- 日期 -->
+							<div class="ds-date form-inline" style="width:100%">
+								<input class="form-control  my-3" id="${this_content[2].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[2].column_name}  placeholder=${this_content[2].place_hold} />
+								<input class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
+							</div>
+						</div>`
+				}else {
+					ds_table_html += `<div class="table-content1 ds-table" style="background:#fff">
+										<table id="tableDs"
+											data-toggle="table"
+											style="position: relative"
+										>
+										</table>
+									</div>`
+				}
+			})
+			if(ds_dom){
+				ds_dom.after(ds_table_html)
+				ds_dom.after(ds_top_html)
+			}
+	    	setTimeout(()=>{
+	    		if(ds_cw_title[0]){
+	    			InitObjTrans.bindDsConfig(ds_cw_title[0]['get_source'],_this.rows)
+		    		InitObjTrans.initDsTable(ds_cw_contents[1],_this.dsGetSource,_this.dsAlterSource,_this.rows)
+	    		}
+	    	},0)
+		}
+    	//财务逻辑
+//    	console.log(cw_title)
+    	if(cw_title.length === 0){return}
     	this.cwConfigAlterSource = cw_title[0]['alter_source'];
     	this.cwConfigGetSource = cw_title[0]['get_source'];
     	let cw_top_html = ''
@@ -880,6 +968,7 @@ let ReportConfig = {
         /**初始化内容 */
     	this.entityTitle = [] //存放小模块的实体title
     	this.entityTitleEn = [] //存放小模块的实体title
+    	this.entityModalType = [] //存放小模块的实体类型
     	this.idArr = []    //存放table类型模块对应的index
     	this.idArrEn = []    //存放table类型模块对应的index
     	this.contentsArr = [] //存放table类型模块的contents
@@ -901,6 +990,8 @@ let ReportConfig = {
     	this.cwGetSource = '' //存放获取财务url
     	this.cwAlterSource = '' //存放修改财务url
     	this.cwDeleteSource = '' //删除财务url
+		this.dsGetSource = '' //存放大数获取财务url
+		this.dsAlterSource = '' //存放大数修改财务url
     	this.saveStatusUrl = ''
 		this.submitStatusUrl = ''
     	let row = localStorage.getItem("row");
@@ -994,6 +1085,7 @@ let ReportConfig = {
                 	 * 循环模块
                 	 */
                 	_this.entityTitle.push(item.title)
+                	_this.entityModalType.push(item.smallModileType)
                 	if(modulesToEn[index]){
                 		_this.entityTitleEn.push(modulesToEn[index]["title"])
                 	}
@@ -1005,10 +1097,17 @@ let ReportConfig = {
         				contentHtml +=  `<div class="bg-f mb-3"  ><a style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
             		}else if(smallModileType === '10'){
             			//财务模块
-            			_this.cwGetSource = item.title.get_source;
-            			_this.cwAlterSource = item.title.alter_source;
-            			_this.cwDeleteSource = item.title.remove_source;
-            			contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+            			if(item["title"]["get_source"].includes("type=3")){
+            				//大数
+            				_this.dsGetSource = item.title.get_source;
+            				_this.dsAlterSource = item.title.alter_source;
+            				contentHtml +=  `<div class="bg-f pb-4 mb-3 gjds"><a class="l-title dsModal" name="anchor${item.title.id}" id="titleDs${index}">${item.title.temp_name}</a>`
+            			}else {
+            				_this.cwGetSource = item.title.get_source;
+            				_this.cwAlterSource = item.title.alter_source;
+            				_this.cwDeleteSource = item.title.remove_source;
+            				contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+            			}
             		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
             			contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
             		}
@@ -1319,8 +1418,13 @@ let ReportConfig = {
                 	let item_en = modulesToEn[index]
                 	if(!item_en){return}
                 	let smallModileTypeEn = item_en.smallModileType
+                	if(item_en.title.temp_name === 'Key Fiancial Items' || item_en.title.temp_name === 'industry_analysis'){
+        				return
+            		}
+                	if(item_en.title.temp_name && item_en.title.float_parent) {return}
+                	if((item_en.title.temp_name === null || item_en.title.temp_name === "")&&item_en.title.float_parent){return}
                 	if(item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+                			contentHtml +=  `<div class="bg-f pb-4 mb-3"  ><a style="display:none" class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
                 	}else if(smallModileTypeEn === '10'){
                 		//财务模块
 //                		_this.cwGetSource = item.title.get_source;
@@ -1404,7 +1508,7 @@ let ReportConfig = {
 				            				success:(data)=>{
 				            				formGroup += `<div class="form-group">
 							            					<label for="" class="mb-2">${item_en.temp_name}</label>
-							            					<select name=${item_en.column_name} id="${item.column_name}_${ind}_En" class="form-control">
+							            					<select name=${item_en.column_name} id="${item_en.column_name}_${ind}_En" class="form-control">
 							            						${data.selectStr}
 							            					</select>
 				            							</div>`
@@ -1596,7 +1700,7 @@ let ReportConfig = {
 				                        	<div class="radio-box">`
             				strItem.forEach((item,index)=>{
             				contentHtml += ` <div class="form-check form-check-inline mr-5">
-				                                <input class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+				                                <input class="form-check-input" type="radio" name="${this_item.contents[0].column_name}En" id="inlineRadio${index}" value=${item.split("-")[0]}>
 				                                <label class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
 				                            </div>`
             			})
@@ -1645,15 +1749,17 @@ let ReportConfig = {
         })
     	
     	this.idArr.forEach((item,index)=>{
-    		$("#modalEn"+item).find("input").blur((e)=>{
-    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    		$("#modalEn"+item).find("input").focus((e)=>{
+    			if($(e.target).val() !== ''&& $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
     			}
     		})
-    		$("#modalEn"+item).find("textarea").blur((e)=>{
-    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    		$("#modalEn"+item).find("textarea").focus((e)=>{
+    			if($(e.target).val() !== '' && $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
     			}
     		})
@@ -1762,6 +1868,9 @@ let ReportConfig = {
     			 //表格翻译
 	   			 let oneTableData = []
 	   			$("body").mLoading("show")
+	   			console.log(tableTitlesEn,index)
+	   			if(!_this.tableDataArr[index]){return}
+	   			 if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {$("body").mLoading("hide")}
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				//循环每个表格中的条数进行翻译
 //	   				console.log(tableDataArrEn[index],index)
@@ -1772,7 +1881,7 @@ let ReportConfig = {
 	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
 	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
 	   					//102报告类型需要传参
-	   					url += `?targetlanguage=cht`
+	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
 	   				}
 	   				$.ajax({
 	   					url,
@@ -1813,7 +1922,7 @@ let ReportConfig = {
     		$(".position-fixed").on("click","#save",(e)=>{
     			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
     			 if(data.length === 0 || !Array.isArray(data)){return}
-//    			 console.log(data)
+    			 console.log(data)
     			 data.forEach((ele,i)=>{
     				 delete ele["mySort"]
     				 if(alterSource.split("*")[1]) {
@@ -1941,7 +2050,7 @@ let ReportConfig = {
     			let url = BASE_PATH + `credit/ordertranslate/translate`;
    				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
    					//102报告类型需要传参
-   					url += `?targetlanguage=cht`
+   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
    				}
    				console.log(_this.formDataArr,index)
     			 $.ajax({
@@ -1951,7 +2060,7 @@ let ReportConfig = {
     					 dataJson:JSON.stringify(_this.formDataArr[index])
     				 },
     				 success:(data)=>{
-    					 console.log(_this.formIndex,_this.formIndexEn,index)
+//    					 console.log(_this.formIndex,_this.formIndexEn,index)
     					 _this.bindFormDataEn(data,_this.formIndexEn[index])
     				 }
     			 });
@@ -1969,7 +2078,8 @@ let ReportConfig = {
     					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
     					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
     					 let val = $('input[name='+radioName+']:checked').val();
-    					 dataJsonObj[radioName] = val
+    					 let rightName = radioName.replace("En",'')
+    					 dataJsonObj[rightName] = val
     					 dataJsonObj["id"] = id
     				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     					 //信用等级
@@ -2036,7 +2146,8 @@ let ReportConfig = {
     					 let radioName = $(item).siblings().find(".radio-box").find("input").attr("name")
     					 let id = $(item).siblings().find(".radio-box").find("input").attr("entityid")
     					 let val = $('input[name='+radioName+']:checked').val();
-    					 dataJsonObj[radioName] = val
+    					 let rightName = radioName.replace("En",'')
+    					 dataJsonObj[rightName] = val
     					 dataJsonObj["id"] = id
     				 }else if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
     					 //信用等级
@@ -2106,18 +2217,28 @@ let ReportConfig = {
     	},1500)
     },
     showTranslateMadal(){
+    	let _this = this
+    	//翻译校正模态窗
     	this.formIndexEn.forEach((item,index)=>{
     		let $ele = $("#titleEn"+item);
-    		$ele.siblings().find("input").blur((e)=>{
-    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    		$ele.siblings().find("input").focus((e)=>{
+    			if($(e.target).val() !== '' && $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+    				$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
+    				_this.currentDom = $(e.target)
+    				$(".correctEn").val('')
+    				$(".correctCh").val('')
     			}
     		})
-    		$ele.siblings().find("textarea").blur((e)=>{
-    			if($(e.target).val() !== $(e.target).attr("en_bak")){
+    		$ele.siblings().find("textarea").focus((e)=>{
+    			if($(e.target).val() !== ''&& $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
+					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
+    				_this.currentDom = $(e.target)
+    				$(".correctEn").val('')
+    				$(".correctCh").val('')
     			}
     		})
     	})
@@ -2131,6 +2252,7 @@ let ReportConfig = {
     			Public.message("info","错误的英文和正确的英文不能为空")
     			return
     		}
+    		this.currentDom.val(correct_phrase_en)
     		$.ajax({
     			url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
     			type:'post',
@@ -2152,3 +2274,15 @@ let ReportConfig = {
 }
 
 ReportConfig.init();
+$('.return_back').on('click',function () {
+    layer.confirm('是否保存已录入信息？', {
+        btn: ['保存','取消'] //按钮
+    }, function(){
+        $('#save').trigger('click')
+
+        location.reload();
+    }, function(){
+        location.reload();
+    });
+
+})

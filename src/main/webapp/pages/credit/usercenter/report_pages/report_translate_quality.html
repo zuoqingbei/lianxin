@@ -38,6 +38,10 @@
         .select2Box {
             margin: 1.5rem 1rem 0;
         }
+        .select2Box div {
+   			 width: calc(100% - 7rem);
+		}
+        
         .radio-box,.unit{
             border:none;
         }
@@ -48,6 +52,16 @@
             color: #A5A5A5;
             font-size: 14px;
             cursor: pointer;
+            position: fixed;
+            top: 4.2rem;
+            left: 16.6%;
+            padding-left: 20px;
+            z-index: 99;
+            display: inline-block;
+            height: 1.5rem;
+            width: 100%;
+            line-height: 1.5rem;
+            background-color: white;
         }
         .return_back:hover{color: #A5A5A5}
         .return_back img{display: inline-block;vertical-align: middle;margin-top: -3px;width: 14px}
@@ -66,7 +80,7 @@
                     <!--<li class="breadcrumb-item active" aria-current="page">填报</li>-->
                 <!--</ol>-->
             <!--</nav>-->
-            <a href="" class="return_back"><img src="${BASE_PATH }static/credit/imgs/order/reback.png"/><span>返回上一级</span></a>
+            <a href="javascript:" class="return_back"><img src="${BASE_PATH }static/credit/imgs/order/reback.png"/><span>返回上一级</span></a>
 
 
             <div class="order-box">
@@ -82,7 +96,7 @@
         </div>
 
         <!-- fixed 底部 -->
-        <div class="position-fixed fixed-btn-well d-none justify-content-end align-items-center px-5">
+        <div class="position-fixed fixed-btn-well d-flex justify-content-end align-items-center px-5">
 
         </div>
     </div>

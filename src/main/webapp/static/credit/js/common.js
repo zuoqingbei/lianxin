@@ -666,10 +666,11 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                             <div style="width: 6rem"><label for="quality_opinion"></label></div>
                             <div class="pr-0 flex-grow-1"><textarea class="form-control" name="quality_opinion" id="quality_opinion" rows="10"></textarea></div>
                         </div>
-                        <div class="col-md-12 d-flex justify-content-end">
-                            <button class="btn btn-light m-3" id="save" type="button">保存</button>
-                            <button class="btn btn-primary m-3" id="submit" type="button">提交</button>
-                        </div>
+                        <div style="height: 5rem"></div>
+                        <!--<div class="col-md-12 d-flex justify-content-end">-->
+                            <!--<button class="btn btn-light m-3" id="save" type="button">保存</button>-->
+                            <!--<button class="btn btn-primary m-3" id="submit" type="button">提交</button>-->
+                        <!--</div>-->
                     </form>
                 </div>`
     , qualitySelectHtml = `<div class="row form-group select2Box">

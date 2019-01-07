@@ -12,6 +12,7 @@ import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.data.*;
 import com.deepoove.poi.data.style.Style;
 import com.deepoove.poi.data.style.TableStyle;
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
@@ -19,6 +20,7 @@ import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.SendMailUtil;
+import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
@@ -59,6 +61,8 @@ public class BaseWord {
     public static final String userName = Config.getStr("ftp_userName");//域用户名
     public static final String password = Config.getStr("ftp_password");//域用户密码
     public static final String ftpStore = Config.getStr("ftp_store");//ftp文件夹
+
+    private static TemplateDictService template = new TemplateDictService();
 
     public static void main(String args[]) throws Exception{
         //创建主题样式 ,以下代码用于解决中文乱码问题
@@ -262,7 +266,7 @@ public class BaseWord {
      * @param rows
      * @return
      */
-    public static MiniTableRenderData createTableS(List<CreditReportModuleConf> child,List rows){
+    public static MiniTableRenderData createTableS(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         //取列值
@@ -274,10 +278,7 @@ public class BaseWord {
             String word_key = module.getStr("word_key");
             if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
             }else {
-                //此if判断适用105
-                //if(word_key!=null&&!"".equals(word_key)){
                 cols.put(column_name, temp_name + "|" + field_type);
-                //}
             }
         }
         //取数据
@@ -288,13 +289,17 @@ public class BaseWord {
                 String fieldType = strs.length == 2 ? strs[1] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "N/A";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,sysLanguage) : "N/A";
                 } else {
                     value = !"".equals(value) ? value : "N/A";
                 }
                 Style style = new Style();
                 style.setColor("000000");
                 style.setFontFamily("宋体");
+                //102红印用14号字体
+                if("15".equals(reportType)){
+                    style.setFontSize(14);
+                }
                 rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
             }
         }
@@ -306,9 +311,10 @@ public class BaseWord {
      * 生成表格 - 横表
      * @param child
      * @param rows
+     * @param sysLanguage
      * @return
      */
-    public static MiniTableRenderData createTableH(List<CreditReportModuleConf> child,List rows){
+    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage){
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         List<LinkedHashMap<String,String>> datas = new ArrayList<LinkedHashMap<String,String>>();
@@ -330,17 +336,18 @@ public class BaseWord {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for(String column : cols.keySet()) {
                 String[] strs = cols.get(column).split("\\|");
-                String fieldType = strs.length == 2 ? strs[1] : "";
+                String fieldType = strs.length > 1 ? strs[1] : "";
                 Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,sysLanguage) : "";
                 } else if("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 } else {
                     value = !"".equals(value) ? value : "";
                 }
-                row.put(strs.length == 2 ? strs[0] : "", value);
+                row.put(strs.length > 0 ? strs[0] : "", value);
+                //row.put(column, value);
             }
             datas.add(row);
         }
@@ -349,24 +356,22 @@ public class BaseWord {
         tableStyle.setAlign(STJc.CENTER);
         Object[] colSize = cols.keySet().toArray();
         //组装表格-表头
-        TextRenderData[] header = new TextRenderData[colSize.length];
-        int i=0;
-        for(String column : cols.keySet()) {
-            String value = cols.get(column).split("\\|")[0];
-            Style style = new Style();
-            style.setBold(true);
-            header[i] = new TextRenderData(value,style);
-            i++;
-        }
-        //表头居中
-        RowRenderData rowRenderData = RowRenderData.build(header);
-        rowRenderData.setStyle(tableStyle);
+        RowRenderData rowRenderData = tableHeaderH(cols, reportType);
         //组装表格-数据
         for(LinkedHashMap<String,String> m:datas) {
             int j=0;
-            String[] row = new String[colSize.length];
+            TextRenderData[] row = new TextRenderData[colSize.length];
             for(String column : cols.keySet()) {
-                row[j] = m.get(cols.get(column).split("\\|")[0]);
+                String value = m.get(cols.get(column).split("\\|")[0]);
+                Style style = new Style();
+                if(ReportTypeCons.ROC_HY.equals(reportType)){
+                    style.setFontFamily("宋体");
+                    style.setFontSize(14);
+                }else if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                    //style.setFontFamily("新细明体（PMingLiU）");
+                    style.setFontSize(11);
+                }
+                row[j] = new TextRenderData(value,style);
                 j++;
             }
             RowRenderData rowData = RowRenderData.build(row);
@@ -377,14 +382,48 @@ public class BaseWord {
     }
 
     /**
+     * 生成表头
+     * @param cols
+     * @param reportType
+     */
+    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType){
+        RowRenderData rowRenderData = null;
+        TableStyle tableStyle = new TableStyle();
+        Object[] colSize = cols.keySet().toArray();
+        //102红印的不显示表头，其他显示表头
+        if(!ReportTypeCons.ROC_HY.equals(reportType)){
+            TextRenderData[] header = new TextRenderData[colSize.length];
+            int i=0;
+            for(String column : cols.keySet()) {
+                String value = cols.get(column).split("\\|")[0];
+                Style style = new Style();
+                style.setBold(true);
+                //102下划线
+                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                    style.setFontFamily("新细明体（PMingLiU）");
+                    style.setUnderLine(true);
+                    style.setFontSize(11);
+                }
+                header[i] = new TextRenderData(value,style);
+                i++;
+            }
+            //表头居中
+            rowRenderData = RowRenderData.build(header);
+            rowRenderData.setStyle(tableStyle);
+        }
+        return rowRenderData;
+    }
+
+    /**
      * 生成表格 - 自定义
      * 按照字段匹配
      * @param child
      * @param rows
      * @param map
+     * @param sysLanguage
      * @return
      */
-    public static void createTableZ(List<CreditReportModuleConf> child,List rows,HashMap<String, Object> map){
+    public static void createTableZ(List<CreditReportModuleConf> child,List rows,HashMap<String, Object> map,String reportType,String sysLanguage){
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         //取列值
         for(int i=0;i< child.size();i++) {
@@ -392,20 +431,34 @@ public class BaseWord {
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
             String field_type = module.getStr("field_type");
+            String get_source = module.getStr("get_source");
             if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
             }else {
-                cols.put(column_name, temp_name + "|" + field_type);
+                cols.put(column_name, temp_name + "|" + field_type+"|"+get_source);
             }
         }
         //取数据
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
+                if("year_result".equals(column)){
+                    System.out.println(1);
+                }
                 String[] strs = cols.get(column).split("\\|");
-                String fieldType = strs.length == 2 ? strs[1] : "";
+                String fieldType = strs.length == 3 ? strs[1] : "";
+                String getSource = strs.length == 3 ? strs[2] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value) : "N/A";
+                    //102chiness 等级状态
+                    //System.out.println(ReportTypeCons.ROC_ZH.equals(reportType));
+                    //System.out.println("registration_status".equals(column));
+                    if(ReportTypeCons.ROC_ZH.equals(reportType) && ("registration_status".equals(column) || "year_result".equals(column))){
+                        Map<String,String> params = parseUrl(getSource);
+                        String type = params.get("type");
+                        value = !"".equals(value) ? template.getSysDictDetailStringWord(type,value) : "N/A";
+                    }else{
+                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, sysLanguage) : "N/A";
+                    }
                 } else {
                     value = !"".equals(value) ? value : "N/A";
                 }
@@ -413,6 +466,8 @@ public class BaseWord {
             }
         }
     }
+
+
 
     /**
      * 将模块的数据，整理成类似table格式

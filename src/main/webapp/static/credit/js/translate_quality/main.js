@@ -342,10 +342,10 @@ let ReportConfig = {
                             }
                             let obid = temp.rows[0].id;
                             $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid", obid)
-                            let overall_rating = temp.rows[0].overall_rating;
                             let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-
-                            $("input:radio[name=" + name + "][value=" + overall_rating + "]").attr("checked", true);
+							 let val =  temp.rows[0][name];
+							 
+							 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
                             return
                         }
                         if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydj' && temp.rows[0]) {
@@ -420,12 +420,10 @@ let ReportConfig = {
             arr.forEach((item, index) => {
                 if ($(item).siblings(".radio-con").length !== 0) {
                     //radio类型绑数
-                    let obid = temp.rows[0].id;
-                    $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid", obid)
-                    let overall_rating = tempData.overall_rating;
                     let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-
-                    $("input:radio[name=" + name + "][value=" + overall_rating + "]").attr("checked", true);
+    				 let rightName = name.replace("En",'')
+					 let val =  tempData[rightName];
+					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);    
                     return
                 }
                 if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
@@ -436,16 +434,12 @@ let ReportConfig = {
                 }
                 if ($(item).next().hasClass("textarea-module")) {
                     //无标题多行文本输入框
-                    let obid = temp.rows[0].id;
-                    $(item).next().find("textarea").attr("entityid", obid)
                     let name = $(item).next().find("textarea").attr("name")
                     $(item).next().find("textarea").val(tempData[name])
                     return;
                 }
                 if (($(item).next().find("input").hasClass("float-date"))) {
                     //浮动非财务
-                    let obid = temp.rows[0].id;
-                    $(item).next().find("input").attr("entityid", obid)
                     let name = $(item).next().find("input").attr("name")
                     $(item).next().find("input").val(tempData[name])
                     return;
@@ -477,7 +471,7 @@ let ReportConfig = {
                 })
             })
             return;
-        }
+        }else if(!i){
 
 
         formIndexEn.forEach((item, index) => {
@@ -520,15 +514,14 @@ let ReportConfig = {
             arr.forEach((item, index) => {
                 if ($(item).siblings(".radio-con").length !== 0) {
                     //radio类型绑数
-                    if (temp.rows.length === 0) {
-                        return
-                    }
-                    let obid = temp.rows[0].id;
-                    $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid", obid)
-                    let overall_rating = temp.rows[0].overall_rating;
-                    let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-
-                    $("input:radio[name=" + name + "][value=" + overall_rating + "]").attr("checked", true);
+                	if(temp.rows.length === 0){return}
+    				let obid = temp.rows[0].id;
+    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
+    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+    				let rightName = name.replace("En","")
+					 let val =  temp.rows[0][rightName];
+					 
+					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
                     return
                 }
                 if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
@@ -583,7 +576,7 @@ let ReportConfig = {
             })
 
         })
-
+        }
     },
     tabChange() {
         /**tab切换事件 */
@@ -606,32 +599,111 @@ let ReportConfig = {
             return
         }
         let cw_title = []
-        let cw_contents = []
-        let cw_dom;
+    	let cw_contents = []
+    	let ds_cw_title = []
+    	let ds_cw_contents = []
+    	let cw_dom;
+    	let ds_dom;
         _this.tableTitle = []
         floatIndex.forEach((item, index) => {
             let floatParentId = this.floatTitle[index]['float_parent'];//浮动的父节点id
             let titleId;
             this.entityTitle.forEach((item, i) => {
                 if (item.id === floatParentId) {
-                    if (floatParentId !== 853) {
+                    if (_this.entityModalType[i] !== '10') {
                         //非财务模块浮动
                         let html = this.notMoneyFloatHtml[index]
                         $("#title" + i).after(html)
                         this.formIndex.push(i)
                         this.formTitle.push(this.floatTitle[index])
                     } else {
-                        //财务模块浮动
-//    					console.log(this.floatTitle[index])
-                        cw_title.push(this.floatTitle[index])
-                        cw_contents.push(this.floatContents[index])
-                        cw_dom = $("#titleCw" + i)
+                    	if(_this.entityTitle[i]["get_source"].includes("type=3")){
+    						//大数财务模块浮动
+    						ds_cw_title.push(this.floatTitle[index])
+    						ds_cw_contents.push(this.floatContents[index])
+    						ds_dom = $("#titleDs"+i)
+    					}else {
+    						//财务模块浮动
+    						cw_title.push(this.floatTitle[index])
+    						cw_contents.push(this.floatContents[index])
+    						cw_dom = $("#titleCw"+i)
+    					}
                     }
 
                 }
             })
         })
 //    	console.log(cw_title,cw_contents)
+    	//大数财务逻辑
+    	let ds_top_html = ''
+		let ds_table_html = ''
+		if(ds_cw_title.length!==0){
+			ds_cw_title.forEach((item,index)=>{
+				//初始化大数财务模块
+				let this_content = ds_cw_contents[index];
+	    		let moneySource = ds_cw_contents[0][0].get_source;
+	    		let moneyStr = ''
+				let unitSource = ds_cw_contents[0][1].get_source;
+	    		let unitStr = ''
+				$.ajax({
+					url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
+					async:false,
+					type:'post',
+					success:(data)=>{
+						moneyStr = data.selectStr
+					}
+				})
+				$.ajax({
+					url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
+					async:false,
+					type:'post',
+					success:(data)=>{
+						unitStr = data.selectStr
+					}
+				})
+				if(item.sort === 1) {
+					ds_top_html += `<div class="top-html mx-4">
+						<div class="d-flex justify-content-between align-items-center mt-4">
+							<!-- 单位 -->
+							<div class="ds-unit" style="width:100%">
+								<div class="form-inline my-3" >
+									<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[0].temp_name}</label>
+									<select class="form-control mr-3" id="${this_content[0].column_name}ds" style="width:10rem" name=${this_content[0].column_name}>${moneyStr}</select>
+									<select class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${unitStr}</select>
+								</div>
+							</div>
+						</div>
+						<div class="d-flex justify-content-between align-items-center mt-4">
+							<!-- 日期 -->
+							<div class="ds-date form-inline" style="width:100%">
+								<input class="form-control  my-3" id="${this_content[2].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[2].column_name}  placeholder=${this_content[2].place_hold} />
+								<input class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
+							</div>
+						</div>`
+				}else {
+					ds_table_html += `<div class="table-content1 ds-table" style="background:#fff">
+										<table id="tableDs"
+											data-toggle="table"
+											style="position: relative"
+										>
+										</table>
+									</div>`
+				}
+			})
+			if(ds_dom){
+				ds_dom.after(ds_table_html)
+				ds_dom.after(ds_top_html)
+			}
+	    	setTimeout(()=>{
+	    		if(ds_cw_title[0]){
+	    			InitObjTransQua.bindDsConfig(ds_cw_title[0]['get_source'],_this.rows)
+	    			InitObjTransQua.initDsTable(ds_cw_contents[1],_this.dsGetSource,_this.dsAlterSource,_this.rows)
+	    		}
+	    	},0)
+		}
+    	
+    	//财务逻辑
+    	if(cw_title.length === 0){return}
         this.cwConfigAlterSource = cw_title[0]['alter_source'];
         this.cwConfigGetSource = cw_title[0]['get_source'];
         let cw_top_html = ''
@@ -840,6 +912,7 @@ let ReportConfig = {
     initContent() {
         /**初始化内容 */
         this.entityTitle = [] //存放小模块的实体title
+        this.entityModalType = [] //存放小模块的实体类型
         this.idArr = []    //存放table类型模块对应的index
         this.idArrEn = []    //存放table类型模块对应的index
         this.contentsArr = [] //存放table类型模块的contents
@@ -858,6 +931,8 @@ let ReportConfig = {
         this.cwGetSource = '' //存放获取财务url
         this.cwAlterSource = '' //存放修改财务url
         this.cwDeleteSource = '' //删除财务url
+    	this.dsGetSource = '' //存放大数获取财务url
+		this.dsAlterSource = '' //存放大数修改财务url
         this.saveStatusUrl = ''
         this.submitStatusUrl = ''
         let row = localStorage.getItem("row");
@@ -949,6 +1024,7 @@ let ReportConfig = {
                      * 循环模块
                      */
                     _this.entityTitle.push(item.title)
+                    _this.entityModalType.push(item.smallModileType)
                     let smallModileType = item.smallModileType
                     if(item.title.is_merger_next === '0'){
                 		if(item.title.temp_name === '行业分析' || item.title.temp_name === 'industry_analysis'){
@@ -962,10 +1038,17 @@ let ReportConfig = {
                 			}
                 		}else if(smallModileType === '10'){
                 			//财务模块
-                			_this.cwGetSource = item.title.get_source;
-                			_this.cwAlterSource = item.title.alter_source;
-                			_this.cwDeleteSource = item.title.remove_source;
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                			if(item["title"]["get_source"].includes("type=3")){
+                				//大数
+                				_this.dsGetSource = item.title.get_source;
+                				_this.dsAlterSource = item.title.alter_source;
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3 gjds"><a class="l-title dsModal" name="anchor${item.title.id}" id="titleDs${index}">${item.title.temp_name}</a>`
+                			}else {
+                				_this.cwGetSource = item.title.get_source;
+                				_this.cwAlterSource = item.title.alter_source;
+                				_this.cwDeleteSource = item.title.remove_source;
+                				contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                			}
                 		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
                 			contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 		}
@@ -1545,7 +1628,7 @@ let ReportConfig = {
 				                        	<div class="radio-box">`
                             strItem.forEach((item, index) => {
                                 contentHtml += ` <div class="form-check form-check-inline mr-5">
-				                                <input disabled="disabled" class="form-check-input" type="radio" name=${this_item.contents[0].column_name} id="inlineRadio${index}" value=${item.split("-")[0]}>
+				                                <input disabled="disabled" class="form-check-input" type="radio" name="${this_item.contents[0].column_name}En" id="inlineRadio${index}" value=${item.split("-")[0]}>
 				                                <label disabled="disabled" class="form-check-label mx-0" for="inlineRadio${index}">${item.split("-")[1]}</label>
 				                            </div>`
                             })
@@ -1576,7 +1659,7 @@ let ReportConfig = {
                     contentHtml += `</div>`
                 })
 
-                // $(".position-fixed").html(bottomBtn)
+                 $(".position-fixed").html(bottomBtn)
                 $(".main-content").html(contentHtml).append(`<div class="module-wrap bg-f company-info mb-4">
                     <div class="l-title">质检评分</div>${type23_html}</div></div`);
                 $('.type23-content').find("[for=grade]").text('扣分：')
@@ -1613,7 +1696,7 @@ let ReportConfig = {
                     },1500);
                     Public.message('success', '保存成功！')
                 });
-                $("#submit").click(function () {
+                $("#commit").click(function () {
                     $("#save").trigger('click', 'submit');
                 });
 
@@ -1914,3 +1997,15 @@ let ReportConfig = {
 };
 
 ReportConfig.init();
+$('.return_back').on('click',function () {
+    layer.confirm('是否保存已录入信息？', {
+        btn: ['保存','取消'] //按钮
+    }, function(){
+        $('#save').trigger('click')
+
+        location.reload();
+    }, function(){
+        location.reload();
+    });
+
+})

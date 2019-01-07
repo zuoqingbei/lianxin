@@ -97,9 +97,9 @@ public class BusinessZh {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(child, rows);
+                    //table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = BaseWord.createTableH(child, rows);
+                    //table = BaseWord.createTableH(child, rows);
                 }
                 map.put(key, table);
             }
@@ -312,7 +312,7 @@ public class BusinessZh {
 
     /**
      * 财务模板
-     * @param reportType
+     * @param financeType
      * @param companyId
      * @param sysLanguage
      * @param financialConfId
@@ -418,7 +418,7 @@ public class BusinessZh {
         System.out.println(profSumup == null);
 
         StringBuffer str = new StringBuffer();
-        str.append("盈利能力：" + ("".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
+        /*str.append("盈利能力：" + ("".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
@@ -432,7 +432,7 @@ public class BusinessZh {
         str.append("\n");
         str.append("目标公司的总体财务状况：" + ("".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup) : ""));
         str.append("\n");
-        str.append(overDetail);
+        str.append(overDetail);*/
         return str.toString();
     }
 

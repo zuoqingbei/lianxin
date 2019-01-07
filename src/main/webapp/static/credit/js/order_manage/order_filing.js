@@ -403,7 +403,7 @@ let Filing = {
           let _this = this
         
           $table.bootstrapTable({
-              height: $(".table-content").height()*0.95,
+              height: $(".table-content").height()*0.93,
               clickToSelect:true,
               columns: [
 	  {
@@ -785,10 +785,11 @@ let Filing = {
             /**操作按钮格式化 */
             return '<div><a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理分配</a>' +
                 '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
-                '<a href="javascript:;" class="detail" style="margin-left:.5rem">上传附件</a></div>'+
-                '<div style="margin-top:.5rem"><a href="javascript:;" class="order-hs" data-toggle="modal" data-target="#exampleModalCenter2">订单核实</a>' +
-                '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
-                '<a href="javascript:;" class="order-cancel" style="margin-left:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a></div>'
+                '<a href="javascript:;" class="detail" style="margin-left:.5rem">上传附件</a></div>'
+                // +
+                // '<div style="margin-top:.5rem"><a href="javascript:;" class="order-hs" data-toggle="modal" data-target="#exampleModalCenter4">确认信息</a>'
+                // '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
+                // '<a href="javascript:;" class="order-cancel" style="margin-left:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a></div>'
           }             
 }
 Filing.init();

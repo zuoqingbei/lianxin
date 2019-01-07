@@ -1,13 +1,15 @@
 let Verify = {
     init(){
         /**初始化函数*** */
+    	this.num="";
+    	this.numarr=[];
     	this.pageNumber = "";
     	this.pageSize = "";
     	this.sortName = "";
     	this.sortOrder = "";
         this.initTable();
         this.popperFilter();
-        this.modalSubmit();
+        this.modalSubmit(this.numarr);
         //this.toOrderDetail();
         this.fileEvent();
     },
@@ -97,13 +99,44 @@ let Verify = {
       })
 
     },
-    modalSubmit(){
+    modalSubmit(numarr){
         /**模态框提交事件 */
     	let that = this
     	console.log("模态框提交事件");
+    	$("#exampleModalCenter3").click(function(){
+        	let ids=that.numarr;
+        	console.log(ids+"=====");
+        	 if(numarr.length===0){
+     		 	Public.message("error","请选择需要撤销的订单");
+     		 	$(".modal-header .close").trigger("click");
+     		 }else{
+        	 $.ajax({
+        			type:"post",
+        			url:"/credit/front/home/cheXiao?ids="+ids,
+        			data:{
+        				"revoke_reason":$("#revoke_reason").val(),
+        				},
+        			 dataType:"json",
+        		        success: function (data) {
+        		        	if(data.statusCode===1){
+        	               	Public.message("success",data.message);
+                            //提交成功关闭模态窗
+                          	$(".modal-header .close").trigger("click");
+          				    $("#table").bootstrapTable("refresh");
+        	               }else{
+        	               	Public.message("error",data.message);
+        	                $("#exampleModalCenter2 .close").trigger("click")
+        	                loadtable();
+        	               }
+        		        }
+        		        
+        		});
+     		 }
+        	 })
+    	
         $("#modal_submit").click(function(){
         	console.log("点击提交");
-        	$("#status").val("292");
+        	$("#status").val("816");
         	$(".tableValue").ajaxSubmit({
         		success:function(data){
         			console.log("状态为成功,message:"+data.message);
@@ -243,8 +276,14 @@ let Verify = {
   
 
         $table.bootstrapTable({
-            height: $(".table-content").height()*0.98,
+            height: $(".table-content").height()*0.93,
             columns: [
+{
+    checkbox: true,
+    visible: true,                  //是否显示复选框
+    filed:'state',
+    width: '18rem',
+}, 
 {
     title: '订单号',
     field: 'num',
@@ -463,7 +502,7 @@ let Verify = {
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-            fixedColumns: true,
+            fixedColumns: false,
             fixedNumber: 1,
             queryParamsType:'',
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
@@ -480,7 +519,29 @@ let Verify = {
             	  sortOrder: params.sortOrder,
             	  searchType: "-3"
               };  
-          },  
+          },
+          onCheck:(row)=>{
+          	console.log(row)
+          	this.numarr.push(row.id)
+           //  this.numarr.split().join(",");
+          	console.log(this.numarr);
+          },
+          onUncheck:(rows)=>{
+          	let index =this.numarr.indexOf(rows.id)
+              this.numarr.splice(index,1);
+          	console.log(this.numarr);
+          },onCheckAll:(rows)=>{
+         	 for(var i=0;i<rows.length;i++){
+         		this.numarr.push(rows[i].id) 
+         		console.log(this.numarr);
+         	 }
+          },onUncheckAll:(rows)=>{
+	           	 for(var i=0;i<rows.length;i++){
+	           		let index =this.numarr.indexOf(rows[i].id)
+	                this.numarr.splice(index,1); 
+	           		console.log(this.numarr);
+	           	 }
+          }
           });
           // sometimes footer render error.
           setTimeout(() => {

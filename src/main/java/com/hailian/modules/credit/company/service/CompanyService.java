@@ -54,7 +54,6 @@ public class CompanyService {
 
 		return CompanyModel.dao.updateDelFlagById(id);
 	}
-
 	/**
 	 * 
 	 * @time   2018年9月11日 上午9:58:27
@@ -291,8 +290,12 @@ public class CompanyService {
 			date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(StartDate);
 			StartDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			try {
+				date = new SimpleDateFormat("yyyy-MM-dd").parse(StartDate);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		
 		return StartDate;
@@ -495,7 +498,7 @@ public class CompanyService {
 		
 	}
 	public static void main(String[] args) {
-		String date="2018-11-11 11:11:11";
+		String date="2018-11-11";
 		System.out.println(dateFormat(date));
 	}
 }

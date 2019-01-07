@@ -893,12 +893,18 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	/**
      * 将id转化为字典表中对应的字符串
      * @param id
+     * @param sysLanguage
      */
-    public static String dictIdToString(String id) {
+    public static String dictIdToString(String id,String sysLanguage) {
         Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
         SysDictDetail sysDict = cache.get(Integer.parseInt(id));
         if(sysDict!=null){
-            return sysDict.get("detail_name") + "";
+            //英文
+            if("613".equals(sysLanguage)){
+                return sysDict.get("detail_name_en") + "";
+            }else{
+                return sysDict.get("detail_name") + "";
+            }
         }
         return "";
     }

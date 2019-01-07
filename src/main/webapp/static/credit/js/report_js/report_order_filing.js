@@ -298,7 +298,7 @@ let Filing = {
           let _this = this
         
           $table.bootstrapTable({
-              height: $(".table-content").height()*0.98,
+              height: $(".table-content").height()*0.95,
               clickToSelect:true,
               maintainSelected:true,
               columns: [
@@ -546,6 +546,16 @@ let Filing = {
 	                this.numarr.splice(index,1); 
 	           		console.log(this.numarr);
 	           	 }
+            },
+            onLoadSuccess:(data)=>{
+            	console.log(data)
+            	data.rows.forEach((item,index)=>{
+            		if(item.status === '295'||item.status === '296') {
+//            			console.log(index,$table.find("tr").eq(index))
+            			$table.find("tr").eq(index+1).find(".dl").addClass("disable")
+            			$table.find("tr").eq(index+1).find("input[type='checkbox']").attr("disabled","disabled")
+            		}
+            	})
             }
             });
             // sometimes footer render error.

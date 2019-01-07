@@ -79,12 +79,12 @@ public class HomeController extends BaseProjectController {
 		setAttr("country", country);
 		List<CreditCustomInfo> customerId=	CreditCustomInfo.dao.find("select * from credit_custom_info");
 	    setAttr("customer", customerId);
-	  //订单核实数量
-	  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500'").size();
+	        //订单核实数量
+	  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500' and del_flag='0'").size();
 	  		//订单查档数量
-	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
+	  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295' and del_flag='0' ").size();
 	  		//订单信息质检数量
-	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308')").size();
+	  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308') and del_flag='0'").size();
 	  		setAttr("orderhs", orderhs);
 	  		setAttr("ordercd", ordercd);
 	  		setAttr("orderzj", orderzj1);	
@@ -288,12 +288,12 @@ public class HomeController extends BaseProjectController {
 		SysUser user= SysUser.dao.getUser(this);
 		List<CountryModel> country=OrderManagerService.service.getCountrys("");
 		List<CreditCustomInfo> customs=OrderManagerService.service.getCreater();
-		//订单核实数量
-		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500'").size();
-		//订单查档数量
-		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295'").size();
-		//订单信息质检数量
-		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('298','303','308')").size();
+		   //订单核实数量
+  		int orderhs=CreditOrderInfo.dao.find("select * from credit_order_info where status='500' and del_flag='0'").size();
+  		//订单查档数量
+  		int ordercd=CreditOrderInfo.dao.find("select * from credit_order_info where status='295' and del_flag='0' ").size();
+  		//订单信息质检数量
+  		int orderzj1=CreditOrderInfo.dao.find("select * from credit_order_info where status in('294','303','308') and del_flag='0'").size();
         List<CreditCompanyInfo> companys=OrderManagerService.service.getCompany();
 		
 		//分析质检
@@ -396,6 +396,7 @@ public class HomeController extends BaseProjectController {
 	    String year=String.valueOf(calendar.get(Calendar.YEAR));
 	    String month=String.valueOf(calendar.get(Calendar.MONTH)+1);
 		CreditOrderInfo model = getModelByAttr(CreditOrderInfo.class);
+		Object modelid=model.get("id");
 		toString(model,380);
 		if((String)model.get("continent")==null) {
 			renderJson(new ResultType(0,"缺失 "+"地区参数"+" ,订单创建失败!"));
@@ -429,7 +430,9 @@ public class HomeController extends BaseProjectController {
 			Db.update("update credit_country set `scale`=`scale`+1 where id="+countryId);
 		}
 		toString(model,405);
-		model.set("num", num);
+		if(model.get("id")==null){
+			model.set("num", num);
+		}
 		model.set("receiver_date", date);
 		model.set("year", year);
 		model.set("month", month);
@@ -494,13 +497,14 @@ public class HomeController extends BaseProjectController {
 		
 		//非快速递交时创建报告
 		if(is_fastsubmmit.equals("-1")){
-		int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
-		
-		CreditOrderInfo order = new CreditOrderInfo();
-		order.set("company_id",companInfoId);
-		order.set("id",id);
-		order.update();
-		model.set("company_id",companInfoId);
+			//System.out.println(model.get("id"));
+			if(modelid==null){
+				int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
+				CreditOrderInfo order = new CreditOrderInfo();
+				order.set("company_id",companInfoId);
+				order.set("id",id);
+				order.update();
+			}
 		}
 		
 		CreditOperationLog.dao.addOneEntry(userid, model, "","/credit/front/home/saveOrder");//操作日志记录
@@ -677,8 +681,21 @@ public class HomeController extends BaseProjectController {
 	 */
 	public void cheXiao() {
 		String id=getPara("id");
+		String  ids = getPara("ids");//批量撤销ids
 		String revoke_reason=getPara("revoke_reason");
 		try {
+			if(StringUtils.isNotBlank(ids)){
+	      String id2 []=ids.split(",");
+	      for (String id3 : id2) {
+	    	//根据id查找订单
+	  		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id3);
+	  		//更新订单
+	  		coi.set("status","313");
+	  		coi.set("revoke_reason", revoke_reason);
+	  		//保存订单
+	  		coi.update();
+		   }
+	    }else{
 		//根据id查找订单
 		CreditOrderInfo coi=CreditOrderInfo.dao.findById(id);
 		//更新订单
@@ -686,6 +703,7 @@ public class HomeController extends BaseProjectController {
 		coi.set("revoke_reason", revoke_reason);
 		//保存订单
 		coi.update();
+	    }
 		ResultType resultType=new ResultType(1,"操作成功");
 		renderJson(resultType);
 		}catch(Exception e) {

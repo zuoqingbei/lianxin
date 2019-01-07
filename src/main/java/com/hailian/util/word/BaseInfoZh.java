@@ -5,6 +5,7 @@ import com.deepoove.poi.data.PictureRenderData;
 import com.deepoove.poi.data.RowRenderData;
 import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.data.style.Style;
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.*;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
@@ -59,9 +60,11 @@ public class BaseInfoZh {
     /**
      * 报告生成
      * @param order  订单
+     * @param reportType 报告类型
+     * @param sysLanguage 报告内容语言
      * @param userid 当前登录人
      */
-    public static void reportTable(CreditOrderInfo order,String reportType, Integer userid) {
+    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -74,15 +77,20 @@ public class BaseInfoZh {
         //报告名称
         String reportName = reportTypeModel.getStr("name");
 
+
+
         //获取订单信息
-        String companyId = order.getStr("company_id");
         String customId = order.getStr("custom_id");
         String orderId = order.getInt("id") + "";
 
         //获取公司信息
-        CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findById(companyId);
-        String sysLanguage = companyInfo.getInt("sys_language") + "";
+        String sql = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
+        CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
+        String companyId = companyInfo.getInt("id")+"";
+        //String sysLanguage = companyInfo.getInt("sys_language") + "";
         String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
+        //报告速度
+        map.put("speed",order.getStr("speedName"));
         //订单公司名称
         map.put("company", companyInfo.getStr("name_en"));
         //联信编码
@@ -93,7 +101,7 @@ public class BaseInfoZh {
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
         for (CreditReportModuleConf crmc : crmcs) {
             //找到当前父节点下的子节点  type=2表示详情
-            List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "2");
+            List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "4");
             //String tempName = crmc.getStr("temp_name");
             String source = crmc.getStr("get_source");
             String confId = crmc.getInt("id") + "";
@@ -121,11 +129,11 @@ public class BaseInfoZh {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(child, rows);
+                    table = BaseWord.createTableS(reportType,child, rows,sysLanguage);
                 } else if ("h".equals(tableType)) {
-                    table = BaseWord.createTableH(child, rows);
+                    table = BaseWord.createTableH(reportType,child, rows,sysLanguage);
                 }else if("z".equals(tableType)){
-                    BaseWord.createTableZ(child,rows,map);
+                    BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
                 map.put(key, table);
             }
@@ -208,12 +216,37 @@ public class BaseInfoZh {
                 for (int i = 0; i < child.size(); i++) {
                     CreditReportModuleConf module = child.get(i);
                     String column_name = module.getStr("column_name");
+                    String get_source = module.getStr("get_source");
+                    cols.put(column_name, get_source);
+                }
+                /*for (int i = 0; i < child.size(); i++) {
+                    CreditReportModuleConf module = child.get(i);
+                    String column_name = module.getStr("column_name");
                     String temp_name = module.getStr("temp_name");
                     String field_type = module.getStr("field_type");
                     cols.put(column_name, temp_name + "|" + field_type);
-                }
+                }*/
                 //取数据
-                if (rows!=null && rows.size()>0) {
+                for (int i = 0; i < rows.size(); i++) {
+                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
+                    for (String column : cols.keySet()) {
+                        //取值
+                        String value = model.get(column) != null ? model.get(column) + "" : "";
+                        String get_source = cols.get(column);
+                        String[] items = get_source.split("&");
+                        StringBuffer html = new StringBuffer();
+                        for(int j=0;j<items.length;j++) {
+                            String[] item = items[j].split("-");
+                            if (value.equals(item[0])) {
+                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            } else {
+                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            }
+                        }
+                        map.put(column, html.toString());
+                    }
+                }
+                /*if (rows!=null && rows.size()>0) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     //取单选数据
                     String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
@@ -222,14 +255,22 @@ public class BaseInfoZh {
                     StringBuffer html = new StringBuffer();
                     for (int j = 0; j < items.length; j++) {
                         String[] item = items[j].split("-");
-                        if (item[0].equals(value)) {
-                            html.append("(√)" + item[1] + " ");
-                        } else {
-                            html.append("( )" + item[1] + " ");
+                        if(ReportTypeCons.ROC_ZH.equals(reportType)){
+                            if (value.equals(item[0])) {
+                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            } else {
+                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
+                            }
+                        }else{
+                            if (item[0].equals(value)) {
+                                html.append("(√)" + item[1] + " ");
+                            } else {
+                                html.append("( )" + item[1] + " ");
+                            }
                         }
                     }
                     map.put("overall_rating", html.toString());
-                }
+                }*/
             }
 
             //图形表
@@ -266,6 +307,9 @@ public class BaseInfoZh {
 
             //行业详情-柱图/线图
             if("10392".equals(tableId)){
+                //取行业情况
+                CreditCompanyIndustryInfo industryInfo = CreditCompanyIndustryInfo.dao.findFirst("select * from credit_company_industry_info t where t.sys_language=? and t.company_id=? and t.del_flag=0",sysLanguage,companyId);
+                String title = industryInfo.getStr("chart_title");
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
                 List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
                 //准备图形数据
@@ -292,7 +336,7 @@ public class BaseInfoZh {
                     barDataSet.addValue(value1, "y1", n);
                     lineDataSet.addValue(value2,"y2",n);
                 }
-                BaseWord.createBarChart("",barDataSet,lineDataSet, _prePath + "bar.jpg");
+                BaseWord.createBarChart(title,barDataSet,lineDataSet, _prePath + "bar.jpg");
                 map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
             }
         }
@@ -319,7 +363,7 @@ public class BaseInfoZh {
                 excelPath = financialExcel(financeType+"",finanId,_prePath,orderId,userid,begin,end);
             }
             //财务-评价
-            map.put("financial_eval", financialEval(statementsConf));
+            map.put("financial_eval", financialEval(statementsConf,sysLanguage));
             
         }
 
@@ -381,6 +425,8 @@ public class BaseInfoZh {
         if(customerId!=null) {
             try {
                 String email = customInfo.getStr("email");
+                System.out.println("email==================:"+email);
+                //email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -575,9 +621,10 @@ public class BaseInfoZh {
     /**
      * 财务模块-评价
      * @param statementsConf
+     * @param sysLanguage
      * @return
      */
-    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf) {
+    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf,String sysLanguage) {
         ReportInfoGetDataController reportInfoGetDataController = new ReportInfoGetDataController();
         String profSumup = getIntToString(statementsConf.getInt("profitablity_sumup"));
         String profDetail = statementsConf.getStr("profitablity_detail");
@@ -589,19 +636,19 @@ public class BaseInfoZh {
         String overDetail = statementsConf.getStr("overall_financial_condition_detail");
 
         StringBuffer str = new StringBuffer();
-        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
+        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
-        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup) : ""));
+        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(liquDetail);
         str.append("\n");
-        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup) : ""));
+        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(leverDetail);
         str.append("\n");
-        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup) : ""));
+        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(overDetail);
         return str.toString();

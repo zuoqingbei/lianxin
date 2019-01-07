@@ -3,6 +3,7 @@ let InitObjAnalyze = {
 	cwAlterSource:'',
 	cwType:'',
 	tableColumnNameArr:[],
+	tableColumnNameArrDs:[],
 	saveCwConfigInfo(url,rows){
 		/**
 		 * 保存财务配置信息
@@ -60,6 +61,43 @@ let InitObjAnalyze = {
 					console.log(data)
 				}
 			})
+		})
+	},
+	bindDsConfig(dsConfigGetSource,rows){
+		/**
+		 * 绑定大数财务模块表格配置信息
+		 */
+		let paramObj = {}
+		let _this = this
+		paramObj["company_id"] = rows["company_id"]
+		paramObj["report_type"] = rows["report_type"]
+		if(dsConfigGetSource.split("*")[1]) {
+			let tempParam = dsConfigGetSource.split("*")[1].split("$");//必要参数数组
+			tempParam.forEach((item,index)=>{
+				paramObj[item] = rows[item]
+				console.log(paramObj[item],rows[item])
+			})
+		}
+		$.ajax({
+			url:BASE_PATH + 'credit/front/ReportGetData/' + dsConfigGetSource.split("*")[0],
+			type:'post',
+			async:false,
+			data:paramObj,
+			success:(data)=>{
+				console.log(data)
+				$(".gjds").attr("dsConfigid",data["rows"][0]["id"])
+				data.rows.forEach((item,index)=>{
+					$(".ds-date").each((index,ele)=>{
+						let name = $(ele).attr("name")
+						$(ele).val(item[name])
+					})
+					$(".ds-unit").find("select").each((index,ele)=>{
+						let name = $(ele).attr("name")
+						let val = item[name]
+						$(ele).find("option[value="+val+"]").attr("selected","selected")
+					})
+				})
+			}
 		})
 	},
 	bindCwConfig(cwConfigGetSource,radioName,rows,tableTitles){
@@ -355,7 +393,86 @@ let InitObjAnalyze = {
 			})
 		})
 	},
-	
+	initDsTable(contents,getSource,alterSource,rows){
+		//大数财务模块表格初始化
+		/**
+		 * contents :表格的表头信息
+		 * getSource:财务getsource
+		 * alterSource:财务alterSource
+		 */
+		let returnData;
+		let id = $(".gjds").attr("dsconfigid")
+		let _this = this
+		let symbol =  getSource.includes("?")?'&':'?'
+		$.ajax({
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + symbol + 'ficConf_id='+id+'&report_type='+rows["report_type"],
+			type:'post',
+			async:false,
+			success:(data)=>{
+				returnData = data
+			}
+		})
+		let tempRows =  []
+		returnData['rows'].forEach((item,index)=>{ 
+			item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+			item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+			tempRows.push(item)
+		})
+		console.log(tempRows)
+		const $table = $('#tableDs');
+		$table.bootstrapTable({
+    		columns: columns(),
+    		data:tempRows,
+    		showHeader:false,
+			pagination: false, //分页
+			smartDisplay:true,
+			locales:'zh-CN',
+    	});
+		function columns(){
+    		let arr = []
+    		contents.forEach((ele,index)=>{
+    			_this.tableColumnNameArrDs.push(ele.column_name);
+    			if(ele.temp_name !== '删除'){
+    				arr.push({
+    					title:ele.temp_name,
+    					field: ele.column_name,
+    					width:(1/contents.length)*100+'%',
+    					class:'table-margin',
+    					align:'center',
+    				})
+    				
+    			}
+    		})
+    		return arr
+    	}
+		
+		$table.on("blur","input",(e)=>{
+			let entityid = $(e.target).attr("entityid")
+			let val = $(e.target).val()
+			//调用修改接口
+			let $oT_td = $(e.target).parent("td")
+			let $oT_tr = $(e.target).parents("tr")
+			let $trs = $oT_tr.children("td")
+			let td_index = $.inArray($oT_td[0],Array.from($trs))
+			let str = _this.tableColumnNameArrDs[td_index]
+			let url = BASE_PATH + 'credit/front/ReportGetData/' + alterSource;
+			let dataJson = []
+			let dataObj = {}
+			dataObj[str] = val;
+			dataObj["id"] = entityid;
+			dataJson.push(dataObj)
+			$.ajax({
+				url,
+				data:{dataJson:JSON.stringify(dataJson)},
+				type:'post',
+				success:(data)=>{
+					if(data.statusCode === 1) {
+						
+					}
+				}
+			})
+		})
+	},
 	initCwTable(tableCwIds,contents,getSource,alterSource,deleteSource,rows){
 		//财务模块表格初始化  掉了4次
 		/**
@@ -436,7 +553,7 @@ let InitObjAnalyze = {
         		let arr = []
         		contents.forEach((ele,index)=>{
         			_this.tableColumnNameArr.push(ele.column_name);
-        			if(ele.column_name !== null){
+        			if(ele.column_name !== null && ele.column_name !== ''){
         				index === 0?tempObj[ele.column_name] = '':tempObj[ele.column_name] = 0
         			}
 	    			if(ele.temp_name !== '删除'){
@@ -527,7 +644,7 @@ let InitObjAnalyze = {
 						///新增一行成功
 						console.log(data)
 						if(data.statusCode === 1) {
-							_this.refreshCwModal(tableCwIds,getSource,id)
+							_this.refreshCwModal(tableCwIds,getSource,id,rows)
 						}else {
 							Public.message("error",data.message)
 						}
@@ -563,7 +680,7 @@ let InitObjAnalyze = {
 				},
 				success:(data)=>{
 					Public.message("success","下载成功！")
-					let $eleForm = $("<form method='get' style='visibility:none'><input name='report_type' style='visibility:none' value="+rows["report_type"]+"></form>");
+					let $eleForm = $("<form method='get' style='visibility:none'><input name='report_type' style='visibility:none' value="+rows["report_type"]+"><input name="+url.split("?")[1].split("=")[0]+" style='visibility:none' value="+url.split("?")[1].split("=")[1]+"></form>");
 					$eleForm.attr("action", BASE_PATH + `credit/front/ReportGetData/` +url);
 					$(".main").append($eleForm);
 					//提交表单，实现下载
@@ -679,8 +796,9 @@ let InitObjAnalyze = {
 		 */
 //		console.log(tableCwIds)
 		let returnData;
+		let symbol =  getSource.includes("?")?'&':'?'
 		$.ajax({
-			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + '?ficConf_id='+id,
+			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + symbol + 'ficConf_id='+id,
 			type:'post',
 			async:false,
 			success:(data)=>{
@@ -757,14 +875,12 @@ let InitObjAnalyze = {
 		    	dateArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日'
 		    		});
 		    	})
 		    	let dateScopeArr = Array.from($('.date-scope-form input'))
 		    	dateScopeArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日',
 		    			range:true
 		    		});
 		    	})
@@ -772,7 +888,6 @@ let InitObjAnalyze = {
 		    	floatDateArr.forEach((item,index)=>{
 		    		laydate.render({
 		    			elem: item,
-		    			format: 'yyyy年MM月dd日'
 		    		});
 		    	})
 		    	
@@ -783,7 +898,16 @@ let InitObjAnalyze = {
 		    		modalDates.forEach((item,index)=>{
 		    			laydate.render({
 			    			elem: item,
-			    			format: 'yyyy年MM月dd日'
+			    		});
+		    		})
+		    	})
+		    	//大数时间控件
+		    	let dsDate= Array.from($(".ds-date"))
+		    	dsDate.forEach((item,index)=>{
+		    		let ds_date = Array.from($(item).children("input"))
+		    		ds_date.forEach((item,index)=>{
+		    			laydate.render({
+			    			elem: item,
 			    		});
 		    		})
 		    	})
@@ -795,7 +919,6 @@ let InitObjAnalyze = {
 			    		cw_date.forEach((item,index)=>{
 			    			laydate.render({
 				    			elem: item,
-				    			format: 'yyyy年MM月dd日',
 				    			range:true
 				    		});
 			    		})
@@ -804,7 +927,6 @@ let InitObjAnalyze = {
 		    			cw_date.forEach((item,index)=>{
 		    				laydate.render({
 		    					elem: item,
-		    					format: 'yyyy年MM月dd日',
 		    					done:function(value){
 		    						if($(item).hasClass("dateInp1")){
 		    							let dateInps1 = Array.from($(".dateInp1"))

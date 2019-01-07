@@ -49,7 +49,7 @@ public class Word105 {
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
         //国家
-        map.put("country", new ReportInfoGetDataController().dictIdToString(order.getStr("country")));
+        //map.put("country", new ReportInfoGetDataController().dictIdToString(order.getStr("country")));
 
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
@@ -83,11 +83,11 @@ public class Word105 {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(child, rows);
+                    //table = BaseWord.createTableS(child, rows);
                 } else if ("h".equals(tableType)) {
-                    table = BaseWord.createTableH(child, rows);
+                    //table = BaseWord.createTableH(child, rows);
                 }else if("z".equals(tableType)){
-                    BaseWord.createTableZ(child, rows, map);
+                    //BaseWord.createTableZ(child, rows, map,sysLanguage);
                 }
                 map.put(key, table);
             }
