@@ -957,7 +957,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			selectSql.append(" u3.realname AS analyzeUser,");
 			selectSql.append(" u4.name AS customId, ");
 			selectSql.append(" c1.id AS company_id_en, ");
-			selectSql.append(" c2.id AS company_id_fan ");
+			selectSql.append(" c2.id AS company_id_fan, ");
+			selectSql.append(" a1. price as agentPrice, ");
+			selectSql.append(" a1. proxy_time as agentTime, ");
+			selectSql.append(" s9.detail_name AS agentCurrency");
 			fromSql.append(" FROM credit_order_info c ");
 			fromSql.append(" LEFT JOIN credit_country s1 ON c.country = s1.id ");//国家
 			fromSql.append(" LEFT JOIN credit_report_type s2 ON c.report_type = s2.id ");//报告类型
@@ -973,6 +976,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" LEFT JOIN sys_dict_detail s7 ON c.status = s7.detail_id ");//订单状态
 			fromSql.append(" LEFT JOIN credit_company_info n ON c.company_id = n.id ");//公司名称
 			fromSql.append(" LEFT JOIN credit_custom_info u4 ON u4.id = c.custom_id ");//客户
+			fromSql.append(" LEFT JOIN credit_agent_price a1 ON a1.id = c.agent_priceId ");//代理价格
+			fromSql.append(" LEFT JOIN sys_dict_detail s9 ON a1.currency = s9.detail_id ");//代理币种
+
 			//以下属性为不同语言下的公司id 
 			fromSql.append(" LEFT JOIN credit_company_info c1 ON c.id = c1.order_id and c1.sys_language=613 ");//语言为英文时公司id
 			fromSql.append(" LEFT JOIN credit_company_info c2 ON c.id = c2.order_id and c2.sys_language=614 ");//语言为繁体时公司id
@@ -1004,11 +1010,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				}
 				//未代理
 				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
-					fromSql.append(" and status in('814') ");
+					fromSql.append(" and status in('291','292','293','294','297') ");
 				}
 				//全部
 				if (StringUtils.isBlank(statuCode)) {
-					fromSql.append(" and status  in('814','295','296') ");
+					fromSql.append(" and status  in('291','292','293','294','297','295','296') ");
 				}
 //				fromSql.append(" and status in('294','295') and c.country!='106' and c.country in ('61','62','92')");
 				//权限归属:报告员,分析员,翻译员
@@ -1023,7 +1029,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.infoOfReport:
 				//状态为信息录入 ,其维护在字典表中
 				//291为订单分配,293为信息录入，292客户确认 595为系统查询中(爬虫中)
-				fromSql.append(" and status in ('291','292','293','296','595','694','301','306','814','816') ");
+				fromSql.append(" and status in ('291','292','293','296','595','694','301','306','295','816') ");
 				//权限归属:报告员,分析员,翻译员
 				//authority.append(" and (c.report_user="+userId+" or c.analyze_user= "+userId+" or c.translate_user= "+userId+")");
 				break;
@@ -1042,12 +1048,12 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				}
 				//未代理
 				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
-					//fromSql.append(" and status in('291','292','293','294','297') ");
-					  fromSql.append(" and status in('814') ");
+					fromSql.append(" and status in('291','292','293','294','297') ");
+					// fromSql.append(" and status in('814') ");
 				}
 				//全部
 				if (StringUtils.isBlank(statuCode)) {
-					fromSql.append(" and status  in('814','295',296') ");
+					fromSql.append(" and status  in('291','292','293','294','297','295','296') ");
 				}
 				//权限归属:质检员
 				//authority.append(" and (c.IQC= "+userId+")");
@@ -1087,7 +1093,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}*/
-		if(!c.isAdmin(c.getSessionUser())){
+		if(!c.isAdmin(c.getSessionUser())&&!(searchType.equals("-7")||searchType.equals("-3"))){//国内查档质检员不受权限控制,订单核实客服不受权限控制
 			//fromSql.append(authority);
 			fromSql.append(" and (c.create_by="+userId+" or c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+" or c.translate_user= "+userId+")");
 		}
