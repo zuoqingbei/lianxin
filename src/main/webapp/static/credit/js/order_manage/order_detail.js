@@ -143,7 +143,7 @@ let OrderDetail = {
                     if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
                             let text = _this.row[$(this).data('column_name')];
-                            $(this).text(Public.textFilter(text,'null'));
+                            $(this).text(Public.textFilter(text, 'null'));
                         });
                     } else {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
@@ -154,7 +154,7 @@ let OrderDetail = {
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
-                                        $(this).text(Public.textFilter(data.rows[0][column_name],'null'));
+                                        $(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
                                     }
                                 })
                             } else {
@@ -406,22 +406,32 @@ let OrderDetail = {
                         if (!str) {
                             return ''
                         }
-                        let lastIndex = str.lastIndexOf('[')
-                        str = str.substr(0, lastIndex)
+                        let lastIndex = str.lastIndexOf('[');
+                        str = str.substr(0, lastIndex);
                         return str;
                     };
                     let data = [
-                        '人/男人/老头,小男孩',
-                        '神仙/天神',
-                        '人/男人/男子',
-                        '人/女人/老太太',
-                        '人/机器人/alpha狗',
-                        '魔鬼',
-                        '人/女人/妇女,小姑娘',
+                        '123/人/男人/老头,小男孩',
+                        '123/神仙/天神',
+                        '123/人/男人/男子',
+                        '123/人/女人/老太太',
+                        '123/人/机器人/alpha狗',
+                        '123/魔鬼',
+                        '123/人/女人/妇女,小姑娘',
                     ];
+                    let level1Str = data[0].split('/')[0];
+                    let isSameLevel1 = data.every((item, index, arr) => {
+                        return arr[0].split('/')[0] === item.split('/')[0]
+                    });
+                    if(!isSameLevel1){
+                        level1Str = ''
+                    }
                     // 逗号问题
                     let newData = [];
                     data = data.forEach(function (item) {
+                        if (isSameLevel1) {
+                            item = item.slice(item.indexOf('/') + 1);
+                        }
                         if (item.includes(',')) {
                             let arr = item.substring(item.lastIndexOf('/') + 1).split(',').forEach(function (str) {
                                 newData.push(item.substring(0, item.lastIndexOf('/') + 1) + str)
@@ -459,7 +469,7 @@ let OrderDetail = {
                 function process(obj) {
                     let i = '';
                     eval('targetObj' + getLastChildren(targetPosition)).forEach(function (node, index) {
-                        console.log(node)
+                        // console.log(node)
                         if (node.name === eval('obj' + currPosition + '.name')) {
                             targetPosition = getLastChildren(targetPosition) + '[' + index + ']';
                             i = index;
@@ -469,8 +479,8 @@ let OrderDetail = {
                         eval('targetObj' + getLastChildren(targetPosition)).push(eval('obj' + currPosition))
                         return;
                     }
-                    targetPosition += '.children[0]'
-                    currPosition += '.children[0]'
+                    targetPosition += '.children[0]';
+                    currPosition += '.children[0]';
                     if (eval('obj' + getLastChildren(currPosition))) {
                         process(obj)
                     }
@@ -486,7 +496,7 @@ let OrderDetail = {
                         series: [
                             {
                                 type: 'tree',
-                                data: [$.extend(true, {name: '所有'}, targetObj)],
+                                data: [$.extend(true, {name: level1Str || '企业组织结构'}, targetObj)],
                                 left: '2%',
                                 right: '2%',
                                 top: '8%',
@@ -574,6 +584,19 @@ let OrderDetail = {
             this.setQualitySelect();
             $(".main-header .tab_bar>li:lt(2)").hide();
         }
+        //点击返回时判断是否保存
+        $('.return_back').on('click', function () {
+            layer.confirm('是否要保存？', {
+                btn: ['保存', '取消'] //按钮
+            }, function () {
+                $('#save').trigger('click')
+
+                location.reload();
+            }, function () {
+                location.reload();
+            });
+
+        })
     },
     //财务部分
     setCwData() {
@@ -779,7 +802,7 @@ let OrderDetail = {
         $("#tabs").html(tabsHtml).on('click', 'li', function () {
             $(this).addClass('tab-active').siblings().removeClass('tab-active')
         }).children().eq(0).addClass('tab-active')
-        Public.tabFixed(".tab_bar",".main",120,90)
+        Public.tabFixed(".tab_bar", ".main", 120, 90)
     },
     // 设置头部信息
     setHeader() {
@@ -871,7 +894,7 @@ let OrderDetail = {
                                 aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
                             }
                             let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=${aHref} alt="商标"></a>` : row[columnName];
-                            $tr.append(`<td>${Public.textFilter(row[columnName],'null','-')}</td>`);// 没数据的显示 “-”
+                            $tr.append(`<td>${Public.textFilter(row[columnName], 'null', '-')}</td>`);// 没数据的显示 “-”
                         });
                         $wrap.find('tbody').append($tr);
                     });
