@@ -330,7 +330,7 @@ let OrderDetail = {
                         .reduce(function (prev, cur) {
                             return `${prev}<input class="my-2" type="radio" name="registration_change" >${cur}<br>`
                         }));
-                    $(".main .table-content").append($wrap);
+                    $wrap.append(`<div class='module-content type20-content'>${$type21_div[0].outerHTML}</div>`);
                     //绑数
                     $.get(this.getUrl(item), (data) => {
                         if (data.rows && data.rows.length > 0) {
