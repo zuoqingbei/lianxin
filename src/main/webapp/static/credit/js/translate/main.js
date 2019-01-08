@@ -82,6 +82,12 @@ let ReportConfig = {
     					}
     				})
     				$table.bootstrapTable("load",rows)
+    				$(".moneyCol").each((index,item)=>{
+    					if(!$(item).attr("data-field")){
+    						//不是表头
+    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+    					}
+    				})
     				setTimeout(() => {
 	    				if(rows.length < 1) {
 	    					$table.parents(".fixed-table-container").css("height","80px!important")
@@ -121,6 +127,14 @@ let ReportConfig = {
     				})
     				$tableEn.bootstrapTable("load",rows)
     				setTimeout(() => {
+    					console.log($tableEn.find(".moneyCol"))
+    					$tableEn.find(".moneyCol").each((index,item)=>{
+    						if(!$(item).attr("data-field")){
+    							//不是表头
+    							console.log($(item))
+    							$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+    						}
+    					})
 	    				if(rows.length < 1) {
 	    					$tableEn.parents(".fixed-table-container").css("height","80px!important")
 	    				}else if(rows.length < 4) {
@@ -140,11 +154,20 @@ let ReportConfig = {
     	let arr = []
 		a.forEach((ele,index)=>{
 			if(ele.temp_name !== '操作' && ele.temp_name !== 'Operation'){
-				arr.push({
-					title:ele.temp_name,
-					field: ele.column_name,
-					width:(1/a.length)*100+'%'
-				})
+				if(ele.field_type === 'money') {
+					arr.push({
+    					title:ele.temp_name,
+    					field: ele.column_name,
+    					class:'moneyCol',
+    					width:(1/a.length)*100+'%'
+    				})
+				}else {
+					arr.push({
+						title:ele.temp_name,
+						field: ele.column_name,
+						width:(1/a.length)*100+'%'
+					})
+				}
 				
 			}
 			if(lang === 'en' && (ele.temp_name === '操作' || ele.temp_name === 'Operation')){
@@ -183,8 +206,12 @@ let ReportConfig = {
     								//如果是select
     								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
     							}else {
-//    								console.log($("#"+id),row[anotherId])
-    								$("#"+id).val(row[anotherId])
+    								if($("#"+id).hasClass("money-checked")){
+    									$("#"+id).val(Number(row[anotherId].replace(/,/g,"")).toLocaleString('en-US'))
+    								}else {
+    									
+    									$("#"+id).val(row[anotherId])
+    								}
     							}
     						})
     					}
@@ -507,7 +534,6 @@ let ReportConfig = {
     			//实体id
     			let obid = tempData.id;
     			formArr.forEach((item,index)=>{
-//    				console.log(item)
     				let obj = tempData;
     				let id = $(item).attr("id");
     				let anotherIdArr = id.split("_")
@@ -1487,7 +1513,7 @@ let ReportConfig = {
                     				case 'money':
                     					formGroup += `<div class="form-group">
                     						<label for="" class="mb-2">${item_en.temp_name}</label>
-                    						<input type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
+                    						<input type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
                     						<p class="errorInfo">${item_en.error_msg}</p>
                     						</div>`
                     						
