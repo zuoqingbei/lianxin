@@ -47,7 +47,7 @@ let Filing = {
     		that.fileNum = 0;
     	});
       /**文件上传事件 */
-      $(".file-upload").on('change','.uploadFile .file-input',function(e){
+      $(".file-upload2").on('change','.uploadFile .file-input',function(e){
     	  that.fileNum = that.fileNum+1;
           /**如果上传成功 */
           let filename = $(this).val().replace("C:\\fakepath\\","");
@@ -77,14 +77,14 @@ let Filing = {
           }else if(filetype === 'html') {
             fileicon = '/static/credit/imgs/order/html.png'
           }
-          $(this).parent(".uploadFile").addClass("upload-over");
-          $(this).css("visibility","hidden")
-          $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-          if($(e.target).parents(".uploadFile").siblings().length>3) {
+          $(e.target).parent(".uploadFile").addClass("upload-over");
+          $(e.target).css("visibility","hidden")
+          $(e.target).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
+          console.log($(e.target).parents(".uploadFile").siblings(".uploadFile").length)
+          if($(e.target).parents(".uploadFile").siblings(".uploadFile").length>3) {
             return;
           }
-      
-          $(e.target).parents(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+          $(e.target).parents(".file-upload2").append(`<div class="uploadFile mt-3 mr-4">
                                         <input type="file" name="" id="upload_file" value="" class="file-input" />
                                         <div class="over-box">
                                           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -94,9 +94,10 @@ let Filing = {
       });
 
       /**附件删除 */
-      $(".file-upload").on('click','.uploadFile .close',function(e){
+      $(".file-upload2").on('click','.uploadFile .close',function(e){
+    	  
 	        if($(e.target).parents(".upload-over").length<6 && $(e.target).parents(".upload-over").siblings(".uploadFile.mt-3.mr-4:not(.upload-over)").length<1 ){
-	        	$(e.target).parents(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+	        	$(e.target).parents(".file-upload2").append(`<div class="uploadFile mt-3 mr-4">
 	                <input type="file" name="" id="upload_file" value="" class="file-input" />
 	                 <div class="over-box">
 		                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -112,7 +113,17 @@ let Filing = {
         /**模态框提交事件 */
     	let _this = this
         	 $("#modal_submit").click(function(){
-        		 $(".upload-over").remove();
+        		 console.log($("#exampleModalCenter .upload-over").length)
+        		 if($("#exampleModalCenter .upload-over").length === 5) {
+        			 $("#exampleModalCenter .file-upload").append(`<div class="uploadFile mt-3 mr-4">
+                             <input type="file" name="" id="upload_file" value="" class="file-input" />
+                             <div class="over-box">
+                               <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                               <p class="mt-2">上传附件</p>
+                             </div>
+                         </div>`);
+        		 }
+    			 $(".upload-over").remove();
         		 
              	$("#status").val("296");
              	$(".tableValue").ajaxSubmit( {
@@ -128,7 +139,7 @@ let Filing = {
                             $(".modal-header .close").trigger("click");
                             //回显
                            	console.log("提交成功,开始回显:");
-                           		$.ajax({
+                           		/*$.ajax({
                            			type:"post",
                                		url:BASE_PATH+"credit/front/orderProcess/listJson",
                                		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
@@ -139,7 +150,8 @@ let Filing = {
                                			 	console.log(obj);
                                			 console.log("回显成功!");
                                			 }
-                           			})
+                           			})*/
+                        	$("#table").bootstrapTable("refresh");
                         }else{
                         	 console.log("此处进入error状态");
                         	Public.message("error",data.message);
@@ -156,8 +168,9 @@ let Filing = {
                  });
                
              }),
-             $("#modal_submit_allocation").click(function(){
-            	 console.log("分配事件:"+BASE_PATH);
+//             订单确认
+             $("#btn_submit").click(function(){
+            	 
         		  if($("#agency_id").val()==-1 || $("#agency_id").val()=="") {
         	      		Public.message("error","请选择代理ID");
         	      	  return false;
@@ -337,7 +350,9 @@ let Filing = {
     },
     select(){
     	 
-        	  console.log("234324");
+        	 //代理ID
+        	  layui.use('form', function(){
+    	        var form = layui.form;
                $.ajax({
           			type:"get",
           			 url : BASE_PATH+"credit/front/orderProcess/getAgent",
@@ -350,12 +365,11 @@ let Filing = {
           	        }
           	        
           	        $("select[name='agent_id']").html(html);
+          	      form.render('select');
           	        }
                	
           		})
-          		
-               
-          
+        	  })     
        
     },
     popperFilter(){
@@ -548,167 +562,21 @@ let Filing = {
         "click .dl":(e,value,row,index)=>{
         	 console.log(12222222333333);
             console.log(row);
-            $("#custom_id2").html(row.custom_id);
-            $("#customId2").html(row.customId);
-            $("#receiver_date2").html(row.receiver_date);
-            $("#continent2").html(row.continent);
-            $("#country2").html(row.country);
-            if(row.country=='中国大陆'){
-   	   		 $("#mail").hide()
-   	   	 	}else {
-   	   		$("#mail").show()
-   	   	 	}
-            $("#reportType2").html(row.reportType);
-            $("#orderType2").html(row.orderType);
-            $("#reportLanguage2").html(row.reportLanguage);
-            $("#companyNames2").html(row.companyNames);
-            $("#custom_id2").html(row.custom_id);
-            $("#speed2").html(row.speed);
-            $("#user_time2").html(row.user_time);
-            $("#companyZHNames2").html(row.companyZHNames);
-            var selected=$("#agency_id").html()+row.seleteAgentStr;
-            $("#agency_id").html(row.seleteAgentStr);
-            $("#confirm_reason2").html(row.confirm_reason);
-            $("#orderId2").val(row.id);
-            $("#speedid").val(row.speedid);
-            $("#countryid").val(row.countryid);
-            $("#status").val(row.status);
-            $("#num2").html(row.num);
-            $("#remarks2").val("");
-            $(".tableValue")[0].reset();
+           //代理ID
+            $("#agency_id").next().find('.layui-anim').children('dd[lay-value="'+row.agent_id+'"]').click()
+            //代理价格
+            $("#agentPrice").val(row.agentPrice)
+            //价格币种
+            $("#agentCurrency").val(row.agentCurrency)
+            //Working days
+            $("#agentTime").val(row.agentTime)
             
-            $("#verify_name2").val(row.verify_name);
-            $("#contacts2").val(row.contacts);
-            $("#telphone2").val(row.telphone);
-            $("#address2").html(row.address);
-            $("#remarks2").html(row.remarks);
-            
-            _this.pageNumber = row.pageNumber;
-            pageSize = row.pageSize;
-        	sortName = row.sortName;
-        	sortOrder = row.sortOrder;
-        	  console.log("report_userKey====="+row.report_userKey);
-          },
-          "click .order-cancel":(e,value,row,index)=>{
-  	        $("#custom_id1").html(row.custom_id);
-  	        $("#customId1").html(row.customId);
-  	        $("#receiveDate1").html(row.receiver_date);
-  	        $("#area1").html(row.continent)
-  	        $("#country1").html(row.country);
-  	        $("#reportType1").html(row.reportType);
-  	        $("#reportLanguage1").html(row.reportLanguage);
-  	        $("#companyNames1").html(row.companyNames);
-  	        $("#speed1").html(row.speed);
-  	        $("#user_time1").html(row.user_time);
-  	        $("#companyZHNames1").html(row.companyZHNames);
-  	        $("#reporter_select1").html(row.seleteStr);
-  	        $("#confirm_reason1").html(row.confirm_reason);
-  	        $("#orderId1").val(row.id);
-  	        $("#num1").html(row.num);
-  	        $("#remarks1").val("");
-  	        $("#orderType1").html(row.orderType)
-  	        $("#contacts").val(row.contacts);
-  	        $("#telphone").val(row.telphone);
-  	        $("#address").html(row.address);
-  	        $("#remarks").html(row.remarks);
+            //地区
+           $("#client_area").val(row.continent)
+           //国家
+           $("#client_country").next().find('.layui-anim').children('dd[lay-text="'+row.country+'"]').click()
   	},
-    "click .order-hs":(e,value,row,index)=>{
-      console.log(row);
-      $("#custom_id4").html(row.custom_id);
-      $("#customId4").html(row.customId);
-      $("#receiver_date4").html(row.receiver_date);
-      $("#continent4").html(row.continent)
-      $("#country4").html(row.country);
-      $("#reportType4").html(row.reportType);
-      $("#reportLanguage4").html(row.reportLanguage);
-      $("#companyNames4").html(row.companyNames);
-      $("#orderType4").html(row.orderType)
-      $("#speed4").html(row.speed);
-      $("#user_time4").html(row.user_time);
-      $("#companyZHNames4").html(row.companyZHNames);
-      $("#reporter_select4").html(row.seleteStr);
-      $("#confirm_reason4").html(row.confirm_reason);
-      $("#orderId3").val(row.id);
-      $("#num4").html(row.num);
-      $("#remarks4").val("");
-      $(".tableValue4")[0].reset();
-      
-      $("#verify_name4").val(row.verify_name);
-      $("#contacts4").val(row.contacts);
-      $("#telphone4").val(row.telphone);
-      $("#address4").html(row.address);
-      $("#remarks4").html(row.remarks);
-      _this.pageNumber = row.pageNumber;
-      pageSize = row.pageSize;
-  	 sortName = row.sortName;
-  	  sortOrder = row.sortOrder;
-      //文件回显
-      console.log(row.files) 	
-     // $(".file-upload").html("");
-      $(".upload-over").remove();
-      if(row.files.length === 0){$(".uploadFile:not(.upload-over)").show();return}
-      console.log(row.files.length)
-      if(row.files.length > 4) {
-      	alert(1)
-      	$(".uploadFile:not(.upload-over)").hide();
-      }else {
-      	$(".uploadFile:not(.upload-over)").show()
-      }
-      for (var i in row.files){
-      	let filetype = row.files[i].ext.toLowerCase()
-      	let fileicon = ''
-      	if(filetype === 'doc' || filetype === 'docx') {
-	             fileicon = '/static/credit/imgs/order/word.png'
-	           }else if(filetype === 'xlsx' || filetype === 'xls') {
-	             fileicon = '/static/credit/imgs/order/Excel.png'
-	           }else if(filetype === 'png') {
-	             fileicon = '/static/credit/imgs/order/PNG.png'
-	           }else if(filetype === 'jpg') {
-	             fileicon = '/static/credit/imgs/order/JPG.png'
-	           }else if(filetype === 'pdf') {
-	             fileicon = '/static/credit/imgs/order/PDF.png'
-	           }
-      	let fileArr = ''
-      	let filename = row.files[i].originalname
-      	let all_name = filename + filetype
-  		let num = filename.split(".").length;
-          let filename_qz = []
-          for(let i=0;i<num;i++){  
-            filename_qz =  filename_qz.concat(filename.split(".")[i])
-          }
-          filename_qz_str = filename_qz.join('.')
-          if(filename_qz_str.length>4) {
-            filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
-          }
-          
-          filename = filename_qz_str + '.' +filetype
-      	fileArr += '<div class="uploadFile mt-3 mr-4 mb-5 upload-over" fileId="'+row.files[i].id+'" url="'+row.files[i].url+'" style="cursor:pointer">'+
-      				'<div class="over-box">'+
-	        				'<button type="button" class="close" aria-label="Close">'+
-	        					'<span aria-hidden="true">&times;</span>'+
-	        				 '</button>'+
-	        				'<img src="'+fileicon+'" />'+
-	        				 '<p class="filename" title="'+all_name+'" >'+filename+'</p>'+
-      				 '</div>'+
-      				 '</div>'
-      $(".file-upload>label").after(fileArr)	 
-         
-         $(".upload-over").click(function(e){
-      	   console.log($(e.target))
-      	   if($(e.target).parent().attr("class") === 'close') {
-      		   return
-      	   }
-      	   window.open($(this).attr("url"))
-      	   
-         })
-      }
-      
-      _this.pageNumber = row.pageNumber;
-      pageSize = row.pageSize;
-  	sortName = row.sortName;
-  	sortOrder = row.sortOrder;
-  	  console.log("report_userKey====="+row.report_userKey);
-    }
+  
       },
       formatter: _this.operateFormatter
     }
@@ -783,7 +651,7 @@ let Filing = {
         },
         operateFormatter(){
             /**操作按钮格式化 */
-            return '<div><a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理分配</a>' +
+            return '<div><a href="javascript:;" class="dl" data-toggle="modal" data-target="#exampleModalCenter_allocation">代理确认</a>' +
                 '<span style="margin-left:.5rem;color: #1890ff">|</span>' +
                 '<a href="javascript:;" class="detail" style="margin-left:.5rem">上传附件</a></div>'
                 // +

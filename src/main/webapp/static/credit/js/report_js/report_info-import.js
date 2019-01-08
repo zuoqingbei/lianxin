@@ -250,12 +250,11 @@ let Verify = {
                     	let rows = data.rows;
                     	rows.forEach((item,index)=>{
                     		//录入名称
-                    		if(!item.country || item.country.trim() !== '中国大陆' || item.status !== '291'){
-                    			$(Array.from($(".recordName"))[index]).css({"color":"#ccc","cursor":"default"});
-                    			$(Array.from($(".recordName"))[index]).removeAttr("data-target")
-                    		}else if(!$(Array.from($(".recordName"))[index]).attr("data-target")){
-                    			$(Array.from($(".recordName"))[index]).css({"color":"#007bff","cursor":"pointer"});
-                    			$(Array.from($(".recordName"))[index]).attr("data-target","#recordingName")
+                    		if(!item.country || item.country.trim() !== '中国大陆' || !(item.status === '293'|| item.status === '291'|| item.status === '295' || item.status === '296' || item.status === '694')){
+                    			$(Array.from($(".recordName"))[index]).addClass("disable");
+                    		}else {
+                    			console.log($(Array.from($(".recordName"))[index]))
+                    			$(Array.from($(".recordName"))[index]).removeClass("disable")
                     		}
                     		//分析
                     		if( item.report_type !== '10' && item.report_type !== '11') {
@@ -273,7 +272,7 @@ let Verify = {
                     			$($(".translate").get(index)).css({"color":"#007bff","cursor":"pointer"});
                     		}
                     		
-                    		//检测订单流程  当status为301的时候只能进行分析；为306的时候只能进行翻译;293,694的时候只能进行填报
+                    		//检测订单流程  当status为301的时候只能进行分析；为306的时候只能进行翻译;694的时候只能进行填报
                     		if(item.status === '301'){
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
@@ -283,7 +282,7 @@ let Verify = {
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".write").get(index)).addClass("disable")
                     		}else if(item.status === '293'||item.status === '694') {
-                    			$($(".recordName").get(index)).addClass("disable")
+//                    			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
                     		}
