@@ -268,7 +268,7 @@ public class OrderPoiController extends BaseProjectController {
 							if(pricemodel!=null){
 								orderReal.set("price_id", pricemodel.get("id"));
 							}else{
-								errormark+=errornum+".第"+(r+1)+"行，此订单没有获取到报告价格，请联系管理员！;";
+								//errormark+=errornum+".第"+(r+1)+"行，此订单没有获取到报告价格，请联系管理员！;";
 							}
 						}
 						
