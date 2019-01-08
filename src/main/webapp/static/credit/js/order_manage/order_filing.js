@@ -180,7 +180,7 @@ let Filing = {
                  let id = $("#orderId2").val();
                  let country = $("#countryid").val();
                  let speed = $("#speedid").val();
-                 let num = $("#num2").text();
+                 let num = $("#orderNum3").text();
                  let ids=this.numarr;
                  console.log(ids);
                 $.ajax({
@@ -562,6 +562,10 @@ let Filing = {
         "click .dl":(e,value,row,index)=>{
         	 console.log(12222222333333);
             console.log(row);
+            //orderId
+            $("#orderId2").val(row.id)
+            //订单号
+            $("#orderNum3").text(row.num)
            //代理ID
             $("#agency_id").next().find('.layui-anim').children('dd[lay-value="'+row.agent_id+'"]').click()
             //代理价格
@@ -597,6 +601,12 @@ let Filing = {
           $("#client_telephone").val(row.telphone)
           //传真
           $("#client_fax").val(row.fax)
+          //联系人
+          $("#client_contact").val(row.contacts)
+          //email
+          $("#client_email").val(row.email)
+          //备注
+          $("#remakes").val(row.remarks)
   	},
   
       },

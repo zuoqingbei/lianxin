@@ -127,14 +127,6 @@ let ReportConfig = {
     				})
     				$tableEn.bootstrapTable("load",rows)
     				setTimeout(() => {
-    					console.log($tableEn.find(".moneyCol"))
-    					$tableEn.find(".moneyCol").each((index,item)=>{
-    						if(!$(item).attr("data-field")){
-    							//不是表头
-    							console.log($(item))
-    							$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
-    						}
-    					})
 	    				if(rows.length < 1) {
 	    					$tableEn.parents(".fixed-table-container").css("height","80px!important")
 	    				}else if(rows.length < 4) {
@@ -260,6 +252,14 @@ let ReportConfig = {
 				    						<label for="" class="control-label" >${ele.temp_name}：</label>
 				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
+    						break;
+    				case 'money':
+    					modalBody += `<div class="form-inline justify-content-center my-3">
+    						<label for="" class="control-label" >${ele.temp_name}：</label>
+    						<input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+    						<p class="errorInfo">${item.error_msg}</p>
+    						</div>`
+    						
     						break;
     				case 'textarea':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
@@ -471,8 +471,6 @@ let ReportConfig = {
 	    	    				}else {
 	    	    					 if($("#"+id).hasClass("money-checked")){
 										 //如果是金融
-//	    	    						 alert(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
-	    	    						 console.log( $("#"+id))
 										 if(obj[anotherId]){
 											 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
 										 }
@@ -1945,6 +1943,13 @@ let ReportConfig = {
 	   								if(allTableData[index]){
 	   									$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
 	   									$("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
+	   									$("#table"+idArrEn[index] + 'En').find(".moneyCol").each((index,item)=>{
+	   			    						if(!$(item).attr("data-field")){
+	   			    							//不是表头
+	   			    							console.log($(item))
+	   			    							$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+	   			    						}
+	   			    					})
 	   								}
 	   							})
 	   							
