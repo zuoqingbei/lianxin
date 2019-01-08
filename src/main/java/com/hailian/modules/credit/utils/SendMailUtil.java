@@ -124,6 +124,7 @@ public class SendMailUtil {
         msg.addRecipients(Message.RecipientType.CC, InternetAddress.parse(recipientAddressCC));
         msg.setSubject(title);
         msg.setSentDate(new Date());
+        msg.setHeader("Disposition-Notification-To","1");
         
         MimeMultipart multipart = new MimeMultipart("mixed");
         // 邮件内容，采用HTML格式

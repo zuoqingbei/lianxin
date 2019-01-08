@@ -155,7 +155,7 @@ public class CompanyService {
 					String TeamEndFor = dateFormat(TeamEnd);//转成年月日
 					companyinfoModel.set("business_date_end", TeamEndFor);
 				}else{
-					companyinfoModel.set("business_date_end", "无期");
+					companyinfoModel.set("business_date_end", "长期");
 				}
 				
 				List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status.trim(),"registration_status");
