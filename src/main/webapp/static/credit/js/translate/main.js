@@ -82,6 +82,12 @@ let ReportConfig = {
     					}
     				})
     				$table.bootstrapTable("load",rows)
+    				$(".moneyCol").each((index,item)=>{
+    					if(!$(item).attr("data-field")){
+    						//不是表头
+    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+    					}
+    				})
     				setTimeout(() => {
 	    				if(rows.length < 1) {
 	    					$table.parents(".fixed-table-container").css("height","80px!important")
@@ -140,11 +146,20 @@ let ReportConfig = {
     	let arr = []
 		a.forEach((ele,index)=>{
 			if(ele.temp_name !== '操作' && ele.temp_name !== 'Operation'){
-				arr.push({
-					title:ele.temp_name,
-					field: ele.column_name,
-					width:(1/a.length)*100+'%'
-				})
+				if(ele.field_type === 'money') {
+					arr.push({
+    					title:ele.temp_name,
+    					field: ele.column_name,
+    					class:'moneyCol',
+    					width:(1/a.length)*100+'%'
+    				})
+				}else {
+					arr.push({
+						title:ele.temp_name,
+						field: ele.column_name,
+						width:(1/a.length)*100+'%'
+					})
+				}
 				
 			}
 			if(lang === 'en' && (ele.temp_name === '操作' || ele.temp_name === 'Operation')){
@@ -183,8 +198,12 @@ let ReportConfig = {
     								//如果是select
     								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
     							}else {
-//    								console.log($("#"+id),row[anotherId])
-    								$("#"+id).val(row[anotherId])
+    								if($("#"+id).hasClass("money-checked")){
+    									$("#"+id).val(Number(row[anotherId].replace(/,/g,"")).toLocaleString('en-US'))
+    								}else {
+    									
+    									$("#"+id).val(row[anotherId])
+    								}
     							}
     						})
     					}
@@ -233,6 +252,14 @@ let ReportConfig = {
 				    						<label for="" class="control-label" >${ele.temp_name}：</label>
 				    						<input type="number" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     							</div>`
+    						break;
+    				case 'money':
+    					modalBody += `<div class="form-inline justify-content-center my-3">
+    						<label for="" class="control-label" >${ele.temp_name}：</label>
+    						<input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+    						<p class="errorInfo">${item.error_msg}</p>
+    						</div>`
+    						
     						break;
     				case 'textarea':
     					modalBody += ` <div class="form-inline justify-content-center my-3">
@@ -505,7 +532,6 @@ let ReportConfig = {
     			//实体id
     			let obid = tempData.id;
     			formArr.forEach((item,index)=>{
-//    				console.log(item)
     				let obj = tempData;
     				let id = $(item).attr("id");
     				let anotherIdArr = id.split("_")
@@ -619,8 +645,20 @@ let ReportConfig = {
 	    	    					//如果是select
 	    	    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
 	    	    				}else {
-	    	    					$("#"+id).val(obj[anotherId])
-//	    	    					$("#"+id).attr("en_bak",obj[anotherId])
+	    	    					 if($("#"+id).hasClass("money-checked")){
+	    								 //如果是金融
+	    								 if(obj[anotherId]){
+	    									 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+	    								 }
+	    							 }else {
+	    								 if($("#"+id).attr("name") === 'emp_num_date'&& obj[anotherId]==='') {
+	    									 //2、报告摘要--员工人数统计时间默认填报当天
+	    									 let nowDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()
+	    									 $("#"+id).val(nowDate)
+	    								 }else {
+	    									 $("#"+id).val(obj[anotherId])
+	    								 }
+	    							 }
 	    	    				}
 	    	    			})
 	    	    		})
@@ -1473,7 +1511,7 @@ let ReportConfig = {
                     				case 'money':
                     					formGroup += `<div class="form-group">
                     						<label for="" class="mb-2">${item_en.temp_name}</label>
-                    						<input type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
+                    						<input type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
                     						<p class="errorInfo">${item_en.error_msg}</p>
                     						</div>`
                     						
@@ -1905,6 +1943,13 @@ let ReportConfig = {
 	   								if(allTableData[index]){
 	   									$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
 	   									$("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
+	   									$("#table"+idArrEn[index] + 'En').find(".moneyCol").each((index,item)=>{
+	   			    						if(!$(item).attr("data-field")){
+	   			    							//不是表头
+	   			    							console.log($(item))
+	   			    							$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+	   			    						}
+	   			    					})
 	   								}
 	   							})
 	   							
@@ -1921,10 +1966,12 @@ let ReportConfig = {
     		
     		$(".position-fixed").on("click","#save",(e)=>{
     			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
+    			 console.log(data)
     			 if(data.length === 0 || !Array.isArray(data)){return}
     			 console.log(data)
     			 data.forEach((ele,i)=>{
     				 delete ele["mySort"]
+    				 console.log(alterSource)
     				 if(alterSource.split("*")[1]) {
 		    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
 		    			tempParam.forEach((item,index)=>{

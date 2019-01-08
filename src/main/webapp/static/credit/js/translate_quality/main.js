@@ -78,6 +78,13 @@ let ReportConfig = {
     					}
     				})
     				$table.bootstrapTable("load",rows)
+    				$(".monyCol").each((index,item)=>{
+    					if(!$(item).attr("data-field")){
+    						//不是表头
+    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+    					}
+    				})
+    				
     				setTimeout(() => {
 	    				if(rows.length < 1) {
 	    					$table.parents(".fixed-table-container").css("height","80px!important")
@@ -135,11 +142,20 @@ let ReportConfig = {
         let arr = []
         a.forEach((ele, index) => {
             if (ele.temp_name !== '操作' && ele.temp_name !== 'Operation') {
-                arr.push({
-                    title: ele.temp_name,
-                    field: ele.column_name,
-                    width: (1 / a.length) * 100 + '%'
-                })
+            	if(ele.field_type === 'money') {
+					arr.push({
+    					title:ele.temp_name,
+    					field: ele.column_name,
+    					class:'monyCol',
+    					width:(1/a.length)*100+'%'
+    				})
+				}else {
+					arr.push({
+						title:ele.temp_name,
+						field: ele.column_name,
+						width:(1/a.length)*100+'%'
+					})
+				}
 
             }
             if (lang === 'en' && (ele.temp_name === '操作' || ele.temp_name === 'Operation')) {
@@ -570,7 +586,14 @@ let ReportConfig = {
                         //如果是select
                         $("#" + id).find("option[value='" + obj[anotherId] + "']").attr("selected", true);
                     } else {
-                        $("#" + id).val(obj[anotherId])
+                    	if($("#"+id).hasClass("money-checked")){
+							 //如果是金融
+							 if(obj[anotherId]){
+								 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+							 }
+						 }else {
+							 $("#"+id).val(obj[anotherId])
+						 }
                     }
                 })
             })
@@ -1410,7 +1433,7 @@ let ReportConfig = {
                                     	case 'money':
                         					formGroup += `<div class="form-group">
                         						<label for="" class="mb-2">${item_en.temp_name}</label>
-                        						<input disabled="disabled" type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
+                        						<input disabled="disabled" type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
                         						<p class="errorInfo">${item_en.error_msg}</p>
                         						</div>`
                         						
@@ -1446,7 +1469,7 @@ let ReportConfig = {
                                                 success: (data) => {
                                                     formGroup += `<div class="form-group">
 							            					<label for="" class="mb-2">${item_en.temp_name}</label>
-							            					<select disabled="disabled" name=${item_en.column_name} id="${item.column_name}_${ind}_En" class="form-control">
+							            					<select disabled="disabled" name=${item_en.column_name} id="${item_en.column_name}_${ind}_En" class="form-control">
 							            						${data.selectStr}
 							            					</select>
 				            							</div>`

@@ -26,7 +26,7 @@ import com.hailian.util.translate.TransApi;
 @ControllerBind(controllerKey = "/credit/ordertranslate")
 public class ReportTranslateController extends BaseProjectController {
 	public void translate() {
-		String json = getPara("dataJson").replace("null", "");
+		String json = getPara("dataJson").replace("null", "''");
 		String targetlanguage=getPara("targetlanguage");//目标语言
 		String reporttype=getPara("reportType");//报告类型
 		JSONObject jsonObject = JSONObject.fromObject(json);
