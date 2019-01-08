@@ -250,9 +250,10 @@ let Verify = {
                     	let rows = data.rows;
                     	rows.forEach((item,index)=>{
                     		//录入名称
-                    		if(!item.country || item.country.trim() !== '中国大陆' || !(item.status === '293'|| item.status === '291'|| item.status === '295' || item.status === '296')){
+                    		if(!item.country || item.country.trim() !== '中国大陆' || !(item.status === '293'|| item.status === '291'|| item.status === '295' || item.status === '296' || item.status === '694')){
                     			$(Array.from($(".recordName"))[index]).addClass("disable");
                     		}else {
+                    			console.log($(Array.from($(".recordName"))[index]))
                     			$(Array.from($(".recordName"))[index]).removeClass("disable")
                     		}
                     		//分析
@@ -280,8 +281,8 @@ let Verify = {
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".write").get(index)).addClass("disable")
-                    		}else if(item.status === '694') {
-                    			$($(".recordName").get(index)).addClass("disable")
+                    		}else if(item.status === '293'||item.status === '694') {
+//                    			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
                     		}
