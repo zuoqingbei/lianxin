@@ -47,7 +47,7 @@ let Filing = {
     		that.fileNum = 0;
     	});
       /**文件上传事件 */
-      $(".file-upload").on('change','.uploadFile .file-input',function(e){
+      $(".file-upload2").on('change','.uploadFile .file-input',function(e){
     	  that.fileNum = that.fileNum+1;
           /**如果上传成功 */
           let filename = $(this).val().replace("C:\\fakepath\\","");
@@ -77,14 +77,14 @@ let Filing = {
           }else if(filetype === 'html') {
             fileicon = '/static/credit/imgs/order/html.png'
           }
-          $(this).parent(".uploadFile").addClass("upload-over");
-          $(this).css("visibility","hidden")
-          $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-          if($(e.target).parents(".uploadFile").siblings().length>3) {
+          $(e.target).parent(".uploadFile").addClass("upload-over");
+          $(e.target).css("visibility","hidden")
+          $(e.target).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
+          console.log($(e.target).parents(".uploadFile").siblings(".uploadFile").length)
+          if($(e.target).parents(".uploadFile").siblings(".uploadFile").length>3) {
             return;
           }
-      
-          $(e.target).parents(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+          $(e.target).parents(".file-upload2").append(`<div class="uploadFile mt-3 mr-4">
                                         <input type="file" name="" id="upload_file" value="" class="file-input" />
                                         <div class="over-box">
                                           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -94,9 +94,10 @@ let Filing = {
       });
 
       /**附件删除 */
-      $(".file-upload").on('click','.uploadFile .close',function(e){
+      $(".file-upload2").on('click','.uploadFile .close',function(e){
+    	  
 	        if($(e.target).parents(".upload-over").length<6 && $(e.target).parents(".upload-over").siblings(".uploadFile.mt-3.mr-4:not(.upload-over)").length<1 ){
-	        	$(e.target).parents(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+	        	$(e.target).parents(".file-upload2").append(`<div class="uploadFile mt-3 mr-4">
 	                <input type="file" name="" id="upload_file" value="" class="file-input" />
 	                 <div class="over-box">
 		                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -112,7 +113,17 @@ let Filing = {
         /**模态框提交事件 */
     	let _this = this
         	 $("#modal_submit").click(function(){
-        		 $(".upload-over").remove();
+        		 console.log($("#exampleModalCenter .upload-over").length)
+        		 if($("#exampleModalCenter .upload-over").length === 5) {
+        			 $("#exampleModalCenter .file-upload").append(`<div class="uploadFile mt-3 mr-4">
+                             <input type="file" name="" id="upload_file" value="" class="file-input" />
+                             <div class="over-box">
+                               <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                               <p class="mt-2">上传附件</p>
+                             </div>
+                         </div>`);
+        		 }
+    			 $(".upload-over").remove();
         		 
              	$("#status").val("296");
              	$(".tableValue").ajaxSubmit( {
@@ -128,7 +139,7 @@ let Filing = {
                             $(".modal-header .close").trigger("click");
                             //回显
                            	console.log("提交成功,开始回显:");
-                           		$.ajax({
+                           		/*$.ajax({
                            			type:"post",
                                		url:BASE_PATH+"credit/front/orderProcess/listJson",
                                		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-4",
@@ -139,7 +150,8 @@ let Filing = {
                                			 	console.log(obj);
                                			 console.log("回显成功!");
                                			 }
-                           			})
+                           			})*/
+                        	$("#table").bootstrapTable("refresh");
                         }else{
                         	 console.log("此处进入error状态");
                         	Public.message("error",data.message);
@@ -552,6 +564,17 @@ let Filing = {
             console.log(row);
            //代理ID
             $("#agency_id").next().find('.layui-anim').children('dd[lay-value="'+row.agent_id+'"]').click()
+            //代理价格
+            $("#agentPrice").val(row.agentPrice)
+            //价格币种
+            $("#agentCurrency").val(row.agentCurrency)
+            //Working days
+            $("#agentTime").val(row.agentTime)
+            
+            //地区
+           $("#client_area").val(row.continent)
+           //国家
+           $("#client_country").next().find('.layui-anim').children('dd[lay-text="'+row.country+'"]').click()
   	},
   
       },

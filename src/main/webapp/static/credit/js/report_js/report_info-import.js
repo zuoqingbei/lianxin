@@ -250,7 +250,7 @@ let Verify = {
                     	let rows = data.rows;
                     	rows.forEach((item,index)=>{
                     		//录入名称
-                    		if(!item.country || item.country.trim() !== '中国大陆' || item.status !== '291'){
+                    		if(!item.country || item.country.trim() !== '中国大陆' || (item.status !== '293'&&item.status !== '291'&&item.status !== '295'&&item.status !== '296')){
                     			$(Array.from($(".recordName"))[index]).css({"color":"#ccc","cursor":"default"});
                     			$(Array.from($(".recordName"))[index]).removeAttr("data-target")
                     		}else if(!$(Array.from($(".recordName"))[index]).attr("data-target")){

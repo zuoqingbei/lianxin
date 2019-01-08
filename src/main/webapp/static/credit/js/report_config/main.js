@@ -69,8 +69,16 @@ let ReportConfig = {
     						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
     						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
     					}
+    					console.log(item)
     				})
     				$table.bootstrapTable("load",rows)
+    				
+    				$(".monyCol").each((index,item)=>{
+    					if(!$(item).attr("data-field")){
+    						//不是表头
+    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+    					}
+    				})
     				setTimeout(() => {
 	    				if(rows.length < 1) {
 	    					$table.parents(".fixed-table-container").css("height","80px!important")
@@ -88,19 +96,22 @@ let ReportConfig = {
         		
         		let arr = []
         		contents.forEach((ele,index)=>{
-        			if(ele.temp_name !== '操作' && ele.temp_name !== 'brand_url'){
-        				arr.push({
-        					title:ele.temp_name,
-        					field: ele.column_name,
-        					width:(1/contents.length)*100+'%'
-        				})
+        			if(ele.temp_name !== '操作'){
+        				if(ele.field_type === 'money') {
+        					arr.push({
+            					title:ele.temp_name,
+            					field: ele.column_name,
+            					class:'monyCol',
+            					width:(1/contents.length)*100+'%'
+            				})
+        				}else {
+        					arr.push({
+        						title:ele.temp_name,
+        						field: ele.column_name,
+        						width:(1/contents.length)*100+'%'
+        					})
+        				}
         				
-        			}else if(ele.temp_name === 'brand_url'){
-        				arr.push({
-        					title:ele.temp_name,
-        					field: ele.column_name,
-        					width:(1/contents.length)*100+'%'
-        				})
         			}else {
         				arr.push({
         					title:ele.temp_name,
@@ -136,8 +147,12 @@ let ReportConfig = {
             								//如果是select
             								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
             							}else {
-            								
-            								$("#"+id).val(row[anotherId])
+            								if($("#"+id).hasClass("money-checked")){
+            									$("#"+id).val(Number(row[anotherId].replace(/,/g,"")).toLocaleString('en-US'))
+            								}else {
+            									
+            									$("#"+id).val(row[anotherId])
+            								}
             							}
             						})
             					},
@@ -215,7 +230,7 @@ let ReportConfig = {
     							</div>`
     					break;
     				case 'money':
-    					modalBody += ` <div class="form-inline justify-content-center my-3">
+    					modalBody += ` <div class="form-inline justify-content-center my-3 money-box">
     						<label for="" class="control-label">${ele.temp_name}</label>
     						<input type="text" class="form-control money-checked" id="${ele.column_name + '_' + myIndex}" placeholder="" name=${ele.column_name} reg=${ele.reg_validation}>
     						<p class="errorInfo">${item.error_msg}</p>
@@ -1314,6 +1329,13 @@ let ReportConfig = {
     			let formArr = Array.from($("#modal"+item).find(".form-inline"))
 				formArr.forEach((item,index)=>{
 					let id = $(item).children("label").next().attr("id");
+					//锟э窖拷锟锟斤拷锟斤拷*锟斤拷
+					if($(item).hasClass("money-box")){
+						let name = $('#'+id).attr("name")
+						let val = $('#'+id).val().replace(/,/g,"锟э窖拷锟锟斤拷锟斤拷*锟斤拷")
+						dataJsonObj[name] = val
+						return
+					}
 					if($("#"+id).is("button")) {
 						//商标
 						let name = $('#'+$('#'+id).find("input").attr("id")).attr("name")
