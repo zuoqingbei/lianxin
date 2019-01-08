@@ -572,9 +572,31 @@ let Filing = {
             $("#agentTime").val(row.agentTime)
             
             //地区
-           $("#client_area").val(row.continent)
+             $("#client_area").next().find('.layui-anim').children('dd:contains('+row.continent+')').click()
            //国家
-           $("#client_country").next().find('.layui-anim').children('dd[lay-text="'+row.country+'"]').click()
+           $("#client_country").next().find('.layui-anim').children('dd:contains('+row.country+')').click()
+           //接单日期
+           $("#client_order_date").val(row.receiver_date)
+           //报告类型
+          $("#client_reportType").next().find('.layui-anim').children('dd:contains('+row.reportType+')').click()
+            //订单类型
+          $("#client_orderType").next().find('.layui-anim').children('dd[lay-value="'+row.order_type+'"]').click()
+            //报告语言
+          $("#client_reportLanguage").next().find('.layui-anim').children('dd:contains('+row.reportLanguage+')').click()
+          //订单公司名称
+          $("#right_company_name_en").val(row.companyNames)
+          //速度
+          $("#client_speed").next().find('.layui-anim').children('dd:contains('+row.speed+')').click()
+            //报告用时
+          $("#client_reportTime").val(row.report_user)
+          //客户参考号
+          $("#client_referenceNumber").val(row.reference_num)
+          //地址
+          $("#client_address").val(row.address)
+          //电话
+          $("#client_telephone").val(row.telphone)
+          //传真
+          $("#client_fax").val(row.fax)
   	},
   
       },

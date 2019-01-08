@@ -444,6 +444,8 @@ let ReportConfig = {
 	    	    				}else {
 	    	    					 if($("#"+id).hasClass("money-checked")){
 										 //如果是金融
+//	    	    						 alert(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+	    	    						 console.log( $("#"+id))
 										 if(obj[anotherId]){
 											 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
 										 }
@@ -619,8 +621,20 @@ let ReportConfig = {
 	    	    					//如果是select
 	    	    					$("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
 	    	    				}else {
-	    	    					$("#"+id).val(obj[anotherId])
-//	    	    					$("#"+id).attr("en_bak",obj[anotherId])
+	    	    					 if($("#"+id).hasClass("money-checked")){
+	    								 //如果是金融
+	    								 if(obj[anotherId]){
+	    									 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
+	    								 }
+	    							 }else {
+	    								 if($("#"+id).attr("name") === 'emp_num_date'&& obj[anotherId]==='') {
+	    									 //2、报告摘要--员工人数统计时间默认填报当天
+	    									 let nowDate = new Date().getFullYear()+'-'+(new Date().getMonth()+1)+'-'+new Date().getDate()
+	    									 $("#"+id).val(nowDate)
+	    								 }else {
+	    									 $("#"+id).val(obj[anotherId])
+	    								 }
+	    							 }
 	    	    				}
 	    	    			})
 	    	    		})

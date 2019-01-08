@@ -1,6 +1,8 @@
 
 
-
+.fixed-table-body-columns table tr {
+	height:54.8px!important;
+}
 /*附件*/
 .file-upload textarea {
     width: 74rem;
