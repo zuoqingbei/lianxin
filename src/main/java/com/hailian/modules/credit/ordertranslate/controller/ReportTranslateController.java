@@ -43,27 +43,32 @@ public class ReportTranslateController extends BaseProjectController {
 			if(isChinese(value)){
 				if(!isValidDate(value)){
 					try {
-						value_en = TransApi.Trans(value,"en");
+						if(!"12".equals(reporttype)){
+							value_en = TransApi.Trans(value.replace(" ", "").replace("%", ""),"en");
+						}
+						
 					} catch (Exception e) {
                         e.printStackTrace();
-						value_en="Translation failure!";
+						value_en="";
+//						if(targetlanguage.equals("cht")){
+//							 value_en="";
+//						}
+                       
 					}
 					if("cht".equals(targetlanguage)){
 						try {
-							value_cht=TransApi.Trans(value,targetlanguage);
+							value_cht=TransApi.Trans(value.replace(" ", "").replace("%", ""),targetlanguage);
 							if("14".equals(reporttype)){
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
 										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)){
 									value_en="";
 								}
 							}
-							if("12".equals(reporttype)){
-								value_en="";
-								value_cht=TransApi.Trans(value,targetlanguage);
-							}
 							
 						} catch (Exception e) {
-							value_cht="翻譯失敗!";
+							e.printStackTrace();
+							value_cht="";
+//							value_cht=value;
 						}
 					}
 			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);//翻译校正
@@ -75,7 +80,7 @@ public class ReportTranslateController extends BaseProjectController {
 			}
 			jsonObject.put(key, value);
 			}
-			System.out.println(jsonObject.toString().replace("\"null\"", ""));
+//			System.out.println(jsonObject.toString().replace("\"null\"", ""));
 			renderJson(jsonObject.toString());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -115,7 +120,7 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String  value_cht=TransApi.Trans("石蓓蓓","cht");
+		String  value_cht=TransApi.Trans("陈少杰*:*%","cht");
 		System.out.println(value_cht);
 
 		 

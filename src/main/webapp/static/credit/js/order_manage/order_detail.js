@@ -21,7 +21,7 @@ let OrderDetail = {
             let urlArr = (otherProperty ? item.title[otherProperty] : item.title.get_source).split("*");
             urlArr = fromContents === 'fromContents' ? item.contents[0].get_source.split("*") : urlArr;
             if (urlArr[0] === '') {
-                return
+                return '';
             }
             let url = '';
             urlArr.forEach((param, index) => {
@@ -39,7 +39,6 @@ let OrderDetail = {
                                 } else {
                                     url += `&${item}=${this.row[item]}`
                                 }
-
                             }
                         });
                     } else if (param === 'orderId') {//这里的orderId对应rows的id，和填报配置中不一样
@@ -154,7 +153,7 @@ let OrderDetail = {
                             </div>`;
                         } else {
                             formHtml += `
-                            <div class="col-md-4 mt-2 mb-2">
+                            <div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money'?'moneyCol':''}">
                                 <span>${item.temp_name}：</span>
                                 <span data-column_name="${item.column_name}"></span>
                             </div>`
@@ -170,6 +169,9 @@ let OrderDetail = {
                             let text = _this.row[$(this).data('column_name')];
                             $(this).text(Public.textFilter(text, 'null'));
                         });
+                        $wrap.find('div.moneyCol [data-column_name]').text(function () {
+                            return Number($(this).text().replace(/,/g,"")).toLocaleString('en-US');
+                        });
                     } else {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
                             if (data.rows && data.rows.length > 0) {
@@ -181,7 +183,10 @@ let OrderDetail = {
                                     } else {
                                         $(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
                                     }
-                                })
+                                });
+                                $wrap.find('div.moneyCol [data-column_name]').text(function () {
+                                    return Number($(this).text().replace(/,/g,"")).toLocaleString('en-US');
+                                });
                             } else {
                                 console.warn(item.title.temp_name + '-表单-没有返回数据！')
                             }
@@ -890,11 +895,12 @@ let OrderDetail = {
                 }
             });
         }
-        let $table = $('<table class="table"><thead></thead><tbody></tbody></table>');
+        let $table = $('<table class="table table-hover"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
+
         item.contents.forEach((item) => {
             // 带日期的单元格加宽
-            $table.children('thead').append(`<th${['日期', '成立日期', '注册日期', '合作时间', '操作时间'].includes(item.temp_name) ? ' style=min-width:10rem' : ''}>${item.temp_name}</th>`);
+            $table.children('thead').append(`<th class="${item.field_type === 'money'?'moneyCol':'' }" ${['日期', '成立日期', '注册日期', '合作时间', '操作时间'].includes(item.temp_name) ? ' style=min-width:10rem' : ''}>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });
         $wrap.find(".module-content").append(`${$table[0].outerHTML}`);
@@ -943,6 +949,10 @@ let OrderDetail = {
                             $tr.append(`<td>${Public.textFilter(row[columnName], 'null', '-')}</td>`);// 没数据的显示 “-”
                         });
                         $wrap.find('tbody').append($tr);
+                    });
+                    let index = $wrap.find('table th.moneyCol').index();
+                    $wrap.find('table td:nth-child('+(index+1)+')').text(function () {
+                        return Number($(this).text().replace(/,/g,"")).toLocaleString('en-US');
                     });
                     if (chartType === 'pie') {//饼图中如果参股人的百分比之和小于100，则补上“未知”
                         let sum = chartData.reduce(function (prev, cur) {
