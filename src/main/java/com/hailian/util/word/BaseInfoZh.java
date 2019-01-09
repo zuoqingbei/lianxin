@@ -91,12 +91,16 @@ public class BaseInfoZh {
         String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
         //报告速度
         map.put("speed",order.getStr("speedName"));
+        //客户参考号
+        map.put("reference_num",order.getStr("reference_num"));
         //订单公司名称
         map.put("company", companyInfo.getStr("name_en"));
+
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
         map.put("order_code",order.getStr("num"));
+
 
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
