@@ -24,7 +24,7 @@ public class CreditReportController extends BaseProjectController{
     public void report() {
         String sql = "select t.*,s1.detail_name as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
         Integer userid = getSessionUser().getUserid();
-        CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, "778367");
+        CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, "778375");
         String reportType = order.getStr("report_type");
         String report_language = order.getStr("report_language");
 
@@ -51,7 +51,7 @@ public class CreditReportController extends BaseProjectController{
         } else if ("217".equals(report_language)) {
             //中文繁体+英文
             if ("12".equals(reportType)) {
-                BaseInfoZh.reportTable(order, reportType, "612", userid);
+                BaseInfoZh.reportTable(order, reportType, "613", userid);
             }
             if("14".equals(reportType)){
                 BaseInfoZh.reportTable(order, reportType, "613", userid);
