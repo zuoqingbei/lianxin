@@ -96,6 +96,7 @@ public class BaseInfoZh {
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
+        map.put("order_code",order.getStr("num"));
 
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);

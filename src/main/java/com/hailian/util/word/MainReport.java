@@ -35,7 +35,10 @@ public class MainReport {
             }
         } else if ("217".equals(report_language)) {
             //中文繁体+英文
-            if ("12".equals(reportType)||"14".equals(reportType)) {
+            if ("12".equals(reportType)) {
+                BaseInfoZh.reportTable(order, reportType, "612", userid);
+            }
+            if("14".equals(reportType)){
                 BaseInfoZh.reportTable(order, reportType, "613", userid);
             }
         } else {
