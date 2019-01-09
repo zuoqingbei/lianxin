@@ -528,6 +528,7 @@ public class OrderProcessController extends BaseProjectController{
             	//根据订单号找到填报语言对应的公司id
                 CreditOrderInfo orderInfo = model.findById(orderId);
             	String companyId = orderInfo.get("company_id")+"";
+                String reportType = orderInfo.get("report_type")+"";
                 //new CompanyService().enterpriseGrab(companyId,getPara("model.company_by_report"),"612");
                 //调用香港查册网
                 //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
@@ -536,7 +537,7 @@ public class OrderProcessController extends BaseProjectController{
                 //爬虫完毕更新状态
                 //CreditOrderInfo model2 = new CreditOrderInfo(); model2.set("id", orderId).set("status", 694);  model2.update();
                 //使用线程调用爬虫接口
-                Thread td = new Thread(new CrawlerThreed(companyId,getPara("model.company_by_report"),orderInfo));
+                Thread td = new Thread(new CrawlerThreed(reportType,companyId,getPara("model.company_by_report"),orderInfo));
                 td.start();
             }
             renderJson(new ResultType());
@@ -1129,46 +1130,49 @@ public class OrderProcessController extends BaseProjectController{
 		18 bignum3 = bignum1.divide(bignum2);  
 		19 System.out.println("商  是：" + bignum3);   */
 //爬虫通过线程操作
-class CrawlerThreed implements Runnable{
-    String companyId = "";
-    String company = "";
-    CreditOrderInfo orderInfo = null;
+class CrawlerThreed implements Runnable {
+        String companyId = "";
+        String company = "";
+        String reportType = "";
+        CreditOrderInfo orderInfo = null;
 
-    /**
-     * 数据初始化
-     * @param companyId  公司id
-     * @param company  公司名称
-     * @param orderInfo 订单信息
-     */
-    public CrawlerThreed(String companyId,String company,CreditOrderInfo orderInfo){
-        this.companyId = companyId;
-        this.company = company;
-        this.orderInfo = orderInfo;
-    }
+        /**
+         * 数据初始化
+         * @param reportType 模板类型
+         * @param companyId 公司id
+         * @param company   公司名称
+         * @param orderInfo 订单信息
+         */
+        public CrawlerThreed(String reportType,String companyId, String company, CreditOrderInfo orderInfo) {
+            this.companyId = companyId;
+            this.company = company;
+            this.orderInfo = orderInfo;
+            this.reportType = reportType;
+        }
 
-    @Override
-    public void run() {
-        try {
-            //调用企查查接口
-            new CompanyService().enterpriseGrab(companyId, company, "612");
-        }catch (Exception e){
-            e.printStackTrace();
+        @Override
+        public void run() {
+            try {
+                //调用企查查接口
+                new CompanyService().enterpriseGrab(companyId, company, "612",reportType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                //调用香港查册网
+                HttpCrawler.getIcrisUrl(company, companyId, orderInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                //爬取商务部业务系统网站
+                HttpCrawler.getMofcomUrl(company, companyId, orderInfo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            //爬虫完毕更新状态
+            CreditOrderInfo model2 = new CreditOrderInfo();
+            model2.set("id", orderInfo.getInt("id")).set("status", 694);
+            model2.update();
         }
-        try {
-            //调用香港查册网
-            HttpCrawler.getIcrisUrl(company, companyId, orderInfo);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        try {
-            //爬取商务部业务系统网站
-            HttpCrawler.getMofcomUrl(company, companyId, orderInfo);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        //爬虫完毕更新状态
-        CreditOrderInfo model2 = new CreditOrderInfo();
-        model2.set("id", orderInfo.getInt("id")).set("status", 694);
-        model2.update();
     }
-}
