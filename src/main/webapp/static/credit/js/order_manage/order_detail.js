@@ -1,7 +1,6 @@
 let OrderDetail = {
     init: function () {
-        // ljl为此对象之外的页面全局变量
-        ljl.row = this.row = JSON.parse(localStorage.getItem("row"));
+        this.row = JSON.parse(localStorage.getItem("row"));
         console.log('~~row：', this.row);
         this.isQuality = !!this.row.quality_type;
         this.quality_deal = '';
@@ -114,9 +113,8 @@ let OrderDetail = {
     setContent() {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info px-4 mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
-        // console.dir(this.data.modules[0])
+        // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
         this.data.modules.forEach((item, index) => {
-            // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
             let _this = this;
@@ -926,7 +924,6 @@ let OrderDetail = {
                                     name: row[item.contents[0].column_name],
                                     value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
                                 });
-
                                 break;
                             //柱线组合图
                             case '22':
@@ -950,10 +947,17 @@ let OrderDetail = {
                         });
                         $wrap.find('tbody').append($tr);
                     });
+                    // 设置千分位
                     let index = $wrap.find('table th.moneyCol').index();
                     $wrap.find('table td:nth-child('+(index+1)+')').text(function () {
                         return Number($(this).text().replace(/,/g,"")).toLocaleString('en-US');
                     });
+                    // 质检意见下面的质检类型全部转换成中文
+                    if(item.title.temp_name==='质检意见'){
+                        $wrap.find('table tr>td:nth-child(1)').text(function () {
+                            return qualityTypeToChinese[$(this).text()];
+                        })
+                    }
                     if (chartType === 'pie') {//饼图中如果参股人的百分比之和小于100，则补上“未知”
                         let sum = chartData.reduce(function (prev, cur) {
                             return cur.value + prev
