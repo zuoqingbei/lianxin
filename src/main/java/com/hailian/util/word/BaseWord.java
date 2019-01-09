@@ -397,7 +397,7 @@ public class BaseWord {
             for(String column : cols.keySet()) {
                 String value = cols.get(column).split("\\|")[0];
                 Style style = new Style();
-                style.setBold(true);
+                //style.setBold(true);
                 //102下划线
                 if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
                     style.setFontFamily("新细明体（PMingLiU）");
