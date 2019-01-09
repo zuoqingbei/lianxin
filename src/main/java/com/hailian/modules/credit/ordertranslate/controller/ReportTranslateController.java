@@ -60,8 +60,12 @@ public class ReportTranslateController extends BaseProjectController {
 							value_cht=TransApi.Trans(value.replace(" ", "").replace("%", ""),targetlanguage);
 							if("14".equals(reporttype)){
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
-										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)){
+										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)
+										|| "name".equals(key)){
 									value_en="";
+								}
+								if("name_en".equals(key) || "business_date_end".equals(key) || "registration_authority".equals(key)){
+									value_cht="";
 								}
 							}
 							
