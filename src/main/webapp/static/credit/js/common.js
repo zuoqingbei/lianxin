@@ -645,7 +645,7 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
     "getSelete?type=capital_type$selectedId=267$disPalyCol=detail_name": "capital_type",
     "getSelete?type=is_regular_check$selectedId=762$disPalyCol=detail_name": "is_regular_check",
     "getSelete?type=annual_inspection$selectedId=685$disPalyCol=detail_name": "year_result",
-    "getSelete?type=registration_status_roc$selectedId=680$disPalyCol=detail_name": "registration_status"
+    "getSelete?type=registration_status_roc$selectedId=680$disPalyCol=detail_name": "roc_registration_status"
 }) + ']'
     , type23_html = `<div class="module-content type23-content">
                     <form>
