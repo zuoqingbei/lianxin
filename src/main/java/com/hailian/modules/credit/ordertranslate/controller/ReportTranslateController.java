@@ -67,6 +67,10 @@ public class ReportTranslateController extends BaseProjectController {
 								if("name_en".equals(key) || "business_date_end".equals(key) || "registration_authority".equals(key)){
 									value_cht="";
 								}
+								if("type_of_enterprise_remark".equals(key)){
+									continue;
+								}
+								
 							}
 							
 						} catch (Exception e) {
