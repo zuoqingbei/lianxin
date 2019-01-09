@@ -170,7 +170,7 @@ let ReportConfig = {
 			}
 			if(lang === 'en' && (ele.temp_name === '操作' || ele.temp_name === 'Operation')){
 				arr.push({
-					title:'Operation',
+					title:ele.temp_name,
 					field: 'operate',
 					width: 1/a.length,
 					events: {
