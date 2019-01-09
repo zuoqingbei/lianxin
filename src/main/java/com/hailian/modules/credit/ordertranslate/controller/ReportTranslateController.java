@@ -56,7 +56,7 @@ public class ReportTranslateController extends BaseProjectController {
 							if("14".equals(reporttype)){
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
 										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)){
-									value_en="";
+									
 								}
 							}
 							if("12".equals(reporttype)){
@@ -117,7 +117,7 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String  value_cht=TransApi.Trans("张宁","cht");
+		String  value_cht=TransApi.Trans("石蓓蓓","cht");
 		System.out.println(value_cht);
 
 		 
