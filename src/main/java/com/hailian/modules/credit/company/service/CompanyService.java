@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.hailian.component.base.BaseProjectController;
@@ -26,14 +26,12 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
 import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
-import com.hailian.modules.credit.pricemanager.model.ReportPrice;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.http.HttpTest;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
-import com.jfinal.template.ext.directive.Str;
 
 /**
 * @author dyc:
@@ -272,7 +270,7 @@ public class CompanyService {
 				
 			}
 			if("8".equals(reporttype) || "10".equals(reporttype)){
-			//线程爬取企查查裁判文书，法院公告，开庭公告信息数据并保存
+			//线程爬取企查查裁判文书，法院公告，开庭公告信息,商标数据并保存
 			Thread th=new Thread(new threadEnterpriseGrabOther(companyId, companyName, sys_language));
 			th.start();
 			}
