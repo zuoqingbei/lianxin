@@ -38,7 +38,6 @@ public class ReportTranslateController extends BaseProjectController {
 			while(iterator.hasNext()){
 			String   key = (String) iterator.next();
 			String value = jsonObject.getString(key);
-			Object object = jsonObject.get(key);
 			String value_en="";
 			String value_cht="";
 			if(isChinese(value)){
@@ -46,7 +45,6 @@ public class ReportTranslateController extends BaseProjectController {
 					try {
 						value_en = TransApi.Trans(value,"en");
 					} catch (Exception e) {
-                        System.out.println(json);
                         e.printStackTrace();
 						value_en="Translation failure!";
 					}
