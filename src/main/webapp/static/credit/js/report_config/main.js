@@ -102,13 +102,13 @@ let ReportConfig = {
             					title:ele.temp_name,
             					field: ele.column_name,
             					class:'monyCol',
-            					width:(1/contents.length)*100+'%'
+//            					width:(1/contents.length)*100+'%'
             				})
         				}else {
         					arr.push({
         						title:ele.temp_name,
         						field: ele.column_name,
-        						width:(1/contents.length)*100+'%'
+//        						width:(1/contents.length)*100+'%'
         					})
         				}
         				
@@ -116,7 +116,7 @@ let ReportConfig = {
         				arr.push({
         					title:ele.temp_name,
         					field: 'operate',
-        					width:1/contents.length,
+//        					width:1/contents.length,
         					events: {
             					"click .edit":(e,value,row,index)=>{
             						_this.isAdd = false
@@ -124,7 +124,7 @@ let ReportConfig = {
             						//回显
             						let formArr = Array.from($("#modal"+tempId).find(".form-inline"))
             						formArr.forEach((item,index)=>{
-            							let id = $(item).children("label").siblings().attr("id");
+            							let id = $(item).children("label").next().attr("id");
             							let anotherIdArr = id.split("_")
             							anotherIdArr.pop();
             							let anotherId = anotherIdArr.join('_')
@@ -310,7 +310,7 @@ let ReportConfig = {
 					    <div class="modal-dialog modal-dialog-centered" role="document">
 					        <div class="modal-content">
 					            <div class="modal-header">
-					              	${titles[index].temp_name}
+					              	${titles[index].temp_name===null?'':titles[index].temp_name}
 					            </div>
 					            <div class="modal-body">
 					                ${modalBody}
@@ -1089,6 +1089,7 @@ let ReportConfig = {
                 			_this.title.push(item.title)
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
+				                				style="table-layout: fixed;"
 				                				data-toggle="table"
 				                				style="position: relative"
 				                				>

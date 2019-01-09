@@ -397,7 +397,7 @@ public class BaseWord {
             for(String column : cols.keySet()) {
                 String value = cols.get(column).split("\\|")[0];
                 Style style = new Style();
-                style.setBold(true);
+                //style.setBold(true);
                 //102下划线
                 if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
                     style.setFontFamily("新细明体（PMingLiU）");
@@ -452,10 +452,10 @@ public class BaseWord {
                     //102chiness 等级状态
                     //System.out.println(ReportTypeCons.ROC_ZH.equals(reportType));
                     //System.out.println("registration_status".equals(column));
-                    if(ReportTypeCons.ROC_ZH.equals(reportType) && ("registration_status".equals(column) || "year_result".equals(column) || "roc_registration_status".equals(column))){
+                    if((ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) && ("registration_status".equals(column) || "year_result".equals(column) || "roc_registration_status".equals(column))){
                         Map<String,String> params = parseUrl(getSource);
                         String type = params.get("type");
-                        value = !"".equals(value) ? template.getSysDictDetailStringWord(type,value) : "N/A";
+                        value = !"".equals(value) ? template.getSysDictDetailStringWord(reportType,type,value) : "N/A";
                     }else{
                         value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, sysLanguage) : "N/A";
                     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.jfinal.base.BaseService;
 import com.hailian.modules.admin.ordermanager.model.CreditCountry;
 import com.hailian.system.dict.DictCache;
@@ -174,7 +175,7 @@ public class TemplateDictService extends BaseService {
      * @param selectedId
      * @return
      */
-    public String getSysDictDetailStringWord(String type,Object selectedId) {
+    public String getSysDictDetailStringWord(String reportType,String type,Object selectedId) {
         StringBuffer sb=new StringBuffer();
         Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
         //SysDictDetail sysDict = cache.get(Integer.parseInt(selectedId+""));
@@ -187,10 +188,16 @@ public class TemplateDictService extends BaseService {
                 String detail_id = detail.get("detail_id").toString();
                 System.out.println("detail_id="+detail_id);
                 if(!"".equals(detail_id)) {
+                    String detail_name = "";
+                    if(ReportTypeCons.ROC_EN.equals(reportType)){
+                        detail_name = detail.get("detail_name_en");
+                    }else{
+                        detail_name = detail.get("detail_name");
+                    }
                     if (selectedId != null && selectedId.toString().equals(detail_id)) {
-                        sb.append(new String(new int[]{0x2611}, 0, 1) + detail.get("detail_name") + " ");
+                        sb.append(new String(new int[]{0x2611}, 0, 1) + detail_name + " ");
                     } else {
-                        sb.append(new String(new int[]{0x2610}, 0, 1) + detail.get("detail_name") + " ");
+                        sb.append(new String(new int[]{0x2610}, 0, 1) + detail_name + " ");
                     }
                 }
             }
@@ -243,7 +250,7 @@ public class TemplateDictService extends BaseService {
 		//listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
         //注册资本类型 默认选择第一项
-        if(!"capital_type".equals(type)){
+        if(!"capital_type".equals(type)||!"principal_type".equals(type)){
             sb.append("<option value='-1'>请选择  </option>");
         }
 		for(SysDictDetail detail:listDetail){
