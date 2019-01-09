@@ -63,28 +63,28 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         this.creditLevel = this.english ? creditLevel_en : creditLevel_cn;
         this.initContent();
-        let tis=this
-        $('.return_back').on('click',function () {
-            if(tis.isQuality){
+        let tis = this
+        $('.return_back').on('click', function () {
+            if (tis.isQuality) {
                 layer.confirm('是否保存已录入信息？', {
-                    btn: ['保存','取消'] //按钮
-                }, function(){
+                    btn: ['保存', '取消'] //按钮
+                }, function () {
                     $('#save').trigger('click')
 
                     location.reload();
-                }, function(){
+                }, function () {
                     location.reload();
                 });
-            }else{
+            } else {
                 location.reload();
             }
         });
-        if(tis.isQuality){
+        if (tis.isQuality) {
             $(".position-fixed").append(`<div class="col-md-12 d-flex justify-content-end">
                             <button class="btn btn-light m-3" id="save" type="button">保存</button>
                             <button class="btn btn-primary m-3" id="submit" type="button">提交</button>
                         </div>`)
-        }else {
+        } else {
             $(".position-fixed").hide()
         }
 
@@ -304,7 +304,7 @@ let OrderDetail = {
                     break;
                 // 20-单选框判断后加一个多行文本框
                 case '20':
-                    const $type20_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，该企业并未设立任何分支机构。', '企业登记机关并未提供该企业分支机构数据。']
+                    const $type20_div = $('<div class="radioBox p-3" ></div>').append(['', '有，詳列如下。Yes, as provided below.', '無，根據企業登記機關所示資料，該企業並未設立任何分支機構。No, according to the registry, subject company has not set up any branches.', '企業登記機關並未提供該企業分支機構資料。The registry does not disclose any information on branches.']
                         .reduce(function (prev, cur) {
                             return `${prev}<input class="my-2" type="radio" name="embranchment" >${cur}<br>`
                         }));
@@ -315,6 +315,9 @@ let OrderDetail = {
                             let column_name_radio = item.title.column_name.split(',')[0];
                             let column_name_text = item.title.column_name.split(',')[1];
                             let radioSelect = data.rows[0][column_name_radio];
+                            if (radioSelect === null) {
+                                return
+                            }
                             $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
                             if (radioSelect === 1) {
                                 $wrap.find('.type20-content').append(`<div class="border multiText mt-4 p-2">${data.rows[0][column_name_text]}</div>`)
@@ -326,19 +329,32 @@ let OrderDetail = {
                     break;
                 // 21-单选框判断后加一个表格
                 case '21':
-                    const $type21_div = $('<div class="radioBox p-3" ></div>').append(['', '有，详情如下。', '无，根据企业登记机关所示数据，无变更记录。', '企业登记机关并未提供该企业变更记录。']
+                    const $type21_div = $('<div class="radioBox p-3" ></div>').append(['', '有，詳列如下。Yes, as provided below.', '無，根據企業登記機關所示資料，無變更記錄。No, according to the registry, subject company has not altered its registration record.', '企業登記機關並未提供該企業變更記錄。The registry does not disclose any information on changes in registration record.']
                         .reduce(function (prev, cur) {
                             return `${prev}<input class="my-2" type="radio" name="registration_change" >${cur}<br>`
                         }));
-                    $(".main .table-content").append($wrap);
+                    $wrap.append(`<div class='module-content type20-content'>${$type21_div[0].outerHTML}</div>`);
                     //绑数
                     $.get(this.getUrl(item), (data) => {
                         if (data.rows && data.rows.length > 0) {
                             let radioSelect = data.rows[0][item.title.column_name];
-                            $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
-                            if (radioSelect === 1) {
-                                this.setTable(item, $wrap, '', 'alter_source');
-                            }
+
+
+                            // 为了解决有时爬取到数据，表格绘制出来了但单选状态却没有更新的情况
+                            $.get(`${this.BASE_PATH}ReportGetData/getBootStrapTable?type=1&tableName=credit_company_his&className=CreditCompanyHis&conf_id=${item.title.id}&company_id=${this.row.company_id}`, data => {
+                                if (data.rows.length > 0) {
+                                    $wrap.find('.radioBox>[type=radio]').eq(0).prop('checked', true);
+                                    this.setTable(item, $wrap, '', 'alter_source');
+                                } else {
+                                    if (radioSelect === null) {
+                                        return
+                                    }
+                                    $wrap.find('.radioBox>[type=radio]').eq(radioSelect - 1).prop('checked', true);
+                                    if (radioSelect === 1) {
+                                        this.setTable(item, $wrap, '', 'alter_source');
+                                    }
+                                }
+                            });
                         } else {
                             console.warn(item.title.temp_name + '-102单选&表格-没有返回数据！')
                         }
@@ -448,7 +464,7 @@ let OrderDetail = {
                     let isSameLevel1 = data.every((item, index, arr) => {
                         return arr[0].split('/')[0] === item.split('/')[0]
                     });
-                    if(!isSameLevel1){
+                    if (!isSameLevel1) {
                         level1Str = ''
                     }
 
@@ -862,7 +878,9 @@ let OrderDetail = {
      * @param otherProperty get方法中的其他字段参数
      */
     setTable(item, $wrap, chartType, otherProperty) {
-        $wrap.append(`<div class="module-content type${item.smallModileType}-content tabelBox pt-4 pb-0"></div>`);
+        if(item.title.small_module_type!=='21'){ //21类型是后来发现爬取到数据后需要优先显示表格，并设置单选项
+            $wrap.append(`<div class="module-content type${item.smallModileType}-content tabelBox pt-4 pb-0"></div>`);
+        }
         // 有图表的取截止时间
         if (item.smallModileType === '11') {
             $wrap.find(".module-content").append(`<h4>${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span></h4>`);
@@ -880,7 +898,9 @@ let OrderDetail = {
             columnNameArr.push(item.column_name);
         });
         $wrap.find(".module-content").append(`${$table[0].outerHTML}`);
-        $(".main .table-content").append($wrap);
+        if(item.title.small_module_type!=='21'){
+            $(".main .table-content").append($wrap);
+        }
         // 绑数
         $.post(this.getUrl(item, otherProperty), {selectInfo: type0_extraUrl}, (data) => {
                 if (data.rows) {

@@ -117,7 +117,7 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String  value_cht=TransApi.Trans("张宁","cht");
+		String  value_cht=TransApi.Trans("石蓓蓓","cht");
 		System.out.println(value_cht);
 
 		 

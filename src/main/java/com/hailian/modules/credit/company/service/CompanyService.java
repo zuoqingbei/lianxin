@@ -87,7 +87,7 @@ public class CompanyService {
 	* @date 2018年11月8日上午10:45:37  
 	* @TODO
 	 */
-	public boolean enterpriseGrab(String companyId,String companyName,String sys_language){
+	public boolean enterpriseGrab(String companyId,String companyName,String sys_language,String reporttype){
 		boolean flag=false;
 		String status;
 		try {
@@ -271,9 +271,11 @@ public class CompanyService {
 				}
 				
 			}
+			if("8".equals(reporttype) || "10".equals(reporttype)){
 			//线程爬取企查查裁判文书，法院公告，开庭公告信息数据并保存
 			Thread th=new Thread(new threadEnterpriseGrabOther(companyId, companyName, sys_language));
 			th.start();
+			}
 //			enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
