@@ -133,7 +133,12 @@ let ReportConfig = {
 	    					$tableEn.parents(".fixed-table-container").css("height","180px")
 	    				}
     				 }, 200);
+        		},
+        		onClickRow:(row,dom)=>{
+        			console.log(row)
+        			let index = $tableEn.find("tr").index($(dom)) //第几行编辑，从1开始
         		}
+        		
         	});
         	
         	
@@ -1775,6 +1780,7 @@ let ReportConfig = {
     },
     modalClean(){
     	/**上传图标 */
+    	let _this = this
         $(".file-input").change(function(){
             let filename = $(this).val().replace("C:\\fakepath\\","");
             let num = filename.split(".").length;
@@ -1792,6 +1798,9 @@ let ReportConfig = {
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
+    				_this.currentDom = $(e.target)
+    				$(".correctEn").val('')
+    				$(".correctCh").val('')
     			}
     		})
     		$("#modalEn"+item).find("textarea").focus((e)=>{
@@ -1799,6 +1808,9 @@ let ReportConfig = {
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
     				$(".triggerModal").trigger("click")
+    				_this.currentDom = $(e.target)
+    				$(".correctEn").val('')
+    				$(".correctCh").val('')
     			}
     		})
     		//点击模态框保存按钮，新增一条数据
@@ -1971,6 +1983,11 @@ let ReportConfig = {
     			 console.log(data)
     			 data.forEach((ele,i)=>{
     				 delete ele["mySort"]
+    				 delete ele["create_date"]
+    				 delete ele["update_date"]
+    				 if(ele.id === ''){
+    					 delete ele["id"]
+    				 }
     				 console.log(alterSource)
     				 if(alterSource.split("*")[1]) {
 		    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
@@ -2021,6 +2038,11 @@ let ReportConfig = {
 			 if(data.length === 0){return}
 			 data.forEach((ele,i)=>{
 				 delete ele["mySort"]
+				 delete ele["create_date"]
+				 delete ele["update_date"]
+				 if(ele.id === ''){
+					 delete ele["id"]
+				 }
 				 if(alterSource.split("*")[1]) {
 	    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
 	    			tempParam.forEach((item,index)=>{
@@ -2299,6 +2321,7 @@ let ReportConfig = {
     			Public.message("info","错误的英文和正确的英文不能为空")
     			return
     		}
+    		console.log(_this.currentDom)
     		this.currentDom.val(correct_phrase_en)
     		$.ajax({
     			url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
