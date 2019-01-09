@@ -441,7 +441,7 @@ public class BaseWord {
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                if("year_result".equals(column)){
+                if("roc_registration_status".equals(column)){
                     System.out.println(1);
                 }
                 String[] strs = cols.get(column).split("\\|");
@@ -452,7 +452,7 @@ public class BaseWord {
                     //102chiness 等级状态
                     //System.out.println(ReportTypeCons.ROC_ZH.equals(reportType));
                     //System.out.println("registration_status".equals(column));
-                    if(ReportTypeCons.ROC_ZH.equals(reportType) && ("registration_status".equals(column) || "year_result".equals(column))){
+                    if(ReportTypeCons.ROC_ZH.equals(reportType) && ("registration_status".equals(column) || "year_result".equals(column) || "roc_registration_status".equals(column))){
                         Map<String,String> params = parseUrl(getSource);
                         String type = params.get("type");
                         value = !"".equals(value) ? template.getSysDictDetailStringWord(type,value) : "N/A";
