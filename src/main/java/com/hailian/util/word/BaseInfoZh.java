@@ -94,7 +94,11 @@ public class BaseInfoZh {
         //客户参考号
         map.put("reference_num",order.getStr("reference_num"));
         //订单公司名称
-        map.put("company", companyInfo.getStr("name_en"));
+        if(ReportTypeCons.ROC_EN.equals(reportType)){
+            map.put("company", order.getStr("right_company_name_en"));
+        }else{
+            map.put("company", companyInfo.getStr("name_en"));
+        }
 
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
