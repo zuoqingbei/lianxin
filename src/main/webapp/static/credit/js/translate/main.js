@@ -6,6 +6,7 @@
 let ReportConfig = {
 	cwConfigAlterSource:'',
 	currentDom:'',
+	tableRowIndex:null,
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -136,7 +137,7 @@ let ReportConfig = {
         		},
         		onClickRow:(row,dom)=>{
         			console.log(row)
-        			let index = $tableEn.find("tr").index($(dom)) //第几行编辑，从1开始
+        			_this.tableRowIndex = $tableEn.find("tr").index($(dom)) //第几行编辑，从1开始
         		}
         		
         	});
@@ -1844,12 +1845,13 @@ let ReportConfig = {
 						dataJsonObj[i] = tempObj[i]
 					}
 				})
-    			
-    			
-    			let urlTemp = this.title[index].alter_source
+				dataJsonObj["id"] = this.rowId  //每一行对应的ID
+    			let data = $("#table"+item + 'En').bootstrapTable("getData")
+    			data.splice(_this.tableRowIndex-1,1,dataJsonObj)
+    			$("#table"+item + 'En').bootstrapTable("load",data)
+    	/*		let urlTemp = this.title[index].alter_source
     			if(!urlTemp){return}
     			let url = BASE_PATH  + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] 
-				dataJsonObj["id"] = this.rowId
             	let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
             	let paramObj = {}
             	tempParam.forEach((item,index)=>{
@@ -1861,6 +1863,7 @@ let ReportConfig = {
     			})
     			 dataJson.push(dataJsonObj)
             	paramObj["dataJson"] = JSON.stringify(dataJson)
+            	
             	//调用新增修改接口
             	$.ajax({
             		url,
@@ -1877,7 +1880,7 @@ let ReportConfig = {
             				Public.message("error",data.message)
             			}
             		}
-            	})
+            	})*/
     		})
     	})
     },
