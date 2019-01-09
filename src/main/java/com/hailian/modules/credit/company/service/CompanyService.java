@@ -129,7 +129,7 @@ public class CompanyService {
 				}
 				companyinfoModel.set("register_code_type", "632");
 				companyinfoModel.set("register_codes", CreditCode);
-				companyinfoModel.set("principal", OperName);
+				companyinfoModel.set("legal", OperName);
 				companyinfoModel.set("registered_capital", RegistCapi);
 				if(RegistCapi.indexOf("万元人民币") !=-1){
 					String replace = RegistCapi.replace("万元人民币", "");

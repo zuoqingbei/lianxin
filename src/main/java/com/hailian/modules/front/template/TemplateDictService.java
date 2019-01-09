@@ -250,7 +250,7 @@ public class TemplateDictService extends BaseService {
 		//listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
         //注册资本类型 默认选择第一项
-        if(!"capital_type".equals(type)){
+        if(!"capital_type".equals(type)||!"principal_type".equals(type)){
             sb.append("<option value='-1'>请选择  </option>");
         }
 		for(SysDictDetail detail:listDetail){
