@@ -267,6 +267,7 @@ public class OrderPoiController extends BaseProjectController {
 							CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(orderReal.get("type").toString(), orderReal.get("speed").toString(), orderReal.get("report_type").toString(), orderReal.get("order_type").toString(), orderReal.get("custom_id").toString(), orderReal.get("country").toString());
 							if(pricemodel!=null){
 								orderReal.set("price_id", pricemodel.get("id"));
+								orderReal.set("price_id", "99999");
 							}else{
 								//errormark+=errornum+".第"+(r+1)+"行，此订单没有获取到报告价格，请联系管理员！;";
 							}

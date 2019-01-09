@@ -44,12 +44,12 @@ public class ReportTranslateController extends BaseProjectController {
 				if(!isValidDate(value)){
 					try {
 						if(!"12".equals(reporttype)){
-							value_en = TransApi.Trans(value,"en");
+							value_en = TransApi.Trans(value.replace(" ", "").replace("%", ""),"en");
 						}
 						
 					} catch (Exception e) {
                         e.printStackTrace();
-						value_en="Translation failure!";
+						value_en="";
 //						if(targetlanguage.equals("cht")){
 //							 value_en="";
 //						}
@@ -57,7 +57,7 @@ public class ReportTranslateController extends BaseProjectController {
 					}
 					if("cht".equals(targetlanguage)){
 						try {
-							value_cht=TransApi.Trans(value,targetlanguage);
+							value_cht=TransApi.Trans(value.replace(" ", "").replace("%", ""),targetlanguage);
 							if("14".equals(reporttype)){
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
 										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)){
@@ -67,7 +67,7 @@ public class ReportTranslateController extends BaseProjectController {
 							
 						} catch (Exception e) {
 							e.printStackTrace();
-							value_cht="翻譯失敗!";
+							value_cht="";
 //							value_cht=value;
 						}
 					}
@@ -120,7 +120,7 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String  value_cht=TransApi.Trans("陈少杰*:*%；林芝利创信息技术有限公司:*%；蔡东青:*%；北京锋业股权投资中心(有限合伙):*%；北京凤凰富聚投资管理中心(有限合伙):*%；湖北长江招银成长股权投资合伙企业(有限合伙):*%；南山蓝月资产管理(天津)合伙企业(有限合伙):*%；张文明:*%；深圳市创新投资集团有限公司:*%；南山斗羽资产管理(天津)合伙企业(有限合伙):*%；新余金诚实业集团有限公司:*%；朱晔:*%【退出】；苏州工业园区元禾南山股权投资合伙企业(有限合伙):*%；深圳市嘉远投资合伙企业(有限合伙):*%；深圳市招银共赢股权投资合伙企业(有限合伙):*%","cht");
+		String  value_cht=TransApi.Trans("陈少杰*:*%","cht");
 		System.out.println(value_cht);
 
 		 
