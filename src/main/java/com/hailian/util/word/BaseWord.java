@@ -441,7 +441,7 @@ public class BaseWord {
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                if("register_code".equals(column)){
+                if("register_codes".equals(column)){
                     System.out.println(1);
                 }
                 String[] strs = cols.get(column).split("\\|");
