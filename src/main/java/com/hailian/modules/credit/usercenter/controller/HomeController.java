@@ -192,7 +192,6 @@ public class HomeController extends BaseProjectController {
                     size = i + 1;
                 }
             }
-
 		}
 		}
 		//绑定订单信息和公司信息
