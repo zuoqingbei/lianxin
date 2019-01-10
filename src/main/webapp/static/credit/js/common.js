@@ -682,4 +682,14 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                         </select>
                     </div>
                 </div>`
-    , ljl = {};
+    , qualityTypeToChinese = {
+    entering_quality: '填报质检',
+    analyze_quality: '分析质检',
+    translate_quality: '翻译质检'
+}
+
+
+
+
+
+
