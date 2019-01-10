@@ -1685,7 +1685,8 @@ let ReportConfig = {
                  $(".position-fixed").html(bottomBtn)
                 $(".main-content").html(contentHtml).append(`<div class="module-wrap bg-f company-info mb-4">
                     <div class="l-title">质检评分</div>${type23_html}</div></div`);
-                $('.type23-content').find("[for=grade]").text('扣分：')
+                $('.type23-content').find('.my-1').css('white-space', 'nowrap');
+                $('.type23-content').addClass('px-3').find("[for=grade]").text('扣分：')
                     .end().find("[for=quality_opinion]").text('质检意见：');
                 let dealQualityData = (param, param2) => {
                     let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
@@ -1964,7 +1965,7 @@ let ReportConfig = {
         let detailname = this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分', '附件'].includes($(this).text())) {
-                switch (_this.rows.quality_type) {
+                /*switch (_this.rows.quality_type) {
                     case 'entering_quality':
                         $(this).nextAll('.module-content').after(qualitySelectHtml);
                         break;
@@ -1981,7 +1982,7 @@ let ReportConfig = {
                         }
                         break;
                     // 此页面无翻译功能
-                }
+                }*/
                 if(_this.quality_deal==='2'){
                     $('.select2-container').addClass('disable');
                 }
