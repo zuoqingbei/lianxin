@@ -146,7 +146,7 @@ public class CustomController extends BaseProjectController {
 	* @return
 	 */
 	public void paySave(){
-		Integer paraToInt = Integer.parseInt(getPara("id"));
+		Integer paraToInt = Integer.parseInt(getPara("table_id"));
 		CustomInfoModel Infomodel = CustomInfoModel.dao.findById(paraToInt);
 		CustomInfoModel model =getModel(CustomInfoModel.class);
 	    int count =	Integer.parseInt(getPara("count")); //充值点数
@@ -164,9 +164,9 @@ public class CustomController extends BaseProjectController {
 	    model.set("update_by", userid);
 	    model.update();
 		//充值新增流水记录表，修改客户当前账户点数与金额更新时间
-		CustomTranFlowModel model2=getModel(CustomTranFlowModel.class);
+		CustomTranFlowModel model2=new CustomTranFlowModel();
 		  model2.remove("id");
-		  model2.set("custom_id", model.get("id"));
+		  model2.set("custom_id", model.get("table_id"));
 		  model2.set("transaction_type", "充值");
 		  model2.set("money",money);
 		  model2.set("currency", currency);
@@ -205,7 +205,7 @@ public class CustomController extends BaseProjectController {
 	* @return
 	 */
 	public void chargeSave(){
-			Integer paraToInt = Integer.parseInt(getPara("id"));
+			Integer paraToInt = Integer.parseInt(getPara("table_id"));
 			CustomInfoModel model=getModel(CustomInfoModel.class);
 			CustomInfoModel infoModel = CustomInfoModel.dao.findById(paraToInt);
 			int count =	Integer.parseInt(getPara("count")); //充值点数
@@ -226,9 +226,9 @@ public class CustomController extends BaseProjectController {
 		    model.set("update_by", userid);
 		    model.update();
 		  //交易流水  
-		  CustomTranFlowModel model2=getModel(CustomTranFlowModel.class);
+		  CustomTranFlowModel model2=new CustomTranFlowModel();
 		  model2.remove("id");
-		  model2.set("custom_id", model.get("id"));
+		  model2.set("custom_id", model.get("table_id"));
 		  model2.set("transaction_type", "扣款");
 		  model2.set("oper_point_num", getPara("count"));
 		  model2.set("oper_point_after_num",account_count-count);
