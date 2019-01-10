@@ -11,7 +11,7 @@ var oper = {
 			return false;
 		}
 		id = id || '0';
-		var url = 'credit/custom/chargeSave?id='+id;
+		var url = 'credit/custom/chargeSave?table_id='+id;
 		form1.action = url;
 		form1.submit();
 		return true;
@@ -59,7 +59,7 @@ $(function(){
 var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal">
-	<input type="hidden" name="model.id" value=" ${model.id}" />
+	<input type="hidden" name="model.table_id" value=" ${model.table_id}" />
 	<!-- 数据列表 -->
 	<table class="table">
 	<tr>
@@ -94,7 +94,7 @@ var bodyContent = {
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-	  		<button class="btn btn-primary save" onclick="oper.save(${model.id!'0'});return false;">确定</button>
+	  		<button class="btn btn-primary save" onclick="oper.save(${model.table_id!'0'});return false;">确定</button>
 			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
 	  </div>
 	</nav>

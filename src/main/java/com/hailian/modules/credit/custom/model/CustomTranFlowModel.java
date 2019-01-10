@@ -36,7 +36,7 @@ public class CustomTranFlowModel extends BaseProjectModel<CustomTranFlowModel> {
 		StringBuffer selectsql = new StringBuffer(
 				"SELECT f.*,de.detail_name as currency,info.id as ids,info.`name` as cusName,info.email ");
 		StringBuffer fromsql = new StringBuffer(" from credit_custom_tran_flow f  ");
-				fromsql.append(" LEFT JOIN credit_custom_info info on f.custom_id=info.id"); 
+				fromsql.append(" LEFT JOIN credit_custom_info info on f.custom_id=info.table_id"); 
 				fromsql.append(" LEFT JOIN sys_dict_detail de on de.detail_id=f.currency");
 				fromsql.append(" where info.del_flag=0 ");
 	
