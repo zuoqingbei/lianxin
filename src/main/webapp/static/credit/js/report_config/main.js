@@ -145,7 +145,7 @@ let ReportConfig = {
             							}
             							if($("#"+id).is('select')) {
             								//如果是select
-            								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
+        									$("#"+id).find("option[m-detail-name='"+row[anotherId]+"']").attr("selected",true);
             							}else {
             								if($("#"+id).hasClass("money-checked")){
             									$("#"+id).val(Number(row[anotherId].replace(/,/g,"")).toLocaleString('en-US'))
