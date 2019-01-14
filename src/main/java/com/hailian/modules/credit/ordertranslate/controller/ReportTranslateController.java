@@ -83,7 +83,12 @@ public class ReportTranslateController extends BaseProjectController {
 			    	if(translateByError!=null){
 			    		value_en = translateByError.get("correct_phrase");//翻译校正
 			    	}
-			    	value=value_en+value_cht;
+			    	if(StringUtils.isNotBlank(value_en) && StringUtils.isNotBlank(value_cht)){
+			    		value=value_en+"|"+value_cht;
+			    	}else{
+			    		value=value_en+value_cht;
+			    	}
+			    	
 				}
 			}
 			jsonObject.put(key, value);
