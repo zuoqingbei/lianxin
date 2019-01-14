@@ -133,7 +133,7 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String  value_cht=TransApi.Trans("陈少杰*:*%","cht");
+		String  value_cht=TransApi.Trans("陈少杰","en");
 		System.out.println(value_cht);
 
 		 

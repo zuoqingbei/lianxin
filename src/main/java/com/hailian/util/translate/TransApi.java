@@ -12,15 +12,19 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+import com.hailian.util.Config;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 public class TransApi {	 
+	public static final String appId = Config.getStr("appid");//百度翻译appid
+	public static final String secretkey = Config.getStr("secretkey");//百度翻译秘钥
 	public static String Trans(String q,String targetlanguage) {//targetlanguage目标语言  en英语  cht中文繁体
-//         String appid="20180817000195393";
-         String appid="20181213000247765";
+         String appid=appId;
+//         String appid="20181213000247765";
          String salt=String.valueOf(new Random().nextInt(100));
-//         String sign=appid+q+salt+"4YtrvyuJWnTOgWplWAQ8";
-         String sign=appid+q+salt+"HN0OWJ2NVBDvAAbjE0Z5";
+         String sign=appid+q+salt+secretkey;
+//         String sign=appid+q+salt+"HN0OWJ2NVBDvAAbjE0Z5";
          MessageDigest md5;
  		try {
  			md5 = MessageDigest.getInstance("MD5");
