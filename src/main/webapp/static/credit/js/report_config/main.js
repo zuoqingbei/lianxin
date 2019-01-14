@@ -1391,7 +1391,7 @@ let ReportConfig = {
             			if(data.statusCode === 1) {
             				Public.message("success",this.isAdd?'新增成功！':'修改成功！')
             				//刷新数据
-            				this.refreshTable($("#table"+item));
+        					_this.refreshTable($("#table"+item));
             			}else {
             				Public.message("error",data.message)
             			}

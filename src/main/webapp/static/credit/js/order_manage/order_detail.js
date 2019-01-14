@@ -870,7 +870,7 @@ let OrderDetail = {
         for (let i = 0; i < 12; i++) {
             $ul.append($li.clone().children('span:eq(0)').text(this.processNames[i]).end());
         }
-        $ul.children('li:eq(7)').after($li.clone().css("visibility", 'hidden')).after('<br>');
+        $ul.children('li:eq(7)').after('<br>').next().next().css("margin-left",'10.5rem');
         return $ul;
     },
     /**
