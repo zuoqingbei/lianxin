@@ -896,15 +896,20 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @param sysLanguage
      */
     public static String dictIdToString(String id,String sysLanguage) {
-        Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
-        SysDictDetail sysDict = cache.get(Integer.parseInt(id));
-        if(sysDict!=null){
-            //英文
-            if("613".equals(sysLanguage)){
-                return sysDict.get("detail_name_en") + "";
-            }else{
-                return sysDict.get("detail_name") + "";
+        //判断id必须是数字
+        if (id.matches("-?[0-9]+.*[0-9]*")){
+            Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
+            SysDictDetail sysDict = cache.get(Integer.parseInt(id));
+            if (sysDict != null) {
+                //英文
+                if ("613".equals(sysLanguage)) {
+                    return sysDict.get("detail_name_en") + "";
+                } else {
+                    return sysDict.get("detail_name") + "";
+                }
             }
+        } else {
+            System.out.println("此信息输出不影响程序往下运行，异常id=" + id);
         }
         return "";
     }
