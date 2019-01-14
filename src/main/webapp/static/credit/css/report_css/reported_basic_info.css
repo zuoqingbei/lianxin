@@ -4,7 +4,9 @@
 	word-break:break-all;
 /* 	min-width:8rem; */
 }
-
+.fixed-table-footer table {
+	table-layout:fixed;
+}
 
 
 #container {
