@@ -251,6 +251,15 @@ public class BaseWord {
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if("select".equals(fieldType)) {
                     value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "";
+                }else if("money".equals(fieldType)) {
+                    //处理千位符号
+                    try {
+                        DecimalFormat df = new DecimalFormat("###,###.##");
+                        NumberFormat nf = NumberFormat.getInstance();
+                        value = df.format(nf.parse(value));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 } else if("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 } else {
@@ -296,31 +305,31 @@ public class BaseWord {
      * @param cols
      * @param reportType
      */
-    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType){
+    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType) {
         RowRenderData rowRenderData = null;
         TableStyle tableStyle = new TableStyle();
         Object[] colSize = cols.keySet().toArray();
-        //102红印的不显示表头，其他显示表头
-        if(!ReportTypeCons.ROC_HY.equals(reportType)){
-            TextRenderData[] header = new TextRenderData[colSize.length];
-            int i=0;
-            for(String column : cols.keySet()) {
-                String value = cols.get(column).split("\\|")[0];
-                Style style = new Style();
-                //style.setBold(true);
-                //102下划线
-                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                    //style.setFontFamily("新细明体（PMingLiU）");
-                    style.setUnderLine(true);
-                    style.setFontSize(11);
-                }
-                header[i] = new TextRenderData(value,style);
-                i++;
+        TextRenderData[] header = new TextRenderData[colSize.length];
+        int i = 0;
+        for (String column : cols.keySet()) {
+            String value = cols.get(column).split("\\|")[0];
+            Style style = new Style();
+            //102下划线
+            if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+                //style.setFontFamily("新细明体（PMingLiU）");
+                style.setUnderLine(true);
+                style.setFontSize(11);
+            } else if (ReportTypeCons.ROC_HY.equals(reportType)) {
+                //四号字体
+                style.setFontSize(14);
+                style.setBold(true);
             }
-            //表头居中
-            rowRenderData = RowRenderData.build(header);
-            rowRenderData.setStyle(tableStyle);
+            header[i] = new TextRenderData(value, style);
+            i++;
         }
+        //表头居中
+        rowRenderData = RowRenderData.build(header);
+        rowRenderData.setStyle(tableStyle);
         return rowRenderData;
     }
 
