@@ -77,6 +77,8 @@ let ReportConfig = {
     				_this.tableDataArr[index]=data
     				let rows = data.rows
     				rows.forEach((item,index)=>{
+    					//增加一列序号
+    					item["order_num"] = index+1
     					if(item.brand_url) {
     						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
 							item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
@@ -121,6 +123,8 @@ let ReportConfig = {
         			_this.tableDataArrEn[index]=data
         			let rows = data.rows
         			rows.forEach((item,index)=>{
+        				//增加一列序号
+    					item["order_num"] = index+1
     					if(item.brand_url) {
     						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
     						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
@@ -150,6 +154,7 @@ let ReportConfig = {
     	if(!a){return}
     	let _this = this
     	let arr = []
+    	a.unshift({temp_name: "序号",column_name:"order_num"})
 		a.forEach((ele,index)=>{
 			if(ele.temp_name !== '操作' && ele.temp_name !== 'Operation'){
 				if(ele.field_type === 'money') {

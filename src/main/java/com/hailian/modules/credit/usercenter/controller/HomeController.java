@@ -187,10 +187,11 @@ public class HomeController extends BaseProjectController {
 		}
 		Collections.sort(length);
 		for(int i=0;i<length2.size();i++) {
-			if(length2.get(i)==length.get(length.size()-1)) {
-				size=i+1;
-			}
-				
+            if(length.size()>0) {
+                if (length2.get(i) == length.get(length.size() - 1)) {
+                    size = i + 1;
+                }
+            }
 		}
 		}
 		//绑定订单信息和公司信息

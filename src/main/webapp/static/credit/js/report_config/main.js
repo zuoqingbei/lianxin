@@ -65,6 +65,8 @@ let ReportConfig = {
     				}
     				let rows = data.rows
     				rows.forEach((item,index)=>{
+    					//增加一列序号
+    					item["order_num"] = index+1
     					if(item.brand_url) {
     						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
     						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
@@ -95,6 +97,8 @@ let ReportConfig = {
         	function columns(tempI,tempId){
         		
         		let arr = []
+        		//增加一列序号
+        		contents.unshift({temp_name: "序号",column_name:"order_num"})
         		contents.forEach((ele,index)=>{
         			if(ele.temp_name !== '操作'){
         				if(ele.field_type === 'money') {
@@ -145,7 +149,7 @@ let ReportConfig = {
             							}
             							if($("#"+id).is('select')) {
             								//如果是select
-            								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
+        									$("#"+id).find("option[m-detail-name='"+row[anotherId]+"']").attr("selected",true);
             							}else {
             								if($("#"+id).hasClass("money-checked")){
             									$("#"+id).val(Number(row[anotherId].replace(/,/g,"")).toLocaleString('en-US'))

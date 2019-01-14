@@ -60,12 +60,20 @@ let ReportConfig = {
     				console.log(data)
     				let rows = data.rows
     				rows.forEach((item,index)=>{
+    					//增加一列序号
+    					item["order_num"] = index+1
     					if(item.brand_url) {
     						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
     						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
     					}
     				})
     				$table.bootstrapTable("load",rows)
+					$(".monyCol").each((index,item)=>{
+    					if(!$(item).attr("data-field")){
+    						//不是表头
+    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+    					}
+    				})
     				setTimeout(() => {
 	    				if(rows.length < 1) {
 	    					$table.parents(".fixed-table-container").css("height","80px!important")
@@ -81,6 +89,8 @@ let ReportConfig = {
         	function columns(tempI,tempId){
         		
         		let arr = []
+        		//增加一列序号
+        		contents.unshift({temp_name: "序号",column_name:"order_num"})
         		contents.forEach((ele,index)=>{
         			if(ele.temp_name !== '操作'){
         				arr.push({
@@ -109,8 +119,12 @@ let ReportConfig = {
             								//如果是select
             								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
             							}else {
-            								
-            								$("#"+id).val(row[anotherId])
+            								if($("#"+id).hasClass("money-checked")){
+            									$("#"+id).val(Number(row[anotherId].replace(/,/g,"")).toLocaleString('en-US'))
+            								}else {
+            									
+            									$("#"+id).val(row[anotherId])
+            								}
             							}
             						})
             					},
@@ -185,7 +199,7 @@ let ReportConfig = {
     							</div>`
     					break;
     				case 'money':
-    					formGroup += `<div class="form-inline justify-content-center my-3">
+    					modalBody += `<div class="form-inline justify-content-center my-3">
     						<label for="" class="control-label">${ele.temp_name}</label>
     						<input type="text" class="form-control money-checked" id="${ele.column_name + '_' + myIndex}" placeholder="" name=${ele.column_name} reg=${ele.reg_validation}>
     						<p class="errorInfo">${item.error_msg}</p>
