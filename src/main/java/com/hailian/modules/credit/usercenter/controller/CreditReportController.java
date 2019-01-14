@@ -24,7 +24,7 @@ public class CreditReportController extends BaseProjectController{
     public void report() {
         String sql = "select t.*,s1.detail_name as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
         Integer userid = getSessionUser().getUserid();
-        CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, "778377");
+        CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, "778401");
         String reportType = order.getStr("report_type");
         String report_language = order.getStr("report_language");
 
