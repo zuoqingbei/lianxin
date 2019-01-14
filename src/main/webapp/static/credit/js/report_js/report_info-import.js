@@ -286,7 +286,16 @@ let Verify = {
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
                     		}
-                    	})
+                    	});
+                        let $fixedTableBodyColumns = $('.fixed-table-body-columns');
+                        setTimeout(function () {
+                            $('#table tbody tr').each(function (index,item) {
+                                // $(item).height($fixedTableBodyColumns.find('tbody tr').eq(index).height()+1);
+                                $fixedTableBodyColumns.find('tr').eq(index).css('height',$(item).height());
+                                console.log('表头行高:'+$fixedTableBodyColumns.find('tr').eq(index).height(),
+                                    '正常行高:'+$(item).height())
+                            });
+                        },500)
                     }
                   });
         // sometimes footer render error.
