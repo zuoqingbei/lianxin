@@ -72,13 +72,10 @@ public class BaseInfoZh {
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, Object> map = new HashMap<String, Object>();
-
         //获取报告信息
         ReportTypeModel reportTypeModel = ReportTypeModel.dao.findById(reportType);
         //报告文件路劲
         String tplPath = "http://"+ ip + ":" + serverPort +"/"+ reportTypeModel.getStr("tpl_path");
-        //报告名称
-        String reportName = reportTypeModel.getStr("name");
         //客户参考号作为发送的报告名称
         String referenceNum = order.getStr("reference_num")!=null?order.getStr("reference_num"):"000000";
         while(referenceNum.length()<7) {
@@ -86,33 +83,31 @@ public class BaseInfoZh {
         }
         //订单编号
         String orderCode = order.getStr("num");
-
         //获取订单信息
         String customId = order.getStr("custom_id");
         String orderId = order.getInt("id") + "";
-
         //获取公司信息
         String sql = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
         CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
         String companyId = companyInfo.getInt("id")+"";
-
         //报告速度
         map.put("speed",order.getStr("speedName"));
         //客户参考号
         map.put("reference_num",referenceNum);
-
         //订单公司名称
         if(ReportTypeCons.ROC_EN.equals(reportType)){
             map.put("company", order.getStr("right_company_name_en"));
         }else{
             map.put("company", companyInfo.getStr("name_en"));
         }
-
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
         map.put("order_code",orderCode);
 
+        //报告名称
+        //String reportName = reportTypeModel.getStr("name");
+        String reportName = referenceNum;
         //保存的文件名
         //String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
         String _prePath = webRoot + "/upload/tmp/" + orderCode;
