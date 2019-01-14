@@ -645,19 +645,19 @@ public class BaseInfoZh {
         String overDetail = statementsConf.getStr("overall_financial_condition_detail");
 
         StringBuffer str = new StringBuffer();
-        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup,sysLanguage) : ""));
+        //str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
-        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup,sysLanguage) : ""));
+        //str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(liquDetail);
         str.append("\n");
-        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup,sysLanguage) : ""));
+        //str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(leverDetail);
         str.append("\n");
-        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,sysLanguage) : ""));
+        //str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,sysLanguage) : ""));
         str.append("\n");
         str.append(overDetail);
         return str.toString();

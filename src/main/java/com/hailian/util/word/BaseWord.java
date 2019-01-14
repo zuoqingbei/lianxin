@@ -1,15 +1,9 @@
 package com.hailian.util.word;
 
-import java.awt.*;
-import java.awt.geom.Ellipse2D;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
-
 import com.deepoove.poi.XWPFTemplate;
-import com.deepoove.poi.data.*;
+import com.deepoove.poi.data.MiniTableRenderData;
+import com.deepoove.poi.data.RowRenderData;
+import com.deepoove.poi.data.TextRenderData;
 import com.deepoove.poi.data.style.Style;
 import com.deepoove.poi.data.style.TableStyle;
 import com.hailian.api.constant.ReportTypeCons;
@@ -21,13 +15,13 @@ import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataControl
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.modules.front.template.TemplateDictService;
-import com.hailian.system.dict.DictCache;
-import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.jfree.chart.*;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.StandardChartTheme;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
@@ -36,18 +30,25 @@ import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
-import org.jfree.chart.plot.*;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.renderer.category.BarRenderer;
-import org.jfree.chart.renderer.category.BarRenderer3D;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DatasetUtilities;
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.TextAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
+
+import java.awt.*;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
 
 /**
  * poi-tl
@@ -64,12 +65,15 @@ public class BaseWord {
     public static final String ftpStore = Config.getStr("ftp_store");//ftp文件夹
 
     private static TemplateDictService template = new TemplateDictService();
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat sdf_zh = new SimpleDateFormat("yyyy年MM月dd日");
+    private static SimpleDateFormat sdf_en = new SimpleDateFormat("MMM dd,yyyy",Locale.ENGLISH);
 
     public static void main(String args[]) throws Exception{
-        System.out.println("null".matches("-?[0-9]+.*[0-9]*"));
-
+        DecimalFormat demo=new DecimalFormat("###,###.##");
+        NumberFormat nf = NumberFormat.getInstance();
+        System.out.println(demo.format(nf.parse("5000.1")));
     }
-
 
     public static void tableData(RowRenderData header2,Map<String,Object> data){
 
@@ -112,7 +116,6 @@ public class BaseWord {
             }
         }
     }
-
 
     /**
      * 根据网络路径生成word基础类
@@ -168,7 +171,6 @@ public class BaseWord {
         }
     }
 
-
     /**
      * 生成表格 - 竖表
      * @param child
@@ -198,7 +200,7 @@ public class BaseWord {
                 String fieldType = strs.length == 2 ? strs[1] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,sysLanguage) : "N/A";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
                 } else {
                     value = !"".equals(value) ? value : "N/A";
                 }
@@ -214,7 +216,6 @@ public class BaseWord {
         }
         return new MiniTableRenderData(rowList);
     }
-
 
     /**
      * 生成表格 - 横表
@@ -249,7 +250,7 @@ public class BaseWord {
                 Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,sysLanguage) : "";
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "";
                 } else if("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 } else {
@@ -309,7 +310,7 @@ public class BaseWord {
                 //style.setBold(true);
                 //102下划线
                 if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                    style.setFontFamily("新细明体（PMingLiU）");
+                    //style.setFontFamily("新细明体（PMingLiU）");
                     style.setUnderLine(true);
                     style.setFontSize(11);
                 }
@@ -354,19 +355,41 @@ public class BaseWord {
                     System.out.println(1);
                 }
                 String[] strs = cols.get(column).split("\\|");
-                String fieldType = strs.length == 3 ? strs[1] : "";
-                String getSource = strs.length == 3 ? strs[2] : "";
+                String fieldType = strs.length > 1 ? strs[1] : "";
+                String getSource = strs.length > 2 ? strs[2] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
                     //102chiness 等级状态
                     //System.out.println(ReportTypeCons.ROC_ZH.equals(reportType));
                     //System.out.println("registration_status".equals(column));
-                    if((ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) && ("registration_status".equals(column) || "year_result".equals(column) || "roc_registration_status".equals(column))){
+                    if((ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType))
+                            && ("registration_status".equals(column) || "year_result".equals(column) || "roc_registration_status".equals(column))){
                         Map<String,String> params = parseUrl(getSource);
                         String type = params.get("type");
                         value = !"".equals(value) ? template.getSysDictDetailStringWord(reportType,type,value) : "N/A";
                     }else{
-                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, sysLanguage) : "N/A";
+                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType, sysLanguage) : "N/A";
+                    }
+                }else if("date".equals(fieldType)){
+                    try {
+                        //处理日期格式
+                        Date date = sdf.parse(value.trim());
+                        if(ReportTypeCons.ROC_EN.equals(reportType)){
+                            value = sdf_en.format(date);
+                        }else{
+                            value = sdf_zh.format(date);
+                        }
+                    }catch (ParseException e){
+                        e.printStackTrace();
+                    }
+                }else if("money".equals(fieldType)) {
+                    //处理千位符号
+                    try {
+                        DecimalFormat df = new DecimalFormat("###,###.##");
+                        NumberFormat nf = NumberFormat.getInstance();
+                        value = df.format(nf.parse(value));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 } else {
                     value = !"".equals(value) ? value : "N/A";
