@@ -67,7 +67,7 @@ public class BaseWord {
     private static TemplateDictService template = new TemplateDictService();
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
     private static SimpleDateFormat sdf_zh = new SimpleDateFormat("yyyy年MM月dd日");
-    private static SimpleDateFormat sdf_en = new SimpleDateFormat("MMM dd,yyyy",Locale.ENGLISH);
+    private static SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
 
     public static void main(String args[]) throws Exception{
         DecimalFormat demo=new DecimalFormat("###,###.##");
@@ -384,7 +384,7 @@ public class BaseWord {
                         //处理日期格式
                         Date date = sdf.parse(value.trim());
                         if(ReportTypeCons.ROC_EN.equals(reportType)){
-                            value = sdf_en.format(date);
+                            value = sdf_en_hy.format(date);
                         }else{
                             value = sdf_zh.format(date);
                         }
@@ -401,7 +401,21 @@ public class BaseWord {
                         e.printStackTrace();
                     }
                 } else {
-                    value = !"".equals(value) ? value : "N/A";
+                    if("business_date_end".equals(column)){
+                        //营业期限
+                        try {
+                            Date date = sdf.parse(value.trim());
+                            if (ReportTypeCons.ROC_EN.equals(reportType)) {
+                                value = sdf_en_hy.format(date);
+                            } else {
+                                value = sdf_zh.format(date);
+                            }
+                        }catch (ParseException e){
+                            e.printStackTrace();
+                        }
+                    }else{
+                        value = !"".equals(value) ? value : "N/A";
+                    }
                 }
                 map.put(column, value);
             }
