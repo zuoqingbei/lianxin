@@ -176,33 +176,32 @@ public class TemplateDictService extends BaseService {
      * @return
      */
     public String getSysDictDetailStringWord(String reportType,String type,Object selectedId) {
-        StringBuffer sb=new StringBuffer();
-        Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
-        //SysDictDetail sysDict = cache.get(Integer.parseInt(selectedId+""));
-        //if(sysDict!=null){
-            //String type = sysDict.get("dict_type");
-            List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
-            listDetail.add(getDefaultDictDetail(type));
-            listDetail.addAll(DictCache.getSysDictDetailByType(type));
-            for(SysDictDetail detail:listDetail){
-                String detail_id = detail.get("detail_id").toString();
-                System.out.println("detail_id="+detail_id);
-                if(!"".equals(detail_id)) {
-                    String detail_name = "";
-                    if(ReportTypeCons.ROC_EN.equals(reportType)){
-                        detail_name = detail.get("detail_name_en");
-                    }else{
-                        detail_name = detail.get("detail_name");
-                    }
-                    if (selectedId != null && selectedId.toString().equals(detail_id)) {
-                        sb.append(new String(new int[]{0x2611}, 0, 1) + detail_name + " ");
-                    } else {
-                        sb.append(new String(new int[]{0x2610}, 0, 1) + detail_name + " ");
-                    }
+        StringBuffer sb = new StringBuffer();
+        List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
+        listDetail.add(getDefaultDictDetail(type));
+        listDetail.addAll(DictCache.getSysDictDetailByType(type));
+        for (SysDictDetail detail : listDetail) {
+            String detail_id = detail.get("detail_id").toString();
+            System.out.println("detail_id=" + detail_id);
+            if (!"".equals(detail_id)) {
+                String detail_name = "";
+                if (ReportTypeCons.ROC_EN.equals(reportType)) {
+                    detail_name = detail.get("detail_name_en");
+                } else {
+                    detail_name = detail.get("detail_name");
+                }
+                if (selectedId != null && selectedId.toString().equals(detail_id)) {
+                    sb.append(new String(new int[]{0x2611}, 0, 1) + detail_name + " / ");
+                } else {
+                    sb.append(new String(new int[]{0x2610}, 0, 1) + detail_name + " / ");
                 }
             }
-        //}
-        return sb.toString();
+        }
+        String result = sb.toString();
+        if(result.length()>3) {
+            result = result.substring(0, result.length() - 3);
+        }
+        return result;
     }
 	
 	public String getSysDictDetailString3(String type,Object selectedId,String disPalyCol) {

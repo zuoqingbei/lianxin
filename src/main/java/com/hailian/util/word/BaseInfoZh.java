@@ -50,8 +50,11 @@ public class BaseInfoZh {
             //System.out.println(file.getName());
             //BaseWord.buildWord(null, iputstream, "");
 
-            String str = BaseInfoZh.downloadFile("http://tm-image.qichacha.com/a460ea8b52eda230294f1bb618c3dfc8.jpg","h:/");
-            System.out.println(str);
+            //String str = BaseInfoZh.downloadFile("http://tm-image.qichacha.com/a460ea8b52eda230294f1bb618c3dfc8.jpg","h:/");
+            //System.out.println(str);
+
+            //String str = String.format("%010s", "a12");
+            //System.out.println(str);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -76,8 +79,13 @@ public class BaseInfoZh {
         String tplPath = "http://"+ ip + ":" + serverPort +"/"+ reportTypeModel.getStr("tpl_path");
         //报告名称
         String reportName = reportTypeModel.getStr("name");
-
-
+        //客户参考号作为发送的报告名称
+        String referenceNum = order.getStr("reference_num")!=null?order.getStr("reference_num"):"000000";
+        while(referenceNum.length()<7) {
+                referenceNum = "0" + referenceNum;
+        }
+        //订单编号
+        String orderCode = order.getStr("num");
 
         //获取订单信息
         String customId = order.getStr("custom_id");
@@ -87,12 +95,12 @@ public class BaseInfoZh {
         String sql = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
         CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
         String companyId = companyInfo.getInt("id")+"";
-        //String sysLanguage = companyInfo.getInt("sys_language") + "";
-        String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
+
         //报告速度
         map.put("speed",order.getStr("speedName"));
         //客户参考号
-        map.put("reference_num",order.getStr("reference_num"));
+        map.put("reference_num",referenceNum);
+
         //订单公司名称
         if(ReportTypeCons.ROC_EN.equals(reportType)){
             map.put("company", order.getStr("right_company_name_en"));
@@ -103,15 +111,21 @@ public class BaseInfoZh {
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
-        map.put("order_code",order.getStr("num"));
+        map.put("order_code",orderCode);
 
+        //保存的文件名
+        //String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
+        String _prePath = webRoot + "/upload/tmp/" + orderCode;
+        if(!new File(_prePath).exists()){
+            new File(_prePath).mkdir();
+        }
+        _prePath = _prePath + "/" + referenceNum;
 
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
         for (CreditReportModuleConf crmc : crmcs) {
             //找到当前父节点下的子节点  type=2表示详情
             List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "4");
-            //String tempName = crmc.getStr("temp_name");
             String source = crmc.getStr("get_source");
             String confId = crmc.getInt("id") + "";
             String moduleType = crmc.getStr("small_module_type");
@@ -372,12 +386,12 @@ public class BaseInfoZh {
                 excelPath = financialExcel(financeType+"",finanId,_prePath,orderId,userid,begin,end);
             }
             //财务-评价
-            map.put("financial_eval", financialEval(statementsConf,sysLanguage));
+            map.put("financial_eval", financialEval(statementsConf,reportType,sysLanguage));
             
         }
 
         //生成word
-        BaseWord.buildNetWord(map, tplPath, _prePath + ".docx");
+        BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
         //重新添加图片并生成word
         String wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
         //发送邮件
@@ -416,8 +430,8 @@ public class BaseInfoZh {
                 map.put("img" + id, new PictureRenderData(120, 120, downloadFile(url, brandPath)));
             }
         }
-        String sourcePath = tarPath + ".docx";
-        String targetPath = tarPath + "_p.docx";
+        String sourcePath = tarPath + "_p.docx";
+        String targetPath = tarPath + ".docx";
         BaseWord.buildWord(map, sourcePath, targetPath);
         //上传文件
         return BaseWord.uploadReport(targetPath, orderId, userid);
@@ -630,10 +644,11 @@ public class BaseInfoZh {
     /**
      * 财务模块-评价
      * @param statementsConf
+     * @param reportType
      * @param sysLanguage
      * @return
      */
-    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf,String sysLanguage) {
+    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf,String reportType,String sysLanguage) {
         ReportInfoGetDataController reportInfoGetDataController = new ReportInfoGetDataController();
         String profSumup = getIntToString(statementsConf.getInt("profitablity_sumup"));
         String profDetail = statementsConf.getStr("profitablity_detail");
@@ -645,19 +660,19 @@ public class BaseInfoZh {
         String overDetail = statementsConf.getStr("overall_financial_condition_detail");
 
         StringBuffer str = new StringBuffer();
-        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup,sysLanguage) : ""));
+        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup,reportType,sysLanguage) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
-        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup,sysLanguage) : ""));
+        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup,reportType,sysLanguage) : ""));
         str.append("\n");
         str.append(liquDetail);
         str.append("\n");
-        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup,sysLanguage) : ""));
+        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup,reportType,sysLanguage) : ""));
         str.append("\n");
         str.append(leverDetail);
         str.append("\n");
-        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,sysLanguage) : ""));
+        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,reportType,sysLanguage) : ""));
         str.append("\n");
         str.append(overDetail);
         return str.toString();
