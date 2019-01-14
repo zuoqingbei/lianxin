@@ -13,7 +13,7 @@ let Filing = {
         this.popperFilter();
         this.modalSubmit(this.numarr);
         this.fileEvent();
-        // this.select();
+        this.select();
         this. dl_btn3();
     },
  dl_btn3(){
@@ -39,7 +39,44 @@ let Filing = {
     		)	
     	})
     },
-
+    select(){
+      	 
+    	  console.log("234324");
+           $.ajax({
+      			type:"get",
+      			 url : BASE_PATH+"credit/front/orderProcess/getAgent",
+      			dataType:"json",
+      			success:function(data){ 
+      				var html="";
+      				 html+="<option value='-1' selected='selected'>请选择</option>"
+      				for(item in data){
+      			 	html+="<option  m-type='"+data[item].agent_id+"' value='"+data[item].agent_id+"'>"+data[item].agent_id+"</option>";
+      	        }
+      	        
+      	        $("select[name='agency_id2']").html(html);
+      	        }
+           	
+      		})
+      		console.log($("#agency_id2")[0]);
+            $("#agency_id2").on("change",()=>{
+  	    	var agentId=$("#agency_id2 option:selected").val();
+  	    	console.log($("#agency_id2")[0]);
+  	    	var html="";
+  		 html+="<option value='-1' selected='selected'>请选择</option>"
+  	 	$.post('/credit/front/orderProcess/getAgentCate',{"agentid":agentId},function(data){
+  	 		
+  	 	console.log(data)
+  	  for(item in data){
+  		html+="<option  m-type='"+data[item].id+"' value='"+data[item].agent_category+"'>"+data[item].categoryName+"</option>";	        	
+          }
+          
+          $("select[name='attr.agentcategory']").html(html);
+         
+       })
+  	    })
+      
+   
+  },
     fileEvent(){
     	this.fileNum = 0;
     	let that = this;
