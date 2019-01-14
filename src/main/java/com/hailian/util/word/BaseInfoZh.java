@@ -372,7 +372,7 @@ public class BaseInfoZh {
                 excelPath = financialExcel(financeType+"",finanId,_prePath,orderId,userid,begin,end);
             }
             //财务-评价
-            map.put("financial_eval", financialEval(statementsConf,sysLanguage));
+            map.put("financial_eval", financialEval(statementsConf,reportType,sysLanguage));
             
         }
 
@@ -630,10 +630,11 @@ public class BaseInfoZh {
     /**
      * 财务模块-评价
      * @param statementsConf
+     * @param reportType
      * @param sysLanguage
      * @return
      */
-    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf,String sysLanguage) {
+    public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf,String reportType,String sysLanguage) {
         ReportInfoGetDataController reportInfoGetDataController = new ReportInfoGetDataController();
         String profSumup = getIntToString(statementsConf.getInt("profitablity_sumup"));
         String profDetail = statementsConf.getStr("profitablity_detail");
@@ -645,19 +646,19 @@ public class BaseInfoZh {
         String overDetail = statementsConf.getStr("overall_financial_condition_detail");
 
         StringBuffer str = new StringBuffer();
-        //str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup,sysLanguage) : ""));
+        str.append("盈利能力：" + (!"".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup,reportType,sysLanguage) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
-        //str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup,sysLanguage) : ""));
+        str.append("周转能力：" + (!"".equals(liquSumup) ? reportInfoGetDataController.dictIdToString(liquSumup,reportType,sysLanguage) : ""));
         str.append("\n");
         str.append(liquDetail);
         str.append("\n");
-        //str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup,sysLanguage) : ""));
+        str.append("融资能力：" + (!"".equals(leverSumup) ? reportInfoGetDataController.dictIdToString(leverSumup,reportType,sysLanguage) : ""));
         str.append("\n");
         str.append(leverDetail);
         str.append("\n");
-        //str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,sysLanguage) : ""));
+        str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,reportType,sysLanguage) : ""));
         str.append("\n");
         str.append(overDetail);
         return str.toString();
