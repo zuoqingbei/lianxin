@@ -18,6 +18,7 @@ import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -58,6 +59,8 @@ import java.util.List;
  * 2.编码问题，可能会造成word生成失败
  */
 public class BaseWord {
+    public static Logger log= Logger.getLogger(BaseWord.class);
+
     public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
     public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
     public static final String userName = Config.getStr("ftp_userName");//域用户名
@@ -360,13 +363,14 @@ public class BaseWord {
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                if("register_codes".equals(column)){
-                    System.out.println(1);
+                if("company_type".equals(column)){
+                    log.error("---------company_type-------------");
                 }
                 String[] strs = cols.get(column).split("\\|");
                 String fieldType = strs.length > 1 ? strs[1] : "";
                 String getSource = strs.length > 2 ? strs[2] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
+
                 if ("select".equals(fieldType)) {
                     //102chiness 等级状态
                     //System.out.println(ReportTypeCons.ROC_ZH.equals(reportType));
@@ -417,6 +421,7 @@ public class BaseWord {
                         value = !"".equals(value) ? value : "N/A";
                     }
                 }
+                log.error("whc 测试输出：column=" + column + "  fieldType=" + fieldType + " value=" + value);
                 map.put(column, value);
             }
         }
