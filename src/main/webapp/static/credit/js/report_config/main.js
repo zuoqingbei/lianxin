@@ -140,6 +140,7 @@ let ReportConfig = {
     	    					$table.parents(".fixed-table-container").css("height","180px")
     	    				}
         				 }, 200);
+        				
         			}
             	});
     		}
@@ -189,7 +190,9 @@ let ReportConfig = {
                         					}
                         					
                         				})
-                        				
+                        				if(typeof total === 'number'){
+                        					total = total.toFixed(2)
+                        				}
                         				return total
                         			}
                         		},

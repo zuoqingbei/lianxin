@@ -14,7 +14,7 @@ let Index = {
     contronNewAdd(){
         //报告员隐藏新建订单
         var con= JSON.parse(sessionStorage.getItem('roleIds'));
-        console.log(con);
+        if(!con)return;
         if(con.indexOf(2)>-1){
             $('#newAdd').css({'height':'0','padding':'0','overflow':'hidden'})
         }
@@ -77,7 +77,6 @@ let Index = {
 				}
 			});
        		getMessage();
-       		console.log('index')
       })
 
       /**点击重置按钮 */
@@ -95,7 +94,7 @@ let Index = {
         let proxy = $("#proxy option:selected").val();//代理
         let country = $("#country option:selected").val();//国家
 
-        console.log(companyName,orderCName,deadDate,client,proxy,country)
+//        console.log(companyName,orderCName,deadDate,client,proxy,country)
 
         /***发起ajax请求 获取表格数据*/
 
@@ -260,7 +259,7 @@ let Index = {
             sortName:"receiver_date",
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
             queryParams: function (params) {//自定义参数，这里的参数是传给后台的，我这是是分页用的  
-            	console.log(params);
+            	//console.log(params);
             	_this.paramsObj = params
               return {//这里的params是table提供的  
                   pageNo: params.pageNumber,//页码
@@ -279,16 +278,16 @@ let Index = {
               };  
             },
             onLoadSuccess:(data)=>{
-            	console.log(data)
+//            	console.log(data)
             	let rows = data.rows;
             	rows.forEach((item,index)=>{
             		let dead_time = new Date(item.end_date).getTime();//截止日期
             		let now_time = new Date(new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()).getTime();
             		let diffValue = now_time - dead_time; //差值
-            		console.log(diffValue)
+//            		console.log(diffValue)
             		if(diffValue > 0) {
             			//已过期
-            			console.log(index)
+            			//console.log(index)
             			$("#table tr").eq(index+1).addClass("order-dead")
             			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-dead")
             		}else if(diffValue === 0) {
@@ -328,7 +327,7 @@ function loadtable(){
                    checked[i] = $(this).val();
                    checkchar+=checked[i]+","
              });
-             console.log(checkchar);
+            // console.log(checkchar);
     		$.ajax({
     			type:"post",
     			url:"/credit/front/home/list",
