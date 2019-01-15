@@ -258,7 +258,7 @@ let ReportConfig = {
 				arr.push({
 					title:ele.temp_name,
 					field: 'operate',
-					width: 1/a.length,
+//					width: 1/a.length,
 					events: {
     					"click .edit":(e,value,row,index)=>{
     						_this.isAdd = false
@@ -1385,7 +1385,7 @@ let ReportConfig = {
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="table-layout: fixed;position: relative"
 				                				>
 				                				</table>
                 				</div>`
@@ -1399,7 +1399,7 @@ let ReportConfig = {
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="table-layout: fixed;position: relative"
 				                				>
 				                				</table>
                 				</div>`
@@ -1701,7 +1701,7 @@ let ReportConfig = {
             			contentHtml += `<div class="table-content1" style="background:#fff">
 			                				<table id="table${index}En"
 			                				data-toggle="table"
-			                				style="position: relative"
+			                				style="position: relative;table-layout: fixed"
 			                				>
 			                				</table>
             				</div>`
@@ -1715,7 +1715,7 @@ let ReportConfig = {
             			contentHtml += `<div class="table-content1" style="background:#fff">
 			                				<table id="table${index}En"
 			                				data-toggle="table"
-			                				style="position: relative"
+			                				style="position: relative;table-layout: fixed"
 			                				>
 			                				</table>
             				</div>`
