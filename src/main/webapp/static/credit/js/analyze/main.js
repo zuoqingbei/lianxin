@@ -189,7 +189,12 @@ let ReportConfig = {
                         					}
                         					
                         				})
-                        				
+                        				if(typeof total === 'number'){
+                        					total = total.toFixed(2)
+                        				}
+                        				if(total === 'NaN'){
+                        					return
+                        				}
                         				return total
                         			}
                         		},

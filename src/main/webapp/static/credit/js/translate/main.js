@@ -7,6 +7,7 @@ let ReportConfig = {
 	cwConfigAlterSource:'',
 	currentDom:'',
 	tableRowIndex:null,
+	orderNum:'',
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -246,7 +247,12 @@ let ReportConfig = {
                 						}
                 					}
                 				})
-                				
+                				if(typeof total === 'number'){
+                					total = total.toFixed(2)
+                				}
+                				if(total === 'NaN'){
+                					return
+                				}
                 				return total
                 			}
                 		},
@@ -258,9 +264,11 @@ let ReportConfig = {
 				arr.push({
 					title:ele.temp_name,
 					field: 'operate',
-					width: 1/a.length,
+//					width: 1/a.length,
 					events: {
     					"click .edit":(e,value,row,index)=>{
+    						console.log(row)
+    						_this.orderNum = row.order_num
     						_this.isAdd = false
     						_this.rowId = row.id
     						//回显
@@ -1385,7 +1393,7 @@ let ReportConfig = {
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="table-layout: fixed;position: relative"
 				                				>
 				                				</table>
                 				</div>`
@@ -1399,7 +1407,7 @@ let ReportConfig = {
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="table-layout: fixed;position: relative"
 				                				>
 				                				</table>
                 				</div>`
@@ -1701,7 +1709,7 @@ let ReportConfig = {
             			contentHtml += `<div class="table-content1" style="background:#fff">
 			                				<table id="table${index}En"
 			                				data-toggle="table"
-			                				style="position: relative"
+			                				style="position: relative;table-layout: fixed"
 			                				>
 			                				</table>
             				</div>`
@@ -1715,7 +1723,7 @@ let ReportConfig = {
             			contentHtml += `<div class="table-content1" style="background:#fff">
 			                				<table id="table${index}En"
 			                				data-toggle="table"
-			                				style="position: relative"
+			                				style="position: relative;table-layout: fixed"
 			                				>
 			                				</table>
             				</div>`
@@ -1931,6 +1939,7 @@ let ReportConfig = {
 						dataJsonObj[i] = tempObj[i]
 					}
 				})
+				dataJsonObj["order_num"] = _this.orderNum  //每一行对应的ID
 				dataJsonObj["id"] = this.rowId  //每一行对应的ID
     			let data = $("#table"+item + 'En').bootstrapTable("getData")
     			data.splice(_this.tableRowIndex-1,1,dataJsonObj)
@@ -2074,6 +2083,7 @@ let ReportConfig = {
     				 delete ele["mySort"]
     				 delete ele["create_date"]
     				 delete ele["update_date"]
+    				 delete ele["order_num"]
     				 if(ele.id === ''){
     					 delete ele["id"]
     				 }
@@ -2129,6 +2139,7 @@ let ReportConfig = {
 				 delete ele["mySort"]
 				 delete ele["create_date"]
 				 delete ele["update_date"]
+				 delete ele["order_num"]
 				 if(ele.id === ''){
 					 delete ele["id"]
 				 }
