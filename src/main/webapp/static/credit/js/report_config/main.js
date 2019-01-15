@@ -193,6 +193,9 @@ let ReportConfig = {
                         				if(typeof total === 'number'){
                         					total = total.toFixed(2)
                         				}
+                        				if(total === 'NaN'){
+                        					return
+                        				}
                         				return total
                         			}
                         		},
@@ -1441,6 +1444,7 @@ let ReportConfig = {
 					}
 					
 					//调用form格式化数据函数
+					console.log($('#'+id))
 					let tempObj = this.getFormData($('#'+id));
 					for(let i in tempObj){
 						if(tempObj.hasOwnProperty(i))
