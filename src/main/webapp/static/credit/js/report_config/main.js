@@ -424,6 +424,7 @@ let ReportConfig = {
     	 */
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
+    	let _this = this
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
@@ -437,7 +438,7 @@ let ReportConfig = {
 				})
 			}
 			 paramObj["conf_id"] = conf_id
-			 paramObj["type"] = this.rows.company_type
+			 paramObj["type"] = _this.rows.report_type
 			 let temp;
 			 $.ajax({
 				 url,
