@@ -256,20 +256,18 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             //使用ehcache缓存数据
             System.out.println(tableName + sqlSuf);
             rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
-            //String type = getPara("type");
             if (StringUtils.isNotBlank(companyId)) {
                 //关联设置企业类型注释
                 CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);
                 if (StringUtils.isBlank(info.get("type_of_enterprise_remark"))) {
                     //企业类型注释是空，设置进去
-                    System.out.println(info.get("company_type")+"");
-                    SysDictDetail detail = SysDictDetail.dao.findById(info.get("company_type"));
+                    SysDictDetail detail = SysDictDetail.dao.findById(info.getStr("company_type"));
                     CreditCompanyInfo cmodel = new CreditCompanyInfo();
                     cmodel.set("id", companyId);
                     if (ReportTypeCons.ROC_ZH.equals(type)) {
-                        cmodel.set("type_of_enterprise_remark", detail.get("detail_remark"));
+                        cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
                     } else if (ReportTypeCons.ROC_EN.equals(type)) {
-                        cmodel.set("type_of_enterprise_remark", detail.get("detail_content"));
+                        cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));
                     }
                     cmodel.update();
                 }
