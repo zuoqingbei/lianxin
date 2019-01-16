@@ -928,6 +928,7 @@ let ReportConfig = {
                 	_this.tabChange();
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
+                	_this.companyTypeSelect()
             	    Public.tabFixed(".tab-bar",".main",120,90)
             	    Public.textAreaEvent();
             	    let firmArr = Array.from($(".firm-info"));
@@ -1180,9 +1181,8 @@ let ReportConfig = {
                 			_this.title.push(item.title)
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
-				                				style="table-layout: fixed;"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="position: relative;table-layout: fixed;"
 				                				>
 				                				</table>
 				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
@@ -1197,7 +1197,7 @@ let ReportConfig = {
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="position: relative;table-layout: fixed;"
 				                				>
 				                				</table>
 				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
@@ -1445,7 +1445,7 @@ let ReportConfig = {
 					
 					//调用form格式化数据函数
 					console.log($('#'+id))
-					let tempObj = this.getFormData($('#'+id));
+					let tempObj = this.getFormData($(item).children("label").next());
 					for(let i in tempObj){
 						if(tempObj.hasOwnProperty(i))
 						dataJsonObj[i] = tempObj[i]
@@ -1689,7 +1689,13 @@ let ReportConfig = {
     			 })
     		})
     	})
-    }
+    },
+    companyTypeSelect(){
+    	//企业类型选择关联企业类型注释
+    	$("select[name='company_type']").change((e)=>{
+    		console.info($(e.target).children("option:selected"))
+    	})
+    },
 }
 
 ReportConfig.init();

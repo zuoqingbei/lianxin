@@ -2,7 +2,8 @@
 .bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
 	white-space:normal;
 	word-break:break-all;
- 	min-width:8rem; 
+	word-wrap:break-word
+ /* 	width:auto;  */
 }
 .fixed-table-footer table {
 	table-layout:fixed;
@@ -10,6 +11,13 @@
 .bootstrap-table .fixed-table-footer .monyCol {
     padding-left: 1.5rem !important;
 }
+.fixed-table-container thead th .th-inner, .fixed-table-container tbody td .th-inner {
+    white-space: normal;
+}
+.bootstrap-table .table > thead > tr > th {
+    vertical-align: middle;
+}
+
 
 #container {
 	height:100%;
@@ -133,8 +141,8 @@ label {
     width: 11rem;
     justify-content: flex-end!important;
 }
-.operate a {
-    padding: 0 .5rem;
+.edit {
+    padding-right: 1rem;
 }
 .bg-f {
     min-height: auto;
