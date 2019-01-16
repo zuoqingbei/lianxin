@@ -300,7 +300,7 @@ public class CompanyService {
 		
 		return StartDate;
 	}
-	public void enterpriseGrabOther(String companyId,String companyName,String sys_language){
+	public void enterpriseGrabOther(String companyId,String companyName,String sys_language) throws Exception{
 		JSONObject caipanjson = HttpTest.getJudgmentDoc(companyName,"");//裁判文书
 		String caipanstatus = caipanjson.getString("Status");
 		if("200".equals(caipanstatus)){
