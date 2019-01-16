@@ -10,7 +10,22 @@
     font-size: 1.5em;
     overflow: hidden;
 }
-
+/*布局*/
+#l.fullScreen_map >*{
+    overflow: hidden;
+    outline: 1px dotted orange;
+    outline-offset: -1px;
+}
+#l.fullScreen_map >header{
+    flex: 0 0 19%;
+}
+#l.fullScreen_map >.btnGroup{
+    flex: 0 0 10%;
+}
+#l.fullScreen_map >.switchGroup{
+    flex: 0 0 71%;
+    display: flex;
+}
 #l.fullScreen_map header h1{
     line-height: 1.2em;
     /* font-weight: bold; */
@@ -19,9 +34,27 @@
     padding-top: 0;
     letter-spacing: 0.1em;
 }
+
+#l.fullScreen_map .sphere-left-top .myChart {
+    height: 34%;
+    margin: 20% 3%;
+}
+#l.fullScreen_map .sphere-left-bottom .chartBorder .myChart,
+#l.fullScreen_map .sphere-right-top-temp .chartBorder .myChart{
+    height: 53%;
+}
+#l .sphere-right-bottom .chartBorder>ul.header {
+    margin-top: 12%;
+}
+
+
+
+
 #l.fullScreen_map .sphere,
 #l.fullScreen_map .flat{
     position: relative;
+    flex: 0 0 100%;
+    height: auto;
 }
 #l.fullScreen_map .sphere .mapArea{
     flex:.81;
@@ -35,7 +68,7 @@
 #l.fullScreen_map .flat .flat-left,
 #l.fullScreen_map .flat .flat-right{
     flex-direction: row;
-    padding-bottom: 2%;
+    padding-bottom: 4rem;
 }
 #l.fullScreen_map .flat .flat-left,
 #l.fullScreen_map .flat .flat-right{
@@ -45,7 +78,8 @@
 #l.fullScreen_map .sphere .sphere-right>div,
 #l.fullScreen_map .flat .flat-left>div,
 #l.fullScreen_map .flat .flat-right>div{
-    flex:1;
+    flex:0 0 50%;
+    display: flex;
 }
 #l.fullScreen_map .sphere .mapArea h2,
 #l.fullScreen_map .flat .mapArea h2 {
@@ -58,6 +92,13 @@
     font-weight: bold;
     z-index: 9;
     text-shadow: 1px 1px 1px black;
+}
+#l.fullScreen_map .switchGroup .chartBorder{
+    flex: 0 0 100%;
+    height: auto;
+}
+#l.fullScreen_map .switchGroup .chartBorder h3{
+    margin-top: 0;
 }
 /*地球上文字点击可弹窗*/
 #l.fullScreen_map .sphere .mapArea h2:hover{
@@ -88,7 +129,11 @@
 }
 
 #l.fullScreen_map .flat .flat-main{
-    flex: 2;
+    flex: 0 0 67%;
+}
+#l .flat .flat-left,
+#l .flat .flat-right{
+    margin-bottom: initial;
 }
 #l.fullScreen_map header{
     padding-bottom: 1em;
@@ -117,7 +162,7 @@
 
 #l.fullScreen_map .flat-left>div .chartBorder,
 #l.fullScreen_map .flat-right>div .chartBorder{
-    height:80%;
+    /*height:80%;*/
     overflow: hidden;
     position: relative;
 }

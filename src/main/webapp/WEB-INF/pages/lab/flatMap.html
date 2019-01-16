@@ -52,6 +52,9 @@
 -->
 <script>
     //调用父页面的方法来保证子页面加载完了再执行平面地图加载
-    parent.parentMethod()
+    if(parent.parentMethod){
+        parent.parentMethod()
+    }
+
 </script>
 </html>

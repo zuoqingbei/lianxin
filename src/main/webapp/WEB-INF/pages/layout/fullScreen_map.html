@@ -4,7 +4,9 @@
     </script>
     <header>
         <span class="mainLogo"></span>
-        <h1><a href="${contextPath!}/phm">全球实验室数据中心</a></h1>
+        <h1>
+            <a href="${contextPath!}/phm">全球实验室数据中心</a>
+        </h1>
         <h1>Haier U-lab Data Center</h1>
     </header>
     <div class="btnGroup">
@@ -13,22 +15,16 @@
             <img class="sphere" src="${contextPath!}/static/img/ico/btn_sphere_on.png">
         </span>
         <span class="oneBtn">
-                <span class="flat-btnTip">平面</span>
-                <img class="flat" src="${contextPath!}/static/img/ico/btn_flat_off.png">
+            <span class="flat-btnTip">平面</span>
+            <img class="flat" src="${contextPath!}/static/img/ico/btn_flat_off.png">
         </span>
         <span class="quit">
-            <span class="flat-btnTip">切换</span><a href="${contextPath!}/lab/full">
-            <img class="quit" src="${contextPath!}/static/img/labMain/labMain_toTotalStatus.png"></a>
+            <span class="flat-btnTip">切换</span>
+            <a href="${contextPath!}/lab/index">
+                <img class="quit" src="${contextPath!}/static/img/labMain/labMain_toTotalStatus.png">
+            </a>
         </span>
     </div>
-    <a id="toPhm" href="${contextPath!}/phm/index" style="border: 1px solid transparent;
-                        display: block;
-                        width: 3em;
-                        height: 19em;
-                        position: absolute;
-                        top: 14em;
-                        z-index: 99999;
-"></a>
     <div class="switchGroup">
         <div class="switch sphere">
             <div class="sphere-left">
@@ -52,7 +48,8 @@
                 <div class="sphere-left-bottom">
                     <div class="chartBorder">
                         <h3>测试产品类别</h3>
-                        <h4 class="noBG"><strong>50+</strong>类家电产品</h4>
+                        <h4 class="noBG"><strong>50+</strong>类家电产品
+                        </h4>
                         <div class="myChart">
                             <iframe id="wordCloud" width="100px" height="100px"
                                     src="${contextPath!}/lab/wordCloudFull"></iframe>
@@ -73,11 +70,17 @@
                 <div class="sphere-right-top">
                     <div class="chartBorder">
                         <h3>实验室数量</h3>
-                        <h4 class="noBG" style="float: left;margin-left: 30%">总数： <strong id="lab_all_count"
-                                                                                          class="lab_all_count">
-                            0 </strong></h4>
-                        <h4 class="noBG noHL" style="float: right;margin-right: 7%">互联数：<strong
-                                class="lab_all_count_link">0</strong></h4>
+                        <h4 class="noBG" style="float: left;margin-left: 30%">总数：
+                            <strong id="lab_all_count"
+                                    class="lab_all_count">
+                                0
+                            </strong>
+                        </h4>
+                        <h4 class="noBG noHL" style="float: right;margin-right: 7%">互联数：
+                            <strong
+                                class="lab_all_count_link">0
+                            </strong>
+                        </h4>
                         <ul id="pro_line" class="pro_line full_pro_line">
                         </ul>
 
@@ -88,8 +91,9 @@
                     <div class="chartBorder"
                          style="background: url(${contextPath!}/static/img/border_flat.png);    background-size: 100% 100%;">
                         <h3 style="    left: 0%;">互联实验室</h3>
-                        <h4 class="noBG">互联实验室： <strong id="linked_status_num" class="lab_all_count_link"> </strong>
-                        </h4>
+                        <!--<h4 class="noBG">互联实验室：
+                            <strong id="linked_status_num" class="lab_all_count_link"></strong>
+                        </h4>-->
                         <ul class="header">
                             <li>实验室名称</li>
                             <li>类型</li>
@@ -134,14 +138,14 @@
                                                             <span>f,g：P5年度型检 监督抽测</span>
                                                         </div>
                             -->
-<!--
-                            <div class="added" style="padding-left: 6%;margin-top: 1em;">
-                                <span>P1对比试验</span>&emsp;<span>P2新品调试</span>&emsp;<span>P3新品确认</span>
-                                <br>
-                                <span>P4小批验证 入厂/出厂</span>&emsp;<span>P5年度型检 监督抽测</span>
+                            <!--
+                                                        <div class="added" style="padding-left: 6%;margin-top: 1em;">
+                                                            <span>P1对比试验</span>&emsp;<span>P2新品调试</span>&emsp;<span>P3新品确认</span>
+                                                            <br>
+                                                            <span>P4小批验证 入厂/出厂</span>&emsp;<span>P5年度型检 监督抽测</span>
 
-                            </div>
--->
+                                                        </div>
+                            -->
                         </div>
                     </div>
                 </div>
@@ -179,21 +183,28 @@
                     <div class="legend-l navSwitch">产线</div>
                     <div class="legend-r navSwitch">实验室</div>
                     <div class="selectAll">
-                        <label for="navSelectAll"><span class="icon"></span> 全选</label>
+                        <label for="navSelectAll">
+                            <span class="icon"></span>
+                            全选
+                        </label>
                         <input id="navSelectAll" checked type="checkbox" class="hidden">
                     </div>
                     <div class="labLine">
                         <div class="animateBox">
                             <ul class="lab">
                                 ##for(type in labType){
-                                <li class="active" code="${type.id!}"><a><span
-                                        class="icon"></span>${type.short_name!}</a>
+                                <li class="active" code="${type.id!}">
+                                    <a><span
+                                        class="icon"></span>${type.short_name!}
+                                    </a>
                                 </li>
                                 ##}
                             </ul>
                             <ul class="line current">
                                 ##for(type in productLine){
-                                <li class="active" code="${type.id!}"><a><span class="icon"></span>${type.name!}</a>
+                                <li class="active" code="${type.id!}">
+                                    <a><span class="icon"></span>${type.name!}
+                                    </a>
                                 </li>
                                 ##}
                             </ul>
@@ -201,7 +212,11 @@
                     </div>
                 </div>
             </div>
-            <div class="toLabData"><a href="${contextPath!}/lab/full?toLabData=toLabData"> 进入实验室 <span>&gt;&gt;</span></a></div>
+            <div class="toLabData">
+                <a href="${contextPath!}/lab/full?toLabData=toLabData">进入实验室
+                    <span>&gt;&gt;</span>
+                </a>
+            </div>
         </div>
     </div>
 </div>

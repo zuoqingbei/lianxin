@@ -56,7 +56,7 @@ import com.ulab.util.SqlUtil;
 @ControllerBind(controllerKey = "/lab", viewPath = "/lab")
 @Before({ LoginInterceptor.class })
 public class LabController extends BaseController {
-	public void index() {
+	public void full() {
 		setAttr("fromPage", getPara("fromPage", ""));
 		List<Record> labType = DicModel.dao.findDicByType("lab_type");
 		List<Record> productLine = DicModel.dao.findDicByType("line_type");
@@ -138,7 +138,8 @@ public class LabController extends BaseController {
 	}
 
 	/**
-	 * 
+	 *
+	 *
 	 * @time 2017年4月19日 上午9:53:33
 	 * @author zuoqb
 	 * @todo 平面图展示数据
@@ -1102,7 +1103,7 @@ public class LabController extends BaseController {
 		return startDate;
 	}
 
-	public void full() {
+	public void index() {
 		List<Record> labType = DicModel.dao.findDicByType("lab_type");
 		List<Record> productLine = DicModel.dao.findDicByType("line_type");
 		setAttr("toLabData", getPara("toLabData", ""));

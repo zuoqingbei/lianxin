@@ -6,7 +6,6 @@
 }
 .lab > div:nth-of-type(1),
 .lab > div > div > div {
-    /*outline: 1px dotted rgba(255, 165, 0, 0.44);*/
     outline-offset: -1px;
 }
 
@@ -40,9 +39,6 @@
         display: flex;
         flex-direction: column;
         margin-top: -1em;
-        /*margin-left: 2em;*/
-        /*margin-right: 1.5em;*/
-        /*text-align: right;*/
     }
 
     .lab_content_r > .labSubNav {
