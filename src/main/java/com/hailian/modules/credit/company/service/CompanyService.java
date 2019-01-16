@@ -198,7 +198,7 @@ public class CompanyService {
 						CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
 						shareholderModel.set("sh_name", name);
 						shareholderModel.set("money", StockPercentEd);
-						BigDecimal a = new BigDecimal(ShouldCapi);
+						BigDecimal a = new BigDecimal(ShouldCapi.replace(",", ""));
 						BigDecimal b = new BigDecimal("10000");
 						shareholderModel.set("contribution", a.multiply(b).toString());
 						shareholderModel.set("company_id", companyId);

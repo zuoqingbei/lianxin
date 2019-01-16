@@ -7,6 +7,7 @@ let ReportConfig = {
 	cwConfigAlterSource:'',
 	currentDom:'',
 	tableRowIndex:null,
+	orderNum:'',
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -57,54 +58,107 @@ let ReportConfig = {
         	selectInfo.push(_this.selectInfoObj)
         	
         	let tempRows = []
-        	$table.bootstrapTable({
-        		height:300,
-        		columns: _this.tableColumns(contents,'ch'),
-    			url:urlCH, // 请求后台的URL（*）
-			    method : 'post', // 请求方式（*）post/get
-			    queryParams:function(param){
-			    	param.selectInfo = JSON.stringify(selectInfo)
-			    	return param
-			    },
-			    sidePagination: 'server',
-			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
-    			pagination: false, //分页
-    			smartDisplay:true,
-    			locales:'zh-CN',
-    			onLoadSuccess:(data)=>{
-    				tableNum++;
-    				_this.total += data.rows.length
-    				_this.tableDataArr[index]=data
-    				let rows = data.rows
-    				rows.forEach((item,index)=>{
-    					//增加一列序号
-    					item["order_num"] = index+1
-    					if(item.brand_url) {
-    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
-							item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
-    					}
-    				})
-    				$table.bootstrapTable("load",rows)
-    				$(".moneyCol").each((index,item)=>{
-    					if(!$(item).attr("data-field")){
-    						//不是表头
-    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
-    					}
-    				})
-    				setTimeout(() => {
-	    				if(rows.length < 1) {
-	    					$table.parents(".fixed-table-container").css("height","80px!important")
-	    				}else if(rows.length < 4) {
-	    					$table.parents(".fixed-table-container").css("height","180px")
+        	//合计
+    		if(titles[index]["get_source"].includes("credit_company_shareholder")) {
+	        	$table.bootstrapTable({
+	        		height:300,
+	        		columns: _this.tableColumns(contents,'ch'),
+	        		showFooter:true, 
+	    			url:urlCH, // 请求后台的URL（*）
+				    method : 'post', // 请求方式（*）post/get
+				    queryParams:function(param){
+				    	param.selectInfo = JSON.stringify(selectInfo)
+				    	return param
+				    },
+				    sidePagination: 'server',
+				    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+	    			pagination: false, //分页
+	    			smartDisplay:true,
+	    			locales:'zh-CN',
+	    			onLoadSuccess:(data)=>{
+	    				tableNum++;
+	    				_this.total += data.rows.length
+	    				_this.tableDataArr[index]=data
+	    				let rows = data.rows
+	    				rows.forEach((item,index)=>{
+	    					//增加一列序号
+	    					item["order_num"] = index+1
+	    					if(item.brand_url) {
+	    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+								item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
+	    					}
+	    				})
+	    				$table.bootstrapTable("load",rows)
+	    				$(".moneyCol").each((index,item)=>{
+	    					if(!$(item).attr("data-field")){
+	    						//不是表头
+	    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+	    					}
+	    				})
+	    				setTimeout(() => {
+		    				if(rows.length < 1) {
+		    					$table.parents(".fixed-table-container").css("height","80px!important")
+		    				}else if(rows.length < 4) {
+		    					$table.parents(".fixed-table-container").css("height","180px")
+		    				}
+	    				 }, 200);
+	    				console.log(_this.total,index,this.idArr.length)
+	    				if( this.idArr.length === tableNum) {
+	    					//中文表格数据加载完成，可以点翻译按钮啦
+	    					$("#translateBtn").removeClass("disable")
 	    				}
-    				 }, 200);
-    				console.log(_this.total,index,this.idArr.length)
-    				if( this.idArr.length === tableNum) {
-    					//中文表格数据加载完成，可以点翻译按钮啦
-    					$("#translateBtn").removeClass("disable")
-    				}
-    			}
-        	});
+	    			}
+	        	});
+	        }else{
+	        	$table.bootstrapTable({
+	        		height:300,
+	        		columns: _this.tableColumns(contents,'ch'),
+	    			url:urlCH, // 请求后台的URL（*）
+				    method : 'post', // 请求方式（*）post/get
+				    queryParams:function(param){
+				    	param.selectInfo = JSON.stringify(selectInfo)
+				    	return param
+				    },
+				    sidePagination: 'server',
+				    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+	    			pagination: false, //分页
+	    			smartDisplay:true,
+	    			locales:'zh-CN',
+	    			onLoadSuccess:(data)=>{
+	    				tableNum++;
+	    				_this.total += data.rows.length
+	    				_this.tableDataArr[index]=data
+	    				let rows = data.rows
+	    				rows.forEach((item,index)=>{
+	    					//增加一列序号
+	    					item["order_num"] = index+1
+	    					if(item.brand_url) {
+	    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+								item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
+	    					}
+	    				})
+	    				$table.bootstrapTable("load",rows)
+	    				$(".moneyCol").each((index,item)=>{
+	    					if(!$(item).attr("data-field")){
+	    						//不是表头
+	    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+	    					}
+	    				})
+	    				setTimeout(() => {
+		    				if(rows.length < 1) {
+		    					$table.parents(".fixed-table-container").css("height","80px!important")
+		    				}else if(rows.length < 4) {
+		    					$table.parents(".fixed-table-container").css("height","180px")
+		    				}
+	    				 }, 200);
+	    				console.log(_this.total,index,this.idArr.length)
+	    				if( this.idArr.length === tableNum) {
+	    					//中文表格数据加载完成，可以点翻译按钮啦
+	    					$("#translateBtn").removeClass("disable")
+	    				}
+	    			}
+	        	});
+        	}
         	$tableEn.bootstrapTable({
         		height:300,
         		columns: _this.tableColumns(contentsEn,'en',index,_this.idArrEn[index]),
@@ -162,13 +216,46 @@ let ReportConfig = {
     					title:ele.temp_name,
     					field: ele.column_name,
     					class:'moneyCol',
-    					width:(1/a.length)*100+'%'
+//    					width:(1/a.length)*100+'%',
+    					footerFormatter:(a)=>{
+                			if(a){
+                				let arr = []
+                				let total = 0;
+                				a.forEach((item,index)=>{
+                					total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                				})
+                				
+                				return total
+                			}
+                		},
     				})
 				}else {
 					arr.push({
 						title:ele.temp_name,
 						field: ele.column_name,
-						width:(1/a.length)*100+'%'
+//						width:(1/a.length)*100+'%',
+						footerFormatter:(a)=>{
+                			if(a){
+                				let arr = []
+                				let total = 0;
+                				a.forEach((item,index)=>{
+                					if(ele.column_name === 'order_num'){
+                						total = '合计'
+                					}else {
+                						if(item[ele.column_name]){
+                							total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                						}
+                					}
+                				})
+                				if(typeof total === 'number'){
+                					total = total.toFixed(2)
+                				}
+                				if(total === 'NaN'){
+                					return
+                				}
+                				return total
+                			}
+                		},
 					})
 				}
 				
@@ -177,9 +264,11 @@ let ReportConfig = {
 				arr.push({
 					title:ele.temp_name,
 					field: 'operate',
-					width: 1/a.length,
+//					width: 1/a.length,
 					events: {
     					"click .edit":(e,value,row,index)=>{
+    						console.log(row)
+    						_this.orderNum = row.order_num
     						_this.isAdd = false
     						_this.rowId = row.id
     						//回显
@@ -1304,7 +1393,7 @@ let ReportConfig = {
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="table-layout: fixed;position: relative"
 				                				>
 				                				</table>
                 				</div>`
@@ -1318,7 +1407,7 @@ let ReportConfig = {
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="table-layout: fixed;position: relative"
 				                				>
 				                				</table>
                 				</div>`
@@ -1620,7 +1709,7 @@ let ReportConfig = {
             			contentHtml += `<div class="table-content1" style="background:#fff">
 			                				<table id="table${index}En"
 			                				data-toggle="table"
-			                				style="position: relative"
+			                				style="position: relative;table-layout: fixed"
 			                				>
 			                				</table>
             				</div>`
@@ -1634,7 +1723,7 @@ let ReportConfig = {
             			contentHtml += `<div class="table-content1" style="background:#fff">
 			                				<table id="table${index}En"
 			                				data-toggle="table"
-			                				style="position: relative"
+			                				style="position: relative;table-layout: fixed"
 			                				>
 			                				</table>
             				</div>`
@@ -1850,6 +1939,7 @@ let ReportConfig = {
 						dataJsonObj[i] = tempObj[i]
 					}
 				})
+				dataJsonObj["order_num"] = _this.orderNum  //每一行对应的ID
 				dataJsonObj["id"] = this.rowId  //每一行对应的ID
     			let data = $("#table"+item + 'En').bootstrapTable("getData")
     			data.splice(_this.tableRowIndex-1,1,dataJsonObj)
@@ -1993,6 +2083,7 @@ let ReportConfig = {
     				 delete ele["mySort"]
     				 delete ele["create_date"]
     				 delete ele["update_date"]
+    				 delete ele["order_num"]
     				 if(ele.id === ''){
     					 delete ele["id"]
     				 }
@@ -2048,6 +2139,7 @@ let ReportConfig = {
 				 delete ele["mySort"]
 				 delete ele["create_date"]
 				 delete ele["update_date"]
+				 delete ele["order_num"]
 				 if(ele.id === ''){
 					 delete ele["id"]
 				 }

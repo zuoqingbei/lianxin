@@ -1160,13 +1160,13 @@ class CrawlerThreed implements Runnable {
             }
             try {
                 //调用香港查册网
-                HttpCrawler.getIcrisUrl(company, companyId, orderInfo);
+                //HttpCrawler.getIcrisUrl(company, companyId, orderInfo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             try {
                 //爬取商务部业务系统网站
-                HttpCrawler.getMofcomUrl(company, companyId, orderInfo);
+                //HttpCrawler.getMofcomUrl(company, companyId, orderInfo);
             } catch (Exception e) {
                 e.printStackTrace();
             }

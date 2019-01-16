@@ -2,10 +2,14 @@
 .bootstrap-table .table:not(.table-condensed), .bootstrap-table .table:not(.table-condensed) > tbody > tr > th, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > th, .bootstrap-table .table:not(.table-condensed) > thead > tr > td, .bootstrap-table .table:not(.table-condensed) > tbody > tr > td, .bootstrap-table .table:not(.table-condensed) > tfoot > tr > td {
 	white-space:normal;
 	word-break:break-all;
-/* 	min-width:8rem; */
+ 	min-width:8rem; 
 }
-
-
+.fixed-table-footer table {
+	table-layout:fixed;
+}
+.bootstrap-table .fixed-table-footer .monyCol {
+    padding-left: 1.5rem !important;
+}
 
 #container {
 	height:100%;

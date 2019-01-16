@@ -10,6 +10,7 @@ import java.util.UUID;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.api.constant.RoleCons;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.system.dict.DictCache;
@@ -907,7 +908,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @param id
      * @param sysLanguage
      */
-    public static String dictIdToString(String id,String sysLanguage) {
+    public static String dictIdToString(String id,String reportType,String sysLanguage) {
         //判断id必须是数字
         if (id.matches("-?[0-9]+.*[0-9]*")){
             Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
@@ -915,7 +916,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             if (sysDict != null) {
                 //英文
                 if ("613".equals(sysLanguage)) {
-                    return sysDict.get("detail_name_en") + "";
+                    if(ReportTypeCons.ROC_ZH.equals(reportType)){
+                        return sysDict.get("detail_name_tw") + "";
+                    }else{
+                        return sysDict.get("detail_name_en") + "";
+                    }
                 } else {
                     return sysDict.get("detail_name") + "";
                 }

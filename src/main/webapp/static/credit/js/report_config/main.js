@@ -42,57 +42,109 @@ let ReportConfig = {
 			 
 			 let selectInfo = []
         	selectInfo.push(_this.selectInfoObj)
+        	//合计
+    		if(titles[index]["get_source"].includes("credit_company_shareholder")) {
+    			$table.bootstrapTable({
+            		height:300,
+            		columns: columns(index,item),
+            		showFooter:true,
+        			url:url, // 请求后台的URL（*）
+    			    method : 'post', // 请求方式（*）post/get
+    			    queryParams:function(param){
+    			    	param.selectInfo = JSON.stringify(selectInfo)
+    			    	return param
+    			    },
+    			    sidePagination: 'server',
+    			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+        			pagination: false, //分页
+        			smartDisplay:false,
+        			locales:'zh-CN',
+        			onLoadSuccess:(data)=>{
+        				console.log(data)
+        				if(data.rows === null){
+//        					alert("出错了")
+        					return
+        				}
+        				let rows = data.rows
+        				rows.forEach((item,index)=>{
+        					//增加一列序号
+        					item["order_num"] = index+1
+        					if(item.brand_url) {
+        						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+        						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
+        					}
+        					console.log(item)
+        				})
+        				$table.bootstrapTable("load",rows)
+        				
+        				$(".monyCol").each((index,item)=>{
+        					if(!$(item).attr("data-field")){
+        						//不是表头
+        						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+        					}
+        				})
+        				setTimeout(() => {
+    	    				if(rows.length < 1) {
+    	    					$table.parents(".fixed-table-container").css("height","80px!important")
+    	    					console.log($table.parents(".fixed-table-container"))
+    	    				}else if(rows.length < 4) {
+    	    					$table.parents(".fixed-table-container").css("height","180px")
+    	    				}
+        				 }, 200);
+        			}
+            	});
+    		}else {
+    			$table.bootstrapTable({
+            		height:300,
+            		columns: columns(index,item),
+        			url:url, // 请求后台的URL（*）
+    			    method : 'post', // 请求方式（*）post/get
+    			    queryParams:function(param){
+    			    	param.selectInfo = JSON.stringify(selectInfo)
+    			    	return param
+    			    },
+    			    sidePagination: 'server',
+    			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
+        			pagination: false, //分页
+        			smartDisplay:false,
+        			locales:'zh-CN',
+        			onLoadSuccess:(data)=>{
+        				console.log(data)
+        				if(data.rows === null){
+//        					alert("出错了")
+        					return
+        				}
+        				let rows = data.rows
+        				rows.forEach((item,index)=>{
+        					//增加一列序号
+        					item["order_num"] = index+1
+        					if(item.brand_url) {
+        						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
+        						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
+        					}
+        					console.log(item)
+        				})
+        				$table.bootstrapTable("load",rows)
+        				
+        				$(".monyCol").each((index,item)=>{
+        					if(!$(item).attr("data-field")){
+        						//不是表头
+        						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+        					}
+        				})
+        				setTimeout(() => {
+    	    				if(rows.length < 1) {
+    	    					$table.parents(".fixed-table-container").css("height","80px!important")
+    	    					console.log($table.parents(".fixed-table-container"))
+    	    				}else if(rows.length < 4) {
+    	    					$table.parents(".fixed-table-container").css("height","180px")
+    	    				}
+        				 }, 200);
+        				
+        			}
+            	});
+    		}
         	
-        	$table.bootstrapTable({
-        		height:300,
-        		columns: columns(index,item),
-    			url:url, // 请求后台的URL（*）
-			    method : 'post', // 请求方式（*）post/get
-			    queryParams:function(param){
-			    	param.selectInfo = JSON.stringify(selectInfo)
-			    	return param
-			    },
-			    sidePagination: 'server',
-			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
-    			pagination: false, //分页
-    			smartDisplay:false,
-    			locales:'zh-CN',
-    			onLoadSuccess:(data)=>{
-    				console.log(data)
-    				if(data.rows === null){
-//    					alert("出错了")
-    					return
-    				}
-    				let rows = data.rows
-    				rows.forEach((item,index)=>{
-    					//增加一列序号
-    					item["order_num"] = index+1
-    					if(item.brand_url) {
-    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
-    						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
-    					}
-    					console.log(item)
-    				})
-    				$table.bootstrapTable("load",rows)
-    				
-    				$(".monyCol").each((index,item)=>{
-    					if(!$(item).attr("data-field")){
-    						//不是表头
-    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
-    					}
-    				})
-    				setTimeout(() => {
-	    				if(rows.length < 1) {
-	    					$table.parents(".fixed-table-container").css("height","80px!important")
-	    					console.log($table.parents(".fixed-table-container"))
-	    				}else if(rows.length < 4) {
-	    					$table.parents(".fixed-table-container").css("height","180px")
-	    				}
-    				 }, 200);
-    			}
-        	});
-			 
-	         
         	
         	function columns(tempI,tempId){
         		
@@ -106,12 +158,47 @@ let ReportConfig = {
             					title:ele.temp_name,
             					field: ele.column_name,
             					class:'monyCol',
+            					footerFormatter:(a)=>{
+                        			if(a){
+                        				let arr = []
+                        				let total = 0;
+                        				a.forEach((item,index)=>{
+                        					total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                        				})
+                        				
+                        				return total
+                        			}
+                        		},
 //            					width:(1/contents.length)*100+'%'
             				})
         				}else {
         					arr.push({
         						title:ele.temp_name,
         						field: ele.column_name,
+        						footerFormatter:(a)=>{
+                        			if(a){
+                        				let arr = []
+                        				let total = 0;
+                        				a.forEach((item,index)=>{
+                        					console.log(ele.column_name)
+                        					if(ele.column_name === 'order_num'){
+                        						total = '合计'
+                        					}else {
+                        						if(item[ele.column_name]){
+                        							total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                        						}
+                        					}
+                        					
+                        				})
+                        				if(typeof total === 'number'){
+                        					total = total.toFixed(2)
+                        				}
+                        				if(total === 'NaN'){
+                        					return
+                        				}
+                        				return total
+                        			}
+                        		},
 //        						width:(1/contents.length)*100+'%'
         					})
         				}
@@ -1357,6 +1444,7 @@ let ReportConfig = {
 					}
 					
 					//调用form格式化数据函数
+					console.log($('#'+id))
 					let tempObj = this.getFormData($('#'+id));
 					for(let i in tempObj){
 						if(tempObj.hasOwnProperty(i))
@@ -1391,7 +1479,7 @@ let ReportConfig = {
             			if(data.statusCode === 1) {
             				Public.message("success",this.isAdd?'新增成功！':'修改成功！')
             				//刷新数据
-            				this.refreshTable($("#table"+item));
+        					_this.refreshTable($("#table"+item));
             			}else {
             				Public.message("error",data.message)
             			}
