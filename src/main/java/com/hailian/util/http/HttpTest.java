@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.KeyManagementException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -57,9 +58,12 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import com.hailian.util.Config;
+
 
 public class HttpTest {
-	
+	public static final String qichacha_key = Config.getStr("qichacha_key");//百度翻译appid
+	public static final String qichacha_secretkey = Config.getStr("qichacha_secretkey");//百度翻译秘钥
 	public static void main(String[] args) throws Exception {
 		
 		//getCustomsUrl();//爬取企业信息基本情况
@@ -70,21 +74,23 @@ public class HttpTest {
 		
 		//getCourtUrl();//爬取全国法院被执行人信息查询网站
 		//getYjapi();
-		getYjapi("北京小桔科技有限公司");
+//		getYjapi("青岛海联软件科技有限公司");
+		getBrandandpatent("青岛海联软件科技有限公司", "");
+//		getJudgmentDoc("青岛海联软件科技有限公司", "");
 
         //test
 		
     }
 	//企业基本信息
-	public static JSONObject getYjapi(String conpanyName){
-//		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
-		String url="http://i.yjapi.com/ECIV4/GetDetailsByName?key=791f4eb3af844c53a6bba25f80f033b7&keyword="+conpanyName;
+	public static JSONObject getYjapi(String conpanyName) throws Exception{
+//		HttpGet get = new HttpGet("http://api.qichacha.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
+		String url="http://api.qichacha.com/ECIV4/GetDetailsByName?key="+qichacha_key+"&keyword="+conpanyName;
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
-		//String token = encodeMd5("key" + timestamp + "secretKey");    //验证加密值
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		
 		HttpGet get = new HttpGet(url);//精确查询
-//		get.addHeader("Token", "");
-//		get.addHeader("Timespan", timestamp);
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
@@ -102,12 +108,40 @@ public class HttpTest {
 		}
 		return json;
 	}
+	private static String encodeMd5(String str) throws Exception {
+		String result = "";
+		 
+		MessageDigest md5 = MessageDigest.getInstance("MD5");
+		md5.update((str).getBytes("UTF-8"));
+		byte b[] = md5.digest();
+		 
+		int i;
+		StringBuffer buf = new StringBuffer("");
+		 
+		for(int offset=0; offset<b.length; offset++){
+			i = b[offset];
+			if(i<0){
+				i+=256;
+			}
+			if(i<16){
+				buf.append("0");
+			}
+			buf.append(Integer.toHexString(i));
+		}
+		 
+		result = buf.toString().toUpperCase();
+		return result;
+	}
 	//裁判文书
-	public static JSONObject getJudgmentDoc(String conpanyName,String pageIndex){
+	public static JSONObject getJudgmentDoc(String conpanyName,String pageIndex) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://i.yjapi.com/JudgeDocV4/SearchJudgmentDoc?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/SearchJudgmentDoc?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
@@ -124,8 +158,12 @@ public class HttpTest {
 		return json;
 	}
 	//裁判文书详情
-	public static JSONObject getJudgmentDocDetail(String id){
-		HttpGet get = new HttpGet("http://i.yjapi.com/JudgeDocV4/GetJudgementDetail?key=791f4eb3af844c53a6bba25f80f033b7&id="+id);//精确查询
+	public static JSONObject getJudgmentDocDetail(String id) throws Exception{
+		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/GetJudgementDetail?key=791f4eb3af844c53a6bba25f80f033b7&id="+id);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
@@ -142,11 +180,15 @@ public class HttpTest {
 		return json;
 	}
 	//法院公告
-	public static JSONObject getCourtAnnouncement(String conpanyName,String pageIndex){
+	public static JSONObject getCourtAnnouncement(String conpanyName,String pageIndex) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://i.yjapi.com/CourtNoticeV4/SearchCourtAnnouncement?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtNoticeV4/SearchCourtAnnouncement?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
@@ -163,11 +205,15 @@ public class HttpTest {
 		return json;
 	}
 	//开庭公告
-	public static JSONObject getCourtNotice(String conpanyName,String pageIndex){
+	public static JSONObject getCourtNotice(String conpanyName,String pageIndex) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://i.yjapi.com/CourtAnnoV4/SearchCourtNotice?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtAnnoV4/SearchCourtNotice?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
@@ -184,11 +230,15 @@ public class HttpTest {
 		return json;
 	}
 		//企业商标 
-	public static JSONObject getBrandandpatent(String conpanyName,String pageIndex){
+	public static JSONObject getBrandandpatent(String conpanyName,String pageIndex) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://i.yjapi.com/tm/Search?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/tm/Search?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
