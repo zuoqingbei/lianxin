@@ -10,7 +10,6 @@ import java.util.UUID;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.api.constant.RoleCons;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.system.dict.DictCache;
@@ -269,6 +268,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             //使用ehcache缓存数据
             System.out.println(tableName + sqlSuf);
             rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
+            String type= getPara("type");
             if (StringUtils.isNotBlank(companyId)) {
 				//关联设置企业类型注释
            CreditCompanyInfo info= 	CreditCompanyInfo.dao.findById(companyId);
@@ -277,7 +277,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			SysDictDetail detail=	SysDictDetail.dao.findById(info.get("company_type"));
 			CreditCompanyInfo cmodel=new CreditCompanyInfo();
 			  cmodel.set("id", companyId);
-			  cmodel.set("type_of_enterprise_remark", detail.get("detail_remark"));
+			  if ("12".equals(table)) {
+				  cmodel.set("type_of_enterprise_remark", detail.get("detail_remark"));
+			}else if("14".equals(type)){
+				  cmodel.set("type_of_enterprise_remark", detail.get("detail_content"));
+			}
 			  cmodel.update();
 			}
            }
@@ -908,7 +912,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @param id
      * @param sysLanguage
      */
-    public static String dictIdToString(String id,String reportType,String sysLanguage) {
+    public static String dictIdToString(String id,String sysLanguage) {
         //判断id必须是数字
         if (id.matches("-?[0-9]+.*[0-9]*")){
             Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
@@ -916,11 +920,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             if (sysDict != null) {
                 //英文
                 if ("613".equals(sysLanguage)) {
-                    if(ReportTypeCons.ROC_ZH.equals(reportType)){
-                        return sysDict.get("detail_name_tw") + "";
-                    }else{
-                        return sysDict.get("detail_name_en") + "";
-                    }
+                    return sysDict.get("detail_name_en") + "";
                 } else {
                     return sysDict.get("detail_name") + "";
                 }
