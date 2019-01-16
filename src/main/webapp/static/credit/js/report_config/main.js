@@ -437,6 +437,7 @@ let ReportConfig = {
 				})
 			}
 			 paramObj["conf_id"] = conf_id
+			 paramObj["type"] = this.rows.company_type
 			 let temp;
 			 $.ajax({
 				 url,
@@ -445,7 +446,7 @@ let ReportConfig = {
 				 success:(data)=>{
 					 temp = data
 					 let arr = Array.from($("#title"+item))
-					 if(temp.rows === null){return}
+					 if(!temp.rows || temp.rows === null){return}
 					 arr.forEach((item,index)=>{
 						 if($(item).siblings(".radio-con").length !== 0) {
 							 //radio类型绑数
@@ -1692,8 +1693,20 @@ let ReportConfig = {
     },
     companyTypeSelect(){
     	//企业类型选择关联企业类型注释
+    	
     	$("select[name='company_type']").change((e)=>{
-    		console.info($(e.target).children("option:selected"))
+    		let $option = $(e.target).children("option:selected")
+    		let reportType = this.rows.report_type
+    		console.log(typeof reportType)
+    		if(reportType === '12') {
+    			//中文
+    			let remark = $option.attr("m-detail-remark")
+    			$("textarea[name='type_of_enterprise_remark']").val(remark==='null'?'':remark)
+    		}else if(reportType === '14') {
+    			//英文
+    			let con = $option.attr("m-detail-content")
+    			$("textarea[name='type_of_enterprise_remark']").val(con==='null'?'':con)
+    		}
     	})
     },
 }
