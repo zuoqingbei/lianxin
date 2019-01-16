@@ -18,6 +18,7 @@ import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
@@ -41,6 +42,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 
 import java.awt.*;
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.DecimalFormat;
@@ -58,6 +60,8 @@ import java.util.List;
  * 2.编码问题，可能会造成word生成失败
  */
 public class BaseWord {
+    public static Logger log= Logger.getLogger(BaseWord.class);
+
     public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
     public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
     public static final String userName = Config.getStr("ftp_userName");//域用户名
@@ -70,9 +74,14 @@ public class BaseWord {
     private static SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
 
     public static void main(String args[]) throws Exception{
-        DecimalFormat demo=new DecimalFormat("###,###.##");
+        /*DecimalFormat demo=new DecimalFormat("###,###.##");
         NumberFormat nf = NumberFormat.getInstance();
-        System.out.println(demo.format(nf.parse("5000.1")));
+        System.out.println(demo.format(nf.parse("5000.1")));*/
+
+        BigDecimal bd = new BigDecimal("1");
+        BigDecimal bd2 = new BigDecimal("1");
+        bd.add(bd2);
+        System.out.println(bd);
     }
 
     public static void tableData(RowRenderData header2,Map<String,Object> data){
@@ -222,36 +231,56 @@ public class BaseWord {
      * @param child
      * @param rows
      * @param sysLanguage
+     * @param hasTotal
      * @return
      */
-    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage){
+    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal) {
+        //存放行数据-word模板
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
-        LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
-        List<LinkedHashMap<String,String>> datas = new ArrayList<LinkedHashMap<String,String>>();
+        //表格列字段集合
+        LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
+        //存放表格数据
+        List<LinkedHashMap<String, String>> datas = new ArrayList<LinkedHashMap<String, String>>();
+        //合计项
+        LinkedHashMap<String, String> totalRow = new LinkedHashMap<String, String>();
+
         //取列值
-        for(int i=0;i< child.size();i++) {
+        for (int i = 0; i < child.size(); i++) {
             CreditReportModuleConf module = child.get(i);
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
             String field_type = module.getStr("field_type");
-            if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
-            }else{
+            if ("操作".equals(temp_name) || "Operation".equals(temp_name) || "Summary".equals(temp_name)) {
+            } else {
                 cols.put(column_name, temp_name + "|" + field_type);
             }
         }
         //取数据
-        for(int i=0;i< rows.size();i++){
-            LinkedHashMap<String,String> row = new LinkedHashMap<String,String>();
+        for (int i = 0; i < rows.size(); i++) {
+            LinkedHashMap<String, String> row = new LinkedHashMap<String, String>();
             //取行
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
-            for(String column : cols.keySet()) {
+            for (String column : cols.keySet()) {
                 String[] strs = cols.get(column).split("\\|");
                 String fieldType = strs.length > 1 ? strs[1] : "";
                 Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
-                if("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "";
-                }else if("money".equals(fieldType)) {
+                //合计项计算
+                if(hasTotal){
+                    if("number".equals(fieldType)||"money".equals(fieldType)) {
+                        String val = totalRow.get(column);
+                        val = val != null ? val : "0";
+                        totalRow.put(column, new BigDecimal(val).add(new BigDecimal(value)).toString());
+                    }else {
+                        String val = totalRow.get(column);
+                        System.out.println(totalRow.keySet().size());
+                        System.out.println(val == null);
+                        totalRow.put(column, totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val) ? val : "-");
+                    }
+                }
+                if ("select".equals(fieldType)) {
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, reportType, sysLanguage) : "";
+                } else if ("money".equals(fieldType)) {
                     //处理千位符号
                     try {
                         DecimalFormat df = new DecimalFormat("###,###.##");
@@ -260,13 +289,12 @@ public class BaseWord {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                } else if("file".equals(fieldType)) {
+                } else if ("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 } else {
                     value = !"".equals(value) ? value : "";
                 }
                 row.put(strs.length > 0 ? strs[0] : "", value);
-                //row.put(column, value);
             }
             datas.add(row);
         }
@@ -277,27 +305,42 @@ public class BaseWord {
         //组装表格-表头
         RowRenderData rowRenderData = tableHeaderH(cols, reportType);
         //组装表格-数据
-        for(LinkedHashMap<String,String> m:datas) {
-            int j=0;
+        for (LinkedHashMap<String, String> m : datas) {
+            int j = 0;
             TextRenderData[] row = new TextRenderData[colSize.length];
-            for(String column : cols.keySet()) {
+            for (String column : cols.keySet()) {
                 String value = m.get(cols.get(column).split("\\|")[0]);
                 Style style = new Style();
-                if(ReportTypeCons.ROC_HY.equals(reportType)){
+                if (ReportTypeCons.ROC_HY.equals(reportType)) {
                     style.setFontFamily("宋体");
                     style.setFontSize(14);
-                }else if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                } else if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                     //style.setFontFamily("新细明体（PMingLiU）");
                     style.setFontSize(11);
                 }
-                row[j] = new TextRenderData(value,style);
+                row[j] = new TextRenderData(value, style);
                 j++;
             }
             RowRenderData rowData = RowRenderData.build(row);
             rowData.setStyle(tableStyle);
             rowsList.add(rowData);
         }
-        return new MiniTableRenderData(rowRenderData,rowsList);
+        //合计项生成word格式
+        if(hasTotal) {
+            TextRenderData[] row = new TextRenderData[colSize.length];
+            int j = 0;
+            for (String column : cols.keySet()) {
+                String value = totalRow.get(column);
+                Style style = new Style();
+                style.setBold(true);
+                row[j] = new TextRenderData(value, style);
+                j++;
+            }
+            RowRenderData rowData = RowRenderData.build(row);
+            rowData.setStyle(tableStyle);
+            rowsList.add(rowData);
+        }
+        return new MiniTableRenderData(rowRenderData, rowsList);
     }
 
     /**
@@ -360,13 +403,14 @@ public class BaseWord {
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                if("register_codes".equals(column)){
-                    System.out.println(1);
+                if("company_type".equals(column)){
+                    log.error("---------company_type-------------");
                 }
                 String[] strs = cols.get(column).split("\\|");
                 String fieldType = strs.length > 1 ? strs[1] : "";
                 String getSource = strs.length > 2 ? strs[2] : "";
                 String value = model.get(column) != null ? model.get(column) + "" : "";
+
                 if ("select".equals(fieldType)) {
                     //102chiness 等级状态
                     //System.out.println(ReportTypeCons.ROC_ZH.equals(reportType));
@@ -417,6 +461,7 @@ public class BaseWord {
                         value = !"".equals(value) ? value : "N/A";
                     }
                 }
+                log.error("whc 测试输出：column=" + column + "  fieldType=" + fieldType + " value=" + value);
                 map.put(column, value);
             }
         }

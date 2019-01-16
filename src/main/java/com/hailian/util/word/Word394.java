@@ -1,3 +1,4 @@
+/*
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
@@ -9,10 +10,12 @@ import com.jfinal.kit.PathKit;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+*/
 /**
  * _102 ROC Chinese
  * Created by Thinkpad on 2018/11/17.
- */
+ *//*
+
 public class Word394 {
 
     public static void main(String args[]) throws Exception{
@@ -22,14 +25,16 @@ public class Word394 {
         //System.out.println(map.get("tableName"));
     }
 
-    /**
+    */
+/**
      * 102 ROC Chinese
      * @param reportType  报告类型
      * @param orderId     订单ID
      * @param companyId   公司ID
      * @param sysLanguage 语言
      * @param userid 当前登录人
-     */
+     *//*
+
     public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
@@ -179,3 +184,4 @@ public class Word394 {
     }
 
 }
+*/
