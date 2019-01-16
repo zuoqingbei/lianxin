@@ -424,6 +424,7 @@ let ReportConfig = {
     	 */
     	let titles = this.formTitle;
     	let formIndex = this.formIndex;
+    	let _this = this
     	formIndex.forEach((item,index)=>{
     		let conf_id = titles[index].id;
     		let getFormUrl = titles[index].get_source;
@@ -437,15 +438,30 @@ let ReportConfig = {
 				})
 			}
 			 paramObj["conf_id"] = conf_id
+			 paramObj["type"] = _this.rows.report_type
 			 let temp;
 			 $.ajax({
 				 url,
 				 type:'post',
 				 data:paramObj,
 				 success:(data)=>{
+					 if($("#title"+item).text() === '企业类型注释') {
+						 console.log('11111'+data.rows[0].type_of_enterprise_remark)
+						 setTimeout(()=>{
+						 $.ajax({
+							 url,
+							 type:'post',
+							 data:paramObj,
+							 success:(data)=>{
+								 let text = data.rows[0].type_of_enterprise_remark
+								 $("textarea[name='type_of_enterprise_remark']").val(text) 
+							 }
+						})
+						 },5000)
+					 }
 					 temp = data
 					 let arr = Array.from($("#title"+item))
-					 if(temp.rows === null){return}
+					 if(!temp.rows || temp.rows === null){return}
 					 arr.forEach((item,index)=>{
 						 if($(item).siblings(".radio-con").length !== 0) {
 							 //radio类型绑数
@@ -928,6 +944,7 @@ let ReportConfig = {
                 	_this.tabChange();
                 	_this.modalClean();
                 	_this.bottomBtnEvent();
+                	_this.companyTypeSelect()
             	    Public.tabFixed(".tab-bar",".main",120,90)
             	    Public.textAreaEvent();
             	    let firmArr = Array.from($(".firm-info"));
@@ -1180,9 +1197,8 @@ let ReportConfig = {
                 			_this.title.push(item.title)
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
-				                				style="table-layout: fixed;"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="position: relative;table-layout: fixed;"
 				                				>
 				                				</table>
 				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
@@ -1197,7 +1213,7 @@ let ReportConfig = {
                 			contentHtml += `<div class="table-content1" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
-				                				style="position: relative"
+				                				style="position: relative;table-layout: fixed;"
 				                				>
 				                				</table>
 				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
@@ -1445,7 +1461,7 @@ let ReportConfig = {
 					
 					//调用form格式化数据函数
 					console.log($('#'+id))
-					let tempObj = this.getFormData($('#'+id));
+					let tempObj = this.getFormData($(item).children("label").next());
 					for(let i in tempObj){
 						if(tempObj.hasOwnProperty(i))
 						dataJsonObj[i] = tempObj[i]
@@ -1689,7 +1705,26 @@ let ReportConfig = {
     			 })
     		})
     	})
-    }
+    },
+    companyTypeSelect(){
+    	//企业类型选择关联企业类型注释
+    	
+    	$("select[name='company_type']").change((e)=>{
+    		let $option = $(e.target).children("option:selected")
+    		let reportType = this.rows.report_type
+    		console.log(typeof reportType)
+    		if(reportType === '12') {
+    			//中文
+    			let remark = $option.attr("m-detail-remark")
+    			$("textarea[name='type_of_enterprise_remark']").val(remark==='null'?'':remark)
+    		}else if(reportType === '14') {
+    			//英文
+    			let con = $option.attr("m-detail-content")
+    			$("textarea[name='type_of_enterprise_remark']").val(con==='null'?'':con)
+    		}
+    	})
+    	
+    },
 }
 
 ReportConfig.init();

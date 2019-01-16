@@ -49,6 +49,7 @@ let OrderDetail = {
             });
             console.assert(url, item);
             url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
+            url += url.includes("getForm")? '&type='+this.row.report_type : '';
             return url;
         };
         this.processNames = this.row.country === '中国大陆' ?

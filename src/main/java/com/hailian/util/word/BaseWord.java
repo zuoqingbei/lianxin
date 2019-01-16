@@ -269,8 +269,18 @@ public class BaseWord {
                 if(hasTotal){
                     if("number".equals(fieldType)||"money".equals(fieldType)) {
                         String val = totalRow.get(column);
-                        val = val != null ? val : "0";
-                        totalRow.put(column, new BigDecimal(val).add(new BigDecimal(value)).toString());
+                        val = val != null ? val.replaceAll(",","") : "0";
+                        val = new BigDecimal(val).add(new BigDecimal(value)).toString();
+                        try {
+                            if("money".equals(fieldType)) {
+                                DecimalFormat df = new DecimalFormat("###,###.##");
+                                NumberFormat nf = NumberFormat.getInstance();
+                                val = df.format(nf.parse(val));
+                            }
+                            totalRow.put(column,val);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
                     }else {
                         String val = totalRow.get(column);
                         System.out.println(totalRow.keySet().size());
