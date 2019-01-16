@@ -268,6 +268,18 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             //使用ehcache缓存数据
             System.out.println(tableName + sqlSuf);
             rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
+            if (StringUtils.isNotBlank(companyId)) {
+				//关联设置企业类型注释
+           CreditCompanyInfo info= 	CreditCompanyInfo.dao.findById(companyId);
+			if(StringUtils.isBlank(info.get("type_of_enterprise_remark"))){
+				//企业类型注释是空，设置进去
+			SysDictDetail detail=	SysDictDetail.dao.findById(info.get("company_type"));
+			CreditCompanyInfo cmodel=new CreditCompanyInfo();
+			  cmodel.set("id", companyId);
+			  cmodel.set("type_of_enterprise_remark", detail.get("detail_remark"));
+			  cmodel.update();
+			}
+           }
             if (!("".equals(selectInfo) || selectInfo == null)) {
 
                 // 解析前端传入的字符串
@@ -1004,5 +1016,16 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
    renderJson(new Record().set("rows", gdps).set("total", gdps!=null?gdps.size():null));	
 
     }
-    
+    /**
+     * 
+    * @Description: 报告完成，获取报告价钱及币种，扣除该客户的点数
+    * @date 2019年1月14日 下午4:55:59
+    * @author: lxy
+    * @version V1.0
+    * @return
+     */
+    public void  price(String id){
+    CreditOrderInfo orderInfo=	CreditOrderInfo.dao.findById(id);
+    	
+    }
 }
