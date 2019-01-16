@@ -8,6 +8,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 import javax.net.ssl.SSLContext;
@@ -77,8 +79,12 @@ public class HttpTest {
 	public static JSONObject getYjapi(String conpanyName){
 //		HttpGet get = new HttpGet("http://i.yjapi.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
 		String url="http://i.yjapi.com/ECIV4/GetDetailsByName?key=791f4eb3af844c53a6bba25f80f033b7&keyword="+conpanyName;
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		//String token = encodeMd5("key" + timestamp + "secretKey");    //验证加密值
 		
 		HttpGet get = new HttpGet(url);//精确查询
+//		get.addHeader("Token", "");
+//		get.addHeader("Timespan", timestamp);
 		CloseableHttpClient client = HttpClients.createDefault();
 		CloseableHttpResponse response = null;
 		String html = "";
@@ -86,6 +92,7 @@ public class HttpTest {
 		try {
 			response = client.execute(get);
 			Header[] headers = response.getAllHeaders();
+			
 			html = EntityUtils.toString(response.getEntity(), "utf-8");
 			System.out.println(html);
 			json = JSONObject.fromObject(html);
