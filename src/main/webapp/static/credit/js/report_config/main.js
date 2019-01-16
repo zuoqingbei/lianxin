@@ -445,6 +445,20 @@ let ReportConfig = {
 				 type:'post',
 				 data:paramObj,
 				 success:(data)=>{
+					 if($("#title"+item).text() === '企业类型注释') {
+						 console.log('11111'+data.rows[0].type_of_enterprise_remark)
+						 setTimeout(()=>{
+						 $.ajax({
+							 url,
+							 type:'post',
+							 data:paramObj,
+							 success:(data)=>{
+								 let text = data.rows[0].type_of_enterprise_remark
+								 $("textarea[name='type_of_enterprise_remark']").val(text) 
+							 }
+						})
+						 },5000)
+					 }
 					 temp = data
 					 let arr = Array.from($("#title"+item))
 					 if(!temp.rows || temp.rows === null){return}
@@ -1709,6 +1723,7 @@ let ReportConfig = {
     			$("textarea[name='type_of_enterprise_remark']").val(con==='null'?'':con)
     		}
     	})
+    	
     },
 }
 
