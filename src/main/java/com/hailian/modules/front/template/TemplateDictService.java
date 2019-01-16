@@ -258,10 +258,10 @@ public class TemplateDictService extends BaseService {
 			}
 			  
 			 if(selectedId!=null&& selectedId.toString().equals(detail.get(flagStr))){
-				sb.append("<option  m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"' selected>"+detail.get(disPalyCol)+"</option>");
+				sb.append("<option  m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-remark='"+detail.get("detail_remark")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"' selected>"+detail.get(disPalyCol)+"</option>");
 			}else{
 				
-			    sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"'>"+detail.get(disPalyCol)+"</option>");
+			    sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-remark='"+detail.get("detail_remark")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"'>"+detail.get(disPalyCol)+"</option>");
 			}
 			
 		}
