@@ -277,7 +277,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			SysDictDetail detail=	SysDictDetail.dao.findById(info.get("company_type"));
 			CreditCompanyInfo cmodel=new CreditCompanyInfo();
 			  cmodel.set("id", companyId);
-			  if ("12".equals(table)) {
+			  if ("12".equals(type)) {
 				  cmodel.set("type_of_enterprise_remark", detail.get("detail_remark"));
 			}else if("14".equals(type)){
 				  cmodel.set("type_of_enterprise_remark", detail.get("detail_content"));
