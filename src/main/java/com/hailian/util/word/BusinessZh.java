@@ -1,3 +1,4 @@
+/*
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
@@ -19,21 +20,25 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
+*/
 /**
  * 商业信息报告样本
  * Created by Thinkpad on 2018/11/17.
- */
+ *//*
+
 public class BusinessZh {
     //ftp文件服务器 ip
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
     public static final int serverPort = Config.getToInt("searver_port");
 
-    /**
+    */
+/**
      * 生成商业报告
      * @param order  订单
      * @param userid 当前登录人
-     */
+     *//*
+
     public static void reportTable(CreditOrderInfo order,String reportType, Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
@@ -269,7 +274,8 @@ public class BusinessZh {
         replaceImg(_prePath, orderId, userid, companyId, sysLanguage,customId);
     }
 
-    /**
+    */
+/**
      * 替换图片
      * @param tarPath
      * @param orderId
@@ -277,7 +283,8 @@ public class BusinessZh {
      * @param company_id
      * @param sysLanguage
      * @param customerId
-     */
+     *//*
+
     public static void replaceImg(String tarPath,String orderId,Integer userid,String company_id,String sysLanguage,String customerId) {
         //获取图片
         List<CreditCompanyBrandandpatent> list = CreditCompanyBrandandpatent.dao.find("select * from credit_company_brandandpatent "
@@ -310,14 +317,16 @@ public class BusinessZh {
         }
     }
 
-    /**
+    */
+/**
      * 财务模板
      * @param financeType
      * @param companyId
      * @param sysLanguage
      * @param financialConfId
      * @return
-     */
+     *//*
+
     public static MiniTableRenderData financial(String financeType,String companyId,String sysLanguage,String financialConfId) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //取数据
@@ -399,11 +408,13 @@ public class BusinessZh {
         return new MiniTableRenderData(rowList);
     }
 
-    /**
+    */
+/**
      * 财务模块-评价
      * @param statementsConf
      * @return
-     */
+     *//*
+
     public static String financialEval(CreditCompanyFinancialStatementsConf statementsConf) {
         ReportInfoGetDataController reportInfoGetDataController = new ReportInfoGetDataController();
         String profSumup = getIntToString(statementsConf.getInt("profitablity_sumup"));
@@ -418,7 +429,8 @@ public class BusinessZh {
         System.out.println(profSumup == null);
 
         StringBuffer str = new StringBuffer();
-        /*str.append("盈利能力：" + ("".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
+        */
+/*str.append("盈利能力：" + ("".equals(profSumup) ? reportInfoGetDataController.dictIdToString(profSumup) : ""));
         str.append("\n");
         str.append(profDetail);
         str.append("\n");
@@ -432,15 +444,18 @@ public class BusinessZh {
         str.append("\n");
         str.append("目标公司的总体财务状况：" + ("".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup) : ""));
         str.append("\n");
-        str.append(overDetail);*/
+        str.append(overDetail);*//*
+
         return str.toString();
     }
 
-    /**
+    */
+/**
      * Integer 转 String
      * @param intValue
      * @return
-     */
+     *//*
+
     public static String getIntToString(Integer intValue){
         if(intValue!=null){
             return intValue.toString();
@@ -450,3 +465,4 @@ public class BusinessZh {
     }
 
 }
+*/

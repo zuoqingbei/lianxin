@@ -153,7 +153,6 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 
 	@SuppressWarnings("unchecked")
 	public void getBootStrapTable(boolean isCompanyMainTable,String companyId) {
-
 		Record record = new Record();
 		String tableName = getPara("tableName", "");
 		String className = getPara("className");
@@ -161,10 +160,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			 companyId = getPara("company_id","");
 		}
 		String confId = getPara("conf_id", "");
-		
+        //报告ID
+        String type = getPara("type");
 		// 获取关联字典表需要转义的下拉选
 		String selectInfo = getPara("selectInfo");
-        List rows = getTableData(isCompanyMainTable,companyId,tableName,className,confId,selectInfo);
+        List rows = getTableData(isCompanyMainTable,companyId,tableName,className,confId,selectInfo,type);
 		renderJson(record.set("rows", rows).set("total", rows!=null?rows.size():null));
 	}
 
@@ -192,9 +192,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @param selectInfo
      * @return
      */
-    public List getTableData(String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo){
+    public List getTableData(String sysLanguage,String companyId,String tableName,String className,String confId,String selectInfo,String type){
         boolean isCompanyMainTable = tableName.equals("credit_company_info")||className.equals("CreditCompanyInfo");
-        return getTableData(isCompanyMainTable,companyId,tableName,className,confId,selectInfo);
+        return getTableData(isCompanyMainTable,companyId,tableName,className,confId,selectInfo,type);
     }
 
 
@@ -209,103 +209,88 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @param className 反向映射的类名
      * @param confId 父节点id
      * @param selectInfo  下拉框（把id转value）
+     * @param type 报告类型
      * @return
      */
-    public List getTableData(boolean isCompanyMainTable,String companyId,String tableName,String className,String confId,String selectInfo){
-        // 解析实体获取required参数
-      /*  String type = null;
-        if(getRequest()!=null){
-            type = getPara("type");
-        }
-        
-    	if (type!=null) {
-			CreditReportDetailConf confModel=CreditReportDetailConf.dao.findById(confId);
-			 getSource = confModel.getStr("data_source");
-    	}else{*/
-    	String getSource = "";
-			CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
-			 getSource = confModel.getStr("get_source");
-//		}
-		
-		StringBuffer sqlSuf = new StringBuffer();
+    public List getTableData(boolean isCompanyMainTable,String companyId,String tableName,String className,String confId,String selectInfo,String type) {
+        String getSource = "";
+        CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
+        getSource = confModel.getStr("get_source");
 
-		if ((tableName != null && tableName.contains("_dict"))) {
-			sqlSuf.append(" 1=1 and ");
-		}else if ((!("".equals(getSource) || getSource == null)) && getSource.contains("*")) {
-			String[] requireds = getSource.split("\\*");
-			String[] required = requireds[1].split("\\$");
-			for (String str : required) {
-                if(str.equals("company_id")){
+        StringBuffer sqlSuf = new StringBuffer();
+        if ((tableName != null && tableName.contains("_dict"))) {
+            sqlSuf.append(" 1=1 and ");
+        } else if ((!("".equals(getSource) || getSource == null)) && getSource.contains("*")) {
+            String[] requireds = getSource.split("\\*");
+            String[] required = requireds[1].split("\\$");
+            for (String str : required) {
+                if (str.equals("company_id")) {
                     sqlSuf.append(str.trim() + "=" + companyId + " and ");
-                }else{
-                    if(getRequest()!=null) {
+                } else {
+                    if (getRequest() != null) {
                         sqlSuf.append(str.trim() + "=" + getPara(str).trim() + " and ");
                     }
                 }
+            }
+        } else {
+            sqlSuf.append(" company_id=" + companyId.trim() + " and ");
+        }
 
-			}
-		} else {
-			sqlSuf.append(" company_id=" + companyId.trim() + " and ");
+        if (sqlSuf.length() < 1) {
+            //renderJson(record.set("rows", null));
+            return null;
+        }
 
-		}
-
-		if (sqlSuf.length() < 1) {
-			//renderJson(record.set("rows", null));
-			return null;
-		}
-
-		// 如果是公司主表,将company_id改为id
-		if (isCompanyMainTable) {
-			String sqlSuf2 = sqlSuf + "";
-			sqlSuf2 = sqlSuf2.replace("company_id", "id");
-			sqlSuf = new StringBuffer(sqlSuf2);
-		}
-		List rows = null;
-		try {
-            System.out.println(confId+"="+className);
+        // 如果是公司主表,将company_id改为id
+        if (isCompanyMainTable) {
+            String sqlSuf2 = sqlSuf + "";
+            sqlSuf2 = sqlSuf2.replace("company_id", "id");
+            sqlSuf = new StringBuffer(sqlSuf2);
+        }
+        List rows = null;
+        try {
+            System.out.println(confId + "=" + className);
             Class<?> table = Class.forName(PAKAGENAME_PRE + className);
             BaseProjectModel model = (BaseProjectModel) table.newInstance();
             //rows = model.find("select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
             //使用ehcache缓存数据
             System.out.println(tableName + sqlSuf);
             rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
-            String type= getPara("type");
             if (StringUtils.isNotBlank(companyId)) {
-				//关联设置企业类型注释
-           CreditCompanyInfo info= 	CreditCompanyInfo.dao.findById(companyId);
-			if(StringUtils.isBlank(info.get("type_of_enterprise_remark"))){
-				//企业类型注释是空，设置进去
-			SysDictDetail detail=	SysDictDetail.dao.findById(info.get("company_type"));
-			CreditCompanyInfo cmodel=new CreditCompanyInfo();
-			  cmodel.set("id", companyId);
-			  if ("12".equals(type)) {
-				  cmodel.set("type_of_enterprise_remark", detail.get("detail_remark"));
-			}else if("14".equals(type)){
-				  cmodel.set("type_of_enterprise_remark", detail.get("detail_content"));
-			}
-			  cmodel.update();
-			}
-           }
+                //关联设置企业类型注释
+                CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);
+                if (StringUtils.isBlank(info.get("type_of_enterprise_remark"))) {
+                    //企业类型注释是空，设置进去
+                    SysDictDetail detail = SysDictDetail.dao.findById(info.getStr("company_type"));
+                    CreditCompanyInfo cmodel = new CreditCompanyInfo();
+                    cmodel.set("id", companyId);
+                    if (ReportTypeCons.ROC_ZH.equals(type)) {
+                        cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
+                    } else if (ReportTypeCons.ROC_EN.equals(type)) {
+                        cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));
+                    }
+                    cmodel.update();
+                }
+            }
             if (!("".equals(selectInfo) || selectInfo == null)) {
-
                 // 解析前端传入的字符串
                 List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
-
                 // 将id转化为字典表中对应的字符串
                 dictIdToString(rows, selectInfoMap);
             }
         } catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			renderJson(new ResultType(0, "类文件未找到异常!"));
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-			renderJson(new ResultType(0, "实例化异常!"));
-		} catch (IllegalAccessException e) {
-			renderJson(new ResultType(0, "非法存取异常!"));
-			e.printStackTrace();
-		}
+            e.printStackTrace();
+            renderJson(new ResultType(0, "类文件未找到异常!"));
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+            renderJson(new ResultType(0, "实例化异常!"));
+        } catch (IllegalAccessException e) {
+            renderJson(new ResultType(0, "非法存取异常!"));
+            e.printStackTrace();
+        }
         return rows;
     }
+
     //详情
     public List getTableDatas(boolean isCompanyMainTable, String companyId,String tableName,String className,String confId,String orderId){
         // 获取关联字典表需要转义的下拉选

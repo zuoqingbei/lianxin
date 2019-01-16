@@ -1,3 +1,4 @@
+/*
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
@@ -10,10 +11,12 @@ import com.jfinal.kit.PathKit;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+*/
 /**
  * 商业信息报告样本
  * Created by Thinkpad on 2018/11/17.
- */
+ *//*
+
 public class CreditEn {
 
     public static void main(String args[]) throws Exception{
@@ -25,14 +28,16 @@ public class CreditEn {
         //CreditCompanyInfo companyInfo = report.getCompanyInfo(companyId,sysLanguage);
     }
 
-    /**
+    */
+/**
      * 生成商业报告
      * @param reportType  报告类型
      * @param orderId     订单ID
      * @param companyId   公司ID
      * @param sysLanguage 语言
      * @param userid 当前登录人
-     */
+     *//*
+
     public static void reportTable(String reportType, String orderId, String companyId, String sysLanguage, Integer userid) {
         //报告类型
         //String reportType = "8";
@@ -155,3 +160,4 @@ public class CreditEn {
     }
 
 }
+*/

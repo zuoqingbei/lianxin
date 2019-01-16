@@ -265,6 +265,19 @@ public class BaseWord {
                 String fieldType = strs.length > 1 ? strs[1] : "";
                 Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
+                //合计项计算
+                if(hasTotal){
+                    if("number".equals(fieldType)||"money".equals(fieldType)) {
+                        String val = totalRow.get(column);
+                        val = val != null ? val : "0";
+                        totalRow.put(column, new BigDecimal(val).add(new BigDecimal(value)).toString());
+                    }else {
+                        String val = totalRow.get(column);
+                        System.out.println(totalRow.keySet().size());
+                        System.out.println(val == null);
+                        totalRow.put(column, totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val) ? val : "-");
+                    }
+                }
                 if ("select".equals(fieldType)) {
                     value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, reportType, sysLanguage) : "";
                 } else if ("money".equals(fieldType)) {
@@ -282,16 +295,6 @@ public class BaseWord {
                     value = !"".equals(value) ? value : "";
                 }
                 row.put(strs.length > 0 ? strs[0] : "", value);
-                //合计项计算
-                if(hasTotal){
-                    if("number".equals(fieldType)||"money".equals(fieldType)) {
-                        String val = totalRow.get(column);
-                        val = val != null ? val : "0";
-                        totalRow.put(column, new BigDecimal(val).add(new BigDecimal(value)).toString());
-                    }else{
-                        totalRow.put(column,totalRow.keySet().size()==0?"合计":"");
-                    }
-                }
             }
             datas.add(row);
         }
