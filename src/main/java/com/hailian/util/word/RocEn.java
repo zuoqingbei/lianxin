@@ -75,7 +75,7 @@ public class RocEn {
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
+                //List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
                     //table = BaseWord.createTableS(child, rows);
@@ -103,31 +103,31 @@ public class RocEn {
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        List rs = report.getTableData(true,  companyId, t, cn, ci, "");
+                        /*List rs = report.getTableData(true,  companyId, t, cn, ci, "");
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
                             map.put(word_key, v);
-                        }
+                        }*/
                     }
                 } else {
                     //取word里配置的关键词
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         //取数据
-                        List rs = report.getTableData(true,   companyId, t, cn, ci, "");
+                        /*List rs = report.getTableData(true,   companyId, t, cn, ci, "");
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
                             map.put(word_key, v);
-                        }
+                        }*/
                     }
                 }
             }
 
             //7 输入框取数
             if ("7".equals(moduleType)) {
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                /*List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
                 LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值
                 for (int i = 0; i < child.size(); i++) {
@@ -143,12 +143,12 @@ public class RocEn {
                         String value = model.get(column) != null ? model.get(column) + "" : "";
                         map.put(column, value);
                     }
-                }
+                }*/
             }
 
             //8-单选框
             if("8".equals(moduleType)){
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                //List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
                 LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值
                 for (int i = 0; i < child.size(); i++) {
@@ -158,7 +158,7 @@ public class RocEn {
                     cols.put(column_name, get_source);
                 }
                 //取数据
-                for (int i = 0; i < rows.size(); i++) {
+                /*for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     for (String column : cols.keySet()) {
                         //取值
@@ -176,7 +176,7 @@ public class RocEn {
                         }
                         map.put(column, html.toString());
                     }
-                }
+                }*/
             }
         }
 

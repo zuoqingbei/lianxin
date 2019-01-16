@@ -1,3 +1,4 @@
+/*
 package com.hailian.util.word;
 
 import com.deepoove.poi.data.MiniTableRenderData;
@@ -15,10 +16,12 @@ import org.jfree.data.general.DefaultPieDataset;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+*/
 /**
  * 基本信息报告样本
  * Created by Thinkpad on 2018/11/17.
- */
+ *//*
+
 public class BaseInfoEn {
 
     public static void main(String args[]) throws Exception{
@@ -28,11 +31,13 @@ public class BaseInfoEn {
         //System.out.println(map.get("tableName"));
     }
 
-    /**
+    */
+/**
      * 生成商业报告
      * @param order  订单
      * @param userid 当前登录人
-     */
+     *//*
+
     public static void reportTable(CreditOrderInfo order,String reportType, Integer userid) {
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
@@ -253,3 +258,4 @@ public class BaseInfoEn {
     }
 
 }
+*/

@@ -144,7 +144,7 @@ public class BaseInfoZh {
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
                     table = BaseWord.createTableS(reportType,child, rows,sysLanguage);
@@ -176,7 +176,7 @@ public class BaseInfoZh {
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
-                        List rs = report.getTableData(true,  companyId, t, cn, ci, "");
+                        List rs = report.getTableData(true,  companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
@@ -188,7 +188,7 @@ public class BaseInfoZh {
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         //取数据
-                        List rs = report.getTableData(true, companyId, t, cn, ci, "");
+                        List rs = report.getTableData(true, companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
@@ -200,7 +200,7 @@ public class BaseInfoZh {
 
             //7 输入框取数
             if ("7".equals(moduleType)) {
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
                 LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值
                 for (int i = 0; i < child.size(); i++) {
@@ -229,7 +229,7 @@ public class BaseInfoZh {
 
             //8-单选框 - 商业报告付款情况
             if("8".equals(moduleType)){
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
                 //取列值
                 LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值
@@ -296,7 +296,7 @@ public class BaseInfoZh {
             //图形表
             if ("11".equals(moduleType)) {
                 String selectInfo = "";
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo);
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
                 List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child, rows);
                 //jfreechart生成饼图（股东）
                 DefaultPieDataset pds = new DefaultPieDataset();
@@ -330,7 +330,7 @@ public class BaseInfoZh {
                 //取行业情况
                 CreditCompanyIndustryInfo industryInfo = CreditCompanyIndustryInfo.dao.findFirst("select * from credit_company_industry_info t where t.sys_language=? and t.company_id=? and t.del_flag=0",sysLanguage,companyId);
                 String title = industryInfo.getStr("chart_title");
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "");
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
                 List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
                 //准备图形数据
                 DefaultCategoryDataset barDataSet = new DefaultCategoryDataset();
