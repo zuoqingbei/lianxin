@@ -149,7 +149,9 @@ public class BaseInfoZh {
                 if ("s".equals(tableType)) {
                     table = BaseWord.createTableS(reportType,child, rows,sysLanguage);
                 } else if ("h".equals(tableType)) {
-                    table = BaseWord.createTableH(reportType,child, rows,sysLanguage);
+                    //"出资情况"需要增加合计项
+                    boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
+                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal);
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
