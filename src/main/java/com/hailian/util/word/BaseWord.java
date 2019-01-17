@@ -215,9 +215,13 @@ public class BaseWord {
                 }
                 Style style = new Style();
                 style.setColor("000000");
-                style.setFontFamily("宋体");
+                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                    style.setFontFamily("PMingLiU");
+                }else{
+                    style.setFontFamily("宋体");
+                }
                 //102红印用14号字体
-                if("15".equals(reportType)){
+                if(ReportTypeCons.ROC_HY.equals(reportType)){
                     style.setFontSize(14);
                 }
                 rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
@@ -325,7 +329,7 @@ public class BaseWord {
                     style.setFontFamily("宋体");
                     style.setFontSize(14);
                 } else if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
-                    //style.setFontFamily("新细明体（PMingLiU）");
+                    style.setFontFamily("PMingLiU");
                     style.setFontSize(11);
                 }
                 row[j] = new TextRenderData(value, style);
@@ -369,7 +373,7 @@ public class BaseWord {
             Style style = new Style();
             //102下划线
             if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
-                //style.setFontFamily("新细明体（PMingLiU）");
+                style.setFontFamily("PMingLiU");
                 style.setUnderLine(true);
                 style.setFontSize(11);
             } else if (ReportTypeCons.ROC_HY.equals(reportType)) {
@@ -472,7 +476,11 @@ public class BaseWord {
                     }
                 }
                 log.error("whc 测试输出：column=" + column + "  fieldType=" + fieldType + " value=" + value);
-                map.put(column, value);
+                Style style = new Style();
+                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                    style.setFontFamily("PMingLiU");
+                }
+                map.put(column, new TextRenderData(value, style));
             }
         }
     }
