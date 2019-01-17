@@ -137,7 +137,7 @@ public class HttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/SearchJudgmentDoc?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/SearchJudgmentDoc?key="+qichacha_key+"&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -159,7 +159,7 @@ public class HttpTest {
 	}
 	//裁判文书详情
 	public static JSONObject getJudgmentDocDetail(String id) throws Exception{
-		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/GetJudgementDetail?key=791f4eb3af844c53a6bba25f80f033b7&id="+id);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/GetJudgementDetail?key="+qichacha_key+"&id="+id);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -184,7 +184,7 @@ public class HttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/CourtNoticeV4/SearchCourtAnnouncement?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtNoticeV4/SearchCourtAnnouncement?key="+qichacha_key+"&pageSize=50&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -209,7 +209,7 @@ public class HttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/CourtAnnoV4/SearchCourtNotice?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtAnnoV4/SearchCourtNotice?key="+qichacha_key+"&pageSize=50&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -234,7 +234,7 @@ public class HttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/tm/Search?key=791f4eb3af844c53a6bba25f80f033b7&pageSize=50&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/tm/Search?key="+qichacha_key+"&pageSize=50&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
