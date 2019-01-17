@@ -21,7 +21,7 @@ function reloadLeftData() {
     //labCarouselInfo();
     // worldLabTypeStatis();
     //专业领域
-    // professionalStatis();
+    professionalStatis();
     //联通数
     // labLinkStatis();
 }

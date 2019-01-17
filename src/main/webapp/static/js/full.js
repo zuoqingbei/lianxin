@@ -13,7 +13,7 @@ var pathSymbols = {
 
 //进入时的视频淡出效果，开发时注掉下面这些代码
 function videoFadeOut() {
-    $("body").prepend('<div id="mask" style="background-color: black">' +
+    $("body #content").prepend('<div id="mask" style="background-color: black">' +
         '<video src="' + contextPath + '/static/img/movieHead_4480.ogv"  width="' + pageW*1.04 + '" height="105%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
         '</div>'
     );
@@ -22,7 +22,8 @@ function videoFadeOut() {
         $(this)[0].play()
     });
     $video[0].addEventListener('ended', function () {
-        $(this).parent().animate({
+        $(this).css('pointer-events','none')
+            .parent().animate({
             opacity: 0
         }, 3000, function () {
             $(this).hide();
@@ -122,11 +123,11 @@ function navLabLine() {
             });
             if (text.indexOf("产线") >= 0) {
 
-                $(".legend .animateBox").animate({top: "-1.8em"}, "slow")
+                $(".legend .animateBox").animate({top: "-2.1em"}, "slow")
                     .find(".line").addClass("current").siblings().removeClass("current");
             } else {
                 // $(".legend ul.lab").css("top","15px");
-                $(".legend .animateBox").animate({top: "0"}, "slow")
+                $(".legend .animateBox").animate({top: "-.5rem"}, "slow")
                     .find(".lab").addClass("current").siblings().removeClass("current");
             }
         }

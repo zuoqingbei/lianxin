@@ -4,6 +4,7 @@
  */
 var field="field";
 var labType="",productCode="";
+reloadLeftData2();
 function reloadLeftData(){
 	 //实验室数量统计
     // labNumStatis();
@@ -18,9 +19,9 @@ function reloadLeftData(){
 	//实验目的--可开展实验类型 产品生命周期全流程测试
 	// labLifeCycleStatis();
 	//labCarouselInfo();
-	// worldLabTypeStatis();
+	worldLabTypeStatis();
 	//专业领域
-	// professionalStatis();
+	professionalStatis();
 	//联通数
 	// labLinkStatis();
 }
@@ -286,8 +287,8 @@ function labPropertiesStatis(){
 	        grid: {
 //	            show:true,
 	        	 x: "23%",
-	             x2: "18%",
-	             y:"14%",
+	             x2: "16%",
+	             y:"13%",
 	             y2:"12%"
 	        },
 	        xAxis: [
@@ -341,9 +342,9 @@ function labPropertiesStatis(){
 	            {
 	                name: '专业能力',
 	                type:'bar',
-					barWidth:110,
+					barWidth:60*bodyScale+'%',
 	                // type: 'pictorialBar',
-//	                barGap: '10%',
+	                // barGap: '10%',
 // 	                symbolRepeat: true,
 // 	                symbolSize: ['40%', '80%'],
 	                data: statisticSeriesDataData(data)

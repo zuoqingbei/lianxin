@@ -70,13 +70,13 @@
                 <div class="sphere-right-top">
                     <div class="chartBorder">
                         <h3>实验室数量</h3>
-                        <h4 class="noBG" style="float: left;margin-left: 30%">总数：
+                        <h4 class="noBG" style="float: left;margin-left: 43%">总数：
                             <strong id="lab_all_count"
                                     class="lab_all_count">
                                 0
                             </strong>
                         </h4>
-                        <h4 class="noBG noHL" style="float: right;margin-right: 7%">互联数：
+                        <h4 class="noBG noHL" style="float: right;margin-right: 8%">互联数：
                             <strong
                                 class="lab_all_count_link">0
                             </strong>
@@ -88,9 +88,8 @@
 
                 </div>
                 <div class="sphere-right-bottom">
-                    <div class="chartBorder"
-                         style="background: url(${contextPath!}/static/img/border_flat.png);    background-size: 100% 100%;">
-                        <h3 style="    left: 0%;">互联实验室</h3>
+                    <div class="chartBorder">
+                        <h3>互联实验室</h3>
                         <!--<h4 class="noBG">互联实验室：
                             <strong id="linked_status_num" class="lab_all_count_link"></strong>
                         </h4>-->
@@ -130,22 +129,18 @@
                         <div class="chartBorder">
                             <h3>产品生命周期全流程测试</h3>
                             <div class="myChart"></div>
-                            <!--
-                                                        <div class="added" style="padding-left: 6%">
-                                                            <span>a：P1对比试验</span>&emsp;<span>b：P2新品调试</span>
-                                                            <br>
-                                                            <span>c：P3新品确认</span>&emsp;<span>d,e：P4小批验证 入厂/出厂</span>
-                                                            <span>f,g：P5年度型检 监督抽测</span>
-                                                        </div>
-                            -->
-                            <!--
-                                                        <div class="added" style="padding-left: 6%;margin-top: 1em;">
-                                                            <span>P1对比试验</span>&emsp;<span>P2新品调试</span>&emsp;<span>P3新品确认</span>
-                                                            <br>
-                                                            <span>P4小批验证 入厂/出厂</span>&emsp;<span>P5年度型检 监督抽测</span>
+                            <div class="added" style="padding-left: 6%">
+                                <span>a：P1对比试验</span>&emsp;<span>b：P2新品调试</span>
+                                <br>
+                                <span>c：P3新品确认</span>&emsp;<span>d,e：P4小批验证 入厂/出厂</span>
+                                <span>f,g：P5年度型检 监督抽测</span>
+                            </div>
+                            <div class="added" style="padding-left: 6%;margin-top: 1em;">
+                                <span>P1对比试验</span>&emsp;<span>P2新品调试</span>&emsp;<span>P3新品确认</span>
+                                <br>
+                                <span>P4小批验证 入厂/出厂</span>&emsp;<span>P5年度型检 监督抽测</span>
 
-                                                        </div>
-                            -->
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -233,6 +228,10 @@
         myChartFlatLB_full = echarts.init($fullPage.find(".flat-left-bottom .myChart")[0]);
         myCharts = [myChartFlatLT_full, myChartFlatRT_full, myChartFlatLB_full];
         //左侧平面地图及其他左侧数据
-        // reloadLeftData();
+        reloadLeftData();
+       /* setTimeout(function () {
+            $(".flat-btnTip").next().click()
+        }, 2000)
+*/
     });
 </script>

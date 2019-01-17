@@ -12,9 +12,9 @@
 }
 /*布局*/
 #l.fullScreen_map >*{
-    overflow: hidden;
-    outline: 1px dotted orange;
-    outline-offset: -1px;
+    /*overflow: hidden;*/
+    /*outline: 1px dotted orange;*/
+    /*outline-offset: -1px;*/
 }
 #l.fullScreen_map >header{
     flex: 0 0 19%;
@@ -25,6 +25,7 @@
 #l.fullScreen_map >.switchGroup{
     flex: 0 0 71%;
     display: flex;
+    height: 100%; /*不写这个属性，子孙元素的flex-basis就会越过这一级从.switchGroup的父级高度作标准计算*/
 }
 #l.fullScreen_map header h1{
     line-height: 1.2em;
@@ -34,9 +35,12 @@
     padding-top: 0;
     letter-spacing: 0.1em;
 }
-
+#l .sphere .sphere-left>div,
+#l .sphere .sphere-right>div{
+    padding: 1em 2em 0;
+}
 #l.fullScreen_map .sphere-left-top .myChart {
-    height: 34%;
+    height: 50%;
     margin: 20% 3%;
 }
 #l.fullScreen_map .sphere-left-bottom .chartBorder .myChart,
@@ -59,6 +63,7 @@
 #l.fullScreen_map .sphere .mapArea{
     flex:.81;
     padding-top: 0;
+    margin-top: -5em;
 }
 #l.fullScreen_map .flat .mapArea{
     flex:1;
@@ -110,6 +115,24 @@
     z-index: 12;
     top: 2em;
 }
+/*球右边第一个*/
+#l.fullScreen_map .sphere-right-top ul{
+    font-size: 1em;
+}
+#l.fullScreen_map .sphere-right-top ul li{
+    height: 8%;
+}
+#l.fullScreen_map .sphere .chartBorder ul li .hlnum{
+    margin-right: 1em;
+}
+#l.fullScreen_map .sphere-right-top ul li .icon{
+    margin-left: 2em;
+}
+/*球右边第二个*/
+#l.fullScreen_map .sphere-right-bottom .chartBorder>.scroll{
+    height: 14.5em;
+}
+
 #l.fullScreen_map .sphere .mapArea .popWindow img{
     width:100%;
 }
@@ -122,14 +145,19 @@
     left: 0;
     top: 0;
 }
-
+#l .flat .flat-left>div, #l .flat .flat-right>div{
+    padding: 1em 2em 4em;
+}
+#l.fullScreen_map .sphere-right-bottom .chartBorder h3{
+    left: -25%;
+}
 #l.fullScreen_map .flat .mapArea h2 {
     top: -7%;
     font-size: 1.4em;
 }
 
 #l.fullScreen_map .flat .flat-main{
-    flex: 0 0 67%;
+    flex: 0 0 95%;
 }
 #l .flat .flat-left,
 #l .flat .flat-right{
@@ -159,7 +187,14 @@
     margin-right: 30%;
     z-index: 10000;
 }
-
+/*平面地图左边第一个*/
+#l .flat-left-top .myChart{
+    height: 64%;
+}
+/*平面地图左边第二个*/
+#l.fullScreen_map .flat-left-bottom .chartBorder .myChart{
+    height: 47%;
+}
 #l.fullScreen_map .flat-left>div .chartBorder,
 #l.fullScreen_map .flat-right>div .chartBorder{
     /*height:80%;*/
@@ -185,12 +220,34 @@
 #l.fullScreen_map .sphere .chartBorder h4.noBG {
     margin-top: -11%;
 }
-
-#l.fullScreen_map .flat .mapArea iframe {
-    height: 130%;
-    width: 100%;
-    left: 41%;
+#l.fullScreen_map .flat .mapArea{
+    height:70%;
 }
+#l.fullScreen_map .flat .mapArea iframe {
+    height: 118%;
+    width: 100%;
+    left: 33%;
+}
+/*平面地图右边第一个*/
+#l .flat-right>div .chartBorder .myChart{
+    padding: 10% 0.2%;
+}
+#l.fullScreen_map .flat-right-bottom .myChart .myChart_num{
+    top: 69%;
+}
+/*平面地图右边第二个*/
+#l.fullScreen_map .flat-right-top .myChart{
+    height: 70%;
+}
+
+#l.fullScreen_map .flat .flat-footer {
+    flex: auto;
+    font-size: 1.1em;
+    position: relative;
+    top: -8em;
+    height: 54em;
+}
+
 #l.fullScreen_map .toLabData{
     padding: .5em 5em .4em;
     bottom:2%;
@@ -219,7 +276,7 @@
     z-index: 10;
 }
 #l.fullScreen_map .flat-footer .legend .selectAll{
-    padding-top: 0.5%;
+    padding-top: .25em;
 }
 #l.fullScreen_map .legend-l{
     left: -11%;
