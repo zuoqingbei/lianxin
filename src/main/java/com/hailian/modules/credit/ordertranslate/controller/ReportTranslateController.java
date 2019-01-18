@@ -61,7 +61,7 @@ public class ReportTranslateController extends BaseProjectController {
 							if("14".equals(reporttype)){
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
 										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)
-										|| "name".equals(key) || "legal".equals(key) || "executive_director".equals(key) || "members_of_the_supervisors".equals(key)){
+										|| "name".equals(key) || "legal".equals(key) || "executive_director".equals(key) || "members_of_the_supervisors".equals(key) || "operation_scope".equals(key)){
 									value_en="";
 								}
 								if("name_en".equals(key) || "business_date_end".equals(key) || "registration_authority".equals(key)){
