@@ -894,7 +894,7 @@
     background-size: 100% 100%;
 }
 .bar_box .span_bar{
-    width: 7.3rem;
+    width: 7.5rem;
     height: 0.3rem;
     display: inline-block;
     vert-align: middle;
@@ -936,7 +936,8 @@
     background: url("../../imgs/order/dot-select.png") no-repeat;
     background-size: 100% 100%;
     display: inline-block;
-    margin-right: 1.25rem;
+    /*margin-right: .625rem;*/
+    margin-left: -.625rem;
 }
 .bar_box .world_active{
     color:var(--fontTitleColor);

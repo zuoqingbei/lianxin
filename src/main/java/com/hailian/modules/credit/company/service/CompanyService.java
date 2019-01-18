@@ -28,6 +28,7 @@ import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
 import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.util.http.HttpCrawler;
 import com.hailian.util.http.HttpTest;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
@@ -98,18 +99,19 @@ public class CompanyService {
 				JSONObject jsonResulet = json.getJSONObject("Result");
 				//企业基本信息
 				String No = jsonResulet.getString("No"); //注册号
-				String CreditCode = jsonResulet.getString("CreditCode"); //统一信用社信用代码
+				String CreditCode = jsonResulet.getString("CreditCode").replace("null", ""); //统一信用社信用代码
 				System.out.println(CreditCode);
-				String EconKind = jsonResulet.getString("EconKind"); //企业类型
-				String OperName = jsonResulet.getString("OperName"); //法人名
-				String RegistCapi = jsonResulet.getString("RegistCapi"); //注册资本
+				String EconKind = jsonResulet.getString("EconKind").replace("null", ""); //企业类型
+				String OperName = jsonResulet.getString("OperName").replace("null", ""); //法人名
+				String RegistCapi = jsonResulet.getString("RegistCapi").replace("null", ""); //注册资本
 				String StartDate = jsonResulet.getString("StartDate"); //成立日期
 				String TermStart = jsonResulet.getString("TermStart"); //营业期限自
 				String TeamEnd = jsonResulet.getString("TeamEnd"); //营业期限至
-				String BelongOrg = jsonResulet.getString("BelongOrg"); //登记机关
-				String Address = jsonResulet.getString("Address"); //地址
+				String CheckDate = jsonResulet.getString("CheckDate"); //发照日期
+				String BelongOrg = jsonResulet.getString("BelongOrg").replace("null", ""); //登记机关
+				String Address = jsonResulet.getString("Address").replace("null", ""); //地址
 				String Province = jsonResulet.getString("Province"); //所在省
-				String Scope = jsonResulet.getString("Scope"); //经营范围
+				String Scope = jsonResulet.getString("Scope").replace("null", ""); //经营范围
 				String Status = jsonResulet.getString("Status"); //登记状态
 				CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 				companyinfoModel.set("registration_num", No);
@@ -129,7 +131,12 @@ public class CompanyService {
 				}
 				companyinfoModel.set("register_code_type", "632");
 				companyinfoModel.set("register_codes", CreditCode);
-				companyinfoModel.set("legal", OperName);
+				if(EconKind.contains("合伙企业")){
+					companyinfoModel.set("managing_partner", OperName);
+				}else{
+					companyinfoModel.set("legal", OperName);
+				}
+				
 				companyinfoModel.set("registered_capital", RegistCapi);
 				if(RegistCapi.indexOf("万元人民币") !=-1){
 					String replace = RegistCapi.replace("万元人民币", "");
@@ -145,8 +152,17 @@ public class CompanyService {
 					companyinfoModel.set("registered_capital", a.multiply(b).toString());
 					companyinfoModel.set("currency","267");
 				}
+				if(RegistCapi.indexOf("万港元") !=-1){
+					String replace = RegistCapi.replace("万港元", "");
+					BigDecimal a = new BigDecimal(replace);
+					BigDecimal b = new BigDecimal("10000");
+					companyinfoModel.set("registered_capital", a.multiply(b).toString());
+					companyinfoModel.set("currency","266");
+				}
 				String StartDateFor = dateFormat(StartDate);//转成年月日
 				companyinfoModel.set("establishment_date", StartDateFor);
+				String CheckDateFor = dateFormat(CheckDate);//转成年月日
+				companyinfoModel.set("last_modified_date", CheckDateFor);
 				String TermStartFor = dateFormat(TermStart);//转成年月日
 				companyinfoModel.set("business_date_start", TermStartFor);
 				if(StringUtils.isNotBlank(TeamEnd)){
@@ -178,37 +194,33 @@ public class CompanyService {
 				companyinfoModel.set("sys_language", sys_language);
 				companyinfoModel.set("name", companyName);
 				
-				JSONObject ContactInfo = json.getJSONObject("Result").getJSONObject("ContactInfo");//联系信息
-				String PhoneNumber = ContactInfo.getString("PhoneNumber");//电话
-				String Email = ContactInfo.getString("Email");//邮箱
-				companyinfoModel.set("telphone", PhoneNumber);
-				companyinfoModel.set("email", Email);
-				companyinfoModel.update();
-				//股东信息
-				JSONArray partners = json.getJSONObject("Result").getJSONArray("Partners");
-				if(partners !=null && partners.size()>0){
-					CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
-					List<CreditCompanyShareholder> shareholderlist=new ArrayList<CreditCompanyShareholder>();
-					for(int i=0;i<partners.size();i++){
-						JSONObject partner = (JSONObject)partners.get(i);
-						String name = partner.getString("StockName");//股东
-						String StockPercent = partner.getString("StockPercent");//出资比例
-						String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
-						String ShouldCapi = partner.getString("ShouldCapi");//出资金额
-						CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
-						shareholderModel.set("sh_name", name);
-						shareholderModel.set("money", StockPercentEd);
-						BigDecimal a = new BigDecimal(ShouldCapi.replace(",", ""));
-						BigDecimal b = new BigDecimal("10000");
-						shareholderModel.set("contribution", a.multiply(b).toString());
-						shareholderModel.set("company_id", companyId);
-						shareholderModel.set("sys_language", sys_language);
-						shareholderlist.add(shareholderModel);
-					}
-					Db.batchSave(shareholderlist, shareholderlist.size());
+				try {
+					JSONObject ContactInfo = json.getJSONObject("Result").getJSONObject("ContactInfo");//联系信息
+					String PhoneNumber = ContactInfo.getString("PhoneNumber");//电话
+					String Email = ContactInfo.getString("Email");//邮箱
+					companyinfoModel.set("telphone", PhoneNumber);
+					companyinfoModel.set("email", Email);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				
+				String executive_director="";//执行董事
+				String chairman="";//董事长
+				String vice_president="";//副董事长
+				String board_members="";//董事成员
+				String supervisory_board_chairman="";//监事主席
+				String members_of_the_supervisors="";//监事成员
+				String general_manager="";//总经理
+				String vice_general_manager="";//副总经理
 				//管理层
-				JSONArray Employees = json.getJSONObject("Result").getJSONArray("Employees");
+				JSONArray Employees = null;
+				try {
+					Employees = json.getJSONObject("Result").getJSONArray("Employees");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				List<CreditCompanyManagement> managementlist=new ArrayList<CreditCompanyManagement>();
 				if(Employees !=null && Employees.size()>0){
 					CreditCompanyManagement.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
@@ -217,6 +229,35 @@ public class CompanyService {
 						//CreditCompanyManagement
 						String name = employee.getString("Name");//管理层姓名
 						String job = employee.getString("Job");//职位
+						if("12".equals(reporttype) || "14".equals(reporttype) || "15".equals(reporttype)){//当报告类型为102时获取主表管理层信息
+							if("董事长".equals(job)){
+								chairman+=name+";";
+							}else if("执行董事".equals(job)){
+								executive_director+=name+";";
+							}else if ("副董事长".equals(job)) {
+								vice_president+=name+";";
+							}else if ("董事".equals(job)) {
+								board_members+=name+";";
+							}else if ("监事主席".equals(job)) {
+								supervisory_board_chairman+=name+";";
+							}else if ("监事".equals(job)) {
+								members_of_the_supervisors+=name+";";
+							}else if ("总经理".equals(job)) {
+								general_manager+=name+";";
+							}else if ("副总经理".equals(job)) {
+								vice_general_manager+=name+";";
+							}
+							companyinfoModel.set("chairman", chairman);
+							companyinfoModel.set("executive_director", executive_director);
+							companyinfoModel.set("vice_president", vice_president);
+							companyinfoModel.set("board_members", board_members);
+							companyinfoModel.set("supervisory_board_chairman", supervisory_board_chairman);
+							companyinfoModel.set("members_of_the_supervisors", members_of_the_supervisors);
+							companyinfoModel.set("general_manager", general_manager);
+							companyinfoModel.set("vice_general_manager", vice_general_manager);
+						}
+						
+						
 						CreditCompanyManagement managementModel = new CreditCompanyManagement();
 						
 						List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job.trim(),"position");
@@ -239,17 +280,64 @@ public class CompanyService {
 					}
 					Db.batchSave(managementlist, managementlist.size());
 				}
+				
+				companyinfoModel.update();//当报告类型为102时获取主表管理层信息
+				//股东信息
+				JSONArray partners = null;
+				try {
+					partners = json.getJSONObject("Result").getJSONArray("Partners");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(partners !=null && partners.size()>0){
+					CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
+					List<CreditCompanyShareholder> shareholderlist=new ArrayList<CreditCompanyShareholder>();
+					for(int i=0;i<partners.size();i++){
+						JSONObject partner = (JSONObject)partners.get(i);
+						String name = partner.getString("StockName");//股东
+						String StockType = partner.getString("StockType");//股东类型
+						String Crawlername=name;
+						try {
+							Crawlername = HttpCrawler.getIcrisUrl(name);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							Crawlername=name;
+						}
+
+						String StockPercent = partner.getString("StockPercent");//出资比例
+						String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
+						String ShouldCapi = partner.getString("ShouldCapi");//出资金额
+						CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
+						shareholderModel.set("sh_name", Crawlername);
+						shareholderModel.set("money", StockPercentEd);
+						BigDecimal a = new BigDecimal(ShouldCapi.replace(",", ""));
+						BigDecimal b = new BigDecimal("10000");
+						shareholderModel.set("contribution", a.multiply(b).toString());
+						shareholderModel.set("company_id", companyId);
+						shareholderModel.set("sys_language", sys_language);
+						shareholderlist.add(shareholderModel);
+					}
+					Db.batchSave(shareholderlist, shareholderlist.size());
+				}
+			
 
 				//变更事项
-				JSONArray ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
+				JSONArray ChangeRecords = null;
+				try {
+					ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				if(ChangeRecords != null && ChangeRecords.size()>0){
 					CreditCompanyHis.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 					List<CreditCompanyHis> hisModellist=new ArrayList<CreditCompanyHis>();
 					for(int i=0;i<ChangeRecords.size();i++){
 						JSONObject changerecord = (JSONObject)ChangeRecords.get(i);
-						String ProjectName = changerecord.getString("ProjectName");//变更项
-						String BeforeContent = changerecord.getString("BeforeContent");//变更前
-						String AfterContent = changerecord.getString("AfterContent");//变更后
+						String ProjectName = changerecord.getString("ProjectName").replace("null", "");//变更项
+						String BeforeContent = changerecord.getString("BeforeContent").replace("null", "");//变更前
+						String AfterContent = changerecord.getString("AfterContent").replace("null", "");//变更后
 						String ChangeDate = changerecord.getString("ChangeDate");//变更日期
 						CreditCompanyHis companyhisModel=new CreditCompanyHis();
 						ChangeitemModel changeitemByNotNessent = ChangeitemService.service.getChangeitemByNotNessent(ProjectName);//看是否为非必需项
@@ -293,8 +381,13 @@ public class CompanyService {
 			try {
 				date = new SimpleDateFormat("yyyy-MM-dd").parse(StartDate);
 			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				try {
+					date = new SimpleDateFormat("yyyy年MM月dd日").parse(StartDate);
+					StartDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+				} catch (ParseException e2) {
+					// TODO Auto-generated catch block
+					StartDate="";
+				}
 			}
 		}
 		
@@ -498,7 +591,7 @@ public class CompanyService {
 		
 	}
 	public static void main(String[] args) {
-		String date="2018-11-11";
-		System.out.println(dateFormat(date));
+		
+		System.out.println(HttpCrawler.getIcrisUrl("青岛海联软件科技有限公司"));
 	}
 }
