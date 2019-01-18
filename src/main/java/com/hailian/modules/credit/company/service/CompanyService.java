@@ -28,6 +28,7 @@ import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
 import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.util.http.HttpCrawler;
 import com.hailian.util.http.HttpTest;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
@@ -296,13 +297,19 @@ public class CompanyService {
 						JSONObject partner = (JSONObject)partners.get(i);
 						String name = partner.getString("StockName");//股东
 						String StockType = partner.getString("StockType");//股东类型
-//						String  name = HttpCrawler.getIcrisUrl("海尔集团");
+						String Crawlername=name;
+						try {
+							Crawlername = HttpCrawler.getIcrisUrl(name);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							Crawlername=name;
+						}
 
 						String StockPercent = partner.getString("StockPercent");//出资比例
 						String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
 						String ShouldCapi = partner.getString("ShouldCapi");//出资金额
 						CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
-						shareholderModel.set("sh_name", name);
+						shareholderModel.set("sh_name", Crawlername);
 						shareholderModel.set("money", StockPercentEd);
 						BigDecimal a = new BigDecimal(ShouldCapi.replace(",", ""));
 						BigDecimal b = new BigDecimal("10000");
@@ -584,7 +591,7 @@ public class CompanyService {
 		
 	}
 	public static void main(String[] args) {
-		String date="2018-11-11";
-		System.out.println(dateFormat(date));
+		
+		System.out.println(HttpCrawler.getIcrisUrl("青岛海联软件科技有限公司"));
 	}
 }

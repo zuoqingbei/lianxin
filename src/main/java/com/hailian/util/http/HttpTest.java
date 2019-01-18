@@ -74,7 +74,7 @@ public class HttpTest {
 		
 		//getCourtUrl();//爬取全国法院被执行人信息查询网站
 		//getYjapi();
-		getYjapi("利龙商标柯式印刷厂有限公司");
+		getYjapi("阿里巴巴(中国)网络技术有限公司");
 //		getBrandandpatent("青岛海联软件科技有限公司", "");
 //		getJudgmentDoc("青岛海联软件科技有限公司", "");
 
