@@ -192,6 +192,8 @@ public class CompanyService {
 					for(int i=0;i<partners.size();i++){
 						JSONObject partner = (JSONObject)partners.get(i);
 						String name = partner.getString("StockName");//股东
+						String StockType = partner.getString("StockType");//股东类型
+						
 						String StockPercent = partner.getString("StockPercent");//出资比例
 						String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
 						String ShouldCapi = partner.getString("ShouldCapi");//出资金额
