@@ -252,10 +252,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             System.out.println(confId + "=" + className);
             Class<?> table = Class.forName(PAKAGENAME_PRE + className);
             BaseProjectModel model = (BaseProjectModel) table.newInstance();
-            //rows = model.find("select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
+            rows = model.find("select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
             //使用ehcache缓存数据
-            System.out.println(tableName + sqlSuf);
-            rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
+            //System.out.println(tableName + sqlSuf);
+            //rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
             if (StringUtils.isNotBlank(companyId)) {
                 //关联设置企业类型注释
                 CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);

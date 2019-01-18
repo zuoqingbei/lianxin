@@ -12,12 +12,15 @@ import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.jfinal.upload.UploadFile;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -62,6 +65,8 @@ import java.util.List;
 public class BaseWord {
     public static Logger log= Logger.getLogger(BaseWord.class);
 
+    //文件服务器配置
+    public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
     public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
     public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
     public static final String userName = Config.getStr("ftp_userName");//域用户名
@@ -203,7 +208,7 @@ public class BaseWord {
         }
         //取数据
         for (int i = 0; i < rows.size(); i++) {
-            BaseProjectModel model = (BaseProjectModel) rows.get(0);
+            BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
                 String[] strs = cols.get(column).split("\\|");
                 String fieldType = strs.length == 2 ? strs[1] : "";
@@ -386,6 +391,7 @@ public class BaseWord {
         }
         //表头居中
         rowRenderData = RowRenderData.build(header);
+        tableStyle.setAlign(STJc.CENTER);
         rowRenderData.setStyle(tableStyle);
         return rowRenderData;
     }
@@ -433,9 +439,9 @@ public class BaseWord {
                             && ("registration_status".equals(column) || "year_result".equals(column) || "roc_registration_status".equals(column))){
                         Map<String,String> params = parseUrl(getSource);
                         String type = params.get("type");
-                        value = !"".equals(value) ? template.getSysDictDetailStringWord(reportType,type,value) : "N/A";
+                        value = !"".equals(value) ? template.getSysDictDetailStringWord(reportType,type,value) : "--";
                     }else{
-                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType, sysLanguage) : "N/A";
+                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType, sysLanguage) : "--";
                     }
                 }else if("date".equals(fieldType)){
                     try {
@@ -472,7 +478,7 @@ public class BaseWord {
                             e.printStackTrace();
                         }
                     }else{
-                        value = !"".equals(value) ? value : "N/A";
+                        value = !"".equals(value) ? value : "--";
                     }
                 }
                 log.error("whc 测试输出：column=" + column + "  fieldType=" + fieldType + " value=" + value);
@@ -698,13 +704,48 @@ public class BaseWord {
         String storePath = ftpStore + "/" + DateUtils.getNow(DateUtils.YMD);
         File file = new File(filePath);
         List<File> commonFiles = new ArrayList<File>();
+        List<File> pdfFiles = new ArrayList<File>();
         commonFiles.add(file);
         String now = UUID.randomUUID().toString().replaceAll("-", "");
         CreditUploadFileModel fileModel = new CreditUploadFileModel();
         fileModel.set("business_type", "0");
         fileModel.set("business_id", orderId);
         try {
+            for(File fl:commonFiles) {
+                //获取真实文件名
+                String originalFile = fl.getName();
+                //根据文件后缀名判断文件类型
+                String ext = FileTypeUtils.getFileType(originalFile);
+                //检查格式
+                if(!FileTypeUtils.checkType(ext)){
+                    System.out.println("请检查 "+originalFile+" 的格式!");
+                }
+                //检查大小
+                if(fl.length()>maxPostSize){
+                    System.out.println(originalFile+" 必须小于5兆!");
+                }
+                File pdf = null;
+                //如果上传文档不是pdf或者图片或者则转化为pdf，以作预览
+                if (!ext.equals("pdf") && !FileTypeUtils.isImg(ext) && !ext.equalsIgnoreCase("html")) {
+                    try {
+                        pdf = Office2PDF.toPdf(fl);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+                //commonFiles.add(fl);
+                if (pdf != null)
+                    pdfFiles.add(pdf);
+            }
+
+            boolean storePdfFile = true;
+            if(pdfFiles.size()>0) {
+                storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+            }
             boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile(now, commonFiles, storePath, ip, port, userName, password);
+            if(!storePdfFile){
+                System.out.println("预览文件生成异常!");
+            }
             if (!storeCommonFile) {
                 System.out.println("文件上传异常!");
             }
