@@ -121,4 +121,12 @@ public class Office2PDF {
 		File convertFileToPdf = Office2PDF.convertFileToPdf(uploadFile.getFile(),name,type, "C:/tempFile");
 		return convertFileToPdf;
 	}
+
+    public static File toPdf(File file) throws Exception{
+        String now=DateUtils.getNow(DateUtils.YMDHMS);
+        String type = FileTypeUtils.getFileType(file.getName());
+        String name = FileTypeUtils.getName(file.getName());
+        File convertFileToPdf = Office2PDF.convertFileToPdf(file,name,type, "C:/tempFile");
+        return convertFileToPdf;
+    }
 }

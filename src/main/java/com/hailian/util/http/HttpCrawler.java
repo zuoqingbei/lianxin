@@ -80,7 +80,7 @@ public class HttpCrawler {
 	public static Integer random = 11;
 	
 	public static void main(String[] args) throws Exception {
-
+        String  name = HttpCrawler.getIcrisUrl("海尔集团");
 
 		//HttpCrawler crawler = new HttpCrawler();
 		//1. 中华人民共和国海关总署网站
@@ -498,6 +498,123 @@ public class HttpCrawler {
 	
 	
 	/*-----------------------------3.香港查册网-------------------------------------------------*/
+
+    /**
+     * 爬取香港查册网站
+     * @param company
+     */
+    public static String getIcrisUrl(String company) {
+        //第一级页面
+        HttpGet get = new HttpGet("https://www.icris.cr.gov.hk/csci/clearsession.jsp?user_type=iguest");
+        CloseableHttpClient httpclient = sslClient(null);
+        CloseableHttpResponse response = null;
+        HttpClientContext context = HttpClientContext.create();
+        CookieStore cookieStore = new BasicCookieStore();
+        try {
+            response = httpclient.execute(get, context);
+            //第二级页面
+            get = new HttpGet("https://www.icris.cr.gov.hk/csci/login_i.do?loginType=iguest&CHKBOX_01=false&OPT_01=1&OPT_02=0&OPT_03=0&OPT_04=0&OPT_05=0&OPT_06=0&OPT_07=0&OPT_08=0&OPT_09=0&username=iguest");
+            response = httpclient.execute(get, context);
+            cookieStore = (context.getCookieStore());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        HttpPost post = new HttpPost("https://www.icris.cr.gov.hk/csci/search_company_name.do");
+        post.setHeader("User-Agent",
+                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36");
+        ArrayList<NameValuePair> postData = new ArrayList<NameValuePair>();
+        postData.add(new BasicNameValuePair("nextAction", "search_company_name"));
+        postData.add(new BasicNameValuePair("searchPage:", "True"));
+        postData.add(new BasicNameValuePair("searchMode", "BYNAME"));
+        postData.add(new BasicNameValuePair("firstSearchPage", "True"));
+        postData.add(new BasicNameValuePair("mode", "LEFT PARTIAL"));
+        //en英文  ch繁体中文字
+        postData.add(new BasicNameValuePair("language", "ch"));
+        postData.add(new BasicNameValuePair("query", company));
+        postData.add(new BasicNameValuePair("page", "1"));
+        postData.add(new BasicNameValuePair("companyName", ""));
+        postData.add(new BasicNameValuePair("moduleType", "search_company_name"));
+        postData.add(new BasicNameValuePair("saveActvy", "true"));
+        httpclient = sslClient(cookieStore);
+        String html = "";
+        try {
+            post.setEntity(new UrlEncodedFormEntity(postData, "utf-8"));//捆绑参数
+            response = httpclient.execute(post);
+            Header[] headers = response.getAllHeaders();
+            for (int i = 0; i < headers.length; i++) {
+                System.out.println(headers[i].getName() + "==" + headers[i].getValue());
+            }
+            html = EntityUtils.toString(response.getEntity(), "utf-8");
+            Document doc = Jsoup.parse(html);
+            Elements tables = doc.select("table[class=data]");
+            if (tables != null && tables.size() > 0) {
+                /*Elements attr = tables.get(0).getElementsByTag("a");
+                for (Element element : attr) {
+                    String href = element.attr("href");
+                    String scrNo = href.substring(href.indexOf("'") + 1, href.lastIndexOf(",") - 1);
+                    System.out.println("href====" + scrNo);
+                    post = new HttpPost("https://www.icris.cr.gov.hk/csci/cns_basic_comp.do");
+                    postData = new ArrayList<NameValuePair>();
+                    postData.add(new BasicNameValuePair("certcontent", ""));
+                    postData.add(new BasicNameValuePair("desc:", ""));
+                    postData.add(new BasicNameValuePair("screenPrintInd", ""));
+                    postData.add(new BasicNameValuePair("searchMode", "BYNAME"));
+                    postData.add(new BasicNameValuePair("searchPage", "True"));
+                    postData.add(new BasicNameValuePair("searchKey", "module name is:search_company_name,company name search,search mode is:LEFT PARTIAL,search value is:" + company));
+                    postData.add(new BasicNameValuePair("itemDesc", "search value is:" + company));
+                    postData.add(new BasicNameValuePair("productCode", "SCRPRT"));
+                    postData.add(new BasicNameValuePair("moduleName", "search_company_name"));
+                    postData.add(new BasicNameValuePair("certificate", "search_company_name"));
+                    postData.add(new BasicNameValuePair("cnsDesc", "查阅公司名称"));
+                    postData.add(new BasicNameValuePair("fromCnsOfc", "N"));
+                    postData.add(new BasicNameValuePair("isScreenSearch", ""));
+                    postData.add(new BasicNameValuePair("page", "1"));
+                    postData.add(new BasicNameValuePair("lastPage", "1"));
+                    postData.add(new BasicNameValuePair("radioButton", "BYCRNO"));
+                    postData.add(new BasicNameValuePair("nextAction", "search_company_name"));
+                    postData.add(new BasicNameValuePair("selectPage", "1"));
+                    postData.add(new BasicNameValuePair("mode", "LEFT PARTIAL"));
+                    postData.add(new BasicNameValuePair("language", "en"));
+                    postData.add(new BasicNameValuePair("query", company));
+                    postData.add(new BasicNameValuePair("unpaid", "true"));
+                    postData.add(new BasicNameValuePair("sCRNo", scrNo));
+                    postData.add(new BasicNameValuePair("showMedium", "true"));
+                    postData.add(new BasicNameValuePair("showBack", "true"));
+                    postData.add(new BasicNameValuePair("searchPage", "True"));
+                    postData.add(new BasicNameValuePair("DPDSInd", "查阅公司名称"));
+                    post.setEntity(new UrlEncodedFormEntity(postData, "utf-8"));//捆绑参数
+                    response = httpclient.execute(post);
+                    //html = EntityUtils.toString(response.getEntity(), "utf-8");
+                    //parseIcris(html,companyId);
+                    return
+                }*/
+                company = company + "(香港)";
+            } else {
+                System.out.println("香港查册网：未查询到'" + company + "'");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (response != null) {
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println(company);
+        return company;
+    }
 
     /**
      * 爬取香港查册网站

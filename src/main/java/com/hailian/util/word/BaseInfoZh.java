@@ -15,6 +15,7 @@ import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
 import com.hailian.util.StrUtils;
+import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Db;
 
@@ -96,7 +97,7 @@ public class BaseInfoZh {
         map.put("reference_num",referenceNum);
         //订单公司名称
         if(ReportTypeCons.ROC_EN.equals(reportType)){
-            map.put("company", order.getStr("right_company_name_en"));
+            map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
         }else{
             map.put("company", companyInfo.getStr("name_en"));
         }
@@ -446,7 +447,7 @@ public class BaseInfoZh {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
-                //email = "hu_cheng86@126.com";
+                email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
