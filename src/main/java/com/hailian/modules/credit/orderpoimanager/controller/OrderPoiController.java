@@ -423,12 +423,12 @@ public class OrderPoiController extends BaseProjectController {
 					  msg="提交成功，但该订单没有找到合适的代理，请注意!";
 				  }
 			  }
+			  model.save();//保存订单
 			  modellist.add(model);
 			 }
 			 //Db.batchSave(modellist, modellist.size());
 			
 			 for(CreditOrderInfo model:modellist){
-				 model.save();//保存订单
 				 //发送邮件
 				 /*if(model.get("agent_id")!= null){
 					 MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件

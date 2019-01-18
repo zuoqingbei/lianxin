@@ -106,6 +106,7 @@ public class CompanyService {
 				String StartDate = jsonResulet.getString("StartDate"); //成立日期
 				String TermStart = jsonResulet.getString("TermStart"); //营业期限自
 				String TeamEnd = jsonResulet.getString("TeamEnd"); //营业期限至
+				String CheckDate = jsonResulet.getString("CheckDate"); //发照日期
 				String BelongOrg = jsonResulet.getString("BelongOrg"); //登记机关
 				String Address = jsonResulet.getString("Address"); //地址
 				String Province = jsonResulet.getString("Province"); //所在省
@@ -147,6 +148,8 @@ public class CompanyService {
 				}
 				String StartDateFor = dateFormat(StartDate);//转成年月日
 				companyinfoModel.set("establishment_date", StartDateFor);
+				String CheckDateFor = dateFormat(CheckDate);//转成年月日
+				companyinfoModel.set("last_modified_date", CheckDateFor);
 				String TermStartFor = dateFormat(TermStart);//转成年月日
 				companyinfoModel.set("business_date_start", TermStartFor);
 				if(StringUtils.isNotBlank(TeamEnd)){
@@ -193,7 +196,8 @@ public class CompanyService {
 						JSONObject partner = (JSONObject)partners.get(i);
 						String name = partner.getString("StockName");//股东
 						String StockType = partner.getString("StockType");//股东类型
-						
+//						String  name = HttpCrawler.getIcrisUrl("海尔集团");
+
 						String StockPercent = partner.getString("StockPercent");//出资比例
 						String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
 						String ShouldCapi = partner.getString("ShouldCapi");//出资金额
