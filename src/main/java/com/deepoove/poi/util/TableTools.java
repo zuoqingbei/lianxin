@@ -1,5 +1,6 @@
 package com.deepoove.poi.util;
 
+import com.deepoove.poi.data.style.TableStyle;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
 import org.apache.poi.xwpf.usermodel.XWPFTableRow;
@@ -147,7 +148,7 @@ public final class TableTools {
      * @param table
      * @param size
      */
-    public static void borderTable(XWPFTable table, int size) {
+    public static void borderTable(XWPFTable table, int size, TableStyle style) {
         CTTblPr tblPr = getTblPr(table);
         CTTblBorders tblBorders = tblPr.getTblBorders();
         BigInteger borderSize = BigInteger.valueOf(size);
@@ -160,12 +161,27 @@ public final class TableTools {
         tblBorders.getInsideV().setSz(borderSize);
 
         //不显示表格边框
-        tblBorders.getBottom().setVal(STBorder.Enum.forString("none"));
-        tblBorders.getLeft().setVal(STBorder.Enum.forString("none"));
-        tblBorders.getTop().setVal(STBorder.Enum.forString("none"));
-        tblBorders.getRight().setVal(STBorder.Enum.forString("none"));
-        tblBorders.getInsideH().setVal(STBorder.Enum.forString("none"));
-        tblBorders.getInsideV().setVal(STBorder.Enum.forString("none"));
+        if(null != style && style.getHasBorder()) {
+            tblBorders.getBottom().setVal(STBorder.Enum.forString("none"));
+            tblBorders.getLeft().setVal(STBorder.Enum.forString("none"));
+            tblBorders.getTop().setVal(STBorder.Enum.forString("none"));
+            tblBorders.getRight().setVal(STBorder.Enum.forString("none"));
+            tblBorders.getInsideH().setVal(STBorder.Enum.forString("none"));
+            tblBorders.getInsideV().setVal(STBorder.Enum.forString("none"));
+        }
+    }
+
+    public static void borderTable(XWPFTable table, int size) {
+        CTTblPr tblPr = getTblPr(table);
+        CTTblBorders tblBorders = tblPr.getTblBorders();
+        BigInteger borderSize = BigInteger.valueOf(size);
+
+        tblBorders.getBottom().setSz(borderSize);
+        tblBorders.getLeft().setSz(borderSize);
+        tblBorders.getTop().setSz(borderSize);
+        tblBorders.getRight().setSz(borderSize);
+        tblBorders.getInsideH().setSz(borderSize);
+        tblBorders.getInsideV().setSz(borderSize);
 
     }
 
