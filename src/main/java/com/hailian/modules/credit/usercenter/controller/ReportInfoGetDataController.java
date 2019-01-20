@@ -262,14 +262,16 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 if (StringUtils.isBlank(info.get("type_of_enterprise_remark"))) {
                     //企业类型注释是空，设置进去
                     SysDictDetail detail = SysDictDetail.dao.findById(info.getStr("company_type"));
-                    CreditCompanyInfo cmodel = new CreditCompanyInfo();
-                    cmodel.set("id", companyId);
-                    if (ReportTypeCons.ROC_ZH.equals(type)) {
-                        cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
-                    } else if (ReportTypeCons.ROC_EN.equals(type)) {
-                        cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));
+                    if(detail!=null) {
+                        CreditCompanyInfo cmodel = new CreditCompanyInfo();
+                        cmodel.set("id", companyId);
+                        if (ReportTypeCons.ROC_ZH.equals(type)) {
+                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
+                        } else if (ReportTypeCons.ROC_EN.equals(type)) {
+                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));
+                        }
+                        cmodel.update();
                     }
-                    cmodel.update();
                 }
             }
             if (!("".equals(selectInfo) || selectInfo == null)) {
@@ -919,6 +921,20 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             System.out.println("此信息输出不影响程序往下运行，异常id=" + id);
         }
         return "";
+    }
+
+    /**
+     * 将id转化为字典表中对应的字符串
+     * @param id
+     */
+    public static SysDictDetail dictIdToString(String id) {
+        //判断id必须是数字
+        if (id.matches("-?[0-9]+.*[0-9]*")){
+            Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
+            SysDictDetail sysDict = cache.get(Integer.parseInt(id));
+            return sysDict;
+        }
+        return null;
     }
 	
     
