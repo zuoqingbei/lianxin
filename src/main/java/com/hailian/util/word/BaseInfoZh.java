@@ -264,7 +264,11 @@ public class BaseInfoZh {
                                 html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
                             }
                         }
-                        map.put(column, html.toString());
+                        Style style = new Style();
+                        if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
+                            style.setFontFamily("PMingLiU");
+                        }
+                        map.put(column, new TextRenderData(html.toString(), style));
                     }
                 }
                 /*if (rows!=null && rows.size()>0) {
@@ -447,7 +451,7 @@ public class BaseInfoZh {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
-                email = "hu_cheng86@126.com";
+                //email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();

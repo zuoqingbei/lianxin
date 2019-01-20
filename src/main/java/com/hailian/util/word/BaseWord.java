@@ -281,7 +281,7 @@ public class BaseWord {
                     if("number".equals(fieldType)||"money".equals(fieldType)) {
                         String val = totalRow.get(column);
                         val = val != null ? val.replaceAll(",","") : "0";
-                        val = new BigDecimal(val).add(new BigDecimal(value)).toString();
+                        val = new BigDecimal(val).add(new BigDecimal(value.replaceAll(",",""))).toString();
                         try {
                             if("money".equals(fieldType)) {
                                 DecimalFormat df = new DecimalFormat("###,###.##");
@@ -302,14 +302,17 @@ public class BaseWord {
                     //出资情况后面更加币种
                     if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)){
                         if("currency".equals(column)) {
-                            System.out.println(value);
                             if(!"".equals(value)) {
                                 //出资情况，出资金额后面跟币种
                                 SysDictDetail sysDict = new ReportInfoGetDataController().dictIdToString(value);
-                                String unit = sysDict.get("detail_name_tw") + " " + sysDict.get("detail_name_en");
-                                String str = cols.get("contribution").split("\\|")[0] + "(" + unit + ")" + "|" + strs[1];
-                                System.out.println(cols.get("contribution"));
-                                cols.put("contribution", str);
+                                if(sysDict!=null) {
+                                    String unit = sysDict.get("detail_name_tw") + " " + sysDict.get("detail_name_en");
+                                    if(!cols.get("contribution").contains("(")){
+                                        String str = cols.get("contribution").split("\\|")[0] + "(" + unit + ")" + "|" + strs[1];
+                                        System.out.println(cols.get("contribution"));
+                                        cols.put("contribution", str);
+                                    }
+                                }
                             }
                         }
                     }else{
@@ -549,11 +552,22 @@ public class BaseWord {
                 }
                 log.error("whc 测试输出：column=" + column + "  fieldType=" + fieldType + " value=" + value);
                 Style style = new Style();
-                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                    //style.setFontFamily("PMingLiU");
+                if(ReportTypeCons.ROC_ZH.equals(reportType)){
                     //单元格字体
-                    if("postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
+                    if("name_trans_en".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
                             "registration_num".equals(column)||"register_codes".equals(column)||"year".equals(column)){
+                        //郵政編碼 電話號碼 傳真號碼 登記編號 統一信用代碼 年檢情況
+                        style.setFontFamily("Times New Roman");
+                    }else {
+                        style.setFontFamily("PMingLiU");
+                    }
+                }else if(ReportTypeCons.ROC_EN.equals(reportType)){
+                    //单元格字体
+                    if("name_trans_en".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
+                            "registration_num".equals(column)||"register_codes".equals(column)||"year".equals(column)||
+                            "roc_registration_status".equals(column)||"company_type".equals(column)||"currency".equals(column)||
+                            "registered_capital".equals(column)||"establishment_date".equals(column)||"business_date_end".equals(column)||
+                            "last_modified_date".equals(column)||"registration_authority".equals(column)||"year_result".equals(column)){
                         //郵政編碼 電話號碼 傳真號碼 登記編號 統一信用代碼 年檢情況
                         style.setFontFamily("Times New Roman");
                     }else {
