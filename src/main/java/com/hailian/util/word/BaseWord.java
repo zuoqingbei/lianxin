@@ -572,7 +572,7 @@ public class BaseWord {
                     }
                 }else if(ReportTypeCons.ROC_EN.equals(reportType)){
                     //单元格字体
-                    if("name_trans_en".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
+                    if("name_trans_en".equals(column)||"address".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
                             "registration_num".equals(column)||"register_codes".equals(column)||"year".equals(column)||
                             "roc_registration_status".equals(column)||"company_type".equals(column)||"currency".equals(column)||
                             "registered_capital".equals(column)||"establishment_date".equals(column)||"business_date_end".equals(column)||
