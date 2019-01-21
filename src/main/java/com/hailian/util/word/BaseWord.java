@@ -449,7 +449,7 @@ public class BaseWord {
                 style.setBold(true);
                 if("sh_name".equals(column)){
                     style.setAlign(STJc.LEFT);
-                    value += " 截止时间"+temp;
+                    value += " 截至日期 "+temp;
                 }else if("contribution".equals(column)||"money".equals(column)){
                     style.setAlign(STJc.RIGHT);
                 }
