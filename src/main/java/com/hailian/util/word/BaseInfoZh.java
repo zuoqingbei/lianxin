@@ -122,6 +122,7 @@ public class BaseInfoZh {
         for (CreditReportModuleConf crmc : crmcs) {
             //找到当前父节点下的子节点  type=2表示详情
             List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "4");
+
             String source = crmc.getStr("get_source");
             String confId = crmc.getInt("id") + "";
             String moduleType = crmc.getStr("small_module_type");
@@ -142,6 +143,21 @@ public class BaseInfoZh {
             String className = requireds.length > 0 ? requireds[0] : "";
             ReportInfoGetDataController report = new ReportInfoGetDataController();
 
+            //102红印 取股东信息模块的截止时间
+            String endDate = "";
+            if(ReportTypeCons.ROC_HY.equals(reportType)&&"credit_company_shareholder".equals(tableName)){
+                List<CreditReportModuleConf> floatModule = CreditReportModuleConf.dao.findSon3(crmc.get("id").toString(), reportType, "4");
+                for(CreditReportModuleConf _conf : floatModule){
+                    String _confId = _conf.getInt("id") + "";
+                    List rows = report.getTableData(sysLanguage, companyId, tableName, className, _confId, "",reportType);
+                    for (int i = 0; i < rows.size(); i++) {
+                        //取一行数据
+                        BaseProjectModel model = (BaseProjectModel) rows.get(i);
+                        endDate = model.get("date")+"";
+                    }
+                }
+            }
+
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
@@ -152,7 +168,7 @@ public class BaseInfoZh {
                 } else if ("h".equals(tableType)) {
                     //"出资情况"需要增加合计项
                     boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
-                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal);
+                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal,endDate);
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
@@ -322,7 +338,7 @@ public class BaseInfoZh {
                     pds.setValue(n, value);
                     total = total-value;
                 }
-                //如果所有股东投资比例和不等于1，加上未知项
+                //如果所有股东投资比例和不等于100%，加上未知项
                 if(total!=0) {
                     pds.setValue("未知", total);
                 }

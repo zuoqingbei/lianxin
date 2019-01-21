@@ -88,6 +88,29 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
         //缓存2个小时
         //return dao.findByCache("reportModuleConf","credit_report_module_conf"+parent_temp+report,sql,parent_temp,report);
 	}
+
+    /**
+     * 取当前父节点的浮动层
+     * @param float_parent
+     * @param report
+     * @param type
+     * @return
+     */
+    public List<CreditReportModuleConf> findSon3(String float_parent, String report,String type) {
+        String sql="select t.* from credit_report_module_conf t where "
+                + " t.del_flag=0 and t.float_parent = ? and t.report_type = ? ";
+        if (type.equals("1")) {//查填报
+            sql+=" and t.is_enter='0'";
+        }else if (type.equals("2")) {//查详情
+            sql+=" and t.is_detail='0'";
+        }else if(type.equals("3")){//查质检的
+            sql+=" and t.is_quality='0'";
+        }else if(type.equals("4")){
+            sql+=" and t.is_word='0'";
+        }
+        sql+=" order by t.sort,t.id";
+        return dao.find(sql, float_parent,report);
+    }
 	
 	public List<CreditReportModuleConf> findReportNodes(String report) {
 		String sql="select t.* from credit_report_module_conf t where"

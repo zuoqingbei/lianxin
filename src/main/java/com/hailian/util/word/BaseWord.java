@@ -242,9 +242,10 @@ public class BaseWord {
      * @param rows
      * @param sysLanguage
      * @param hasTotal
+     * @param temp
      * @return
      */
-    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal) {
+    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal,String temp) {
         //存放行数据-word模板
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         //表格列字段集合
@@ -333,7 +334,6 @@ public class BaseWord {
                 else if ("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 }
-                //row.put(strs.length > 0 ? strs[0] : "", value);
                 row.put(column,value);
             }
             datas.add(row);
@@ -352,16 +352,15 @@ public class BaseWord {
                 cols.remove("currency");
             }
         }
-
         Object[] colSize = cols.keySet().toArray();
+
         //组装表格-表头
-        RowRenderData rowRenderData = tableHeaderH(cols, reportType);
+        RowRenderData rowRenderData = tableHeaderH(cols, reportType,sysLanguage,temp);
         //组装表格-数据
         for (LinkedHashMap<String, String> m : datas) {
             int j = 0;
             TextRenderData[] row = new TextRenderData[colSize.length];
             for (String column : cols.keySet()) {
-                //String value = m.get(cols.get(column).split("\\|")[0]);
                 String value = m.get(column);
                 Style style = new Style();
                 if (ReportTypeCons.ROC_HY.equals(reportType)) {
@@ -423,8 +422,9 @@ public class BaseWord {
      * 生成表头
      * @param cols
      * @param reportType
+     * @param temp
      */
-    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType) {
+    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType,String sysLanguage,String temp) {
         RowRenderData rowRenderData = null;
         TableStyle tableStyle = new TableStyle();
         Object[] colSize = cols.keySet().toArray();
@@ -433,7 +433,7 @@ public class BaseWord {
         for (String column : cols.keySet()) {
             String value = cols.get(column).split("\\|")[0];
             Style style = new Style();
-            //102下划线
+            //102 股东信息
             if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                 style.setFontFamily("PMingLiU");
                 style.setUnderLine(true);
@@ -449,6 +449,7 @@ public class BaseWord {
                 style.setBold(true);
                 if("sh_name".equals(column)){
                     style.setAlign(STJc.LEFT);
+                    value += " 截止时间"+temp;
                 }else if("contribution".equals(column)||"money".equals(column)){
                     style.setAlign(STJc.RIGHT);
                 }
