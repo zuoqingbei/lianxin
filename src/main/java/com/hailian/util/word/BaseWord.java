@@ -380,6 +380,7 @@ public class BaseWord {
                     }else if("contribution".equals(column)||"money".equals(column)){
                         style.setAlign(STJc.RIGHT);
                     }
+                    style.setFontFamily("PMingLiU");
                 }
                 row[j] = new TextRenderData(value, style);
                 j++;
