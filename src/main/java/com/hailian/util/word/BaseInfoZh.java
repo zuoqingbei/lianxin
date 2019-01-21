@@ -149,11 +149,25 @@ public class BaseInfoZh {
                 List<CreditReportModuleConf> floatModule = CreditReportModuleConf.dao.findSon3(crmc.get("id").toString(), reportType, "4");
                 for(CreditReportModuleConf _conf : floatModule){
                     String _confId = _conf.getInt("id") + "";
-                    List rows = report.getTableData(sysLanguage, companyId, tableName, className, _confId, "",reportType);
+                    String _source = _conf.getStr("get_source");
+                    //无url的跳过取数
+                    if (StringUtils.isEmpty(_source)) {
+                        continue;
+                    }
+                    Map<String, String> _params = BaseWord.parseUrl(_source);
+                    String _tableName = _params.get("tableName");
+                    String _clName = _params.get("className");
+                    if(StringUtils.isEmpty(_tableName) || StringUtils.isEmpty(_clName)){
+                        continue;
+                    }
+                    String[] _requireds = _clName.split("\\*");
+                    String _className = _requireds.length > 0 ? _requireds[0] : "";
+                    List rows = report.getTableData(sysLanguage, companyId, _tableName, _className, _confId, "",reportType);
                     for (int i = 0; i < rows.size(); i++) {
                         //取一行数据
                         BaseProjectModel model = (BaseProjectModel) rows.get(i);
                         endDate = model.get("date")+"";
+                        map.put("endDate",endDate);
                     }
                 }
             }
@@ -168,7 +182,7 @@ public class BaseInfoZh {
                 } else if ("h".equals(tableType)) {
                     //"出资情况"需要增加合计项
                     boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
-                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal,endDate);
+                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal);
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
