@@ -55,7 +55,12 @@ let ReportConfig = {
         		})
         	}
         	let selectInfo = []
-        	selectInfo.push(_this.selectInfoObj)
+        	console.log(_this.selectInfoObj,titles[index])
+        	if(+_this.selectInfoObj["parent_temp"] === titles[index]["id"]) {
+        		//哪个表格有select，就传
+        		delete _this.selectInfoObj["parent_temp"]
+        		selectInfo.push(_this.selectInfoObj)
+        	}
         	
         	let tempRows = []
         	//合计
@@ -296,7 +301,7 @@ let ReportConfig = {
     							}
     							if($("#"+id).is('select')) {
     								//如果是select
-    								$("#"+id).find("option[text='"+row[anotherId]+"']").attr("selected",true);
+    								$("#"+id).find("option[m-detail-name='"+row[anotherId]+"']").attr("selected",true);
     							}else {
     								if($("#"+id).hasClass("money-checked")){
     									$("#"+id).val(Number(row[anotherId].replace(/,/g,"")).toLocaleString('en-US'))
@@ -368,10 +373,12 @@ let ReportConfig = {
     						</div>`
     						break;
     				case 'select':
+    					console.log(ele)
     					if(!ele.get_source) {return}
     					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
     					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
     					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					_this.selectInfoObj["parent_temp"] = ele.parent_temp
             			$.ajax({
             				type:'get',
             				url,
@@ -392,6 +399,7 @@ let ReportConfig = {
     					let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
     					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
     					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					_this.selectInfoObj["parent_temp"] = ele.parent_temp
     					$.ajax({
     						type:'get',
     						url:url1,
@@ -2021,7 +2029,7 @@ let ReportConfig = {
 	   			 if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {$("body").mLoading("hide")}
 	   			_this.tableDataArr[index]['rows'].forEach((ele,i)=>{
 	   				//循环每个表格中的条数进行翻译
-//	   				console.log(tableDataArrEn[index],index)
+//	   				console.log(ele)
 	   				if(tableDataArrEn[index]){
 	   					ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
 	   				}
@@ -2051,12 +2059,20 @@ let ReportConfig = {
 	   							$("body").mLoading("hide")
 	   							tableTitlesEn.forEach((item,index)=>{
 	   								if(allTableData[index]){
+	   									allTableData[index].forEach((e,i)=>{
+	   										//循环表格中的数据，如果有select不翻译
+	   										//币种不翻译
+		   									if(e["currency"]) {
+		   										e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
+		   		   			   				}
+	   									})
+	   									
 	   									$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
 	   									$("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
 	   									$("#table"+idArrEn[index] + 'En').find(".moneyCol").each((index,item)=>{
 	   			    						if(!$(item).attr("data-field")){
 	   			    							//不是表头
-	   			    							console.log($(item))
+	   			    							//console.log($(item))
 	   			    							$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
 	   			    						}
 	   			    					})
@@ -2076,9 +2092,9 @@ let ReportConfig = {
     		
     		$(".position-fixed").on("click","#save",(e)=>{
     			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
-    			 console.log(data)
+    			 //console.log(data)
     			 if(data.length === 0 || !Array.isArray(data)){return}
-    			 console.log(data)
+    			 //console.log(data)
     			 data.forEach((ele,i)=>{
     				 delete ele["mySort"]
     				 delete ele["create_date"]
@@ -2087,7 +2103,7 @@ let ReportConfig = {
     				 if(ele.id === ''){
     					 delete ele["id"]
     				 }
-    				 console.log(alterSource)
+    				// console.log(alterSource)
     				 if(alterSource.split("*")[1]) {
 		    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
 		    			tempParam.forEach((item,index)=>{
@@ -2108,7 +2124,7 @@ let ReportConfig = {
     			 })
     			 let $modals = $("#modalEn"+idArrEn[index])
     			 let $selects = $modals.find(".modal-body").find("select")
-    			 console.log(data)
+    			// console.log(data)
     			 $selects.each((index,item)=>{
     				 let name = $(item).attr("name")
     				 let val = $("#"+$(item).attr("id")+' option:selected').val()
@@ -2126,7 +2142,7 @@ let ReportConfig = {
     				 },
     				 type:'post',
     				 success:(data)=>{
-    					 console.log(data)
+    					 //console.log(data)
     				 }
     			 })
     		})
@@ -2147,9 +2163,9 @@ let ReportConfig = {
 	    			let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
 	    			tempParam.forEach((item,index)=>{
 	    				if(item === 'company_id') {
-	    					console.log(ele)
+	    					//console.log(ele)
 	    					ele[item] = _this.rows['company_id_en']
-	    					console.log(ele)
+	    					//console.log(ele)
 	    				}else {
 	    					ele[item] =_this.rows[item]
 	    				}
@@ -2180,7 +2196,7 @@ let ReportConfig = {
 				 },
 				 type:'post',
 				 success:(data)=>{
-					 console.log(data)
+					// console.log(data)
 				 }
 			 })
 		})
@@ -2221,7 +2237,7 @@ let ReportConfig = {
    					//102报告类型需要传参
    					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
    				}
-   				console.log(_this.formDataArr,index)
+   				//console.log(_this.formDataArr,index)
     			 $.ajax({
     				 url,
     				 type:'post',
@@ -2300,7 +2316,7 @@ let ReportConfig = {
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
     					 $("body").mLoading("hide")
-    					 console.log(index)
+    					 //console.log(index)
 						 Public.message("success",data.message)
     				 }
     			 })
@@ -2368,7 +2384,7 @@ let ReportConfig = {
     				 contentType:'application/x-www-form-urlencoded;charset=UTF-8',
     				 success:(data)=>{
     					 this.numCop++;
-						 console.log(this.numCop) 
+						// console.log(this.numCop) 
     						 
 						let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;
 						 $.ajax({
@@ -2421,7 +2437,7 @@ let ReportConfig = {
     			Public.message("info","错误的英文和正确的英文不能为空")
     			return
     		}
-    		console.log(_this.currentDom)
+    		//console.log(_this.currentDom)
     		this.currentDom.val(correct_phrase_en)
     		$.ajax({
     			url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
