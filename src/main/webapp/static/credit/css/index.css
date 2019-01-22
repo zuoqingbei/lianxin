@@ -115,4 +115,6 @@
 
 #btnCollapse {
     transition: all .2s;
+    height:0;
+    overflow:hidden;
 }

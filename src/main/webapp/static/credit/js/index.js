@@ -114,11 +114,13 @@ let Index = {
 	         $("#btnCollapse").css({'height':'0',"overflow":'hidden'})
 	         $('#hideBtn').html('展开 <i class="fa fa-angle-down"></i>')
 	         $(".fixed-table-body").css({'height':'125%','transition':'all .1s'})
+	         $(".fixed-table-body-columns").css({'height':'auto'})
 	         $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"12px",'transition':'all .1s'})
 	        }else if($('#hideBtn').text().trim() === '展开'){
-	         $("#btnCollapse").css({'height':'5.2rem',"overflow":'visibility'})
+	         $("#btnCollapse").css({'height':'auto',"overflow":'visible'})
 	         $('#hideBtn').html('收起 <i class="fa fa-angle-up"></i>')
 	         $(".fixed-table-body").css({'height':'100%','transition':'all .1s'})
+	         $(".fixed-table-body-columns").css({'height':'auto'})
 	         $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"8px",'transition':'all .1s'})
 	        }
     })

@@ -12,7 +12,11 @@
       <link rel="stylesheet" href="${BASE_PATH }static/credit/css/reset.css">
     <link rel="stylesheet" href="${BASE_PATH }static/credit/css/common.css">
    <link rel="stylesheet" href="${BASE_PATH }static/credit/css/index.css">
-
+	<style>
+		  .fixed-table-body {
+        	height:125%;
+        	}
+	</style>
 	<script type="text/javascript">
 	    var BASE_PATH = "${BASE_PATH }";
     </script>
@@ -114,7 +118,7 @@
                                 <div class="right-btn btn-group d-flex align-items-center justify-content-around mr-4">
                                     <button type="button" id="btn_query" class="btn btn-primary enterFilter">查询</button>
                                     <button type="button" id="btn_reset" class="btn btn-light">重置</button>
-                                    <a  id="hideBtn" href="javascript:;">收起 <i class="fa fa-angle-up"></i></a>
+                                    <a  id="hideBtn" href="javascript:;">展开 <i class="fa fa-angle-down"></i></a>
                                 </div>
                             </div>
                             

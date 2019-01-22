@@ -33,6 +33,9 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
         .right-btn {
             padding-right: 0rem;
         }
+        .fixed-table-body {
+        	height:115%;
+        }
     </style>
     <script type="text/javascript">
 	    var BASE_PATH = "${BASE_PATH }";
@@ -111,6 +114,12 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
                                         <label class="control-label col-md-4" for="txt_search_departmentname">客户参考号：</label>
                                         <input id="reference_num" type="text" class="form-control search-input col-md-8"  placeholder="请输入客户参考号">
                                     </div>
+                                    <div class="input-group mt-2 col-md-4" >
+                                        <label class="control-label col-md-4" for="txt_search_reportType">报告类型：</label>
+                                      	<select class=" search-input col-md-8" id="txt_search_reportType">
+		                                      ${reportType!}
+	                                  </select>
+                                    </div>
                                 </div>
                            </div>
                     </form>
@@ -119,7 +128,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
                         <div class="right-btn d-flex align-items-center justify-content-around mr-4">
                             <button type="button" id="btn_query" class="btn btn-primary">查询</button>
                             <button type="button" id="btn_reset" class="btn btn-light">重置</button>
-                            <a  id="hideBtn" href="javascript:;">收起 <i class="fa fa-angle-up"></i></a>
+                            <a  id="hideBtn" href="javascript:;">展开 <i class="fa fa-angle-down"></i></a>
                         </div>
                     </div>
 
