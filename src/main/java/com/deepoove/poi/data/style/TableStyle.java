@@ -37,7 +37,7 @@ public class TableStyle {
 	 */
 	private STJc.Enum align;
 
-    private boolean hasBorder;
+    private boolean hasBorder = true;
 
 	public String getBackgroundColor() {
 		return backgroundColor;

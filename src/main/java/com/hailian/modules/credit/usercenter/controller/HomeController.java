@@ -102,6 +102,14 @@ public class HomeController extends BaseProjectController {
 		    setAttr("customer", customerId);
 			CreditOrderInfo model=new CreditOrderInfo();
 			setAttr("model", model);
+			
+			
+			 List<SysUser> reporter = SysUser.dao.getReporter(RoleCons.REPORTER+"");//报告员
+			 List<SysUser> transer = SysUser.dao.getReporter(RoleCons.TRANSER+"");//翻译员
+			 List<SysUser> analer = SysUser.dao.getReporter(RoleCons.ANALER+"");//分析员
+			 setAttr("reporter", reporter);
+			 setAttr("transer", transer);
+			 setAttr("analer", analer);
 			render(path+"all_orders.html");
 		}
 	}

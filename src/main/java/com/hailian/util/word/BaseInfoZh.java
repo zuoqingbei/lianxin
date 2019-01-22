@@ -122,6 +122,7 @@ public class BaseInfoZh {
         for (CreditReportModuleConf crmc : crmcs) {
             //找到当前父节点下的子节点  type=2表示详情
             List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "4");
+
             String source = crmc.getStr("get_source");
             String confId = crmc.getInt("id") + "";
             String moduleType = crmc.getStr("small_module_type");
@@ -141,6 +142,35 @@ public class BaseInfoZh {
             String[] requireds = clName.split("\\*");
             String className = requireds.length > 0 ? requireds[0] : "";
             ReportInfoGetDataController report = new ReportInfoGetDataController();
+
+            //102红印 取股东信息模块的截止时间
+            String endDate = "";
+            if(ReportTypeCons.ROC_HY.equals(reportType)&&"credit_company_shareholder".equals(tableName)){
+                List<CreditReportModuleConf> floatModule = CreditReportModuleConf.dao.findSon3(crmc.get("id").toString(), reportType, "4");
+                for(CreditReportModuleConf _conf : floatModule){
+                    String _confId = _conf.getInt("id") + "";
+                    String _source = _conf.getStr("get_source");
+                    //无url的跳过取数
+                    if (StringUtils.isEmpty(_source)) {
+                        continue;
+                    }
+                    Map<String, String> _params = BaseWord.parseUrl(_source);
+                    String _tableName = _params.get("tableName");
+                    String _clName = _params.get("className");
+                    if(StringUtils.isEmpty(_tableName) || StringUtils.isEmpty(_clName)){
+                        continue;
+                    }
+                    String[] _requireds = _clName.split("\\*");
+                    String _className = _requireds.length > 0 ? _requireds[0] : "";
+                    List rows = report.getTableData(sysLanguage, companyId, _tableName, _className, _confId, "",reportType);
+                    for (int i = 0; i < rows.size(); i++) {
+                        //取一行数据
+                        BaseProjectModel model = (BaseProjectModel) rows.get(i);
+                        endDate = model.get("date")+"";
+                        map.put("endDate"," 截至日期 " + endDate);
+                    }
+                }
+            }
 
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
@@ -219,6 +249,10 @@ public class BaseInfoZh {
                         String fieldType = strs.length == 2 ? strs[1] : "";
                         String value = model.get(column) != null ? model.get(column) + "" : "";
                         if ("textarea".equals(fieldType)) {
+                            //分支机构使用分号换行
+                            if("embranchment_count".equals(column)){
+                                value = value.replaceAll("\\；", "\n");
+                            }
                             value = value.replaceAll("(\\\\r\\\\n|\\\\n)", "\n");
                             map.put(column, value);
                         }else{
@@ -322,7 +356,7 @@ public class BaseInfoZh {
                     pds.setValue(n, value);
                     total = total-value;
                 }
-                //如果所有股东投资比例和不等于1，加上未知项
+                //如果所有股东投资比例和不等于100%，加上未知项
                 if(total!=0) {
                     pds.setValue("未知", total);
                 }

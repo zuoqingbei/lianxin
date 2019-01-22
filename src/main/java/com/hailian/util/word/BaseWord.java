@@ -242,6 +242,7 @@ public class BaseWord {
      * @param rows
      * @param sysLanguage
      * @param hasTotal
+     * @param temp
      * @return
      */
     public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal) {
@@ -333,7 +334,6 @@ public class BaseWord {
                 else if ("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 }
-                //row.put(strs.length > 0 ? strs[0] : "", value);
                 row.put(column,value);
             }
             datas.add(row);
@@ -352,16 +352,15 @@ public class BaseWord {
                 cols.remove("currency");
             }
         }
-
         Object[] colSize = cols.keySet().toArray();
+
         //组装表格-表头
-        RowRenderData rowRenderData = tableHeaderH(cols, reportType);
+        RowRenderData rowRenderData = tableHeaderH(cols, reportType,sysLanguage);
         //组装表格-数据
         for (LinkedHashMap<String, String> m : datas) {
             int j = 0;
             TextRenderData[] row = new TextRenderData[colSize.length];
             for (String column : cols.keySet()) {
-                //String value = m.get(cols.get(column).split("\\|")[0]);
                 String value = m.get(column);
                 Style style = new Style();
                 if (ReportTypeCons.ROC_HY.equals(reportType)) {
@@ -381,6 +380,7 @@ public class BaseWord {
                     }else if("contribution".equals(column)||"money".equals(column)){
                         style.setAlign(STJc.RIGHT);
                     }
+                    style.setFontFamily("PMingLiU");
                 }
                 row[j] = new TextRenderData(value, style);
                 j++;
@@ -397,18 +397,26 @@ public class BaseWord {
                 String value = totalRow.get(column);
                 Style style = new Style();
                 style.setBold(true);
+                //对齐方式
                 if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_HY.equals(reportType)) {
                     if ("sh_name".equals(column)) {
                         style.setAlign(STJc.LEFT);
-                        style.setFontFamily("PMingLiU");
                     } else if ("contribution".equals(column) || "money".equals(column)) {
                         style.setAlign(STJc.RIGHT);
-                        style.setFontFamily("Times New Roman");
-                    }else{
-                        style.setFontFamily("PMingLiU");
                     }
-
                 }
+                //字体
+                if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+                    if ("sh_name".equals(column)) {
+                        style.setFontFamily("PMingLiU");
+                    } else if ("contribution".equals(column) || "money".equals(column)) {
+                        style.setFontFamily("Times New Roman");
+                    }
+                }else if(ReportTypeCons.ROC_HY.equals(reportType)){
+                    //4号字体
+                    style.setFontSize(14);
+                }
+
                 row[j] = new TextRenderData(value, style);
                 j++;
             }
@@ -423,8 +431,9 @@ public class BaseWord {
      * 生成表头
      * @param cols
      * @param reportType
+     * @param temp
      */
-    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType) {
+    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType,String sysLanguage) {
         RowRenderData rowRenderData = null;
         TableStyle tableStyle = new TableStyle();
         Object[] colSize = cols.keySet().toArray();
@@ -433,7 +442,7 @@ public class BaseWord {
         for (String column : cols.keySet()) {
             String value = cols.get(column).split("\\|")[0];
             Style style = new Style();
-            //102下划线
+            //102 股东信息
             if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                 style.setFontFamily("PMingLiU");
                 style.setUnderLine(true);
@@ -563,7 +572,7 @@ public class BaseWord {
                     }
                 }else if(ReportTypeCons.ROC_EN.equals(reportType)){
                     //单元格字体
-                    if("name_trans_en".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
+                    if("name_trans_en".equals(column)||"address".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
                             "registration_num".equals(column)||"register_codes".equals(column)||"year".equals(column)||
                             "roc_registration_status".equals(column)||"company_type".equals(column)||"currency".equals(column)||
                             "registered_capital".equals(column)||"establishment_date".equals(column)||"business_date_end".equals(column)||

@@ -161,7 +161,7 @@ public final class TableTools {
         tblBorders.getInsideV().setSz(borderSize);
 
         //不显示表格边框
-        if(null != style && style.getHasBorder()) {
+        if(null != style && !style.getHasBorder()) {
             tblBorders.getBottom().setVal(STBorder.Enum.forString("none"));
             tblBorders.getLeft().setVal(STBorder.Enum.forString("none"));
             tblBorders.getTop().setVal(STBorder.Enum.forString("none"));
