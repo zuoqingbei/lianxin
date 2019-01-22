@@ -15,34 +15,34 @@ public class MainReport {
 
         //中文简体
         if ("213".equals(report_language)) {
-            BaseInfoZh.reportTable(order, reportType, "612", userid);
+            Roc102.reportTable(order, reportType, "612", userid);
         } else if ("215".equals(report_language)) {
             //英文
-            BaseInfoZh.reportTable(order, reportType, "613", userid);
+            Roc102.reportTable(order, reportType, "613", userid);
         } else if ("216".equals(report_language)) {
             //中文简体+英文
             if ("1".equals(reportType)) {
-                BaseInfoZh.reportTable(order, "1", "612", userid);
-                BaseInfoZh.reportTable(order, "7", "613", userid);
+                Roc102.reportTable(order, "1", "612", userid);
+                Roc102.reportTable(order, "7", "613", userid);
             } else if ("8".equals(reportType)) {
-                BaseInfoZh.reportTable(order, "8", "612", userid);
-                BaseInfoZh.reportTable(order, "9", "613", userid);
+                Roc102.reportTable(order, "8", "612", userid);
+                Roc102.reportTable(order, "9", "613", userid);
             } else if ("10".equals(reportType)) {
-                BaseInfoZh.reportTable(order, "10", "612", userid);
-                BaseInfoZh.reportTable(order, "11", "613", userid);
+                Roc102.reportTable(order, "10", "612", userid);
+                Roc102.reportTable(order, "11", "613", userid);
             } else {
-                BaseInfoZh.reportTable(order, reportType, "", userid);
+                Roc102.reportTable(order, reportType, "", userid);
             }
         } else if ("217".equals(report_language)) {
             //中文繁体+英文
             if ("12".equals(reportType)) {
-                BaseInfoZh.reportTable(order, reportType, "613", userid);
+                Roc102.reportTable(order, reportType, "613", userid);
             }
             if("14".equals(reportType)){
-                BaseInfoZh.reportTable(order, reportType, "613", userid);
+                Roc102.reportTable(order, reportType, "613", userid);
             }
         } else {
-            BaseInfoZh.reportTable(order, reportType, "", userid);
+            Roc102.reportTable(order, reportType, "", userid);
         }
 
     }

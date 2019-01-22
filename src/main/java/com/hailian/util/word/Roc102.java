@@ -33,7 +33,7 @@ import java.util.*;
  * 基本信息报告样本
  * Created by Thinkpad on 2018/11/17.
  */
-public class BaseInfoZh {
+public class Roc102 {
     //ftp文件服务器 ip
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
@@ -282,7 +282,7 @@ public class BaseInfoZh {
                     cols.put(column_name, temp_name + "|" + field_type);
                 }*/
                 //取数据
-                for (int i = 0; i < rows.size(); i++) {
+                /*for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     for (String column : cols.keySet()) {
                         //取值
@@ -304,8 +304,8 @@ public class BaseInfoZh {
                         }
                         map.put(column, new TextRenderData(html.toString(), style));
                     }
-                }
-                /*if (rows!=null && rows.size()>0) {
+                }*/
+                if (rows!=null && rows.size()>0) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     //取单选数据
                     String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
@@ -329,7 +329,7 @@ public class BaseInfoZh {
                         }
                     }
                     map.put("overall_rating", html.toString());
-                }*/
+                }
             }
 
             //图形表
