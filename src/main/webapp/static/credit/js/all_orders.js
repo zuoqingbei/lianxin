@@ -270,7 +270,7 @@ let Index = {
               }else if($('#hideBtn').text().trim() === '展开'){
                 $("#btnCollapse").css({'height':'auto',"overflow":'visible'})
                 $('#hideBtn').html('收起 <i class="fa fa-angle-up"></i>')
-                $(".fixed-table-body").css({'height':'100%','transition':'all .1s'})
+                $(".fixed-table-body").css({'height':'84%','transition':'all .1s'})
                  $(".bootstrap-table .table:not(.table-condensed) > tbody > tr > td").css({"padding":"8px",'transition':'all .1s'})
               }
         })
@@ -509,6 +509,9 @@ let Index = {
                   sortName:params.sortName,
                   sortOrder:params.sortOrder,
                   custom_id:$("#txt_search_cus").find("option:selected").val(),
+                  reporter_id:$("#txt_search_reporter").find("option:selected").val(),
+                  transer_id:$("#txt_search_transer").find("option:selected").val(),
+                  analer_id:$("#txt_search_analer").find("option:selected").val(),
                   country:$("#txt_search_country").find("option:selected").val(),
     			  end_date:$("#txt_search_date").val(),
     			  agent_id:$("#txt_search_agency").find("option:selected").val(),

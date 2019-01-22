@@ -110,7 +110,42 @@
 	                                        <label class="control-label col-md-4" for="txt_search_departmentname">客户参考号：</label>
 	                                        <input id="reference_num" type="text" class="form-control search-input col-md-8"  placeholder="请输入客户参考号">
 	                                    </div>
+                                       <div class="input-group mt-2 col-md-4" >
+			                                 <label class="control-label col-md-4" for="txt_search_reportType">报告类型：</label>
+			                               	<select class=" search-input col-md-8" id="txt_search_reportType">
+			                                 ${reportType!}
+			                            	</select>
+			                             </div>
                                		 </div>
+                               		  <div id="btnColl" class="show row ">
+			                              <div class="input-group mt-2 col-md-4" >
+			                                  <label class="control-label col-md-4" for="txt_search_reporter">报告员：</label>
+			                                   <select class="search-input col-md-8 layui-input" id="txt_search_reporter" >
+			                                   <option value="" disabled selected>请选择报告员</option>
+			                                  <% for(re in reporter){ %>
+			                                 <option value="${re.userid}">${re.realname}</option>
+			                                <% } %>  
+			                                </select>
+			                              </div>
+			                              <div class="input-group mt-2 col-md-4" >
+			                                  <label class="control-label col-md-4" for="txt_search_transer">翻译员：</label>
+			                                   <select class="search-input col-md-8 layui-input" id="txt_search_transer" >
+			                                   <option value="" disabled selected>请选择翻译员</option>
+			                                  <% for(tr in transer){ %>
+			                                 <option value="${tr.userid}">${tr.realname}</option>
+			                                <% } %>  
+			                                </select>
+			                              </div>
+			                              <div class="input-group mt-2 col-md-4" >
+			                                  <label class="control-label col-md-4" for="txt_search_analer">分析员：</label>
+			                               	 <select class="search-input col-md-8 layui-input" id="txt_search_analer" >
+			                                   <option value="" disabled selected>请选择分析员</option>
+			                                  <% for(an in analer){ %>
+			                                 <option value="${an.userid}">${an.realname}</option>
+			                                <% } %>  
+			                                </select>
+			                              </div>
+			                          </div> 
                                	</div>
                             </form>
                             <div class="btn-row d-flex justify-content-between mt-3 mb-3">
