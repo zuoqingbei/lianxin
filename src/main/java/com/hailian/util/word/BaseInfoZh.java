@@ -167,7 +167,7 @@ public class BaseInfoZh {
                         //取一行数据
                         BaseProjectModel model = (BaseProjectModel) rows.get(i);
                         endDate = model.get("date")+"";
-                        map.put("endDate",endDate);
+                        map.put("endDate"," 截至日期 " + endDate);
                     }
                 }
             }
@@ -249,6 +249,10 @@ public class BaseInfoZh {
                         String fieldType = strs.length == 2 ? strs[1] : "";
                         String value = model.get(column) != null ? model.get(column) + "" : "";
                         if ("textarea".equals(fieldType)) {
+                            //分支机构使用分号换行
+                            if("embranchment_count".equals(column)){
+                                value = value.replaceAll("\\；", "\n");
+                            }
                             value = value.replaceAll("(\\\\r\\\\n|\\\\n)", "\n");
                             map.put(column, value);
                         }else{
