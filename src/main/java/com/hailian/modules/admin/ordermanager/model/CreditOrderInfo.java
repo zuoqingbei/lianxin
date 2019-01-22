@@ -425,6 +425,10 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String num= model.get("num");
 		//客户参考号
 		String reference_num= model.get("reference_num");
+		String report_user= model.get("report_user");
+		String translate_user= model.get("translate_user");
+		String analyze_user= model.get("analyze_user");
+		String report_type= model.get("report_type");
 		//准确公司名称(经过翻译后的公司名称是中文)
 		String company_by_report=model.getStr("company_by_report");
 		if(company_by_report!=null) {
@@ -489,6 +493,30 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.reference_num  like concat('%',?,'%')");
 			params.add(reference_num.trim());
 		}
+
+		
+		
+		if (StringUtils.isNotBlank(report_user)) {
+			sql.append(" and t.report_user  =?");
+			params.add(report_user);
+		}
+		if (StringUtils.isNotBlank(translate_user)) {
+			sql.append(" and t.translate_user  =?");
+			params.add(translate_user);
+		}
+		if (StringUtils.isNotBlank(analyze_user)) {
+			sql.append(" and t.analyze_user  =?");
+			params.add(analyze_user);
+		}
+		if (StringUtils.isNotBlank(report_type)) {
+			sql.append(" and t.report_type  =?");
+			params.add(report_type);
+		}
+
+		
+		
+		
+		
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and c2.name like concat('%',?,'%')");
 			params.add(company_by_report.trim());

@@ -260,6 +260,19 @@ public class HomeController extends BaseProjectController {
 		if(StringUtils.isNotBlank(getPara("reference_num"))) {
 			model.set("reference_num", getPara("reference_num"));
 		}
+		if(StringUtils.isNotBlank(getPara("reporter_id"))) {
+			model.set("report_user", getPara("reporter_id"));
+		}
+		if(StringUtils.isNotBlank(getPara("transer_id"))) {
+			model.set("translate_user", getPara("transer_id"));
+		}
+		
+		if(StringUtils.isNotBlank(getPara("analer_id"))) {
+			model.set("analyze_user", getPara("analer_id"));
+		}
+		if(StringUtils.isNotBlank(getPara("report_type"))) {
+			model.set("report_type", getPara("report_type"));
+		}
 		String sortname=getPara("sortName");
 		if(!StringUtils.isNotBlank(sortname)) {
 			sortname="create_date";
