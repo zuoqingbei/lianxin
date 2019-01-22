@@ -3,7 +3,7 @@
     margin: 0;
 }
 
-#right {
+#totalState {
     overflow: hidden;
 }
 
@@ -88,7 +88,7 @@
 }
 
 #tab2  .rate {
-    height: 20%;
+    height: 16%;
     width: 98%;
     margin: 0 auto;
 }
@@ -117,7 +117,7 @@
     background-size: 100% 100%;
     float: left;
     text-align: center;
-    padding-top: 1.2%;
+    padding-top: .5em;
     font-size: 1.6em;
     color: white;
 }
@@ -334,8 +334,8 @@
 #tab2  .right_nextpage .title {
     width: 60%;
     margin-left: 20%;
-    padding-top: 2%;
-    height: 77%;
+    padding-top: 0.5em;
+    height: 68%;
 }
 
 #tab2  .right_nextpage .biaozhun_left_left {

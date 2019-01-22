@@ -2,37 +2,37 @@
 var color = ['rgba(102, 204, 255,0.7)', 'rgba(255,255,153,0.7)', 'rgba(102,255,204,0.7)', 'rgba(255,102,102,0.7)'];
 function loadTab2Data() {
     //设备状态统计 总状态
-    // equipmentTotalForLab1Ajax();
+    equipmentTotalForLab1Ajax();
 
     //设施状态type 类型  0：实验室在线率 1：设备完好率 2：设备利用率
-    // equipmentStatisForPlForLab2Ajax(0);
-    // equipmentStatisForPlForLab2Ajax(1);
-    // equipmentStatisForPlForLab2Ajax(2);
+    equipmentStatisForPlForLab2Ajax(0);
+    equipmentStatisForPlForLab2Ajax(1);
+    equipmentStatisForPlForLab2Ajax(2);
 
     //人员信息 总状态
-    // findPersonStatusTab1Ajax(1);
-    // findPersonStatusTab1Ajax(2);
-    // findPersonStatusTab1Ajax(3);
+    findPersonStatusTab1Ajax(1);
+    findPersonStatusTab1Ajax(2);
+    findPersonStatusTab1Ajax(3);
 
     //人员信息 各个产线状态 散点图
-    // personForTab2Ajax("myChart25", "1", 1);
-    // personForTab2Ajax("myChart26", "2", 1);
-    // personForTab2Ajax("myChart27", "3", 1);
+    personForTab2Ajax("myChart25", "1", 1);
+    personForTab2Ajax("myChart26", "2", 1);
+    personForTab2Ajax("myChart27", "3", 1);
 
     //标准状态 总状态
-    // standardStatus();
+    standardStatus();
 
     //标准数量分布情况
-    // standardDispersedStatus("myChart28", "国际标准");
-    // standardDispersedStatus("myChart29", "国家标准");
-    // standardDispersedStatus("myChart30", "行业标准");
-    // standardDispersedStatus("myChart31", "企业标准");
+    standardDispersedStatus("myChart28", "国际标准");
+    standardDispersedStatus("myChart29", "国家标准");
+    standardDispersedStatus("myChart30", "行业标准");
+    standardDispersedStatus("myChart31", "企业标准");
 
     //能力状态 总状态
-    // abilityStatus();
+    abilityStatus();
 
     //能力状态分布 不同产线的
-    // abilityByProductLine()
+    abilityByProductLine()
 }
 
 //设备状态统计 总状态

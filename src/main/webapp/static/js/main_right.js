@@ -4482,7 +4482,7 @@ function dealyShow(myChart,option,v1,v2,v3){
 }
 //重置HeightChart
 function refreshHeightChart(){
-	mHeightChartTab4=$('#myChart16').highcharts({
+	/*mHeightChartTab4=$('#myChart16').highcharts({
 		tooltip:{
 	        textStyle: {
 	            fontSize: 10*bodyScale,
@@ -4538,7 +4538,7 @@ function refreshHeightChart(){
                 },
 	       	 	 y: 13*bodyScale,
 		       	 style: {
-		             /* fontWeight: 'bold',*/
+		             /!* fontWeight: 'bold',*!/
 		             fontSize: 13* bodyScale,
 		             color:"#66ccff"
 		         }
@@ -4567,7 +4567,7 @@ function refreshHeightChart(){
 	        pointPlacement: 'between',
 			borderColor:"rgba(0,0,0,0)"
 	    }]
-	}).highcharts();
+	}).highcharts();*/
 	//setTimeout("resetCPK()",500);
 	//cpkDataForTab4(tab4xhPro);
 	

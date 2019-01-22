@@ -464,91 +464,94 @@ function histogramTab4(data, step) {
     });
     return arr;
 }
-
-var mHeightChartTab4 = $('#myChart16').highcharts({
-    tooltip: {
-        textStyle: {
-            fontSize: 10 * bodyScale,
-        },
-        formatter: function (p) {
-            if (this.series.name === "概率密度") {
-                return false;
-            } else {
-                var h = this.point.x + "<br/>直方图：" + this.point.y;
-                return h;
-            }
-        }
-    },
-    chart: {
-        type: 'column',
-        backgroundColor: 'rgba(0,0,0,0)',
-        spacingBottom: 7 * bodyScale,
-        marginRight: 5 * bodyScale,
-    },
-    credits: {
-        enabled: false
-    },
-    exporting: {
-        enabled: false
-    },
-    title: {
-        text: '',
-    },
-    legend: {
-        enabled: false,
-    },
-    xAxis: {
-        gridLineWidth: 0,
-        min: 71,
-        max: 77,
-        plotLines: [],
-        tickColor: "rgba(0,0,0,0)",
-        labels: {//保证两位小数
-            formatter : function () {
-                var strVal = this.value + '';
-                if (strVal.indexOf('.') < 0) {
-                    return strVal + '.00';
-                } else {
-                    var arr = strVal.split('.');
-                    if (arr[1].length === 2) {
-                        return strVal;
-                    } else {
-                        return strVal + '0';
-                    }
-                }
-                // return "88"
+var mHeightChartTab4;
+$(function () {
+    mHeightChartTab4 = $('#myChart16').highcharts({
+        tooltip: {
+            textStyle: {
+                fontSize: 10 * bodyScale,
             },
-            y: 13 * bodyScale,
-            style: {
-                /* fontWeight: 'bold',*/
-                fontSize: 13 * bodyScale,
-                color: "#66ccff"
+            formatter: function (p) {
+                if (this.series.name === "概率密度") {
+                    return false;
+                } else {
+                    var h = this.point.x + "<br/>直方图：" + this.point.y;
+                    return h;
+                }
             }
-        }
-    },
-    yAxis: [{
-        title: {
-            text: ''
         },
-        visible: false
-    }, {
-        opposite: true,
-        title: {
-            text: ''
+        chart: {
+            type: 'column',
+            backgroundColor: 'rgba(0,0,0,0)',
+            spacingBottom: 7 * bodyScale,
+            marginRight: 5 * bodyScale,
         },
-        visible: false,
-    }],
-    series: [{
-        name: '直方图',
-        type: 'column',
-        data: [],
-        color: "#4397f7",
-        pointPadding: 0,
-        groupPadding: 0,
-        pointPlacement: 'between',
-        borderColor: "rgba(0,0,0,0)"
-    }]
-}).highcharts();
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled: false
+        },
+        title: {
+            text: '',
+        },
+        legend: {
+            enabled: false,
+        },
+        xAxis: {
+            gridLineWidth: 0,
+            min: 71,
+            max: 77,
+            plotLines: [],
+            tickColor: "rgba(0,0,0,0)",
+            labels: {//保证两位小数
+                formatter : function () {
+                    var strVal = this.value + '';
+                    if (strVal.indexOf('.') < 0) {
+                        return strVal + '.00';
+                    } else {
+                        var arr = strVal.split('.');
+                        if (arr[1].length === 2) {
+                            return strVal;
+                        } else {
+                            return strVal + '0';
+                        }
+                    }
+                    // return "88"
+                },
+                y: 13 * bodyScale,
+                style: {
+                    /* fontWeight: 'bold',*/
+                    fontSize: 13 * bodyScale,
+                    color: "#66ccff"
+                }
+            }
+        },
+        yAxis: [{
+            title: {
+                text: ''
+            },
+            visible: false
+        }, {
+            opposite: true,
+            title: {
+                text: ''
+            },
+            visible: false,
+        }],
+        series: [{
+            name: '直方图',
+            type: 'column',
+            data: [],
+            color: "#4397f7",
+            pointPadding: 0,
+            groupPadding: 0,
+            pointPlacement: 'between',
+            borderColor: "rgba(0,0,0,0)"
+        }]
+    }).highcharts();
+
+})
 
 function getCurrentYearAndDay() {
     var date = new Date;

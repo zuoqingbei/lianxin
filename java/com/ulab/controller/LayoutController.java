@@ -71,6 +71,10 @@ public class LayoutController extends BaseController {
 
 	public void lab() {
 		render("lab.html");
+    }
+
+	public void totalState() {
+		render("totalState.html");
 	}
 
 }
