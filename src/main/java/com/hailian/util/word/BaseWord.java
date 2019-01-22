@@ -17,6 +17,7 @@ import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.modules.front.template.TemplateDictService;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
@@ -241,6 +242,7 @@ public class BaseWord {
      * @param rows
      * @param sysLanguage
      * @param hasTotal
+     * @param temp
      * @return
      */
     public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal) {
@@ -253,7 +255,7 @@ public class BaseWord {
         //合计项
         LinkedHashMap<String, String> totalRow = new LinkedHashMap<String, String>();
 
-        //取列值
+        //取列名
         for (int i = 0; i < child.size(); i++) {
             CreditReportModuleConf module = child.get(i);
             String column_name = module.getStr("column_name");
@@ -280,7 +282,7 @@ public class BaseWord {
                     if("number".equals(fieldType)||"money".equals(fieldType)) {
                         String val = totalRow.get(column);
                         val = val != null ? val.replaceAll(",","") : "0";
-                        val = new BigDecimal(val).add(new BigDecimal(value)).toString();
+                        val = new BigDecimal(val).add(new BigDecimal(value.replaceAll(",",""))).toString();
                         try {
                             if("money".equals(fieldType)) {
                                 DecimalFormat df = new DecimalFormat("###,###.##");
@@ -298,7 +300,25 @@ public class BaseWord {
                 }
                 //下拉框编码转文本值
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, reportType, sysLanguage) : "";
+                    //出资情况后面更加币种
+                    if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)){
+                        if("currency".equals(column)) {
+                            if(!"".equals(value)) {
+                                //出资情况，出资金额后面跟币种
+                                SysDictDetail sysDict = new ReportInfoGetDataController().dictIdToString(value);
+                                if(sysDict!=null) {
+                                    String unit = sysDict.get("detail_name_tw") + " " + sysDict.get("detail_name_en");
+                                    if(!cols.get("contribution").contains("(")){
+                                        String str = cols.get("contribution").split("\\|")[0] + "(" + unit + ")" + "|" + strs[1];
+                                        System.out.println(cols.get("contribution"));
+                                        cols.put("contribution", str);
+                                    }
+                                }
+                            }
+                        }
+                    }else{
+                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, reportType, sysLanguage) : "";
+                    }
                 }
                 //处理千位符号
                 else if ("money".equals(fieldType)) {
@@ -314,7 +334,7 @@ public class BaseWord {
                 else if ("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 }
-                row.put(strs.length > 0 ? strs[0] : "", value);
+                row.put(column,value);
             }
             datas.add(row);
         }
@@ -326,15 +346,22 @@ public class BaseWord {
             //红印的表格不显示边框
             tableStyle.setHasBorder(false);
         }
+        //102模板，出资情况列表中的币种不展示
+        if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+            if(cols.containsKey("contribution")&&cols.containsKey("currency")){
+                cols.remove("currency");
+            }
+        }
         Object[] colSize = cols.keySet().toArray();
+
         //组装表格-表头
-        RowRenderData rowRenderData = tableHeaderH(cols, reportType);
+        RowRenderData rowRenderData = tableHeaderH(cols, reportType,sysLanguage);
         //组装表格-数据
         for (LinkedHashMap<String, String> m : datas) {
             int j = 0;
             TextRenderData[] row = new TextRenderData[colSize.length];
             for (String column : cols.keySet()) {
-                String value = m.get(cols.get(column).split("\\|")[0]);
+                String value = m.get(column);
                 Style style = new Style();
                 if (ReportTypeCons.ROC_HY.equals(reportType)) {
                     style.setFontFamily("宋体");
@@ -353,6 +380,7 @@ public class BaseWord {
                     }else if("contribution".equals(column)||"money".equals(column)){
                         style.setAlign(STJc.RIGHT);
                     }
+                    style.setFontFamily("PMingLiU");
                 }
                 row[j] = new TextRenderData(value, style);
                 j++;
@@ -369,18 +397,26 @@ public class BaseWord {
                 String value = totalRow.get(column);
                 Style style = new Style();
                 style.setBold(true);
+                //对齐方式
                 if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_HY.equals(reportType)) {
                     if ("sh_name".equals(column)) {
                         style.setAlign(STJc.LEFT);
-                        style.setFontFamily("PMingLiU");
                     } else if ("contribution".equals(column) || "money".equals(column)) {
                         style.setAlign(STJc.RIGHT);
-                        style.setFontFamily("Times New Roman");
-                    }else{
-                        style.setFontFamily("PMingLiU");
                     }
-
                 }
+                //字体
+                if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+                    if ("sh_name".equals(column)) {
+                        style.setFontFamily("PMingLiU");
+                    } else if ("contribution".equals(column) || "money".equals(column)) {
+                        style.setFontFamily("Times New Roman");
+                    }
+                }else if(ReportTypeCons.ROC_HY.equals(reportType)){
+                    //4号字体
+                    style.setFontSize(14);
+                }
+
                 row[j] = new TextRenderData(value, style);
                 j++;
             }
@@ -395,8 +431,9 @@ public class BaseWord {
      * 生成表头
      * @param cols
      * @param reportType
+     * @param temp
      */
-    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType) {
+    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType,String sysLanguage) {
         RowRenderData rowRenderData = null;
         TableStyle tableStyle = new TableStyle();
         Object[] colSize = cols.keySet().toArray();
@@ -405,7 +442,7 @@ public class BaseWord {
         for (String column : cols.keySet()) {
             String value = cols.get(column).split("\\|")[0];
             Style style = new Style();
-            //102下划线
+            //102 股东信息
             if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                 style.setFontFamily("PMingLiU");
                 style.setUnderLine(true);
@@ -524,16 +561,30 @@ public class BaseWord {
                 }
                 log.error("whc 测试输出：column=" + column + "  fieldType=" + fieldType + " value=" + value);
                 Style style = new Style();
-                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                    //style.setFontFamily("PMingLiU");
+                if(ReportTypeCons.ROC_ZH.equals(reportType)){
                     //单元格字体
-                    if("postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
+                    if("name_trans_en".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
                             "registration_num".equals(column)||"register_codes".equals(column)||"year".equals(column)){
                         //郵政編碼 電話號碼 傳真號碼 登記編號 統一信用代碼 年檢情況
                         style.setFontFamily("Times New Roman");
                     }else {
                         style.setFontFamily("PMingLiU");
                     }
+                }else if(ReportTypeCons.ROC_EN.equals(reportType)){
+                    //单元格字体
+                    if("name_trans_en".equals(column)||"address".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
+                            "registration_num".equals(column)||"register_codes".equals(column)||"year".equals(column)||
+                            "roc_registration_status".equals(column)||"company_type".equals(column)||"currency".equals(column)||
+                            "registered_capital".equals(column)||"establishment_date".equals(column)||"business_date_end".equals(column)||
+                            "last_modified_date".equals(column)||"registration_authority".equals(column)||"year_result".equals(column)){
+                        //郵政編碼 電話號碼 傳真號碼 登記編號 統一信用代碼 年檢情況
+                        style.setFontFamily("Times New Roman");
+                    }else {
+                        style.setFontFamily("PMingLiU");
+                    }
+                }
+                if("--".equals(value)){
+                    style.setFontFamily("Times New Roman");
                 }
                 map.put(column, new TextRenderData(value, style));
             }

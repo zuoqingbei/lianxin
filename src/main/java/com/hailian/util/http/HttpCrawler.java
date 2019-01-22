@@ -80,7 +80,8 @@ public class HttpCrawler {
 	public static Integer random = 11;
 	
 	public static void main(String[] args) throws Exception {
-        String  name = HttpCrawler.getIcrisUrl("海尔集团");
+        String  name = HttpCrawler.getIcrisUrl("利龙商标柯式印刷厂有限公司");
+        System.out.println(name);
 
 		//HttpCrawler crawler = new HttpCrawler();
 		//1. 中华人民共和国海关总署网站

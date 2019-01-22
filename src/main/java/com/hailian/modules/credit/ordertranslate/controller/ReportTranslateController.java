@@ -84,7 +84,8 @@ public class ReportTranslateController extends BaseProjectController {
 			    		value_en = translateByError.get("correct_phrase");//翻译校正
 			    	}
 			    	if(StringUtils.isNotBlank(value_en) && StringUtils.isNotBlank(value_cht)){
-			    		value=value_en+"|"+value_cht;
+			    		//value=value_en+"|"+value_cht;
+                        value=value_en+" "+value_cht;
 			    	}else{
 			    		value=value_en+value_cht;
 			    	}

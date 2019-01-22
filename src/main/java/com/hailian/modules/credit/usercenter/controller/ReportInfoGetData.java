@@ -18,6 +18,8 @@ import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.sun.star.sdb.application.CopyTableContinuation;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.apache.xmlbeans.impl.piccolo.util.DuplicateKeyException;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
@@ -177,8 +179,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @return 
 	 */
 	public static  List<Map<Object,Object>> parseJsonArray(String jsonStr){
-		List<Map<Object,Object>> list = new ArrayList<>();
-		if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
+        List<Map<Object,Object>> list = new ArrayList<>();
+		/*if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
 			return new ArrayList<>();
 		}
 		String jsonStr2 = jsonStr.replace("\"", "");
@@ -210,8 +212,18 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 				}
 				
 			}
-		}
-		return list;
+		}*/
+        JSONArray jsonArray = JSONArray.fromObject(jsonStr);
+        for(int i=0;i<jsonArray.size();i++){
+            Map<String,Object> map = jsonArray.getJSONObject(i);
+            Map<Object,Object> mapParse = jsonArray.getJSONObject(i);
+            for (String key : map.keySet()) {
+                mapParse.put(key.replace("锟斤拷锟斤拷之锟斤拷锟窖э拷锟", ":").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷", ",").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷1", "}").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷2", "{").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷3", "]")
+                        , map.get(key).toString().replace("锟斤拷锟斤拷之锟斤拷锟窖э拷锟", ":").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷", ",").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷1", "}").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷2", "{").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷3", "]"));
+            }
+            list.add(mapParse);
+        }
+        return list;
 	}
 	/**
 	 * 识别传入的参数从而将字典id转化为自然语言

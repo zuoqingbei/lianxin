@@ -91,7 +91,7 @@ public class MiniTableRenderPolicy extends AbstractRenderPolicy {
 
         // 2.创建表格
         XWPFTable table = doc.insertNewTable(run, row, col);
-        initBasicTable(table, col, tableData.getWidth(), tableData.getStyle());
+        initBasicTable(table, col, tableData.getWidth(), tableData.getHeaders()!=null?tableData.getHeaders().getStyle():null);
 
         // 3.渲染数据
         int startRow = 0;
