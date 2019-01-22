@@ -255,7 +255,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 						if(columnName.contains("position")){
 							System.out.println(14);
 						}
-						String targetValue =  model.get(columnName)+"";
+						String targetValue =  model.get(columnName)!=null? model.get(columnName)+"" : "";
 						if(!StrUtils.isEmpty(targetValue)) {
 							String a = "";
 							String[] tempStrs = targetValue.split("\\$");
@@ -270,7 +270,6 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 						}else {
 							model.put(columnName,"");
 						}
-						
 					}
 				}
 			}
