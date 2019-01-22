@@ -122,7 +122,7 @@ let ReportConfig = {
         						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
         						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
         					}
-        					console.log(item)
+//        					console.log(item)
         				})
         				$table.bootstrapTable("load",rows)
         				
@@ -236,7 +236,12 @@ let ReportConfig = {
             							}
             							if($("#"+id).is('select')) {
             								//如果是select
-        									$("#"+id).find("option[m-detail-name='"+row[anotherId]+"']").attr("selected",true);
+            								console.log($("#"+id),row[anotherId])
+            								if(row[anotherId] === 'null'){
+            									$(".modal-body #"+id).find("option:first").attr("selected",true);
+            								}else {
+            									$(".modal-body #"+id).find("option[m-detail-name='"+row[anotherId]+"']").attr("selected",true);
+            								}
             							}else {
             								if($("#"+id).hasClass("money-checked")){
             									$("#"+id).val(Number(row[anotherId].replace(/,/g,"")).toLocaleString('en-US'))
