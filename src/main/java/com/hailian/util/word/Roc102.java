@@ -147,7 +147,6 @@ public class Roc102 {
             ReportInfoGetDataController report = new ReportInfoGetDataController();
 
             //102红印 取股东信息模块的截止时间
-            String endDate = "";
             if(ReportTypeCons.ROC_HY.equals(reportType)&&"credit_company_shareholder".equals(tableName)){
                 List<CreditReportModuleConf> floatModule = CreditReportModuleConf.dao.findSon3(crmc.get("id").toString(), reportType, "4");
                 for(CreditReportModuleConf _conf : floatModule){
@@ -169,8 +168,9 @@ public class Roc102 {
                     for (int i = 0; i < rows.size(); i++) {
                         //取一行数据
                         BaseProjectModel model = (BaseProjectModel) rows.get(i);
-                        endDate = model.get("date")+"";
-                        map.put("endDate"," 截至日期 " + endDate);
+                        if(model.get("date")!=null && !"".equals(model.get("date"))) {
+                            map.put("endDate", " 截至日期 " + model.get("date"));
+                        }
                     }
                 }
             }
@@ -190,10 +190,12 @@ public class Roc102 {
                     if("credit_company_shareholder".equals(tableName)){
                         hasTotal = true;
                         SysDictDetail sysDict = new ReportInfoGetDataController().dictIdToString(currency);
-                        if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)){
-                            temp = sysDict.get("detail_name_tw") + " " + sysDict.get("detail_name_en");
-                        }else{
-                            temp = sysDict.get("detail_name");
+                        if(sysDict!=null) {
+                            if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+                                temp = sysDict.get("detail_name_tw") + " " + sysDict.get("detail_name_en");
+                            } else {
+                                temp = sysDict.get("detail_name");
+                            }
                         }
                     }
                     table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal,temp);

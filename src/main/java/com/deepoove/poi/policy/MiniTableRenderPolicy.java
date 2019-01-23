@@ -107,7 +107,7 @@ public class MiniTableRenderPolicy extends AbstractRenderPolicy {
         int row = 2, col = tableData.getHeaders().size();
 
         XWPFTable table = doc.insertNewTable(run, row, col);
-        initBasicTable(table, col, tableData.getWidth(), tableData.getStyle());
+        initBasicTable(table, col, tableData.getWidth(), tableData.getHeaders()!=null?tableData.getHeaders().getStyle():null);
 
         renderRow(table, 0, tableData.getHeaders());
 

@@ -302,8 +302,10 @@ public class BaseWord {
                 //出资情况，出资金额后面跟币种
                 if("contribution".equals(column)) {
                     if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType) || ReportTypeCons.ROC_HY.equals(reportType)) {
-                        String str = cols.get("contribution").split("\\|")[0] + "(" + temp + ")" + "|" + strs[1];
-                        cols.put("contribution", str);
+                        if(!cols.get("contribution").contains("(")) {
+                            String str = cols.get("contribution").split("\\|")[0] + "(" + temp + ")" + "|" + strs[1];
+                            cols.put("contribution", str);
+                        }
                     }
                 }
 
@@ -331,7 +333,7 @@ public class BaseWord {
         }
         //居中对齐
         TableStyle tableStyle = new TableStyle();
-        tableStyle.setAlign(STJc.CENTER);
+        tableStyle.setAlign(STJc.LEFT);
         //表格边框
         if(ReportTypeCons.ROC_HY.equals(reportType)){
             //红印的表格不显示边框
@@ -372,7 +374,10 @@ public class BaseWord {
                     }else if("contribution".equals(column)||"money".equals(column)){
                         style.setAlign(STJc.RIGHT);
                     }
-                    style.setFontFamily("PMingLiU");
+                    style.setFontFamily("Times New Roman");
+                    if("money".equals(column)){
+                        value += "%";
+                    }
                 }
                 row[j] = new TextRenderData(value, style);
                 j++;
@@ -404,10 +409,16 @@ public class BaseWord {
                     } else if ("contribution".equals(column) || "money".equals(column)) {
                         style.setFontFamily("Times New Roman");
                     }
+                    if("money".equals(column)){
+                        value += "%";
+                    }
                 }else if(ReportTypeCons.ROC_HY.equals(reportType)){
+                    style.setBold(false);
+                    style.setFontFamily("宋体");
                     //4号字体
                     style.setFontSize(14);
                 }
+
 
                 row[j] = new TextRenderData(value, style);
                 j++;
@@ -428,6 +439,11 @@ public class BaseWord {
     public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType,String sysLanguage) {
         RowRenderData rowRenderData = null;
         TableStyle tableStyle = new TableStyle();
+        //表格边框
+        if(ReportTypeCons.ROC_HY.equals(reportType)){
+            //红印的表格不显示边框
+            tableStyle.setHasBorder(false);
+        }
         Object[] colSize = cols.keySet().toArray();
         TextRenderData[] header = new TextRenderData[colSize.length];
         int i = 0;
@@ -447,7 +463,7 @@ public class BaseWord {
             } else if (ReportTypeCons.ROC_HY.equals(reportType)) {
                 //四号字体
                 style.setFontSize(14);
-                style.setBold(true);
+                //style.setBold(true);
                 if("sh_name".equals(column)){
                     style.setAlign(STJc.LEFT);
                 }else if("contribution".equals(column)||"money".equals(column)){
