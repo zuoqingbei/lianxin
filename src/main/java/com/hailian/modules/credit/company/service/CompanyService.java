@@ -167,9 +167,9 @@ public class CompanyService {
 				companyinfoModel.set("business_date_start", TermStartFor);
 				if(StringUtils.isNotBlank(TeamEnd)){
 					String TeamEndFor = dateFormat(TeamEnd);//转成年月日
-					companyinfoModel.set("business_date_end", TeamEndFor);
+					companyinfoModel.set("business_date_end", TermStartFor+"至"+TeamEndFor);
 				}else{
-					companyinfoModel.set("business_date_end", "长期");
+					companyinfoModel.set("business_date_end",  TermStartFor+"至"+"长期");
 				}
 				
 				List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status.trim(),"registration_status");
@@ -286,40 +286,46 @@ public class CompanyService {
 				JSONArray partners = null;
 				try {
 					partners = json.getJSONObject("Result").getJSONArray("Partners");
+					if(partners !=null && partners.size()>0){
+						CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
+						List<CreditCompanyShareholder> shareholderlist=new ArrayList<CreditCompanyShareholder>();
+						for(int i=0;i<partners.size();i++){
+							JSONObject partner = (JSONObject)partners.get(i);
+							String name = partner.getString("StockName");//股东
+							String StockType = partner.getString("StockType");//股东类型
+							String Crawlername=name;
+							if(Crawlername.contains("港澳台") || Crawlername.contains("合资")){
+								try {
+									Crawlername = HttpCrawler.getIcrisUrl(name);
+								} catch (Exception e) {
+									// TODO Auto-generated catch block
+									Crawlername=name;
+								}
+							}
+						
+
+							String StockPercent = partner.getString("StockPercent");//出资比例
+							String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
+							String ShouldCapi = partner.getString("ShouldCapi");//出资金额
+							CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
+							shareholderModel.set("sh_name", Crawlername);
+							shareholderModel.set("money", StockPercentEd);
+							if(StringUtils.isNotBlank(ShouldCapi.replace(",", ""))){
+								BigDecimal a = new BigDecimal(ShouldCapi.replace(",", ""));
+								BigDecimal b = new BigDecimal("10000");
+								shareholderModel.set("contribution", a.multiply(b).toString());
+							}
+							shareholderModel.set("company_id", companyId);
+							shareholderModel.set("sys_language", sys_language);
+							shareholderlist.add(shareholderModel);
+						}
+						Db.batchSave(shareholderlist, shareholderlist.size());
+					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if(partners !=null && partners.size()>0){
-					CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
-					List<CreditCompanyShareholder> shareholderlist=new ArrayList<CreditCompanyShareholder>();
-					for(int i=0;i<partners.size();i++){
-						JSONObject partner = (JSONObject)partners.get(i);
-						String name = partner.getString("StockName");//股东
-						String StockType = partner.getString("StockType");//股东类型
-						String Crawlername=name;
-						try {
-							Crawlername = HttpCrawler.getIcrisUrl(name);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							Crawlername=name;
-						}
-
-						String StockPercent = partner.getString("StockPercent");//出资比例
-						String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
-						String ShouldCapi = partner.getString("ShouldCapi");//出资金额
-						CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
-						shareholderModel.set("sh_name", Crawlername);
-						shareholderModel.set("money", StockPercentEd);
-						BigDecimal a = new BigDecimal(ShouldCapi.replace(",", ""));
-						BigDecimal b = new BigDecimal("10000");
-						shareholderModel.set("contribution", a.multiply(b).toString());
-						shareholderModel.set("company_id", companyId);
-						shareholderModel.set("sys_language", sys_language);
-						shareholderlist.add(shareholderModel);
-					}
-					Db.batchSave(shareholderlist, shareholderlist.size());
-				}
+				
 			
 
 				//变更事项
