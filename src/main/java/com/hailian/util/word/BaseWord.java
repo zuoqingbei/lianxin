@@ -245,7 +245,7 @@ public class BaseWord {
      * @param temp
      * @return
      */
-    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal) {
+    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal,String temp) {
         //存放行数据-word模板
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         //表格列字段集合
@@ -302,7 +302,7 @@ public class BaseWord {
                 if ("select".equals(fieldType)) {
                     //出资情况后面更加币种
                     if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)){
-                        if("currency".equals(column)) {
+                        /*if("currency".equals(column)) {
                             if(!"".equals(value)) {
                                 //出资情况，出资金额后面跟币种
                                 SysDictDetail sysDict = new ReportInfoGetDataController().dictIdToString(value);
@@ -315,6 +315,10 @@ public class BaseWord {
                                     }
                                 }
                             }
+                        }*/
+                        if("contribution".equals(column)){
+                            String str = cols.get("contribution").split("\\|")[0] + "(" + temp + ")" + "|" + strs[1];
+                            cols.put("contribution", str);
                         }
                     }else{
                         value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, reportType, sysLanguage) : "";
