@@ -41,20 +41,18 @@
 @media all {
     #tab3 {
         position: relative;
-        display: flex;
         width: 200%;
-        height: 92%;
-        padding: 0.2% 1% .4% 0;
+        height: 90%;
+        padding: 0.125em 1% .25em 0;
         left:0;
         color: #6cf;
 
     }
-
     #t3_l,
     #t3_r {
         display: flex;
         flex: 1;
-        padding-top: 0.28%;
+        padding-top: .5em;
         /*outline: 1px dotted skyblue;*/
     }
     #t3_l{

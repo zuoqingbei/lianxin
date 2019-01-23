@@ -5,7 +5,9 @@ ul{
 html, body, #totalState {
     height: 100%;
 }
-
+#totalState *{
+    box-sizing: border-box;
+}
 .lab .btn-back,
 .btn-back {
     position: absolute;
