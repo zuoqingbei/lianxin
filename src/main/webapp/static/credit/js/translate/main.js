@@ -99,6 +99,9 @@ let ReportConfig = {
 	    						//不是表头
 	    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
 	    					}
+	    					if($(item).text() === 'NaN') {
+        						$(item).text('')
+        					}
 	    				})
 	    				setTimeout(() => {
 		    				if(rows.length < 1) {
@@ -148,6 +151,9 @@ let ReportConfig = {
 	    						//不是表头
 	    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
 	    					}
+	    					if($(item).text() === 'NaN') {
+        						$(item).text('')
+        					}
 	    				})
 	    				setTimeout(() => {
 		    				if(rows.length < 1) {
@@ -227,7 +233,9 @@ let ReportConfig = {
                 				let arr = []
                 				let total = 0;
                 				a.forEach((item,index)=>{
-                					total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                					if(item[ele.column_name]){
+                						total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                					}
                 				})
                 				
                 				return total
