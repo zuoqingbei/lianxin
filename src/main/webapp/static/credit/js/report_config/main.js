@@ -540,12 +540,18 @@ let ReportConfig = {
 							 }
 						 })
 					 })
+					 
+					 //年检年度默认2012
+			    	if(!$("#year_1").val()) {
+			    		$("#year_1").val("2012")
+			    	}
 				 }
 			 })
 	    	
     	
     	
     	})
+    	
     },
     tabChange(){
         /**tab切换事件 */
