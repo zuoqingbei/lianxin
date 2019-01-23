@@ -78,7 +78,7 @@ let ReportConfig = {
         				$table.bootstrapTable("load",rows)
         				
         				$(".monyCol").each((index,item)=>{
-        					if(!$(item).attr("data-field")){
+        					if(!$(item).attr("data-field") && $(item).text() !== ''){
         						//不是表头
         						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
         					}
@@ -86,7 +86,6 @@ let ReportConfig = {
         				setTimeout(() => {
     	    				if(rows.length < 1) {
     	    					$table.parents(".fixed-table-container").css("height","80px!important")
-    	    					console.log($table.parents(".fixed-table-container"))
     	    				}else if(rows.length < 4) {
     	    					$table.parents(".fixed-table-container").css("height","180px")
     	    				}
@@ -131,6 +130,10 @@ let ReportConfig = {
         						//不是表头
         						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
         					}
+        					
+        					if($(item).text() === 'NaN') {
+        						$(item).text('')
+        					}
         				})
         				setTimeout(() => {
     	    				if(rows.length < 1) {
@@ -163,7 +166,9 @@ let ReportConfig = {
                         				let arr = []
                         				let total = 0;
                         				a.forEach((item,index)=>{
-                        					total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                        					if(item[ele.column_name]){
+                        						total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                        					}
                         				})
                         				
                         				return total

@@ -13,6 +13,7 @@ import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
@@ -95,6 +96,8 @@ public class Roc102 {
         map.put("speed",order.getStr("speedName"));
         //客户参考号
         map.put("reference_num",referenceNum);
+        //币种
+        String currency = companyInfo.getStr("currency");
         //订单公司名称
         if(ReportTypeCons.ROC_EN.equals(reportType)){
             map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
@@ -180,9 +183,20 @@ public class Roc102 {
                 if ("s".equals(tableType)) {
                     table = BaseWord.createTableS(reportType,child, rows,sysLanguage);
                 } else if ("h".equals(tableType)) {
-                    //"出资情况"需要增加合计项
-                    boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
-                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal);
+                    //是否添加合计项
+                    boolean hasTotal = false;
+                    String temp = "";
+                    //"出资情况"表格需要增加合计项
+                    if("credit_company_shareholder".equals(tableName)){
+                        hasTotal = true;
+                        SysDictDetail sysDict = new ReportInfoGetDataController().dictIdToString(currency);
+                        if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)){
+                            temp = sysDict.get("detail_name_tw") + " " + sysDict.get("detail_name_en");
+                        }else{
+                            temp = sysDict.get("detail_name");
+                        }
+                    }
+                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal,temp);
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
@@ -262,7 +276,7 @@ public class Roc102 {
                 }
             }
 
-            //8-单选框 - 商业报告付款情况
+            //8-单选框 - 商业报告付款情况 / 102 分支机构
             if("8".equals(moduleType)){
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
                 //取列值
@@ -282,7 +296,7 @@ public class Roc102 {
                     cols.put(column_name, temp_name + "|" + field_type);
                 }*/
                 //取数据
-                /*for (int i = 0; i < rows.size(); i++) {
+                for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     for (String column : cols.keySet()) {
                         //取值
@@ -304,8 +318,8 @@ public class Roc102 {
                         }
                         map.put(column, new TextRenderData(html.toString(), style));
                     }
-                }*/
-                if (rows!=null && rows.size()>0) {
+                }
+                /*if (rows!=null && rows.size()>0) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     //取单选数据
                     String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
@@ -329,7 +343,7 @@ public class Roc102 {
                         }
                     }
                     map.put("overall_rating", html.toString());
-                }
+                }*/
             }
 
             //图形表
@@ -485,7 +499,7 @@ public class Roc102 {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
-                //email = "hu_cheng86@126.com";
+                email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
