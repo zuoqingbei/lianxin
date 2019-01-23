@@ -181,7 +181,7 @@ public class BaseBusiCrdt {
                 } else if ("h".equals(tableType)) {
                     //"出资情况"需要增加合计项
                     boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
-                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal);
+                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal,"");
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
