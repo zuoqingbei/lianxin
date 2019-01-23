@@ -56,15 +56,67 @@ let Public = {
             }
         })
 
-
+     
         $(".message").unbind().click(() => {
-            if ($('#mynotice').parents("li").hasClass("hasChild")) {
+           /* if ($('#mynotice').parents("li").hasClass("hasChild")) {
                 $('#mynotice').parents("li").toggleClass("show")
                 $('#mynotice').parents("ul").show(200)
 
             }
-            $('#mynotice').trigger("click")
+            $('#mynotice').trigger("click")*/
+        	$.ajax({
+        		url:  BASE_PATH +'credit/sysuser/notice/list',
+        		type:'post',
+        		data:{
+        			recordsperpage:'100000'
+        		},
+        		success:(data)=>{
+        			console.log(data)
+        			let html = ''
+        			data.list.forEach((item,index)=>{
+        				if(item.read_unread === '0') {
+        					//已读
+        					html += `<li id="${item.id}"><h4>【公告】${item.notice_title}</h4><section style="display:none">${item.notice_content}</section></li>`
+        				}else if(item.read_unread === '1')  {
+        					//未读
+        					html += `<li id="${item.id}" class='unread'><h4>【公告】${item.notice_title}</h4><section style="display:none">${item.notice_content}</section></li>`
+        				}
+        			})
+        			$(".messageBox ul").html(html)
+        			$(".messageBox").toggleClass("hideThis")
+        		}
+        	})
         })
+        //标记全读
+		$(".clickRead").click(function(){
+			$.post('/credit/sysuser/notice/toReadAll',function(data){
+				if(data.statusCode===1){
+		          	Public.message("success",data.message);
+				}else{
+					Public.message("error",data.message);
+				}
+			})
+			
+		})
+		// 打开弹窗
+		$(".messageBox").on('click', 'li', function () {
+			let id=$(this).attr("id");
+			$.post('/credit/sysuser/notice/toReadAll',{noticeId:id},function(data){
+				if(data.statusCode===1){
+				}else{
+					Public.message("error",data.message);
+				}
+			})
+	        let title = $(this).find('h4').html();
+	        let content = $(this).find('section').html();
+	        let $modal = $('#notice');
+	        $modal.find('.modal-title').html(title);
+	        $modal.find('.modal-body').html(content);
+	        $modal.modal('show');
+	        $("[aria-selected='true']").click();
+	        
+	    })
+	    
     },
     menuEvent() {
         /**

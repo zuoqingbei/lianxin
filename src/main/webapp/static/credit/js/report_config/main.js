@@ -1542,6 +1542,35 @@ let ReportConfig = {
     	let formTitles = this.formTitle;
     	let formIndex = this.formIndex;
     	let _this = this
+//    	console.log(formIndex)
+    	if(formIndex.length === 0) {
+    		 //点击保存按钮
+    		$(".position-fixed").on("click","#save",(e)=>{
+    			InitObj.saveDsConfigInfo(_this.dsConfigAlterSource,_this.rows);
+    			Public.message("success","操作成功!")
+    		})
+    		 //点击提交按钮
+    		$(".position-fixed").on("click","#commit",(e)=>{
+    			InitObj.saveDsConfigInfo(_this.dsConfigAlterSource,_this.rows);
+    			 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `model.id=${_this.rows["id"]}&statusCode=294`;
+				 $.ajax({
+					 url,
+					 type:'post',
+					 success:(data)=>{
+						 $("body").mLoading("hide")
+						 if(data.statusCode === 1) {
+							 Public.message("success",data.message)
+							 Public.goToInfoImportPage();
+							 
+						 }else if(data.statusCode !== 1){
+							 Public.message("error",data.message)
+						 }
+					 }
+				 })
+    		})
+    		
+    		return
+    	}
     	formIndex.forEach((item,index)=>{
     		let alterSource = formTitles[index]["alter_source"];
     		if(alterSource === null || alterSource === ''){return}
