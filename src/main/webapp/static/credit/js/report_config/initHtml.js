@@ -9,6 +9,7 @@ let InitObj = {
 		 * 保存大数财务配置信息
 		 * url:保存接口url
 		 */
+//		alert(1)
 		$(".gjds").each((index,item)=>{
 			let dataJsonObj = {}
 			let dataJson = []
@@ -36,6 +37,7 @@ let InitObj = {
 				dataJsonObj["id"] = id
 			}
 			dataJson.push(dataJsonObj)
+			
 			$.ajax({
 				url:BASE_PATH + 'credit/front/ReportGetData/' + url,
 				type:'post',

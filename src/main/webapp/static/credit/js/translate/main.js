@@ -474,15 +474,15 @@ let ReportConfig = {
             </div>
             <div class="modal-body" style="align-items:center">
                	<div class="form-group my-3">
-               		<label class="control-label mb-1">错误的英文</label>
+               		<label class="control-label mb-1">错误的翻译结果</label>
                		<input type="text" class="form-control wrongEn">
                	</div>
                	<div class="form-group my-3">
-               		<label class="control-label mb-1">正确的英文</label>
+               		<label class="control-label mb-1">正确的翻译结果</label>
                		<input type="text" class="form-control correctEn">
                	</div>
                	<div class="form-group my-3">
-               		<label class="control-label mb-1">正确的中文</label>
+               		<label class="control-label mb-1">正确的中文简体</label>
                		<input type="text" class="form-control correctCh">
                	</div>
             </div>

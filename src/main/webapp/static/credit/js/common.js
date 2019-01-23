@@ -56,15 +56,67 @@ let Public = {
             }
         })
 
-
+     
         $(".message").unbind().click(() => {
-            if ($('#mynotice').parents("li").hasClass("hasChild")) {
+           /* if ($('#mynotice').parents("li").hasClass("hasChild")) {
                 $('#mynotice').parents("li").toggleClass("show")
                 $('#mynotice').parents("ul").show(200)
 
             }
-            $('#mynotice').trigger("click")
+            $('#mynotice').trigger("click")*/
+        	$.ajax({
+        		url:  BASE_PATH +'credit/sysuser/notice/list',
+        		type:'post',
+        		data:{
+        			recordsperpage:'100000'
+        		},
+        		success:(data)=>{
+        			console.log(data)
+        			let html = ''
+        			data.list.forEach((item,index)=>{
+        				if(item.read_unread === '0') {
+        					//已读
+        					html += `<li id="${item.id}"><h4>【公告】${item.notice_title}</h4><section style="display:none">${item.notice_content}</section></li>`
+        				}else if(item.read_unread === '1')  {
+        					//未读
+        					html += `<li id="${item.id}" class='unread'><h4>【公告】${item.notice_title}</h4><section style="display:none">${item.notice_content}</section></li>`
+        				}
+        			})
+        			$(".messageBox ul").html(html)
+        			$(".messageBox").toggleClass("hideThis")
+        		}
+        	})
         })
+        //标记全读
+		$(".clickRead").click(function(){
+			$.post('/credit/sysuser/notice/toReadAll',function(data){
+				if(data.statusCode===1){
+		          	Public.message("success",data.message);
+				}else{
+					Public.message("error",data.message);
+				}
+			})
+			
+		})
+		// 打开弹窗
+		$(".messageBox").on('click', 'li', function () {
+			let id=$(this).attr("id");
+			$.post('/credit/sysuser/notice/toReadAll',{noticeId:id},function(data){
+				if(data.statusCode===1){
+				}else{
+					Public.message("error",data.message);
+				}
+			})
+	        let title = $(this).find('h4').html();
+	        let content = $(this).find('section').html();
+	        let $modal = $('#notice');
+	        $modal.find('.modal-title').html(title);
+	        $modal.find('.modal-body').html(content);
+	        $modal.modal('show');
+	        $("[aria-selected='true']").click();
+	        
+	    })
+	    
     },
     menuEvent() {
         /**
@@ -302,15 +354,36 @@ let Public = {
     fileConfig(item, row) {
         let _this = this
         _this.row = row
+        console.log(item)
         let content = ''
-        content += ` <div class="order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
-   			 <div class="uploadFile mt-3 mr-3 ml-3">
-                  <div class="over-box">
-                      <img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
-                      <p class="mt-2">暂无附件</p>
-                  </div>
-              </div>
-			</div>`;
+        if(item.title.temp_name === '订单附件'){
+        	content += ` <div class="orderFile order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+		        		<div class="uploadFile mt-3 mr-3 ml-3">
+		        		<div class="over-box">
+		        		<img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
+		        		<p class="mt-2">暂无附件</p>
+		        		</div>
+	        		</div>
+        		</div>`;
+        }else if(item.title.temp_name === '核实附件'){
+        	content += ` <div class="verifyFile order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+        		<div class="uploadFile mt-3 mr-3 ml-3">
+        		<div class="over-box">
+        		<img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
+        		<p class="mt-2">暂无附件</p>
+        		</div>
+    		</div>
+		</div>`;
+        }else if(item.title.temp_name === "查档附件"){
+        	content += ` <div class="filingFile order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+        		<div class="uploadFile mt-3 mr-3 ml-3">
+        		<div class="over-box">
+        		<img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
+        		<p class="mt-2">暂无附件</p>
+        		</div>
+    		</div>
+		</div>`;
+        }
         let url = item.title.get_source ? item.title.get_source : item.title.data_source;
         url = BASE_PATH + url;
         $.ajax({
@@ -325,7 +398,13 @@ let Public = {
                     if (data.files.length === 0) {
                         return
                     }
-                    $(".order-detail").html("");
+                    if(item.title.temp_name === '订单附件'){
+                    	$(".orderFile").html("")
+                    }else if(item.title.temp_name === '核实附件'){
+                    	$(".verifyFile").html("")
+                    }else if(item.title.temp_name === "查档附件"){
+                    	$(".filingFile").html("")
+                    }
                     //   	$(".uploadFile:not(.upload-over)").show()
                     for (var i = 0; i < files.length; i++) {
                         let filetype = files[i].ext.toLowerCase()
@@ -363,8 +442,14 @@ let Public = {
                             '<p class="filename" title="' + all_name + '">' + filename + '</p>' +
                             '</div>' +
                             '</div>'
-
-                        $(".order-detail").append(fileArr)
+                            if(item.title.temp_name === '订单附件'){
+                            	$(".orderFile").append(fileArr)
+                            }else if(item.title.temp_name === '核实附件'){
+                            	$(".verifyFile").append(fileArr)
+                            }else if(item.title.temp_name === "查档附件"){
+                            	$(".filingFile").append(fileArr)
+                            }
+                        
                         $(".upload-over").click(function (e) {
                             if ($(e.target).parent().attr("class") === 'close') {
                                 return
