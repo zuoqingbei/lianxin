@@ -683,7 +683,7 @@ public class BaseWord {
             plot.setBackgroundAlpha(0.0f);
             // 设置标签生成器(默认{0})
             // {0}:key {1}:value {2}:百分比 {3}:sum
-            plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}({1}占{2})"));
+            plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}(占{2})"));
             // 将内存中的图片写到本地硬盘
             ChartUtilities.saveChartAsJPEG(new File(filePath), chart, 600, 300);
         } catch (Exception e) {
