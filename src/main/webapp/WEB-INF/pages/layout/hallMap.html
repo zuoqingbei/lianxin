@@ -190,9 +190,11 @@
     </footer>
 
 </div>
+    <script>
+        let contextPath='${contextPath!}';
+    </script>
 <script src="${contextPath!}/static/js/hallMap.js"></script>
 <script type="text/javascript">
-    var contextPath='${contextPath!}';
     function loadOrderNumsAjax() {
         $.post("${contextPath!}/lab/orderNumsAjax", function (data) {
             //console.log(data)

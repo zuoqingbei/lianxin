@@ -14,7 +14,7 @@ $(function () {
     selectAll();
     // 进入实验室按钮
     $(".legend .toLabData").click(function () {
-        $("#content>.lab", parent.document).show().siblings(":not(.fromHallMap)").hide();
+        $("#r>iframe", parent.document).attr('src',contextPath+'/layout/lab');
         $(".orderPopup", parent.document).removeClass("show");
         //实验室切回国内的中海博睿
         $(".lab .switchBox>ul.inland>li:eq(0)", parent.document).click();
