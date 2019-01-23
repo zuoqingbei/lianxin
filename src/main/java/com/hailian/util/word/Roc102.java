@@ -276,7 +276,7 @@ public class Roc102 {
                 }
             }
 
-            //8-单选框 - 商业报告付款情况
+            //8-单选框 - 商业报告付款情况 / 102 分支机构
             if("8".equals(moduleType)){
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
                 //取列值
@@ -296,7 +296,7 @@ public class Roc102 {
                     cols.put(column_name, temp_name + "|" + field_type);
                 }*/
                 //取数据
-                /*for (int i = 0; i < rows.size(); i++) {
+                for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     for (String column : cols.keySet()) {
                         //取值
@@ -318,8 +318,8 @@ public class Roc102 {
                         }
                         map.put(column, new TextRenderData(html.toString(), style));
                     }
-                }*/
-                if (rows!=null && rows.size()>0) {
+                }
+                /*if (rows!=null && rows.size()>0) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     //取单选数据
                     String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
@@ -343,7 +343,7 @@ public class Roc102 {
                         }
                     }
                     map.put("overall_rating", html.toString());
-                }
+                }*/
             }
 
             //图形表
@@ -499,7 +499,7 @@ public class Roc102 {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
-                //email = "hu_cheng86@126.com";
+                email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();

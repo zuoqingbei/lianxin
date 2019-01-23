@@ -298,31 +298,18 @@ public class BaseWord {
                         totalRow.put(column, totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val) ? val : "-");
                     }
                 }
-                //下拉框编码转文本值
-                if ("select".equals(fieldType)) {
-                    //出资情况后面更加币种
-                    if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)){
-                        /*if("currency".equals(column)) {
-                            if(!"".equals(value)) {
-                                //出资情况，出资金额后面跟币种
-                                SysDictDetail sysDict = new ReportInfoGetDataController().dictIdToString(value);
-                                if(sysDict!=null) {
-                                    String unit = sysDict.get("detail_name_tw") + " " + sysDict.get("detail_name_en");
-                                    if(!cols.get("contribution").contains("(")){
-                                        String str = cols.get("contribution").split("\\|")[0] + "(" + unit + ")" + "|" + strs[1];
-                                        System.out.println(cols.get("contribution"));
-                                        cols.put("contribution", str);
-                                    }
-                                }
-                            }
-                        }*/
-                        if("contribution".equals(column)){
-                            String str = cols.get("contribution").split("\\|")[0] + "(" + temp + ")" + "|" + strs[1];
-                            cols.put("contribution", str);
-                        }
-                    }else{
-                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, reportType, sysLanguage) : "";
+
+                //出资情况，出资金额后面跟币种
+                if("contribution".equals(column)) {
+                    if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType) || ReportTypeCons.ROC_HY.equals(reportType)) {
+                        String str = cols.get("contribution").split("\\|")[0] + "(" + temp + ")" + "|" + strs[1];
+                        cols.put("contribution", str);
                     }
+                }
+
+                //下拉选择
+                if ("select".equals(fieldType)) {
+                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, reportType, sysLanguage) : "";
                 }
                 //处理千位符号
                 else if ("money".equals(fieldType)) {
@@ -351,15 +338,16 @@ public class BaseWord {
             tableStyle.setHasBorder(false);
         }
         //102模板，出资情况列表中的币种不展示
-        if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+        /*if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
             if(cols.containsKey("contribution")&&cols.containsKey("currency")){
                 cols.remove("currency");
             }
-        }
+        }*/
         Object[] colSize = cols.keySet().toArray();
 
         //组装表格-表头
         RowRenderData rowRenderData = tableHeaderH(cols, reportType,sysLanguage);
+        rowRenderData.setStyle(tableStyle);
         //组装表格-数据
         for (LinkedHashMap<String, String> m : datas) {
             int j = 0;
