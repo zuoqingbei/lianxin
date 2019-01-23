@@ -846,11 +846,12 @@ public class OrderProcessController extends BaseProjectController{
     }
 
     /**
-     * 通过订单id获取文件信息
+     * 通过订单id获取不同流程下文件信息
      */
     public void getFilesByOrderId(){
         String orderId = getPara("orderId");
-        List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"" , this);
+        String business_type = getPara("business_type");
+        List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusinessType(orderId+"" ,business_type, this);
         for (CreditUploadFileModel creditUploadFileModel : files) {
             creditUploadFileModel.set("view_url","http://"+ ip + ":" + searverPort+"/"+creditUploadFileModel.get("view_url"));
             creditUploadFileModel.set("url","http://"+ ip + ":" + searverPort+"/"+creditUploadFileModel.get("url"));

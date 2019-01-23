@@ -3,6 +3,8 @@ package com.hailian.modules.admin.file.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
@@ -64,10 +66,14 @@ public class CreditUploadFileModel extends BaseProjectModel<CreditUploadFileMode
 	* @date:  2018年11月24日
 	 */
 	public List<CreditUploadFileModel> getByBusIdAndBusinessType(String business_id,String business_type,BaseProjectController c){
-		String sql="select * from credit_upload_file where business_id=? and business_type=? and del_flag=0";
+		String sql="select * from credit_upload_file where business_id=?  and del_flag=0";
 		List<Object> params=new ArrayList<Object>();
 		params.add(business_id);
-		params.add(business_type);
+		if(StringUtils.isNotBlank(business_type)) {
+			sql+=" and business_type=?";
+			params.add(business_type);
+		}
+		
 		return dao.find(sql, params.toArray());
 	}
 	/**
