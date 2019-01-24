@@ -37,7 +37,7 @@ public class ReportTranslateController extends BaseProjectController {
 			Iterator iterator = jsonObject.keys();//遍历翻译代替
 			while(iterator.hasNext()){
 			String   key = (String) iterator.next();
-			String value = jsonObject.getString(key);
+			String value = jsonObject.getString(key).replace("/n", "");
 			String value_en="";
 			String value_cht="";
 			if(isChinese(value)){
@@ -130,7 +130,7 @@ public class ReportTranslateController extends BaseProjectController {
 	       return convertSuccess;
 	}
 	 public static void main(String[] args) {
-		String  value_cht=TransApi.Trans("陈少杰","en");
+		String  value_cht=TransApi.Trans("股权投资,股权投资管理,商务咨询,财务咨询(不得从事代理记账),实业投资,资产管理,投资咨询。【依法须经批准的项目,经相关部门批准后方可开展经营活动】","en");
 		System.out.println(value_cht);
 
 		 

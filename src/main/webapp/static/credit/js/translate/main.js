@@ -1234,6 +1234,7 @@ let ReportConfig = {
                 let modulesToEn = data.modulesToEn;    
                 let contentHtml = '' 
                 let bottomBtn = ''
+//                	console.log(modules.length,modulesToEn.length)
                 modules.forEach((item,index)=>{
                 	/**
                 	 * 循环模块
@@ -1568,7 +1569,7 @@ let ReportConfig = {
                 		contentHtml += `</div>`
                 	}
                 	
-                	
+                	console.log(modulesToEn.length,index)
                 	let item_en = modulesToEn[index]
                 	if(!item_en){return}
                 	let smallModileTypeEn = item_en.smallModileType
@@ -1592,6 +1593,7 @@ let ReportConfig = {
                 	let formArrEn = item_en.contents; 
                 	
                 	//英文循环
+                	
                 	switch(smallModileTypeEn) {
             		case '0':
             			//表单类型
@@ -1751,9 +1753,10 @@ let ReportConfig = {
             			break;
             		case '5':
             			//固定底部的按钮组
+            			console.log(item_en)
             			item_en.title.column_name === 'save'?_this.saveStatusUrl = item_en.title.alter_source:_this.submitStatusUrl = item_en.title.alter_source
             			let className = item_en.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
-            			if(item_en.title.column_name === 'save'){
+        				if(item_en.title.column_name === 'save'){
             				bottomBtn += `<button id="translateBtn" class="btn btn-primary ml-4 disable">翻译</button><button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
             			}else {
             				bottomBtn += `<button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
@@ -2158,7 +2161,7 @@ let ReportConfig = {
 		
 		$(".position-fixed").on("click","#commit",(e)=>{
 			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
-			 if(data.length === 0){return}
+			 if(data.length === 0 || !Array.isArray(data)){return}
 			 data.forEach((ele,i)=>{
 				 delete ele["mySort"]
 				 delete ele["create_date"]
