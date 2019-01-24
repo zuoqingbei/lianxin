@@ -5,6 +5,8 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.net.URLDecoder;
+import java.util.HashMap;
+import java.util.Map;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -12,6 +14,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -143,16 +146,22 @@ public class AES {
         /*
          * 此处使用AES-128-ECB加密模式，key需要为16位。
          */
-        String cKey = "zwd1497943361999";
+        String cKey = "LX00000000001111";
+
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("customId","123");
+        JSONObject obj = JSONObject.fromObject(map);
+
         // 需要加密的字串
-        String cSrc = "Hello Word-@#￥……*, hello,(中国){4}。";
+        String cSrc = obj.toString();
         System.out.println(cSrc);
         // 加密
         String enString = AES.encrypt(cSrc, cKey);
         System.out.println("加密后的字串是：" + enString);
 
         // 解密
-        String DeString = AES.decrypt("g13%2F4ZXnrWNPn5FhlcTmaPd7%2FkxrLc6FrnFQp0my3kR2gR6Evlg6zaM%2FQ2Xk+wpaJ", cKey);
+        //String DeString = AES.decrypt("g13%2F4ZXnrWNPn5FhlcTmaPd7%2FkxrLc6FrnFQp0my3kR2gR6Evlg6zaM%2FQ2Xk+wpaJ", cKey);
+        String DeString = AES.decrypt(enString, cKey);
         System.out.println("解密后的字串是：" + DeString);
     }
     

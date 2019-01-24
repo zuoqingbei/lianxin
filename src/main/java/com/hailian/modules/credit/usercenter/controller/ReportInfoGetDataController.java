@@ -423,14 +423,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             AgentPriceModel agentPrice = new AgentPriceModel();
             String status = "";
             if (type.equals("translate_quality")) {//翻译质检
-                if (deal.equals("1")) {//1 完成 2修改
+                if (deal.equals("1")) {//1 完成 2退回 3修改
                     status = "311";
                     agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
                 } else {
                     status = "306";
                 }
             } else if (type.equals("entering_quality")) {//填报质检
-                if (deal.equals("1")) {//1 完成 2修改
+                if (deal.equals("1")) {//1 完成 2退回 3修改
                     //如果是信用分析报告走分析流程，其他则质检走翻译流程
                     CreditOrderInfo info = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", orderId);
                     if (info.get("report_type").equals("10") || info.get("report_type").equals("11")) {
@@ -452,7 +452,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     status = "293";    //信息录入
                 }
             } else if (type.equals("analyze_quality")) {
-                if (deal.equals("1")) {//1 完成 2修改
+                if (deal.equals("1")) {//1 完成 2退回 3修改
                     //分析完成，判断订单报告语言，213，215，没有翻译，质检完成则发送报告邮件
                     CreditOrderInfo info = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", orderId);
                     if (info.get("report_language").equals("213") || info.get("report_language").equals("215")) {
