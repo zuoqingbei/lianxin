@@ -1706,6 +1706,10 @@ let ReportConfig = {
                         report_type: _this.rows.report_type,
                         grade: $("#grade").val() || 0
                     }, (data) => {
+                        this.quality_deal = data.rows[0].quality_deal;
+                        if(this.quality_deal === '3'){
+                            $('.select2-container').addClass('disable');
+                        }
                         if (data.rows && data.rows.length > 0) {
                             $("#quality_opinion").val(data.rows[0].quality_opinion || '');
                             $("#grade").val(data.rows[0].grade);
@@ -1971,25 +1975,7 @@ let ReportConfig = {
         let detailname = this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分', '附件'].includes($(this).text())) {
-                /*switch (_this.rows.quality_type) {
-                    case 'entering_quality':
-                        $(this).nextAll('.module-content').after(qualitySelectHtml);
-                        break;
-                    case 'analyze_quality':
-                        // 8/9-商业中/英文报告
-                        if (_this.rows.report_type === "8" && $(this).text() === '行业分析'
-                            || _this.rows.report_type === "9" && $(this).text() === 'IndustryAnalyze') {
-                            $(this).nextAll('.module-content').after(qualitySelectHtml);
-                        }
-                        // 10/11-信用中/英文报告
-                        if (_this.rows.report_type === "10" && ($(this).text() === '行业分析' || $(this).text() === '财务分析')
-                            || _this.rows.report_type === "11" && ($(this).text() === 'IndustryAnalyze' || $(this).text() === '财务分析')) {
-                            $(this).nextAll('.module-content').after(qualitySelectHtml);
-                        }
-                        break;
-                    // 此页面无翻译功能
-                }*/
-                if(_this.quality_deal==='2'){
+                if(_this.quality_deal==='3'){
                     $('.select2-container').addClass('disable');
                 }
             }
