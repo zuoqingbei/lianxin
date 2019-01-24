@@ -746,6 +746,7 @@ const creditLevel_cn = `<div class="credit-level-title pt-3">
                                 <div class="radio-box d-inline">
                                     <label><input type="radio" name="statusCode" checked>完成</label>
                                     <label><input type="radio" name="statusCode">修改</label>
+                                    <label><input type="radio" name="statusCode">退回</label>
                                 </div>
                             </div>
                         </div>

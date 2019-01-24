@@ -111,7 +111,7 @@ let OrderDetail = {
         })
     },
     // 设置内容数据
-    setContent() {
+    setContent: function () {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info px-4 mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
         // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
@@ -371,7 +371,6 @@ let OrderDetail = {
                         .end().find("[for=quality_opinion]").text(item.contents[1].temp_name + ' : ');
                     let dealQualityData = (param, param2) => {
                         let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
-                        // console.log('$wrap.find("#quality_opinion").val()', $wrap.find("#quality_opinion").val())
                         $.get(this.getUrl(item, '', {
                                 id: this.qualityOpinionId,
                                 quality_opinion: $wrap.find("#quality_opinion").val() || '',
