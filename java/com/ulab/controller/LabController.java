@@ -1122,11 +1122,11 @@ public class LabController extends BaseController {
 		setAttr("labInfo", labInfo);
 		// 量产一致性保障 字典
 		List<Record> providerDic = ProviderDicModel.dao.findProviderDic();
-		setAttr("providerDic", providerDic);
+		setSessionAttr("providerDic", providerDic);
 		// 获取初始化工位信息
 		List<Record> providerDicStation = ProviderDicModel.dao
 				.findProviderDicStationInit();
-		setAttr("providerDicStation", providerDicStation);
+		setSessionAttr("providerDicStation", providerDicStation);
 		// setCookie("providerDicStation",
 		// JSON.toJSON(providerDicStation).toString(), 1000);
 		render("index.html");

@@ -9,7 +9,35 @@
             <div id="myChart14"></div>
             <div class="shujuWajue_left_top_list debug">
                 <!--<div>模块商名称：</div>-->
+			<form action="">
+                    <label for="type" style="margin-left: 2.4em">模块商名称：</label>
+                    <select id="type" name="请选择" onchange="tab4JianSelected(this)">
+                        <option class="showLabel" style="display: none">广州捷普电子</option>
+                        ##for(p in session["providerDic"]){
+                        <optgroup class="main main${p.id!}" label=${p.name!}>
+                            ##for(c in p.children){
+                                ##if(pLP.first&&cLP.first){
+                                <option class="main${p.id}-sub active" data="${c.id}" value="${c.name}">${c.name}</option>
+                                ##}else{
+                                <option class="main${p.id}-sub" data="${c.id}" value="${c.name}">${c.name}</option>
+                                ##}
+                            ##}
+                        </optgroup>
+                        ##}
+                    </select>
 
+                    <label for="station" style="margin-left: 1em">工位：</label>
+                    <select id="station" name="请选择" onchange="tab4StationSelected(this)">
+                        ##for(c in session["providerDicStation"]){
+                            ##if(cLP.first){
+                            <option class="showLabel active" data="${c.id}" value="${c.name}">${c.name}</option>
+                            ##}else{
+                            <option class="showLabel" data="${c.id}" value="${c.name}">${c.name}</option>
+                            ##}
+                        ##}
+
+                    </select>
+                </form>
             </div>
         </div>
     </div>
