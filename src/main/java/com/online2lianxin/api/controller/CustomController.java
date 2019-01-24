@@ -1,56 +1,117 @@
 package com.online2lianxin.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.custom.model.CustomTranFlowModel;
-import com.hailian.modules.credit.custom.service.CustomService;
-import com.hailian.system.dict.DictController;
 import com.hailian.system.dict.SysDictDetail;
-import com.jfinal.plugin.activerecord.Page;
+import com.hailian.util.encrypt.AES;
 @ControllerBind(controllerKey = "/api/zz")
 public class CustomController extends BaseProjectController {
 	/**
-	 * 保存
-	* @author doushuihai  
-	* @date 2018年9月4日下午3:00:29  
-	* @TODO
+	 * api对接线上新增客户同步
+	 * @author dou_shuiahi
+	 * @date: 2019年1月24日下午3:45:21
+	 * @Description:
 	 */
-	public void addCustomer() {
-		Integer pid = getParaToInt();
-		// 日志添加
-		CustomInfoModel model = getModel(CustomInfoModel.class);
-		List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(model.get("id"));//根据客户编码查找
-		Integer userid = getSessionUser().getUserid();
-		String now = getNow();
-		model.set("update_by", userid);
-		model.set("update_date", now);
-		if (pid != null && pid > 0) { // 更新
-			CustomInfoModel findById = CustomInfoModel.dao.findById(pid);//根据主键查找
-			if(!findById.get("id").equals(model.get("id"))){
-				if(customByid.size()>0){
-					renderMessage("客户编码已经存在，请修改客户编码！");
-					return;
-				}
-			}
-			model.update();
-		} else { // 新增
-			if(customByid.size()>0){
-				renderMessage("客户编码已经存在，请修改客户编码！");
-				return;
-			}
-			model.remove("table_id");
-			model.set("create_by", userid);
-			model.set("create_date", now);
-			model.save();
-		}
-		renderMessage("保存成功");
-	}
+    public void addCustomer1() {
+        Map<String,String> result = new HashMap<String,String>();
+        //获取4个固定参数
+        String companyID = getPara("companyID");
+        String randomCode = getPara("randomCode");
+        String timestamp = getPara("timestamp");
+        String data = getPara("data");
+        //解密参数
+        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
+                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+            //密码生成
+            String sKey = companyID+randomCode+timestamp;
+            //解密参数串
+            String params = AES.decrypt(data,sKey);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String id = jsonObj.getString("id");//客户编码
+            String name = jsonObj.getString("name");//客户名称
+            String contacts = jsonObj.getString("contacts");//联系人全称
+            String contactsShortName = jsonObj.getString("contactsShortName");//联系人简称
+            String telphone = jsonObj.getString("telphone");//电话
+            String email = jsonObj.getString("email");//邮箱
+            String fax = jsonObj.getString("fax");//传真
+            String country = jsonObj.getString("country");//国家
+            String accountCount = jsonObj.getString("accountCount");//账户点数
+            String isArrearage = jsonObj.getString("isArrearage");//是否可以欠费
+            String isOldCustomer = jsonObj.getString("isOldCustomer");//是否为老用户
+            String address = jsonObj.getString("address");
+            String remarks = jsonObj.getString("remarks");
+           
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(country)
+                    &&StringUtils.isNotEmpty(accountCount)&&StringUtils.isNotEmpty(isArrearage)
+                    &&StringUtils.isNotEmpty(isOldCustomer)&&StringUtils.isNotEmpty(email)){
+            	CustomInfoModel model = new CustomInfoModel();
+            	List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
+            	if(customByid.size()>0) {
+            		result.put("status","false");
+                    result.put("message","已经存在该客户编码！");
+                    renderJson(result);
+                    return;
+            	}
+                model.set("id", id);
+                model.set("name", name);
+                model.set("contacts", contacts);
+                model.set("contacts_short_name", contactsShortName);
+                model.set("telphone", telphone);
+                model.set("email", email);
+                model.set("fax", fax);
+                List<SysDictDetail> dictDetailBy=null;
+                dictDetailBy = SysDictDetail.dao.getDictDetailBy(country,"country");
+               
+                if(CollectionUtils.isEmpty(dictDetailBy)){
+                	model.set("country", dictDetailBy.get(0).get("detail_id"));
+                }
+                
+                model.set("account_count", accountCount);
+                if(isArrearage.equals("1")) {
+                	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("是","isArrearage");
+                	  model.set("is_arrearage", dictDetailBy.get(0).get("detail_id"));
+                }else if(isArrearage.equals("2")) {
+                	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("否","isArrearage");
+                	  model.set("is_arrearage", dictDetailBy.get(0).get("detail_id"));
+                }
+                if(isOldCustomer.equals("1")) {
+               	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("是","is_old_customer");
+               	  model.set("is_old_customer", dictDetailBy.get(0).get("detail_id"));
+               }else if(isOldCustomer.equals("2")) {
+               	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("否","is_old_customer");
+               	  model.set("is_old_customer", dictDetailBy.get(0).get("detail_id"));
+               }
+                model.set("address", address);
+                model.set("remarks", remarks);
+                //保存
+                model.save();
+                result.put("status","success");
+                result.put("message","保存成功！");
+            }else{
+                result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else{
+            result.put("status","false");
+            result.put("message","缺少参数！");
+        }
+        renderJson(result);
+    }
+
 	
 	/**
 	 * 
