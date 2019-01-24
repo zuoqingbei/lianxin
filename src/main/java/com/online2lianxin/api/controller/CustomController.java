@@ -13,9 +13,8 @@ import com.hailian.modules.credit.custom.service.CustomService;
 import com.hailian.system.dict.DictController;
 import com.hailian.system.dict.SysDictDetail;
 import com.jfinal.plugin.activerecord.Page;
-@ControllerBind(controllerKey = "/api")
+@ControllerBind(controllerKey = "/api/zz")
 public class CustomController extends BaseProjectController {
-	private static final String path = "/pages/credit/custom/custom_";
 	/**
 	 * 保存
 	* @author doushuihai  
@@ -68,7 +67,7 @@ public class CustomController extends BaseProjectController {
 		setAttr("model", model);
 		setAttr("dict", details);
 		// 查询下拉框
-		render(path + "pay_add.html");
+//		render(path + "pay_add.html");
 	}
 	/**
 	 * 
@@ -127,7 +126,7 @@ public class CustomController extends BaseProjectController {
 		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
 		setAttr("company", company);
 		// 查询下拉框
-		render(path + "charge_add.html");
+//		render(path + "charge_add.html");
 	}
 	/**
 	 * 
