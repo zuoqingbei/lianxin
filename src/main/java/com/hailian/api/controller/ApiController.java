@@ -16,6 +16,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.kit.JsonKit;
 import org.apache.commons.lang.StringUtils;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,8 @@ public class ApiController extends BaseProjectController {
         if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
                 && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
             try {
+                //data = URLEncoder.encode(data, "utf-8");
+                data = URLEncoder.encode(data, "utf-8");
                 //密码生成
                 String sKey = companyID + timestamp + randomCode;
                 //解密参数串
