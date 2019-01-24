@@ -49,7 +49,7 @@ let OrderDetail = {
             });
             console.assert(url, item);
             url = `${this.BASE_PATH}ReportGetData/${url}&conf_id=${item.title.id}`;
-            url += url.includes("getForm")? '&type='+this.row.report_type : '';
+            url += url.includes("getForm") ? '&type=' + this.row.report_type : '';
             return url;
         };
         this.processNames = this.row.country === '中国大陆' ?
@@ -152,7 +152,7 @@ let OrderDetail = {
                             </div>`;
                         } else {
                             formHtml += `
-                            <div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money'?'moneyCol':''}">
+                            <div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money' ? 'moneyCol' : ''}">
                                 <span>${item.temp_name}：</span>
                                 <span data-column_name="${item.column_name}"></span>
                             </div>`
@@ -169,7 +169,7 @@ let OrderDetail = {
                             $(this).text(Public.textFilter(text, 'null'));
                         });
                         $wrap.find('div.moneyCol [data-column_name]').text(function () {
-                            return Number($(this).text().replace(/,/g,"")).toLocaleString('en-US');
+                            return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');
                         });
                     } else {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
@@ -184,7 +184,7 @@ let OrderDetail = {
                                     }
                                 });
                                 $wrap.find('div.moneyCol [data-column_name]').text(function () {
-                                    return Number($(this).text().replace(/,/g,"")).toLocaleString('en-US');
+                                    return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');
                                 });
                             } else {
                                 console.warn(item.title.temp_name + '-表单-没有返回数据！')
@@ -384,7 +384,7 @@ let OrderDetail = {
                             + (param2 === 'submit' ? '&submit=true' : ''),
                             (data) => {
                                 // console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val());
-                                this.qualityOpinionId = data.rows[0].id ? data.rows[0].id : '';
+                                this.qualityOpinionId = data.rows.length > 0 && data.rows[0].id ? data.rows[0].id : '';
                                 let quality_type = this.row.quality_type;
                                 let status = this.row.status;
                                 switch (quality_type) {
@@ -788,7 +788,7 @@ let OrderDetail = {
         // let detailname = this.english ? 'detail_name_en' : 'detail_name';
         let detailname = 'detail_name';
         $(".l-title").each(function (index, item) {
-            if (!['基本信息', '流程进度', '质检评分', '质检意见', '附件'].includes($(this).text())) {
+            if (!['基本信息', '流程进度', '质检评分', '质检意见', '订单附件', '核实附件', '查档附件'].includes($(this).text())) {
                 switch (_this.row.quality_type) {
                     case 'entering_quality':
                         $(this).nextAll('.module-content').after(qualitySelectHtml);
@@ -871,7 +871,7 @@ let OrderDetail = {
         for (let i = 0; i < 12; i++) {
             $ul.append($li.clone().children('span:eq(0)').text(this.processNames[i]).end());
         }
-        $ul.children('li:eq(7)').after('<br>').next().next().css("margin-left",'10.5rem');
+        $ul.children('li:eq(7)').after('<br>').next().next().css("margin-left", '10.5rem');
         return $ul;
     },
     /**
@@ -882,7 +882,7 @@ let OrderDetail = {
      * @param otherProperty get方法中的其他字段参数
      */
     setTable(item, $wrap, chartType, otherProperty) {
-        if(item.title.small_module_type!=='21'){ //21类型是后来发现爬取到数据后需要优先显示表格，并设置单选项
+        if (item.title.small_module_type !== '21') { //21类型是后来发现爬取到数据后需要优先显示表格，并设置单选项
             $wrap.append(`<div class="module-content type${item.smallModileType}-content tabelBox pt-4 pb-0"></div>`);
         }
         // 有图表的取截止时间
@@ -899,11 +899,11 @@ let OrderDetail = {
 
         item.contents.forEach((item) => {
             // 带日期的单元格加宽
-            $table.children('thead').append(`<th class="${item.field_type === 'money'?'moneyCol':'' }" ${['日期', '成立日期', '注册日期', '合作时间', '操作时间'].includes(item.temp_name) ? ' style=min-width:10rem' : ''}>${item.temp_name}</th>`);
+            $table.children('thead').append(`<th class="${item.field_type === 'money' ? 'moneyCol' : ''}" ${['日期', '成立日期', '注册日期', '合作时间', '操作时间'].includes(item.temp_name) ? ' style=min-width:10rem' : ''}>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });
         $wrap.find(".module-content").append(`${$table[0].outerHTML}`);
-        if(item.title.small_module_type!=='21'){
+        if (item.title.small_module_type !== '21') {
             $(".main .table-content").append($wrap);
         }
         // 绑数
@@ -950,11 +950,11 @@ let OrderDetail = {
                     });
                     // 设置千分位
                     let index = $wrap.find('table th.moneyCol').index();
-                    $wrap.find('table td:nth-child('+(index+1)+')').text(function () {
-                        return Number($(this).text().replace(/,/g,"")).toLocaleString('en-US');
+                    $wrap.find('table td:nth-child(' + (index + 1) + ')').text(function () {
+                        return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');
                     });
                     // 质检意见下面的质检类型全部转换成中文
-                    if(item.title.temp_name==='质检意见'){
+                    if (item.title.temp_name === '质检意见') {
                         $wrap.find('table tr>td:nth-child(1)').text(function () {
                             return qualityTypeToChinese[$(this).text()];
                         })
