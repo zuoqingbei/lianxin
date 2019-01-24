@@ -386,35 +386,33 @@ let OrderDetail = {
                                 this.qualityOpinionId = data.rows.length > 0 && data.rows[0].id ? data.rows[0].id : '';
                                 let quality_type = this.row.quality_type;
                                 let status = this.row.status;
+                                this.quality_deal = data.rows[0].quality_deal;
+                                if(this.quality_deal === '3'){
+                                    $('.select2-container').addClass('disable');
+                                }
                                 switch (quality_type) {
                                     case 'entering_quality':
                                         if ($('.select2-container'.length === 0)) {
-                                            this.quality_deal = data.rows.quality_deal;
+
                                         }
                                         if (!(status === '298' || status === '294')) {
                                             $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
-                                            this.quality_deal = data.rows.quality_deal;
                                         } else if (data.rows.quality_deal === '2') {// 还可以修改质检意见
                                             $('.select2-container').addClass('disable');
-                                            this.quality_deal = data.rows.quality_deal;
                                         }
                                         break;
                                     case 'analyze_quality':
                                         if (status !== '303') {
                                             $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
-                                            this.quality_deal = data.rows.quality_deal;
                                         } else if (data.rows.quality_deal === '2') {
                                             $('.select2-container').addClass('disable');
-                                            this.quality_deal = data.rows.quality_deal;
                                         }
                                         break;
                                     case 'translate_quality':
                                         if (status !== '308') {
                                             $('.select2-container,.radio-box,#quality_opinion,#save,#submit').addClass('disable');
-                                            this.quality_deal = data.rows.quality_deal;
                                         } else if (data.rows.quality_deal === '2') {
                                             $('.select2-container').addClass('disable');
-                                            this.quality_deal = data.rows.quality_deal;
                                         }
                                         break;
                                 }
@@ -784,7 +782,6 @@ let OrderDetail = {
     setQualitySelect() {
         let _this = this;
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
-        // let detailname = this.english ? 'detail_name_en' : 'detail_name';
         let detailname = 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分', '质检意见', '订单附件', '核实附件', '查档附件'].includes($(this).text())) {
@@ -806,7 +803,7 @@ let OrderDetail = {
                         break;
                     // 此页面无翻译功能
                 }
-                if (_this.quality_deal === '2') {
+                if (_this.quality_deal === '3') {
                     $('.select2-container').addClass('disable');
                 }
             }
