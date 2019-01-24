@@ -2161,7 +2161,7 @@ let ReportConfig = {
 		
 		$(".position-fixed").on("click","#commit",(e)=>{
 			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
-			 if(data.length === 0){return}
+			 if(data.length === 0 || !Array.isArray(data)){return}
 			 data.forEach((ele,i)=>{
 				 delete ele["mySort"]
 				 delete ele["create_date"]
