@@ -1,5 +1,7 @@
 package com.hailian.api.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hailian.api.form.ApiForm;
 import com.hailian.api.form.ApiResp;
 import com.hailian.api.interceptor.ApiInterceptor;
@@ -7,9 +9,15 @@ import com.hailian.api.service.ApiService;
 import com.hailian.api.util.ApiUtils;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.util.StrUtils;
+import com.hailian.util.encrypt.AES;
 import com.jfinal.aop.Before;
 import com.jfinal.kit.JsonKit;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerBind(controllerKey = "/api")
 @Before(ApiInterceptor.class)
@@ -72,5 +80,74 @@ public class ApiController extends BaseProjectController {
 		ApiForm form = getBean(ApiForm.class, null);
 		return form;
 	}
+
+    //下单接口
+    public void addOrder() {
+        Map<String,String> result = new HashMap<String,String>();
+        //获取4个固定参数
+        String companyID = getPara("companyID");
+        String randomCode = getPara("randomCode");
+        String timestamp = getPara("timestamp");
+        String data = getPara("data");
+        //解密参数
+        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
+                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+            //密码生成
+            String sKey = companyID+randomCode+timestamp;
+            //解密参数串
+            String params = AES.decrypt(data,sKey);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String customId = jsonObj.getString("customId");
+            String continent = jsonObj.getString("continent");
+            String countryName = jsonObj.getString("countryName");
+            String reportType = jsonObj.getString("reportType");
+            String orderType = jsonObj.getString("orderType");
+            String reportLanguage = jsonObj.getString("reportLanguage");
+            String company = jsonObj.getString("company");
+            String speed = jsonObj.getString("speed");
+            String referenceNum = jsonObj.getString("referenceNum");
+            String address = jsonObj.getString("address");
+            String telphone = jsonObj.getString("telphone");
+            String fax = jsonObj.getString("fax");
+            String email = jsonObj.getString("email");
+            String contacts = jsonObj.getString("contacts");
+            String remarks = jsonObj.getString("remarks");
+            String onlineId = jsonObj.getString("onlineId");
+            if(StringUtils.isNotEmpty(customId)&&StringUtils.isNotEmpty(continent)
+                    &&StringUtils.isNotEmpty(countryName)&&StringUtils.isNotEmpty(reportType)
+                    &&StringUtils.isNotEmpty(orderType)&&StringUtils.isNotEmpty(reportLanguage)
+                    &&StringUtils.isNotEmpty(company)&&StringUtils.isNotEmpty(speed)&&StringUtils.isNotEmpty(onlineId)){
+                CreditOrderInfo orderInfo = new CreditOrderInfo();
+                orderInfo.setCompanyId(companyID);
+                orderInfo.setContinent(continent);
+                orderInfo.setCountry(countryName);
+                orderInfo.setReportType(reportType);
+                orderInfo.setOrderType(orderType);
+                orderInfo.setReportLanguage(reportLanguage);
+                orderInfo.setcompanyName(company);
+                orderInfo.setSpeed(speed);
+                orderInfo.setReferenceNum(referenceNum);
+                orderInfo.setAddress(address);
+                orderInfo.setTelphone(telphone);
+                orderInfo.setFax(fax);
+                orderInfo.setEmail(email);
+                orderInfo.setContacts(contacts);
+                orderInfo.setRemarks(remarks);
+                orderInfo.setOnlineId(onlineId);
+                //保存
+                orderInfo.save();
+                result.put("status","success");
+                result.put("message","保存成功！");
+            }else{
+                result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else{
+            result.put("status","false");
+            result.put("message","缺少参数！");
+        }
+        renderJson(result);
+    }
 
 }

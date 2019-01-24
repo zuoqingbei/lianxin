@@ -73,9 +73,17 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			private String remarks;
 			private String right_company_name_en;
 
-			
-		
-			
+
+            private String onlineId;
+
+
+            public String getOnlineId() {
+                return onlineId;
+            }
+
+            public void setOnlineId(String onlineId) {
+                this.onlineId = onlineId;
+            }
 			public String getCustomId() {
 				return customId;
 			}
