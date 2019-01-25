@@ -1446,7 +1446,9 @@ function orderYearRateAjax() {
 	        "startDate": "2017"+getCurrentMonth(),
 	        "endDate": "2018" + getCurrentMonth()
 	    }, function (data) {
-	    	//console.log(data)
+	    	if(data.length===0){
+                return;
+            }
 	    	var rate2016 =data[0].rate;
 	        var rate2017 = data[data.length-1].rate;
 	        var change = (parseFloat(rate2017) - parseFloat(rate2016)).toFixed(1);

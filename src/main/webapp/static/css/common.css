@@ -63,7 +63,7 @@ h3 {
 @font-face {
     /*fontinSansCR常规*/
     font-family: DIGITAL-Regular;
-    src: url('../asserts/fonts/DIGITAL-Regular.ttf') format("truetype");
+    src: url('../assets/fonts/DIGITAL-Regular.ttf') format("truetype");
     font-weight: normal;
 }
 
@@ -124,7 +124,7 @@ h3 {
     position: absolute;
     width: 100%;
     height: 100%;
-    z-index: 9;
+    z-index: 11;
     background-size: 100% 100%;
     overflow: hidden;
 }

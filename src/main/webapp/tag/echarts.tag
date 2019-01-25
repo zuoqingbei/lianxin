@@ -51,18 +51,18 @@ dataZoomDisabled:可选， 区域是否可以放大 缩小，默认true表示不
 	${tagBody!} 
 ##}
 <!-- ECharts单文件引入 -->
-<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/assets/js/jquery-2.2.4.js"></script>
 <script src="${contextPath!}/static/js/common.js"></script>
 <script src=""></script>
 <script type="text/javascript">
 	var ecConfig;
 	var myChart${docId!};//图表实体变量
-	importJSCSS("${contextPath!}/static/asserts/echarts3.0/echarts.js");
+	importJSCSS("${contextPath!}/static/assets/echarts3.0/echarts.js");
 	//引入中国地图 如果需要某个省市地区的 需要单独引入
-	importJSCSS("${contextPath!}/static/asserts/echarts3.0/china.js");
+	importJSCSS("${contextPath!}/static/assets/echarts3.0/china.js");
 	if("${topic!''}"!=""){
 		//引入对应主题js
-		importJSCSS("${contextPath!}/static/asserts/echarts3.0/theme/${topic!}.js");
+		importJSCSS("${contextPath!}/static/assets/echarts3.0/theme/${topic!}.js");
 	}
 	$(document).ready(function() { 
 		myChart${docId}=echarts.init(document.getElementById("${docId}"),"${topic!}");//图表实体变量

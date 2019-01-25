@@ -996,7 +996,9 @@ function statisticRightSeriesDataAbl(data) {
     s.push(series[1]);
     return s;
 }
-
+var myChart32;
+myChart32 = echarts.init(document.getElementById("myChart32"));
+right_echarts.push(myChart32);
 function abilityByProductLine() {
     $.post(contextPath + '/lab/abilityByProductLineAjax', {}, function (data) {
         var xData = [];
@@ -1022,8 +1024,7 @@ function abilityByProductLine() {
          console.log(yData3);
          console.log(xData);
          */
-        var myChart32 = echarts.init(document.getElementById("myChart32"));
-        right_echarts.push(myChart32);
+
         myChart32.setOption({
             tooltip: {
                 trigger: 'axis',

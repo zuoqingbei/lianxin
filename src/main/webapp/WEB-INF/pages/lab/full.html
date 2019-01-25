@@ -1,6 +1,6 @@
 
 <html lang="zh-CN" >
-<script src="${contextPath!}/static/asserts/js/jquery-2.2.4.js"></script>
+<script src="${contextPath!}/static/assets/js/jquery-2.2.4.js"></script>
 <script>
     /*屏幕描述
      一共 7x3 个屏幕，每一块屏幕是1360x768，
@@ -23,35 +23,53 @@
     var contextPath='${contextPath!}';
 </script>
 
-<link rel="stylesheet" href="${contextPath!}/static/asserts/css/bootstrap.min.css">
+<link rel="stylesheet" href="${contextPath!}/static/assets/css/bootstrap.min.css">
 <link rel="stylesheet" href="${contextPath!}/static/css/common.css">
 <link rel="stylesheet" href="${contextPath!}/static/css/index_left.css">
 <link rel="stylesheet" href="${contextPath!}/static/css/fullScreen_map.css">
+<div id="content" class="contai"  >
 
-<script src="${contextPath!}/static/asserts/js/bootstrap.min.js"></script>
-<script src="${contextPath!}/static/asserts/echarts/echarts-3.5.2.js"></script>
+    <script>
+        //进入时的视频淡出效果，开发时注掉下面这些代码
+        function videoFadeOut() {
+            $("body #content").prepend('<div id="mask" style="background-color: black">' +
+                '<video src="' + contextPath + '/static/img/movieHead_4480.ogv"  width="' + pageW*1.04 + '" height="105%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
+                '</div>'
+            );
+            var $video = $('video');
+            $video.click(function () {
+                $(this)[0].play()
+            });
+            $video[0].addEventListener('ended', function () {
+                $(this).css('pointer-events','none')
+                    .parent().animate({
+                    opacity: 0
+                }, 3000, function () {
+                    $(this).hide();
+                })
+            });
+        }
+
+        var fromPage='${fromPage!}';
+        //开场视频
+        if(fromPage!=="fullScreen"){
+            videoFadeOut();
+        }
+    </script>
+    ##layout("fullScreen_map.html", {}){
+    ##}
+</div>
+
+<script src="${contextPath!}/static/assets/js/bootstrap.min.js"></script>
+<script src="${contextPath!}/static/assets/echarts/echarts-3.5.2.js"></script>
 <script src="${contextPath!}/static/js/manyEcharts.js"></script>
 <script src="${contextPath!}/static/js/common.js"></script>
-<script src="${contextPath!}/static/asserts/echarts/wordcloudFromNet.js"></script>
-<script>
-    var fromPage='${fromPage!}';
-</script>
+<script src="${contextPath!}/static/assets/echarts/wordcloudFromNet.js"></script>
 <script src="${contextPath!}/static/js/full.js"></script>
 <script src="${contextPath!}/static/js/full_statistics.js"></script>
 
 <body>
 
-<div id="content" class="contai"  >
-
-	<script>
-        //开场视频
-	   if(fromPage!="fullScreen"){
-			videoFadeOut();
-	    }
-	</script>
-     ##layout("fullScreen_map.html", {}){
-     ##}
-</div>
 
 </body>
 </html>

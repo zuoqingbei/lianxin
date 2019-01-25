@@ -1,35 +1,12 @@
 /**
  * Created by Administrator on 2017/4/7 0007.
  */
-var $left = $("#l");
-var myCharts = [];
-var myChartFlatRT_full;
-var myChartFlatLT_full;
-var myChartFlatLB_full;
+
 
 var pathSymbols = {
     bar_chip: '${contextPath!}/static/img/bar_chip.png'
 };
 
-//进入时的视频淡出效果，开发时注掉下面这些代码
-function videoFadeOut() {
-    $("body #content").prepend('<div id="mask" style="background-color: black">' +
-        '<video src="' + contextPath + '/static/img/movieHead_4480.ogv"  width="' + pageW*1.04 + '" height="105%" preload="auto" >抱歉，您的浏览器不支持video标签</video>' +
-        '</div>'
-    );
-    var $video = $('video');
-    $video.click(function () {
-        $(this)[0].play()
-    });
-    $video[0].addEventListener('ended', function () {
-        $(this).css('pointer-events','none')
-            .parent().animate({
-            opacity: 0
-        }, 3000, function () {
-            $(this).hide();
-        })
-    });
-}
 
 //切换地图显示区域及地图全屏
 /*

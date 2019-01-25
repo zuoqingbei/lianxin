@@ -1168,6 +1168,7 @@ var placeHolderStyle = {
 
  });*/
 var data = [[74, 74], [75, 75], [74.7, 74.7], [75.5, 75.5], [75, 75], [74, 74], [75, 75], [74.7, 74.7], [75.5, 75.5], [75, 75], [74, 74], [75, 75], [74.7, 74.7], [75.5, 75.5], [75, 75], [74, 74], [75, 75], [74.7, 74.7], [75.5, 75.5], [75, 75], [72, 72], [73, 73]];
+
 /**
  * Get histogram data out of xy data
  * @param   {Array} data  Array of tuples [x, y]
@@ -4436,6 +4437,7 @@ var labelSetting = {
 
 var right_echarts = [];
 var rightInterval;
+
 //重置echart图标大小 在加载平面地图时被调用
 function resetSizeRight() {
     mHeightChartTab4.reflow();
@@ -4444,83 +4446,87 @@ function resetSizeRight() {
         right_echarts[i].resize();
     }
 }
+
 function refreshRight() {
-	refreshHeightChart();
+    refreshHeightChart();
     for (var i = 0; i < right_echarts.length; i++) {
-    	var myChart=right_echarts[i];
-        if(!myChart){
+        var myChart = right_echarts[i];
+        if (!myChart) {
             return;
-       }
-       //更新数据
-        var option = myChart.getOption();
-        var v1,v2,v3;
-        myChart.clear();
-        if($(myChart._dom).attr("id")=="myChart1"){
-        	//option.series[0].data=[{value: 77}];
-        	v1=option.series[0].data[0].value;
-        	v2=option.series[1].data[0].value;
-        	v3=option.series[2].data[0].value;
-        	option.series[0].data=[{value: 0}];
-        	option.series[1].data=[{value: 0}];
-        	option.series[2].data=[{value: 0}];
         }
-        myChart.setOption(option);  
-        if($(myChart._dom).attr("id")=="myChart1"){
-        	dealyShow(myChart,option,v1,v2,v3);
+        //更新数据
+        var option = myChart.getOption()||{};
+        var v1, v2, v3;
+        myChart.clear();
+        if ($(myChart._dom).attr("id") == "myChart1") {
+            //option.series[0].data=[{value: 77}];
+            v1 = option.series[0].data[0].value;
+            v2 = option.series[1].data[0].value;
+            v3 = option.series[2].data[0].value;
+            option.series[0].data = [{value: 0}];
+            option.series[1].data = [{value: 0}];
+            option.series[2].data = [{value: 0}];
+        }
+        console.log(myChart)
+        myChart.setOption(option);
+        if ($(myChart._dom).attr("id") == "myChart1") {
+            dealyShow(myChart, option, v1, v2, v3);
         }
     }
 }
+
 //重置图标时  为了达到重绘效果 进行延时相应
-function dealyShow(myChart,option,v1,v2,v3){
-	 myChart.clear();
-	  setTimeout(function(){
-		  option.series[0].data=[{value: v1}];
-		  option.series[1].data=[{value: v2}];
-		  option.series[2].data=[{value: v3}];
-		  myChart.setOption(option); 
-     },500);
+function dealyShow(myChart, option, v1, v2, v3) {
+    myChart.clear();
+    setTimeout(function () {
+        option.series[0].data = [{value: v1}];
+        option.series[1].data = [{value: v2}];
+        option.series[2].data = [{value: v3}];
+        myChart.setOption(option);
+    }, 500);
 }
+
 //重置HeightChart
-function refreshHeightChart(){
-	/*mHeightChartTab4=$('#myChart16').highcharts({
-		tooltip:{
-	        textStyle: {
-	            fontSize: 10*bodyScale,
-	        },
-			formatter:function(p){
-				if(this.series.name=="概率密度"){
-					return false;
-				}else{
-					var h=this.point.x+"<br/>直方图："+this.point.y;
-					return h;
-				}
-			}
-		},
-	    chart: {
-	        type: 'column',
-	        backgroundColor: 'rgba(0,0,0,0)',
-	        spacingBottom: 7 * bodyScale,
-	        marginRight: 5*bodyScale,
-	    },
-	    credits: {
-	        enabled: false
-	    },
-	    exporting: {
-	        enabled:false
-	    },
-	    title: {
-	        text: '',
-	    },
-	    legend:{
-	        enabled:false,
-	    },
-	    xAxis: {
-	        gridLineWidth: 0,
-	        min:rootlsl,
-	        max:rootusl,
-	        plotLines: [],
-	        tickColor: "rgba(0,0,0,0)",
-	        labels:{
+function refreshHeightChart() {
+    /*mHeightChartTab4=$('#myChart16').highcharts({
+        tooltip:{
+            textStyle: {
+                fontSize: 10*bodyScale,
+            },
+            formatter:function(p){
+                if(this.series.name=="概率密度"){
+                    return false;
+                }else{
+                    var h=this.point.x+"<br/>直方图："+this.point.y;
+                    return h;
+                }
+            }
+        },
+        chart: {
+            type: 'column',
+            backgroundColor: 'rgba(0,0,0,0)',
+            spacingBottom: 7 * bodyScale,
+            marginRight: 5*bodyScale,
+        },
+        credits: {
+            enabled: false
+        },
+        exporting: {
+            enabled:false
+        },
+        title: {
+            text: '',
+        },
+        legend:{
+            enabled:false,
+        },
+        xAxis: {
+            gridLineWidth: 0,
+            min:rootlsl,
+            max:rootusl,
+            plotLines: [],
+            tickColor: "rgba(0,0,0,0)",
+            labels:{
                 //保证两位小数
                 formatter : function () {
                     var strVal = this.value + '';
@@ -4536,62 +4542,63 @@ function refreshHeightChart(){
                     }
                     // return "88"
                 },
-	       	 	 y: 13*bodyScale,
-		       	 style: {
-		             /!* fontWeight: 'bold',*!/
-		             fontSize: 13* bodyScale,
-		             color:"#66ccff"
-		         }
-	       }
-	    },
-	    yAxis: [{
-	        title: {
-	            text: ''
-	        },
-	        visible:false
-	    }, {
-	        opposite: true,
-	        title: {
-	            text: ''
-	        },
-	        visible:false,
-	    }],
-	    series: [{
-	        name: '直方图',
-	        type: 'column',
-	        //data: histogramTab4(data, 0.5),
-	        data: [],
-	        color:"#4397f7",
-	        pointPadding: 0,
-	        groupPadding: 0,
-	        pointPlacement: 'between',
-			borderColor:"rgba(0,0,0,0)"
-	    }]
-	}).highcharts();*/
-	//setTimeout("resetCPK()",500);
-	//cpkDataForTab4(tab4xhPro);
-	
+                     y: 13*bodyScale,
+                    style: {
+                     /!* fontWeight: 'bold',*!/
+                     fontSize: 13* bodyScale,
+                     color:"#66ccff"
+                 }
+           }
+        },
+        yAxis: [{
+            title: {
+                text: ''
+            },
+            visible:false
+        }, {
+            opposite: true,
+            title: {
+                text: ''
+            },
+            visible:false,
+        }],
+        series: [{
+            name: '直方图',
+            type: 'column',
+            //data: histogramTab4(data, 0.5),
+            data: [],
+            color:"#4397f7",
+            pointPadding: 0,
+            groupPadding: 0,
+            pointPlacement: 'between',
+            borderColor:"rgba(0,0,0,0)"
+        }]
+    }).highcharts();*/
+    //setTimeout("resetCPK()",500);
+    //cpkDataForTab4(tab4xhPro);
+
 }
+
 //重置CPK分析
-function resetCPK(){
-	var mData=[];
-	$.each(tab4CPKData[0],function(index,item){
-		mData.push([parseFloat(item.wkq_num),parseFloat(tab4xhPro.pj_value)]);
-	});
-	mHeightChartTab4.options.xAxis[0].max=parseFloat(tab4xhPro.lsl)+2*rootScale;
-	mHeightChartTab4.options.xAxis[0].min=parseFloat(tab4xhPro.usl)-2*rootScale;
-	mHeightChartTab4.series[0].setData(histogramTab4(mData, rootScale)); // 更新 series
-	mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_1");
-	mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_2");
-	mHeightChartTab4.xAxis[0].addPlotLine({
-		id:"plotline_id_1",
-        color:'#f93',            //线的颜色，定义为红色
-        dashStyle:'solid',//认是solid（实线），这里定义为长虚线
-        value:parseFloat(tab4xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-        width:1  ,               //标示线的宽度，2px
-        label:{
+function resetCPK() {
+    var mData = [];
+    $.each(tab4CPKData[0], function (index, item) {
+        mData.push([parseFloat(item.wkq_num), parseFloat(tab4xhPro.pj_value)]);
+    });
+    mHeightChartTab4.options.xAxis[0].max = parseFloat(tab4xhPro.lsl) + 2 * rootScale;
+    mHeightChartTab4.options.xAxis[0].min = parseFloat(tab4xhPro.usl) - 2 * rootScale;
+    mHeightChartTab4.series[0].setData(histogramTab4(mData, rootScale)); // 更新 series
+    mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_1");
+    mHeightChartTab4.xAxis[0].removePlotLine("plotline_id_2");
+    mHeightChartTab4.xAxis[0].addPlotLine({
+        id: "plotline_id_1",
+        color: '#f93',            //线的颜色，定义为红色
+        dashStyle: 'solid',//认是solid（实线），这里定义为长虚线
+        value: parseFloat(tab4xhPro.lsl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+        width: 1,               //标示线的宽度，2px
+        label: {
             //保证两位小数
-            formatter : function () {
+            formatter: function () {
                 var strVal = this.value + '';
                 if (strVal.indexOf('.') < 0) {
                     return strVal + '.00';
@@ -4605,26 +4612,26 @@ function resetCPK(){
                 }
                 // return "88"
             },
-            text:'LSL',  //标签的内容
-            verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
-            x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+            text: 'LSL',  //标签的内容
+            verticalAlign: 'center',                //标签的水平位置，水平居左,默认是水平居中center
+            x: 5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
             style: {
                 color: '#f93',
-               /* fontWeight: 'bold',*/
-                fontSize:12*bodyScale
-            } 
+                /* fontWeight: 'bold',*/
+                fontSize: 12 * bodyScale
+            }
         },
-        zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+        zIndex: 100,  //值越大，显示越向前，默认标示线显示在数据线之后
     });
-	mHeightChartTab4.xAxis[0].addPlotLine({
-		id:"plotline_id_2",
-        color:'#f93',            //线的颜色，定义为红色
-        dashStyle:'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
-        value:parseFloat(tab4xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
-        width:1  ,               //标示线的宽度，2px
-        label:{
+    mHeightChartTab4.xAxis[0].addPlotLine({
+        id: "plotline_id_2",
+        color: '#f93',            //线的颜色，定义为红色
+        dashStyle: 'solid',//标示线的样式，默认是solid（实线），这里定义为长虚线
+        value: parseFloat(tab4xhPro.usl),                //定义在哪个值上显示标示线，这里是在x轴上刻度为3的值处垂直化一条线
+        width: 1,               //标示线的宽度，2px
+        label: {
             //保证两位小数
-            formatter : function () {
+            formatter: function () {
                 var strVal = this.value + '';
                 if (strVal.indexOf('.') < 0) {
                     return strVal + '.00';
@@ -4638,79 +4645,80 @@ function resetCPK(){
                 }
                 // return "88"
             },
-            text:'USL',//标签的内容
-            verticalAlign:'center',                //标签的水平位置，水平居左,默认是水平居中center
-            x:5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
+            text: 'USL',//标签的内容
+            verticalAlign: 'center',                //标签的水平位置，水平居左,默认是水平居中center
+            x: 5,                         //标签相对于被定位的位置水平偏移的像素，重新定位，水平居左10px
             style: {
                 color: '#f93',
                 /*fontWeight: 'bold',*/
-                fontSize:12*bodyScale
+                fontSize: 12 * bodyScale
             }
         },
-        zIndex:100,  //值越大，显示越向前，默认标示线显示在数据线之后
+        zIndex: 100,  //值越大，显示越向前，默认标示线显示在数据线之后
     });
 }
+
 $(function () {
-	rightInterval=setInterval("refreshRight()", 15000);
+    rightInterval = setInterval("refreshRight()", 15000);
     /*总状态顶部的tab列表*/
     var $right = $("#r");
-/*
-    $right.find(".total_bottom_tab ul>li[class]").click(function () {
-        $(this).parents(".shujuWajue_left_top_list").find(".active").removeClass("active");
-        $(this).addClass("active");
-    });
-    $right.find(".total_bottom_tab>ul>li[class]").click(function () {
-        $(this).next().toggle();
-    });
-*/
+    /*
+        $right.find(".total_bottom_tab ul>li[class]").click(function () {
+            $(this).parents(".shujuWajue_left_top_list").find(".active").removeClass("active");
+            $(this).addClass("active");
+        });
+        $right.find(".total_bottom_tab>ul>li[class]").click(function () {
+            $(this).next().toggle();
+        });
+    */
 
     /*右四屏左上角的4个实验室tab切换*/
-/*
-    $right.find(".labIcon>ul>li>img").click(function () {
+    /*
+        $right.find(".labIcon>ul>li>img").click(function () {
 
-        var src = $(this).attr("src");
+            var src = $(this).attr("src");
 
-        if (src.indexOf("off") >= 0) {//点亮图标
-            $(this).parent().addClass("active").siblings().removeClass("active");
-            var index = $(this).parent().index();
-            $(this).attr("src", src.replace("off", "on"))
-                .parent().siblings().find("img").each(function (index, item) {
-                $(item).attr("src", $(this).attr("src").replace("on", "off"));
-            });
+            if (src.indexOf("off") >= 0) {//点亮图标
+                $(this).parent().addClass("active").siblings().removeClass("active");
+                var index = $(this).parent().index();
+                $(this).attr("src", src.replace("off", "on"))
+                    .parent().siblings().find("img").each(function (index, item) {
+                    $(item).attr("src", $(this).attr("src").replace("on", "off"));
+                });
 
-            //取标签名字
-            var thisLabel = $(this).parents("ul").next().find("li:eq(" + index + ")").text();
-            console.log("```````````````````thisLabel",thisLabel);
-/!*          //这个赋值没有起作用
-            if(thisLabel=="中海博睿"){
-            	thisLabel="中心实验室";
+                //取标签名字
+                var thisLabel = $(this).parents("ul").next().find("li:eq(" + index + ")").text();
+                console.log("```````````````````thisLabel",thisLabel);
+    /!*          //这个赋值没有起作用
+                if(thisLabel=="中海博睿"){
+                    thisLabel="中心实验室";
+                }
+    *!/
+                if(thisLabel!=labTypeCode){
+                    labTypeCode=thisLabel;
+                     loadTab2Data();
+                     loadTab3Data();
+                     loadTab4Data();
+                }
+            }else{//熄灭图标
+                $(this).parent().removeClass("active");
+                  var index = $(this).parent().index();
+                  $(this).attr("src", src.replace("on", "off"))
+                      .parent().siblings().find("img").each(function (index, item) {
+                      $(item).attr("src", $(this).attr("src").replace("on", "off"));
+                  });
+                //再次点击同一个 返回全部数据
+                labTypeCode="";
+                loadTab2Data();
+                loadTab3Data();
+                loadTab4Data();
             }
-*!/
-            if(thisLabel!=labTypeCode){
-            	labTypeCode=thisLabel;
-            	 loadTab2Data();
-                 loadTab3Data();
-                 loadTab4Data();
-            }
-        }else{//熄灭图标
-            $(this).parent().removeClass("active");
-        	  var index = $(this).parent().index();
-              $(this).attr("src", src.replace("on", "off"))
-                  .parent().siblings().find("img").each(function (index, item) {
-                  $(item).attr("src", $(this).attr("src").replace("on", "off"));
-              });
-        	//再次点击同一个 返回全部数据
-        	labTypeCode="";
-        	loadTab2Data();
-            loadTab3Data();
-            loadTab4Data();
-        }
 
-    })
-*/
-    
+        })
+    */
+
 //    左上角四个图标按钮
-    $right.find(".labIcon>ul>li.lab_item").click(function () {
+    $("#totalState .labIcon>ul>li.lab_item").click(function () {
         var $img = $(this).find("img");
         var src = $img.attr("src");
         var index = $(this).index();
@@ -4723,31 +4731,31 @@ $(function () {
             });
             //取标签名字
             var thisLabel = $(this).find("span.text").text();
-            console.log("```````````````````thisLabel：",thisLabel);
-/*          //这个赋值没有起作用
-            if(thisLabel=="中海博睿"){
-            	thisLabel="中心实验室";
-            	alert('thisLabel=="中海博睿"')
+            console.log("```````````````````thisLabel：", thisLabel);
+            /*          //这个赋值没有起作用
+                        if(thisLabel=="中海博睿"){
+                            thisLabel="中心实验室";
+                            alert('thisLabel=="中海博睿"')
+                        }
+                    */
+            if (thisLabel != labTypeCode) {
+                labTypeCode = thisLabel;
             }
-        */
-            if(thisLabel!=labTypeCode){
-            	labTypeCode=thisLabel;
-            }
-        }else{//熄灭图标
+        } else {//熄灭图标
             $(this).removeClass("active");
-              $img.attr("src", src.replace("on", "off"))
-                  .parent().siblings().find("img").each(function (index, item) {
-                  $(item).attr("src", $(this).attr("src").replace("on", "off"));
-              });
-        	//再次点击同一个 返回全部数据
-        	labTypeCode="";
+            $img.attr("src", src.replace("on", "off"))
+                .parent().siblings().find("img").each(function (index, item) {
+                $(item).attr("src", $(this).attr("src").replace("on", "off"));
+            });
+            //再次点击同一个 返回全部数据
+            labTypeCode = "";
         }
-        //myChart32.resize();
-        // resetSizeRight();
-        // loadTab2Data();
-        // loadTab3Data();
-        // loadTab4Data();
-        /*resetSizeRight();*/
+        myChart32.resize();
+        resetSizeRight();
+        loadTab2Data();
+        loadTab3Data();
+        loadTab4Data();
+        resetSizeRight();
 
     })
 });

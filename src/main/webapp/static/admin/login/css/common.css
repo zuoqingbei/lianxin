@@ -59,7 +59,7 @@ h3 {
 @font-face {
     /*fontinSansCR常规*/
     font-family: DIGITAL-Regular;
-    src: url('../asserts/fonts/DIGITAL-Regular.ttf') format("truetype");
+    src: url('../assets/fonts/DIGITAL-Regular.ttf') format("truetype");
     font-weight: normal;
 }
 
