@@ -15,6 +15,7 @@ import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
+import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.PathKit;
@@ -97,7 +98,7 @@ public class Roc102 {
         //客户参考号
         map.put("reference_num",referenceNum);
         //币种
-        String currency = companyInfo.getStr("currency");
+        String currency = companyInfo.get("currency")!=null?companyInfo.getStr("currency"):"";
         //订单公司名称
         if(ReportTypeCons.ROC_EN.equals(reportType)){
             map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
@@ -147,7 +148,8 @@ public class Roc102 {
             ReportInfoGetDataController report = new ReportInfoGetDataController();
 
             //102红印 取股东信息模块的截止时间
-            if(ReportTypeCons.ROC_HY.equals(reportType)&&"credit_company_shareholder".equals(tableName)){
+            if("credit_company_shareholder".equals(tableName)
+                    && (ReportTypeCons.ROC_HY.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType))){
                 List<CreditReportModuleConf> floatModule = CreditReportModuleConf.dao.findSon3(crmc.get("id").toString(), reportType, "4");
                 for(CreditReportModuleConf _conf : floatModule){
                     String _confId = _conf.getInt("id") + "";
@@ -169,7 +171,9 @@ public class Roc102 {
                         //取一行数据
                         BaseProjectModel model = (BaseProjectModel) rows.get(i);
                         if(model.get("date")!=null && !"".equals(model.get("date"))) {
-                            map.put("endDate", " 截至日期 " + model.get("date"));
+                            if(ReportTypeCons.ROC_HY.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
+                                map.put("endDate", " 截止至 " + DateUtils.getYmdHmsssZh(model.get("date") + ""));
+                            }
                         }
                     }
                 }
@@ -316,7 +320,8 @@ public class Roc102 {
                         }
                         Style style = new Style();
                         if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
-                            style.setFontFamily("PMingLiU");
+                            //style.setFontFamily("PMingLiU");
+                            style.setFontFamily("Times New Roman");
                         }
                         map.put(column, new TextRenderData(html.toString(), style));
                     }

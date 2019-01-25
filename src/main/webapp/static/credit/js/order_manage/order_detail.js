@@ -84,7 +84,7 @@ let OrderDetail = {
                             <button class="btn btn-primary m-3" id="submit" type="button">提交</button>
                         </div>`)
         } else {
-            $(".position-fixed").hide()
+            $(".position-fixed").removeClass('d-flex').hide()
         }
 
     },
