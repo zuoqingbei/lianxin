@@ -376,7 +376,8 @@ public class BaseWord {
                     }else if("contribution".equals(column)||"money".equals(column)){
                         style.setAlign(STJc.RIGHT);
                     }
-                    style.setFontFamily("Times New Roman");
+                    //style.setFontFamily("Times New Roman");
+                    style.setFontFamily("PMingLiU");
                     if("money".equals(column)){
                         value += "%";
                     }
