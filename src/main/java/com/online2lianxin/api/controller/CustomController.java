@@ -25,7 +25,7 @@ public class CustomController extends BaseProjectController {
 	 * @date: 2019年1月24日下午3:45:21
 	 * @Description:
 	 */
-    public void addCustomer1() {
+    public void addCustomer() {
         Map<String,String> result = new HashMap<String,String>();
         //获取4个固定参数
         String companyID = getPara("companyID");
@@ -111,17 +111,14 @@ public class CustomController extends BaseProjectController {
         }
         renderJson(result);
     }
-
-	/**
-	 * 
-	* @Description: 支付保存 金额充值
-	* @date 2018年10月19日 下午2:02:42
-	* @author: lxy
-	* @version V1.0
-	* @return
-	 */
+/**
+ * api对接线上客户充值
+ * @author dou_shuiahi
+ * @date: 2019年1月25日下午3:33:27
+ * @Description:
+ */
 	public void paySave(){
-		 Map<String,String> result = new HashMap<String,String>();
+		Map<String,String> result = new HashMap<String,String>();
         //获取4个固定参数
         String companyID = getPara("companyID");
         String randomCode = getPara("randomCode");
@@ -156,8 +153,8 @@ public class CustomController extends BaseProjectController {
          	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有金额	
          		}
             	model.set("table_id", customByid.get(0).get("table_id"));
-            	model.set("account_count", count+account_count);
-         	    model.set("money_updatetime", updateTime);
+            	model.set("account_count", countToInt+account_count);
+         	    model.set("money_updatetime", getNow());
          	    model.update();
          	    //充值新增流水记录表，修改客户当前账户点数与金额更新时间
         		CustomTranFlowModel flowmodel=new CustomTranFlowModel();
@@ -183,46 +180,73 @@ public class CustomController extends BaseProjectController {
         renderJson(result);
 	}
 	/**
-	 * 
-	* @Description: 扣款保存
-	* @date 2018年10月19日 下午2:02:22
-	* @author: lxy
-	* @version V1.0
-	* @return
+	 * api对接线上客户扣款
+	 * @author dou_shuiahi
+	 * @date: 2019年1月25日下午3:34:23
+	 * @Description:
 	 */
 	public void chargeSave(){
-			Integer paraToInt = Integer.parseInt(getPara("table_id"));
-			CustomInfoModel model=getModel(CustomInfoModel.class);
-			CustomInfoModel infoModel = CustomInfoModel.dao.findById(paraToInt);
-			int count =	Integer.parseInt(getPara("count")); //充值点数
-		    String remarks = getPara("remarks");
-		    String now = getNow();
-		    Integer userid = getSessionUser().getUserid();
-		   //修改当前账户点数
-		    int account_count=0;
-		    if (infoModel.get("account_count").toString()!=null) {
-		 	    account_count=  Integer.parseInt(infoModel.get("account_count").toString());	
-			}
-		    
-		   if ("508".equals(infoModel.get("is_arrearage"))&&account_count-count<0) {
-			   renderMessage("扣款失败，该客户不允许欠费");		
-			}else {
-		    model.set("account_count", account_count-count);
-		    model.set("money_updatetime", now);
-		    model.set("update_by", userid);
-		    model.update();
-		  //交易流水  
-		  CustomTranFlowModel model2=new CustomTranFlowModel();
-		  model2.remove("id");
-		  model2.set("custom_id", model.get("table_id"));
-		  model2.set("transaction_type", "扣款");
-		  model2.set("oper_point_num", getPara("count"));
-		  model2.set("oper_point_after_num",account_count-count);
-		  model2.set("remark", remarks);
-		  model2.set("create_time", now);
-		  model2.set("create_by", userid);
-		  model2.save();
-		  renderMessage("扣款成功");
-			}
+		Map<String,String> result = new HashMap<String,String>();
+        //获取4个固定参数
+        String companyID = getPara("companyID");
+        String randomCode = getPara("randomCode");
+        String timestamp = getPara("timestamp");
+        String data = getPara("data");
+        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
+                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+            //密码生成
+            String sKey = companyID+randomCode+timestamp;
+            //解密参数串
+            String params = AES.decrypt(data,sKey);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String id = jsonObj.getString("userId");//客户编码
+            String count = jsonObj.getString("units");//扣款点数
+            int countToInt =	Integer.parseInt(count); //扣款点数
+            String updateTime = jsonObj.getString("userId");//时间
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(count)){
+            	 List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
+                 if(CollectionUtils.isEmpty(customByid)) {
+                 	 result.put("status","false");
+                     result.put("message","目标系统不存在该客户编码！");
+                     renderJson(result);
+                     return;
+                 }
+            	CustomInfoModel model = new CustomInfoModel();
+            	int account_count=0;
+            	 if (null!=customByid.get(0).get("account_count")) {
+         	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有金额	
+         		}
+            	model.set("table_id", customByid.get(0).get("table_id"));
+            	int surplus_count=account_count-countToInt;//剩余点数
+            	if ("508".equals(customByid.get(0).get("is_arrearage"))&&surplus_count<0) {
+            		result.put("status","false");
+                    result.put("message","扣款失败，该客户不允许欠费");
+                    renderJson(result);
+                    return;
+     			}
+            	model.set("account_count", surplus_count);
+         	    model.set("money_updatetime", getNow());
+         	    model.update();
+         	    //流水记录表
+        		CustomTranFlowModel flowmodel=new CustomTranFlowModel();
+        		flowmodel.remove("id");
+        		flowmodel.set("custom_id", model.get("table_id"));
+        		flowmodel.set("transaction_type", "扣款");
+        		flowmodel.set("oper_point_num", countToInt);
+        		flowmodel.set("oper_point_after_num",surplus_count);
+        		flowmodel.set("create_time", getNow());
+        		flowmodel.save();
+        		result.put("status","success");
+                result.put("message","扣款成功！");
+            }else {
+            	result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else {
+        	 result.put("status","false");
+             result.put("message","缺少参数！");
+        }
+        renderJson(result);
 	}
 }
