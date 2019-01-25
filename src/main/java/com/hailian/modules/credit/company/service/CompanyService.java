@@ -90,7 +90,7 @@ public class CompanyService {
 		boolean flag=false;
 		String status;
 		try {
-			JSONObject json = HttpTest.getYjapi(companyName);//获取api企业信息数据
+			JSONObject json = HttpTest.getYjapi(companyName.trim());//获取api企业信息数据
 			status = json.getString("Status");
 			System.out.println(status);
 			//200调用成功并查到企业相关信息
@@ -169,7 +169,7 @@ public class CompanyService {
 					String TeamEndFor = dateFormat(TeamEnd);//转成年月日
 					companyinfoModel.set("business_date_end", TermStartFor+"至"+TeamEndFor);
 				}else{
-					companyinfoModel.set("business_date_end",  TermStartFor+"至"+"长期");
+					companyinfoModel.set("business_date_end","长期");
 				}
 				
 				List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status.trim(),"registration_status");
