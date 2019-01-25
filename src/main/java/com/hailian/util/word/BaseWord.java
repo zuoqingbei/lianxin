@@ -574,7 +574,8 @@ public class BaseWord {
                 if(ReportTypeCons.ROC_ZH.equals(reportType)){
                     //单元格字体
                     if("name_trans_en".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
-                            "registration_num".equals(column)||"register_codes".equals(column)||"year".equals(column)){
+                        "establishment_date".equals(column)||"business_date_end".equals(column)||"registration_num".equals(column)||
+                            "last_modified_date".equals(column)||"register_codes".equals(column)||"year".equals(column)){
                         //郵政編碼 電話號碼 傳真號碼 登記編號 統一信用代碼 年檢情況
                         style.setFontFamily("Times New Roman");
                     }else {
