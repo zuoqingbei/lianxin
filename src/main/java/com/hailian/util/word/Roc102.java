@@ -98,7 +98,7 @@ public class Roc102 {
         //客户参考号
         map.put("reference_num",referenceNum);
         //币种
-        String currency = companyInfo.getStr("currency");
+        String currency = companyInfo.get("currency")!=null?companyInfo.getStr("currency"):"";
         //订单公司名称
         if(ReportTypeCons.ROC_EN.equals(reportType)){
             map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
