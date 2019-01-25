@@ -556,17 +556,17 @@ public class BaseWord {
                         e.printStackTrace();
                     }
                 } else {
-                    if("business_date_end".equals(column)){
+                    if("business_date_end".equals(column)) {
                         //营业期限
-                        try {
-                            Date date = sdf.parse(value.trim());
-                            if (ReportTypeCons.ROC_EN.equals(reportType)) {
-                                value = sdf_en_hy.format(date);
-                            } else {
-                                value = sdf_zh.format(date);
+                        if (value.contains("至")) {
+                            String[] _qx = value.split("至");
+                            if (_qx.length > 1) {
+                                if (ReportTypeCons.ROC_EN.equals(reportType)) {
+                                    value = DateUtils.getYmdHmsssEn(_qx[0]) + DateUtils.getYmdHmsssEn(_qx[1]);
+                                } else {
+                                    value = DateUtils.getYmdHmsssZh(_qx[0]) +" 至 "+ DateUtils.getYmdHmsssZh(_qx[1]);
+                                }
                             }
-                        }catch (ParseException e){
-                            e.printStackTrace();
                         }
                     }else{
                         value = !StringUtils.isEmpty(value) ? value : "--";
