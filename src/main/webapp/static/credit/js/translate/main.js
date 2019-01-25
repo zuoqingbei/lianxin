@@ -1573,7 +1573,7 @@ let ReportConfig = {
                 	let item_en = modulesToEn[index]
                 	if(!item_en){return}
                 	let smallModileTypeEn = item_en.smallModileType
-                	if(item_en.title.temp_name === 'Key Fiancial Items' || item_en.title.temp_name === 'industry_analysis'){
+                	if(item_en.title.temp_name === 'Key Fiancial Items' || item_en.title.temp_name === 'industry_analysis' || item_en.title.temp_name.includes('质检意见')){
         				return
             		}
                 	if(item_en.title.temp_name && item_en.title.float_parent) {return}
@@ -1724,13 +1724,15 @@ let ReportConfig = {
             			_this.idArrEn.push(index)
             			_this.contentsArrEn.push(item_en.contents)
             			_this.titleEn.push(item_en.title)
-            			contentHtml += `<div class="table-content1" style="background:#fff">
-			                				<table id="table${index}En"
-			                				data-toggle="table"
-			                				style="position: relative;table-layout: fixed"
-			                				>
-			                				</table>
-            				</div>`
+            			if(!item_en.title.temp_name.includes('质检意见')){
+            				contentHtml += `<div class="table-content1" style="background:#fff">
+            					<table id="table${index}En"
+            					data-toggle="table"
+            					style="position: relative;table-layout: fixed"
+            					>
+            					</table>
+            					</div>`
+            			}
             		
             			break;
             		case '11':

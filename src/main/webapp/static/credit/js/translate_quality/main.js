@@ -1385,11 +1385,11 @@ let ReportConfig = {
 
 
                     let item_en = modulesToEn[index]
-                    if (!item_en) {
+                    if (!item_en || item_en.title.temp_name.includes('质检意见')) {
                         return
                     }
                     let smallModileTypeEn = item_en.smallModileType
-                    if (item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
+                    if (item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent ) {
                         contentHtml += `<div data-qualityId="${item.title.id}" class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
                     } else if (smallModileTypeEn === '10') {
                         //财务模块
