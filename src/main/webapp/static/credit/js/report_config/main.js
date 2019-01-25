@@ -1211,7 +1211,7 @@ let ReportConfig = {
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(item.contents)
                 			_this.title.push(item.title)
-                			if(item.title.temp_name.includes('质检意见')){
+                			if(item.title.temp_name && item.title.temp_name.includes('质检意见')){
                 				//质检意见无新增
                 				contentHtml += `<div class="table-content1" style="background:#fff">
                 					<table id="table${index}"
