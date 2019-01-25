@@ -112,82 +112,75 @@ public class CustomController extends BaseProjectController {
         renderJson(result);
     }
 
-	
 	/**
 	 * 
-	* @Description: 充值记录
-	* @date 2018年10月18日 上午9:37:41
-	* @author: lxy
-	* @version V1.0
-	* @return
-	 */
-	public void pay(){
-		Integer paraToInt = getParaToInt();
-		CustomInfoModel model = CustomInfoModel.dao.findById(paraToInt);
-		List<SysDictDetail>  details=SysDictDetail.dao.getDictByType("currency");
-		setAttr("model", model);
-		setAttr("dict", details);
-		// 查询下拉框
-//		render(path + "pay_add.html");
-	}
-	/**
-	 * 
-	* @Description: 支付保存
+	* @Description: 支付保存 金额充值
 	* @date 2018年10月19日 下午2:02:42
 	* @author: lxy
 	* @version V1.0
 	* @return
 	 */
 	public void paySave(){
-		Integer paraToInt = Integer.parseInt(getPara("table_id"));
-		CustomInfoModel Infomodel = CustomInfoModel.dao.findById(paraToInt);
-		CustomInfoModel model =getModel(CustomInfoModel.class);
-	    int count =	Integer.parseInt(getPara("count")); //充值点数
-	    String money =  getPara("money"); //充值金额 
-	    String currency = getPara("currency");//充值币种
-	    String remarks = getPara("remarks");
-	    String now = getNow();
-	    Integer userid = getSessionUser().getUserid();
-	    int account_count=0;
-	    if (Infomodel.get("account_count")!=null) {
-	 	    account_count=  Integer.parseInt(Infomodel.get("account_count").toString());	
-		}
-	    model.set("account_count", count+account_count);
-	    model.set("money_updatetime", now);
-	    model.set("update_by", userid);
-	    model.update();
-		//充值新增流水记录表，修改客户当前账户点数与金额更新时间
-		CustomTranFlowModel model2=new CustomTranFlowModel();
-		  model2.remove("id");
-		  model2.set("custom_id", model.get("table_id"));
-		  model2.set("transaction_type", "充值");
-		  model2.set("money",money);
-		  model2.set("currency", currency);
-		  model2.set("oper_point_num", getPara("count"));
-		  model2.set("oper_point_after_num", count+account_count);
-		  model2.set("remark", remarks);
-		  model2.set("create_time", now);
-		  model2.set("create_by", userid);
-		  model2.save();
-		renderMessage("充值成功");
-	}
-	
-	/**
-	 * 
-	* @Description: 扣款记录
-	* @date 2018年10月18日 上午9:39:10
-	* @author: lxy
-	* @version V1.0
-	* @return
-	 */
-	public void charge(){
-		Integer paraToInt = getParaToInt();
-		CustomInfoModel model = CustomInfoModel.dao.findById(paraToInt);
-		setAttr("model", model);
-		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
-		setAttr("company", company);
-		// 查询下拉框
-//		render(path + "charge_add.html");
+		 Map<String,String> result = new HashMap<String,String>();
+        //获取4个固定参数
+        String companyID = getPara("companyID");
+        String randomCode = getPara("randomCode");
+        String timestamp = getPara("timestamp");
+        String data = getPara("data");
+        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
+                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+            //密码生成
+            String sKey = companyID+randomCode+timestamp;
+            //解密参数串
+            String params = AES.decrypt(data,sKey);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String id = jsonObj.getString("userId");//客户编码
+            String money = jsonObj.getString("money");//充值金额
+            String currency = getPara("currency");//充值币种
+            String count = jsonObj.getString("units");//充值点数
+            int countToInt =	Integer.parseInt(count); //充值点数
+            String updateTime = jsonObj.getString("userId");//时间
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(money)
+                    &&StringUtils.isNotEmpty(currency)&&StringUtils.isNotEmpty(count)){
+            	 List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
+                 if(CollectionUtils.isEmpty(customByid)) {
+                 	result.put("status","false");
+                     result.put("message","目标系统不存在该客户编码！");
+                     renderJson(result);
+                     return;
+                 }
+            	CustomInfoModel model = new CustomInfoModel();
+            	int account_count=0;
+            	 if (null!=customByid.get(0).get("account_count")) {
+         	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有金额	
+         		}
+            	model.set("table_id", customByid.get(0).get("table_id"));
+            	model.set("account_count", count+account_count);
+         	    model.set("money_updatetime", updateTime);
+         	    model.update();
+         	    //充值新增流水记录表，修改客户当前账户点数与金额更新时间
+        		CustomTranFlowModel flowmodel=new CustomTranFlowModel();
+        		flowmodel.remove("id");
+        		flowmodel.set("custom_id", model.get("table_id"));
+        		flowmodel.set("transaction_type", "充值");
+        		flowmodel.set("money",money);
+        		flowmodel.set("currency", currency);
+        		flowmodel.set("oper_point_num", count);
+        		flowmodel.set("oper_point_after_num", model.get("account_count"));
+        		flowmodel.set("create_time", getNow());
+        		flowmodel.save();
+        		result.put("status","success");
+                result.put("message","保存成功！");
+            }else {
+            	result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else {
+        	 result.put("status","false");
+             result.put("message","缺少参数！");
+        }
+        renderJson(result);
 	}
 	/**
 	 * 
