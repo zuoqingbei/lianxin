@@ -19,10 +19,7 @@ package com.hailian.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -54,6 +51,10 @@ public class DateUtils {
 	public static final String YMD = "yyyy-MM-dd";
 	/** 时间格式：HH:mm:ss */
 	public static final String HMS = "HH:mm:ss";
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat sdf_zh = new SimpleDateFormat("yyyy年MM月dd日");
+    private static SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy", Locale.ENGLISH);
 
 	/**
 	 * 默认的日期格式 .
@@ -283,6 +284,36 @@ public class DateUtils {
 		ca.set(Calendar.SECOND, 59);
 		return format(ca.getTime(), "yyyy-MM-dd HH:mm:ss");
 	}
+
+    /**
+     * 获取中文日期   yyyy年MM月dd日
+     * @param dateStr
+     * @return
+     */
+    public static String getYmdHmsssZh(String dateStr){
+        try {
+            Date date = sdf.parse(dateStr.trim());
+            return sdf_zh.format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取英文日期   dd MMMM yyyy
+     * @param dateStr
+     * @return
+     */
+    public static String getYmdHmsssEn(String dateStr){
+        try {
+            Date date = sdf.parse(dateStr.trim());
+            return sdf_en_hy.format(date);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }
 
