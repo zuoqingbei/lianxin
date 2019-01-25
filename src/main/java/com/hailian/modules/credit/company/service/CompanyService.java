@@ -247,7 +247,6 @@ public class CompanyService {
 							}else if ("副总经理".equals(job)) {
 								vice_general_manager+=name+";";
 							}
-							
 							companyinfoModel.set("chairman", chairman);
 							companyinfoModel.set("executive_director", executive_director);
 							companyinfoModel.set("vice_president", vice_president);
