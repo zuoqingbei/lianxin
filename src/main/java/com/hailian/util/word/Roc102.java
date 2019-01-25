@@ -320,7 +320,8 @@ public class Roc102 {
                         }
                         Style style = new Style();
                         if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
-                            style.setFontFamily("PMingLiU");
+                            //style.setFontFamily("PMingLiU");
+                            style.setFontFamily("Times New Roman");
                         }
                         map.put(column, new TextRenderData(html.toString(), style));
                     }
