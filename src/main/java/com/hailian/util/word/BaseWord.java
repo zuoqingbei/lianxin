@@ -510,7 +510,7 @@ public class BaseWord {
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                if("currency".equals(column)){
+                if("principal_type".equals(column)){
                     log.error("---------company_type-------------");
                 }
                 String[] strs = cols.get(column).split("\\|");
