@@ -196,8 +196,8 @@ public class CompanyService {
 				
 				try {
 					JSONObject ContactInfo = json.getJSONObject("Result").getJSONObject("ContactInfo");//联系信息
-					String PhoneNumber = ContactInfo.getString("PhoneNumber");//电话
-					String Email = ContactInfo.getString("Email");//邮箱
+					String PhoneNumber = ContactInfo.getString("PhoneNumber").replace("null", "");//电话
+					String Email = ContactInfo.getString("Email").replace("null", "");//邮箱
 					companyinfoModel.set("telphone", PhoneNumber);
 					companyinfoModel.set("email", Email);
 				} catch (Exception e) {
@@ -231,22 +231,23 @@ public class CompanyService {
 						String job = employee.getString("Job");//职位
 						if("12".equals(reporttype) || "14".equals(reporttype) || "15".equals(reporttype)){//当报告类型为102时获取主表管理层信息
 							if("董事长".equals(job)){
-								chairman+=name+" ";
+								chairman+=name+";";
 							}else if("执行董事".equals(job)){
-								executive_director+=name+" ";
+								executive_director+=name+";";
 							}else if ("副董事长".equals(job)) {
-								vice_president+=name+" ";
+								vice_president+=name+";";
 							}else if ("董事".equals(job)) {
-								board_members+=name+" ";
+								board_members+=name+";";
 							}else if ("监事主席".equals(job)) {
-								supervisory_board_chairman+=name+" ";
+								supervisory_board_chairman+=name+";";
 							}else if ("监事".equals(job)) {
-								members_of_the_supervisors+=name+" ";
+								members_of_the_supervisors+=name+";";
 							}else if ("总经理".equals(job)) {
-								general_manager+=name+" ";
+								general_manager+=name+";";
 							}else if ("副总经理".equals(job)) {
-								vice_general_manager+=name+" ";
+								vice_general_manager+=name+";";
 							}
+							
 							companyinfoModel.set("chairman", chairman);
 							companyinfoModel.set("executive_director", executive_director);
 							companyinfoModel.set("vice_president", vice_president);
