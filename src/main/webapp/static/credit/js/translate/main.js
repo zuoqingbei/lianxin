@@ -812,13 +812,19 @@ let ReportConfig = {
     	let cw_dom;
     	let ds_dom;
     	_this.tableTitle = []
+    	setTimeout(()=>{
+    		
+    		console.log(floatIndexEn)
+    	},0)
     	floatIndexEn.forEach((item,index)=>{
     		let floatParentIdEn = this.floatTitleEn[index]['float_parent'];//浮动的父节点id
     		this.entityTitleEn.forEach((item,i)=>{
+    			console.log(item.id ,floatParentIdEn)
     			if(item.id === floatParentIdEn ) {
     				if(floatParentIdEn !== 4648) {
     					//非财务模块浮动
     					let html = this.notMoneyFloatHtmlEn[i+1]
+    					console.log($("#titleEn"+i),this.notMoneyFloatHtmlEn)
     					$("#titleEn"+i).after(html)
     					this.formIndexEn.push(i)
     					this.formTitleEn.push(this.floatTitleEn[index])
@@ -1577,17 +1583,18 @@ let ReportConfig = {
         				return
             		}
                 	if(item_en.title.temp_name && item_en.title.float_parent) {return}
-                	if((item_en.title.temp_name === null || item_en.title.temp_name === "")&&item_en.title.float_parent){return}
-                	if(item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3"  ><a style="display:none" class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
-                	}else if(smallModileTypeEn === '10'){
-                		//财务模块
-//                		_this.cwGetSource = item.title.get_source;
-//                		_this.cwAlterSource = item.title.alter_source;
-//                		_this.cwDeleteSource = item.title.remove_source;
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
-                	}else if(smallModileTypeEn !== '-2' && smallModileTypeEn !== '5'  && smallModileTypeEn !== '2') {
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+                	if(!(item_en.title.temp_name === null || item_en.title.temp_name === "")|| !item_en.title.float_parent){
+	                	if(item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
+	                			contentHtml +=  `<div class="bg-f pb-4 mb-3"  ><a style="display:none" class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+	                	}else if(smallModileTypeEn === '10'){
+	                		//财务模块
+	//                		_this.cwGetSource = item.title.get_source;
+	//                		_this.cwAlterSource = item.title.alter_source;
+	//                		_this.cwDeleteSource = item.title.remove_source;
+	                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
+	                	}else if(smallModileTypeEn !== '-2' && smallModileTypeEn !== '5'  && smallModileTypeEn !== '2') {
+	                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+	                	}
                 	}
                 	let btnTextEn = item_en.title.place_hold;
                 	let formArrEn = item_en.contents; 
