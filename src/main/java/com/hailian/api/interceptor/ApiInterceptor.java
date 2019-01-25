@@ -53,7 +53,7 @@ public class ApiInterceptor implements Interceptor {
 		// 版本验证
 		String version = form.getVersion();
 		String versions = ConfigCache.getValue("API.VERSIONS");
-		if (StrUtils.isEmpty(version)) {
+		/*if (StrUtils.isEmpty(version)) {
 			controller.renderJson(ApiUtils.getVersionErrorResp(form));
 			return;
 		} else if (!StrUtils.isEmpty(versions)) {
@@ -63,7 +63,7 @@ public class ApiInterceptor implements Interceptor {
 				controller.renderJson(ApiUtils.getVersionErrorResp(form));
 				return;
 			}
-		}
+		}*/
 
 		ai.invoke();
 

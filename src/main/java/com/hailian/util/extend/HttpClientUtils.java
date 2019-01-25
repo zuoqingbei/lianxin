@@ -108,6 +108,7 @@ public class HttpClientUtils {
 			conn.setRequestProperty("accept", "*/*");
 			conn.setRequestProperty("connection", "Keep-Alive");
 			conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
+            //conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
 			// 发送POST请求必须设置如下两行
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
@@ -142,4 +143,8 @@ public class HttpClientUtils {
 		}
 		return result;
 	}
+
+    public static void main(String args[]){
+        HttpClientUtils.sendPost("http://localhost:8400/api/addOrder","companyID=LX&randomCode=1111&timestamp=0000000000&data=pGzNOXrAd5XLDp8RjAEHt3DQXb%2BUs4SR4fVFnRCbaDZzN6AqmxFoQFlC6htjSRNcwt13dIYx786nHQ8eArL%2FB9QzGvekFyGb%2B6DESqF36jeBetormSk7xwvm0kRQECtFZA1n4DkeEY1eX8R43bhzGeWZTWWHgEbAWHFlVBDPS9wwj2sCLADSfh4wkNw1aP%2B4UD%2FkRQ67B1UZtzMKP3VDoahcThFhb6imAOCjx%2B%2FVyibKFOtF5vpt6%2BF3POh%2BH711VEM6%2F2hFVYUo%2FuGiZDNp%2BWf4pGq96mGo6HoBYk0ULieCBouR1vxBbirpbZ4D12AUSJAt7JKGHO0GLtdFPkJM1w%3D%3D");
+    }
 }

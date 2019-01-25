@@ -72,17 +72,22 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			private String contacts;
 			private String remarks;
 			private String right_company_name_en;
+            private Integer id;
 
 
             private String onlineId;
 
-
+            public Integer getId() {
+                return id;
+            }
+            public void setId(Integer id) {
+                set("id", id);
+            }
             public String getOnlineId() {
                 return onlineId;
             }
-
             public void setOnlineId(String onlineId) {
-                this.onlineId = onlineId;
+                set("online_id", onlineId);
             }
 			public String getCustomId() {
 				return customId;

@@ -16,7 +16,9 @@ import com.jfinal.aop.Before;
 import com.jfinal.kit.JsonKit;
 import org.apache.commons.lang.StringUtils;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @ControllerBind(controllerKey = "/api")
@@ -84,6 +86,88 @@ public class ApiController extends BaseProjectController {
     //下单接口
     public void addOrder() {
         Map<String,String> result = new HashMap<String,String>();
+        result.put("status","success");
+        result.put("message","保存成功！");
+        //获取4个固定参数
+        String companyID = getPara("companyID");
+        String randomCode = getPara("randomCode");
+        String timestamp = getPara("timestamp");
+        String data = getPara("data");
+        //解密参数
+        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
+                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+            try {
+                data = URLEncoder.encode(data, "utf-8");
+                //密码生成
+                String sKey = companyID + timestamp + randomCode;
+                //解密参数串
+                String params = AES.decrypt(data, sKey);
+                //参数转对象
+                JSONObject jsonObj = JSON.parseObject(params);
+                String customId = jsonObj.getString("customId");
+                String continent = jsonObj.getString("continent");
+                String countryName = jsonObj.getString("countryName");
+                String reportType = jsonObj.getString("reportType");
+                String orderType = jsonObj.getString("orderType");
+                String reportLanguage = jsonObj.getString("reportLanguage");
+                String company = jsonObj.getString("company");
+                String speed = jsonObj.getString("speed");
+                String referenceNum = jsonObj.getString("referenceNum");
+                String address = jsonObj.getString("address");
+                String telphone = jsonObj.getString("telphone");
+                String fax = jsonObj.getString("fax");
+                String email = jsonObj.getString("email");
+                String contacts = jsonObj.getString("contacts");
+                String remarks = jsonObj.getString("remarks");
+                String onlineId = jsonObj.getString("onlineId");
+                if (StringUtils.isNotEmpty(customId) && StringUtils.isNotEmpty(continent)
+                        && StringUtils.isNotEmpty(countryName) && StringUtils.isNotEmpty(reportType)
+                        && StringUtils.isNotEmpty(orderType) && StringUtils.isNotEmpty(reportLanguage)
+                        && StringUtils.isNotEmpty(company) && StringUtils.isNotEmpty(speed) && StringUtils.isNotEmpty(onlineId)) {
+                    //订单编号
+                    String num =CreditOrderInfo.dao.getNumber();
+                    CreditOrderInfo orderInfo = new CreditOrderInfo();
+                    orderInfo.set("num",num);
+                    orderInfo.setCompanyId(companyID);
+                    orderInfo.setContinent(continent);
+                    orderInfo.setCountry(countryName);
+                    orderInfo.setReportType(reportType);
+                    orderInfo.setOrderType(orderType);
+                    orderInfo.setReportLanguage(reportLanguage);
+                    orderInfo.setRight_company_name_en(company);
+                    orderInfo.setSpeed(speed);
+                    orderInfo.setReferenceNum(referenceNum);
+                    orderInfo.setAddress(address);
+                    orderInfo.setTelphone(telphone);
+                    orderInfo.setFax(fax);
+                    orderInfo.setEmail(email);
+                    orderInfo.setContacts(contacts);
+                    orderInfo.setRemarks(remarks);
+                    orderInfo.setOnlineId(onlineId);
+                    //保存
+                    orderInfo.save();
+                } else {
+                    result.put("status", "false");
+                    result.put("message", "有必传参数未传值！");
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                result.put("status","false");
+                result.put("message","数据异常！");
+            }
+        }else{
+            result.put("status","false");
+            result.put("message","缺少参数！");
+        }
+        renderJson(result);
+    }
+
+
+    //修改订单
+    public void updOrder() {
+        Map<String,String> result = new HashMap<String,String>();
+        result.put("status","success");
+        result.put("message","保存成功！");
         //获取4个固定参数
         String companyID = getPara("companyID");
         String randomCode = getPara("randomCode");
@@ -118,27 +202,29 @@ public class ApiController extends BaseProjectController {
                     &&StringUtils.isNotEmpty(countryName)&&StringUtils.isNotEmpty(reportType)
                     &&StringUtils.isNotEmpty(orderType)&&StringUtils.isNotEmpty(reportLanguage)
                     &&StringUtils.isNotEmpty(company)&&StringUtils.isNotEmpty(speed)&&StringUtils.isNotEmpty(onlineId)){
-                CreditOrderInfo orderInfo = new CreditOrderInfo();
-                orderInfo.setCompanyId(companyID);
-                orderInfo.setContinent(continent);
-                orderInfo.setCountry(countryName);
-                orderInfo.setReportType(reportType);
-                orderInfo.setOrderType(orderType);
-                orderInfo.setReportLanguage(reportLanguage);
-                orderInfo.setcompanyName(company);
-                orderInfo.setSpeed(speed);
-                orderInfo.setReferenceNum(referenceNum);
-                orderInfo.setAddress(address);
-                orderInfo.setTelphone(telphone);
-                orderInfo.setFax(fax);
-                orderInfo.setEmail(email);
-                orderInfo.setContacts(contacts);
-                orderInfo.setRemarks(remarks);
-                orderInfo.setOnlineId(onlineId);
-                //保存
-                orderInfo.save();
-                result.put("status","success");
-                result.put("message","保存成功！");
+                List<CreditOrderInfo> orderList = CreditOrderInfo.dao.findByWhere(" where online_id = ? ",onlineId);
+                if(orderList.size()>0){
+                    CreditOrderInfo order = orderList.get(0);
+                    CreditOrderInfo orderInfo = new CreditOrderInfo();
+                    orderInfo.setCompanyId(companyID);
+                    orderInfo.setContinent(continent);
+                    orderInfo.setCountry(countryName);
+                    orderInfo.setReportType(reportType);
+                    orderInfo.setOrderType(orderType);
+                    orderInfo.setReportLanguage(reportLanguage);
+                    orderInfo.setcompanyName(company);
+                    orderInfo.setSpeed(speed);
+                    orderInfo.setReferenceNum(referenceNum);
+                    orderInfo.setAddress(address);
+                    orderInfo.setTelphone(telphone);
+                    orderInfo.setFax(fax);
+                    orderInfo.setEmail(email);
+                    orderInfo.setContacts(contacts);
+                    orderInfo.setRemarks(remarks);
+                    orderInfo.setId(order.getInt("id"));
+                    //修改
+                    orderInfo.update();
+                }
             }else{
                 result.put("status","false");
                 result.put("message","有必传参数未传值！");
@@ -150,4 +236,46 @@ public class ApiController extends BaseProjectController {
         renderJson(result);
     }
 
+    //修改订单
+    public void delOrder() {
+        Map<String,String> result = new HashMap<String,String>();
+        result.put("status","success");
+        result.put("message","保存成功！");
+        //获取4个固定参数
+        String companyID = getPara("companyID");
+        String randomCode = getPara("randomCode");
+        String timestamp = getPara("timestamp");
+        String data = getPara("data");
+        //解密参数
+        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
+                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+            //密码生成
+            String sKey = companyID+randomCode+timestamp;
+            //解密参数串
+            String params = AES.decrypt(data,sKey);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String onlineId = jsonObj.getString("onlineId");
+            String reason = jsonObj.getString("reason");
+
+            if(StringUtils.isNotEmpty(onlineId)){
+                List<CreditOrderInfo> orderList = CreditOrderInfo.dao.findByWhere(" where online_id = ? ",onlineId);
+                if(orderList.size()>0){
+                    CreditOrderInfo order = orderList.get(0);
+                    CreditOrderInfo orderInfo = new CreditOrderInfo();
+                    orderInfo.setId(order.getInt("id"));
+                    orderInfo.setRemarks(reason);
+                    //删除
+                    orderInfo.delete();
+                }
+            }else{
+                result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else{
+            result.put("status","false");
+            result.put("message","缺少参数！");
+        }
+        renderJson(result);
+    }
 }

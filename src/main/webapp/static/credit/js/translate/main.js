@@ -812,13 +812,19 @@ let ReportConfig = {
     	let cw_dom;
     	let ds_dom;
     	_this.tableTitle = []
+    	setTimeout(()=>{
+    		
+    		console.log(floatIndexEn)
+    	},0)
     	floatIndexEn.forEach((item,index)=>{
     		let floatParentIdEn = this.floatTitleEn[index]['float_parent'];//浮动的父节点id
     		this.entityTitleEn.forEach((item,i)=>{
+    			console.log(item.id ,floatParentIdEn)
     			if(item.id === floatParentIdEn ) {
     				if(floatParentIdEn !== 4648) {
     					//非财务模块浮动
     					let html = this.notMoneyFloatHtmlEn[i+1]
+    					console.log($("#titleEn"+i),this.notMoneyFloatHtmlEn)
     					$("#titleEn"+i).after(html)
     					this.formIndexEn.push(i)
     					this.formTitleEn.push(this.floatTitleEn[index])
@@ -1234,6 +1240,7 @@ let ReportConfig = {
                 let modulesToEn = data.modulesToEn;    
                 let contentHtml = '' 
                 let bottomBtn = ''
+//                	console.log(modules.length,modulesToEn.length)
                 modules.forEach((item,index)=>{
                 	/**
                 	 * 循环模块
@@ -1568,30 +1575,32 @@ let ReportConfig = {
                 		contentHtml += `</div>`
                 	}
                 	
-                	
+                	console.log(modulesToEn.length,index)
                 	let item_en = modulesToEn[index]
                 	if(!item_en){return}
                 	let smallModileTypeEn = item_en.smallModileType
-                	if(item_en.title.temp_name === 'Key Fiancial Items' || item_en.title.temp_name === 'industry_analysis'){
+                	if(item_en.title.temp_name === 'Key Fiancial Items' || item_en.title.temp_name === 'industry_analysis' || item_en.title.temp_name.includes('质检意见')){
         				return
             		}
                 	if(item_en.title.temp_name && item_en.title.float_parent) {return}
-                	if((item_en.title.temp_name === null || item_en.title.temp_name === "")&&item_en.title.float_parent){return}
-                	if(item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3"  ><a style="display:none" class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
-                	}else if(smallModileTypeEn === '10'){
-                		//财务模块
-//                		_this.cwGetSource = item.title.get_source;
-//                		_this.cwAlterSource = item.title.alter_source;
-//                		_this.cwDeleteSource = item.title.remove_source;
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
-                	}else if(smallModileTypeEn !== '-2' && smallModileTypeEn !== '5'  && smallModileTypeEn !== '2') {
-                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+                	if(!(item_en.title.temp_name === null || item_en.title.temp_name === "")|| !item_en.title.float_parent){
+	                	if(item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
+	                			contentHtml +=  `<div class="bg-f pb-4 mb-3"  ><a style="display:none" class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+	                	}else if(smallModileTypeEn === '10'){
+	                		//财务模块
+	//                		_this.cwGetSource = item.title.get_source;
+	//                		_this.cwAlterSource = item.title.alter_source;
+	//                		_this.cwDeleteSource = item.title.remove_source;
+	                		contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
+	                	}else if(smallModileTypeEn !== '-2' && smallModileTypeEn !== '5'  && smallModileTypeEn !== '2') {
+	                		contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
+	                	}
                 	}
                 	let btnTextEn = item_en.title.place_hold;
                 	let formArrEn = item_en.contents; 
                 	
                 	//英文循环
+                	
                 	switch(smallModileTypeEn) {
             		case '0':
             			//表单类型
@@ -1722,13 +1731,15 @@ let ReportConfig = {
             			_this.idArrEn.push(index)
             			_this.contentsArrEn.push(item_en.contents)
             			_this.titleEn.push(item_en.title)
-            			contentHtml += `<div class="table-content1" style="background:#fff">
-			                				<table id="table${index}En"
-			                				data-toggle="table"
-			                				style="position: relative;table-layout: fixed"
-			                				>
-			                				</table>
-            				</div>`
+            			if(!item_en.title.temp_name.includes('质检意见')){
+            				contentHtml += `<div class="table-content1" style="background:#fff">
+            					<table id="table${index}En"
+            					data-toggle="table"
+            					style="position: relative;table-layout: fixed"
+            					>
+            					</table>
+            					</div>`
+            			}
             		
             			break;
             		case '11':
@@ -1751,9 +1762,10 @@ let ReportConfig = {
             			break;
             		case '5':
             			//固定底部的按钮组
+            			console.log(item_en)
             			item_en.title.column_name === 'save'?_this.saveStatusUrl = item_en.title.alter_source:_this.submitStatusUrl = item_en.title.alter_source
             			let className = item_en.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
-            			if(item_en.title.column_name === 'save'){
+        				if(item_en.title.column_name === 'save'){
             				bottomBtn += `<button id="translateBtn" class="btn btn-primary ml-4 disable">翻译</button><button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
             			}else {
             				bottomBtn += `<button id=${item_en.title.column_name} class="${className}">${item_en.title.temp_name}</button>`
@@ -2158,7 +2170,7 @@ let ReportConfig = {
 		
 		$(".position-fixed").on("click","#commit",(e)=>{
 			 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
-			 if(data.length === 0){return}
+			 if(data.length === 0 || !Array.isArray(data)){return}
 			 data.forEach((ele,i)=>{
 				 delete ele["mySort"]
 				 delete ele["create_date"]
