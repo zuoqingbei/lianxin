@@ -21,6 +21,7 @@ import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.hailian.util.http.showapi.util.StringUtils;
 import com.jfinal.upload.UploadFile;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -509,7 +510,7 @@ public class BaseWord {
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                if("company_type".equals(column)){
+                if("currency".equals(column)){
                     log.error("---------company_type-------------");
                 }
                 String[] strs = cols.get(column).split("\\|");
@@ -564,9 +565,10 @@ public class BaseWord {
                             e.printStackTrace();
                         }
                     }else{
-                        value = !"".equals(value) ? value : "--";
+                        value = !StringUtils.isEmpty(value) ? value : "--";
                     }
                 }
+                value = !StringUtils.isEmpty(value) ? value : "--";
                 log.error("whc 测试输出：column=" + column + "  fieldType=" + fieldType + " value=" + value);
                 Style style = new Style();
                 if(ReportTypeCons.ROC_ZH.equals(reportType)){
@@ -591,8 +593,14 @@ public class BaseWord {
                         style.setFontFamily("PMingLiU");
                     }
                 }
-                if("--".equals(value)){
-                    style.setFontFamily("Times New Roman");
+                if(ReportTypeCons.ROC_EN.equals(reportType) || ReportTypeCons.ROC_ZH.equals(reportType)) {
+                    if ("--".equals(value)) {
+                        style.setFontFamily("Times New Roman");
+                    }
+                }else{
+                    if ("--".equals(value)) {
+                        style.setFontFamily("宋体");
+                    }
                 }
                 map.put(column, new TextRenderData(value, style));
             }

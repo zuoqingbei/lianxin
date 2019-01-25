@@ -16,6 +16,7 @@ import com.jfinal.aop.Before;
 import com.jfinal.kit.JsonKit;
 import org.apache.commons.lang.StringUtils;
 
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,6 +97,7 @@ public class ApiController extends BaseProjectController {
         if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
                 && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
             try {
+                data = URLEncoder.encode(data, "utf-8");
                 //密码生成
                 String sKey = companyID + timestamp + randomCode;
                 //解密参数串
@@ -122,14 +124,17 @@ public class ApiController extends BaseProjectController {
                         && StringUtils.isNotEmpty(countryName) && StringUtils.isNotEmpty(reportType)
                         && StringUtils.isNotEmpty(orderType) && StringUtils.isNotEmpty(reportLanguage)
                         && StringUtils.isNotEmpty(company) && StringUtils.isNotEmpty(speed) && StringUtils.isNotEmpty(onlineId)) {
+                    //订单编号
+                    String num =CreditOrderInfo.dao.getNumber();
                     CreditOrderInfo orderInfo = new CreditOrderInfo();
+                    orderInfo.set("num",num);
                     orderInfo.setCompanyId(companyID);
                     orderInfo.setContinent(continent);
                     orderInfo.setCountry(countryName);
                     orderInfo.setReportType(reportType);
                     orderInfo.setOrderType(orderType);
                     orderInfo.setReportLanguage(reportLanguage);
-                    orderInfo.setcompanyName(company);
+                    orderInfo.setRight_company_name_en(company);
                     orderInfo.setSpeed(speed);
                     orderInfo.setReferenceNum(referenceNum);
                     orderInfo.setAddress(address);
