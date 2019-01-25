@@ -365,6 +365,7 @@ public class BaseWord {
                         style.setAlign(STJc.LEFT);
                     }else if("contribution".equals(column)||"money".equals(column)){
                         style.setAlign(STJc.RIGHT);
+                        style.setFontFamily("Times New Roman");
                     }
                 } else if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                     //字号
@@ -415,12 +416,14 @@ public class BaseWord {
                     }
                 }else if(ReportTypeCons.ROC_HY.equals(reportType)){
                     style.setBold(false);
-                    style.setFontFamily("宋体");
+                    if ("sh_name".equals(column)) {
+                        style.setFontFamily("宋体");
+                    } else if ("contribution".equals(column) || "money".equals(column)) {
+                        style.setFontFamily("Times New Roman");
+                    }
                     //4号字体
                     style.setFontSize(14);
                 }
-
-
                 row[j] = new TextRenderData(value, style);
                 j++;
             }
