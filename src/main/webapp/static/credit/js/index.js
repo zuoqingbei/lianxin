@@ -145,10 +145,11 @@ let Index = {
                   field: 'num',
                   align: 'center',
                   valign: 'middle',
-                  formatter:function(value,row,index){ 
-  
-                	var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  '; 
-                	return url; 
+                  formatter:function(value,row,index){
+                      return `<a href="javascript:;" style="color:#1890ff" onclick='Public.goToOrderDetail(${row.id},${JSON.stringify(row)})'>${value}</a>`;
+
+                      // var url = '<a href="#" style="color:#1890ff" onclick="orderinfo(\'' + row.id + '\')">' + value + '</a>  ';
+                	// return url;
               		} 
                 },{
                   field: 'receiver_date',

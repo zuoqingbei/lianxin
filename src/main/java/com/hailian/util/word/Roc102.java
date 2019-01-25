@@ -98,7 +98,7 @@ public class Roc102 {
         //客户参考号
         map.put("reference_num",referenceNum);
         //币种
-        String currency = companyInfo.getStr("currency");
+        String currency = companyInfo.get("currency")!=null?companyInfo.getStr("currency"):"";
         //订单公司名称
         if(ReportTypeCons.ROC_EN.equals(reportType)){
             map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
@@ -171,12 +171,8 @@ public class Roc102 {
                         //取一行数据
                         BaseProjectModel model = (BaseProjectModel) rows.get(i);
                         if(model.get("date")!=null && !"".equals(model.get("date"))) {
-                            if(ReportTypeCons.ROC_HY.equals(reportType)) {
-                                map.put("endDate", " 截至日期 " + model.get("date"));
-                            }else if(ReportTypeCons.ROC_ZH.equals(reportType)){
-                                map.put("endDate", " 截止至 " + DateUtils.getYmdHmsssZh(model.get("date")+""));
-                            }else if(ReportTypeCons.ROC_EN.equals(reportType)){
-                                map.put("endDate", " 截止至 " + DateUtils.getYmdHmsssEn(model.get("date")+""));
+                            if(ReportTypeCons.ROC_HY.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
+                                map.put("endDate", " 截止至 " + DateUtils.getYmdHmsssZh(model.get("date") + ""));
                             }
                         }
                     }
@@ -324,7 +320,8 @@ public class Roc102 {
                         }
                         Style style = new Style();
                         if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
-                            style.setFontFamily("PMingLiU");
+                            //style.setFontFamily("PMingLiU");
+                            style.setFontFamily("Times New Roman");
                         }
                         map.put(column, new TextRenderData(html.toString(), style));
                     }
