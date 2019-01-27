@@ -134,6 +134,7 @@ public class CustomController extends BaseProjectController {
             JSONObject jsonObj = JSON.parseObject(params);
             String id = jsonObj.getString("userId");//客户编码
             String money = jsonObj.getString("money");//充值金额
+            int moneyToInt =	Integer.parseInt(money); //充值金额
             String currency = getPara("currency");//充值币种
             String count = jsonObj.getString("units");//充值点数
             int countToInt =	Integer.parseInt(count); //充值点数
@@ -149,11 +150,16 @@ public class CustomController extends BaseProjectController {
                  }
             	CustomInfoModel model = new CustomInfoModel();
             	int account_count=0;
-            	 if (null!=customByid.get(0).get("account_count")) {
-         	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有金额	
+            	int account_money=0;
+            	if (null!=customByid.get(0).get("account_count")) {
+         	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有点数	
+         		}
+            	if (null!=customByid.get(0).get("money")) {
+         	 	    account_money=  Integer.parseInt(customByid.get(0).get("money").toString());//获取已有点数	
          		}
             	model.set("table_id", customByid.get(0).get("table_id"));
-            	model.set("account_count", countToInt+account_count);
+            	model.set("account_count", countToInt+account_count);//点数
+            	model.set("money", moneyToInt+account_money);//金额
          	    model.set("money_updatetime", getNow());
          	    model.update();
          	    //充值新增流水记录表，修改客户当前账户点数与金额更新时间
@@ -203,6 +209,8 @@ public class CustomController extends BaseProjectController {
             String id = jsonObj.getString("userId");//客户编码
             String count = jsonObj.getString("units");//扣款点数
             int countToInt =	Integer.parseInt(count); //扣款点数
+            String money = jsonObj.getString("money");//充值金额
+            int moneyToInt =	Integer.parseInt(money); //充值金额
             String updateTime = jsonObj.getString("userId");//时间
             if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(count)){
             	 List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
@@ -213,11 +221,11 @@ public class CustomController extends BaseProjectController {
                      return;
                  }
             	CustomInfoModel model = new CustomInfoModel();
-            	int account_count=0;
-            	 if (null!=customByid.get(0).get("account_count")) {
-         	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有金额	
-         		}
             	model.set("table_id", customByid.get(0).get("table_id"));
+            	int account_count=0;
+            	if (null!=customByid.get(0).get("account_count")) {
+         	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有點數
+         		}
             	int surplus_count=account_count-countToInt;//剩余点数
             	if ("508".equals(customByid.get(0).get("is_arrearage"))&&surplus_count<0) {
             		result.put("status","false");
@@ -226,6 +234,18 @@ public class CustomController extends BaseProjectController {
                     return;
      			}
             	model.set("account_count", surplus_count);
+            	int account_money=0;
+            	if (null!=customByid.get(0).get("money")) {
+         	 	    account_money=  Integer.parseInt(customByid.get(0).get("money").toString());//获取已有金额	
+         		}
+            	int surplus_money=account_money-moneyToInt;//剩余金额
+            	if ("508".equals(customByid.get(0).get("is_arrearage"))&&surplus_money<0) {
+            		result.put("status","false");
+                    result.put("message","扣款失败，该客户不允许欠费");
+                    renderJson(result);
+                    return;
+     			}
+            	model.set("money", surplus_money);
          	    model.set("money_updatetime", getNow());
          	    model.update();
          	    //流水记录表
@@ -233,6 +253,7 @@ public class CustomController extends BaseProjectController {
         		flowmodel.remove("id");
         		flowmodel.set("custom_id", model.get("table_id"));
         		flowmodel.set("transaction_type", "扣款");
+        		flowmodel.set("money",money);
         		flowmodel.set("oper_point_num", countToInt);
         		flowmodel.set("oper_point_after_num",surplus_count);
         		flowmodel.set("create_time", getNow());
