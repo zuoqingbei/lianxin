@@ -508,7 +508,7 @@ public class Roc102 {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
-                email = "hu_cheng86@126.com";
+                //email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
