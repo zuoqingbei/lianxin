@@ -376,8 +376,16 @@ public class BaseWord {
                     }else if("contribution".equals(column)||"money".equals(column)){
                         style.setAlign(STJc.RIGHT);
                     }
-                    //style.setFontFamily("Times New Roman");
-                    style.setFontFamily("PMingLiU");
+                    //字体
+                    if(ReportTypeCons.ROC_EN.equals(reportType)){
+                        style.setFontFamily("Times New Roman");
+                    }else{
+                        if("sh_name".equals(column)){
+                            style.setFontFamily("PMingLiU");
+                        }else if("contribution".equals(column)||"money".equals(column)){
+                            style.setFontFamily("Times New Roman");
+                        }
+                    }
                     if("money".equals(column)){
                         value += "%";
                     }
@@ -415,6 +423,7 @@ public class BaseWord {
                     if("money".equals(column)){
                         value += "%";
                     }
+                    style.setFontSize(11);
                 }else if(ReportTypeCons.ROC_HY.equals(reportType)){
                     style.setBold(false);
                     if ("sh_name".equals(column)) {
@@ -457,7 +466,8 @@ public class BaseWord {
             Style style = new Style();
             //102 股东信息
             if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
-                style.setFontFamily("PMingLiU");
+                //style.setFontFamily("PMingLiU");
+                style.setFontFamily("Times New Roman");
                 style.setUnderLine(true);
                 style.setFontSize(11);
                 if("sh_name".equals(column)){
@@ -537,11 +547,13 @@ public class BaseWord {
                 }else if("date".equals(fieldType)){
                     try {
                         //处理日期格式
-                        Date date = sdf.parse(value.trim());
-                        if(ReportTypeCons.ROC_EN.equals(reportType)){
-                            value = sdf_en_hy.format(date);
-                        }else{
-                            value = sdf_zh.format(date);
+                        if(!StringUtils.isEmpty(value)) {
+                            Date date = sdf.parse(value.trim());
+                            if (ReportTypeCons.ROC_EN.equals(reportType)) {
+                                value = sdf_en_hy.format(date);
+                            } else {
+                                value = sdf_zh.format(date);
+                            }
                         }
                     }catch (ParseException e){
                         e.printStackTrace();
@@ -578,6 +590,7 @@ public class BaseWord {
                 if(ReportTypeCons.ROC_ZH.equals(reportType)){
                     //单元格字体
                     if("name_trans_en".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
+                            "registered_capital".equals(column)||"currency".equals(column)||
                         "establishment_date".equals(column)||"business_date_end".equals(column)||"registration_num".equals(column)||
                             "last_modified_date".equals(column)||"register_codes".equals(column)||"year".equals(column)){
                         //郵政編碼 電話號碼 傳真號碼 登記編號 統一信用代碼 年檢情況
@@ -590,7 +603,7 @@ public class BaseWord {
                     if("name_trans_en".equals(column)||"address".equals(column)||"postal_code".equals(column)||"telphone".equals(column)||"fax".equals(column)||
                             "registration_num".equals(column)||"register_codes".equals(column)||"year".equals(column)||
                             "roc_registration_status".equals(column)||"company_type".equals(column)||"currency".equals(column)||
-                            "registered_capital".equals(column)||"establishment_date".equals(column)||"business_date_end".equals(column)||
+                            "registered_capital".equals(column)||"currency".equals(column)||"establishment_date".equals(column)||"business_date_end".equals(column)||
                             "last_modified_date".equals(column)||"registration_authority".equals(column)||"year_result".equals(column)){
                         //郵政編碼 電話號碼 傳真號碼 登記編號 統一信用代碼 年檢情況
                         style.setFontFamily("Times New Roman");

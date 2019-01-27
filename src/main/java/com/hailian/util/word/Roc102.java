@@ -322,7 +322,8 @@ public class Roc102 {
                         }
                         Style style = new Style();
                         if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
-                            style.setFontFamily("PMingLiU");
+                            style.setFontFamily("Times New Roman");
+                            style.setFontSize(11);
                         }
                         map.put(column, new TextRenderData(html.toString(), style));
                     }
@@ -507,7 +508,7 @@ public class Roc102 {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
-                //email = "hu_cheng86@126.com";
+                email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
