@@ -171,8 +171,10 @@ public class Roc102 {
                         //取一行数据
                         BaseProjectModel model = (BaseProjectModel) rows.get(i);
                         if(model.get("date")!=null && !"".equals(model.get("date"))) {
-                            if(ReportTypeCons.ROC_HY.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
+                            if(ReportTypeCons.ROC_HY.equals(reportType)) {
                                 map.put("endDate", " 截止至 " + DateUtils.getYmdHmsssZh(model.get("date") + ""));
+                            }else if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                                map.put("endDate","(" + "截止至 " + DateUtils.getYmdHmsssZh(model.get("date")+"") + ")");
                             }
                         }
                     }
@@ -320,7 +322,8 @@ public class Roc102 {
                         }
                         Style style = new Style();
                         if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
-                            style.setFontFamily("PMingLiU");
+                            style.setFontFamily("Times New Roman");
+                            style.setFontSize(11);
                         }
                         map.put(column, new TextRenderData(html.toString(), style));
                     }
