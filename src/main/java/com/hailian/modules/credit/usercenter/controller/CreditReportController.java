@@ -23,7 +23,7 @@ public class CreditReportController extends BaseProjectController{
     //登录
     public void report() {
         String id = getPara("id");
-        String sql = "select t.*,s1.detail_name as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
+        String sql = "select t.*,s1.detail_name as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.num = ?";
         Integer userid = getSessionUser().getUserid();
         CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, id);
         String reportType = order.getStr("report_type");

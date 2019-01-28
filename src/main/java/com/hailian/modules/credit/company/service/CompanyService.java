@@ -90,7 +90,7 @@ public class CompanyService {
 		boolean flag=false;
 		String status;
 		try {
-			JSONObject json = HttpTest.getYjapi(companyName);//获取api企业信息数据
+			JSONObject json = HttpTest.getYjapi(companyName.trim());//获取api企业信息数据
 			status = json.getString("Status");
 			System.out.println(status);
 			//200调用成功并查到企业相关信息
@@ -169,7 +169,7 @@ public class CompanyService {
 					String TeamEndFor = dateFormat(TeamEnd);//转成年月日
 					companyinfoModel.set("business_date_end", TermStartFor+"至"+TeamEndFor);
 				}else{
-					companyinfoModel.set("business_date_end",  TermStartFor+"至"+"长期");
+					companyinfoModel.set("business_date_end","长期");
 				}
 				
 				List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(Status.trim(),"registration_status");
@@ -196,8 +196,8 @@ public class CompanyService {
 				
 				try {
 					JSONObject ContactInfo = json.getJSONObject("Result").getJSONObject("ContactInfo");//联系信息
-					String PhoneNumber = ContactInfo.getString("PhoneNumber");//电话
-					String Email = ContactInfo.getString("Email");//邮箱
+					String PhoneNumber = ContactInfo.getString("PhoneNumber").replace("null", "");//电话
+					String Email = ContactInfo.getString("Email").replace("null", "");//邮箱
 					companyinfoModel.set("telphone", PhoneNumber);
 					companyinfoModel.set("email", Email);
 				} catch (Exception e) {
@@ -231,21 +231,48 @@ public class CompanyService {
 						String job = employee.getString("Job");//职位
 						if("12".equals(reporttype) || "14".equals(reporttype) || "15".equals(reporttype)){//当报告类型为102时获取主表管理层信息
 							if("董事长".equals(job)){
-								chairman+=name+" ";
+								chairman+=name+";";
 							}else if("执行董事".equals(job)){
-								executive_director+=name+" ";
+								executive_director+=name+";";
 							}else if ("副董事长".equals(job)) {
-								vice_president+=name+" ";
+								vice_president+=name+";";
 							}else if ("董事".equals(job)) {
-								board_members+=name+" ";
+								board_members+=name+";";
 							}else if ("监事主席".equals(job)) {
-								supervisory_board_chairman+=name+" ";
+								supervisory_board_chairman+=name+";";
 							}else if ("监事".equals(job)) {
-								members_of_the_supervisors+=name+" ";
+								members_of_the_supervisors+=name+";";
 							}else if ("总经理".equals(job)) {
-								general_manager+=name+" ";
+								general_manager+=name+";";
 							}else if ("副总经理".equals(job)) {
-								vice_general_manager+=name+" ";
+								vice_general_manager+=name+";";
+							}
+							if(chairman.lastIndexOf(";") != -1) {
+								chairman=chairman.substring(0, chairman.lastIndexOf(";"));
+							}
+							if(executive_director.lastIndexOf(";") != -1) {
+								executive_director=executive_director.substring(0, executive_director.lastIndexOf(";"));
+							}
+							if(vice_president.lastIndexOf(";") != -1) {
+								vice_president=vice_president.substring(0, vice_president.lastIndexOf(";"));
+							}
+							if(board_members.lastIndexOf(";") != -1) {
+								board_members=board_members.substring(0, board_members.lastIndexOf(";"));
+							}
+							if(supervisory_board_chairman.lastIndexOf(";") != -1) {
+								supervisory_board_chairman=supervisory_board_chairman.substring(0, supervisory_board_chairman.lastIndexOf(";"));
+							}
+							if(members_of_the_supervisors.lastIndexOf(";") != -1) {
+								members_of_the_supervisors=members_of_the_supervisors.substring(0, members_of_the_supervisors.lastIndexOf(";"));
+							}
+							if(supervisory_board_chairman.lastIndexOf(";") != -1) {
+								supervisory_board_chairman=supervisory_board_chairman.substring(0, supervisory_board_chairman.lastIndexOf(";"));
+							}
+							if(general_manager.lastIndexOf(";") != -1) {
+								general_manager=general_manager.substring(0, general_manager.lastIndexOf(";"));
+							}
+							if(vice_general_manager.lastIndexOf(";") != -1) {
+								vice_general_manager=vice_general_manager.substring(0, vice_general_manager.lastIndexOf(";"));
 							}
 							companyinfoModel.set("chairman", chairman);
 							companyinfoModel.set("executive_director", executive_director);
@@ -597,7 +624,10 @@ public class CompanyService {
 		
 	}
 	public static void main(String[] args) {
-		
-		System.out.println(HttpCrawler.getIcrisUrl("青岛海联软件科技有限公司"));
+		String s="a;b;c;";
+		if(s.lastIndexOf(";") != -1) {
+			s=s.substring(0, s.lastIndexOf(";"));
+		}
+		System.out.println(s);
 	}
 }

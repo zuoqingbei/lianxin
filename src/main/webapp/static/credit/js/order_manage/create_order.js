@@ -483,6 +483,7 @@ $(document).ready(function () {
 		$("#orderForm").ajaxSubmit({
 			success:function(data){
 				$("body").mLoading("hide");
+				$("#checkedModal .close").trigger("click")
 				  if(data.statusCode===1){
             		Public.message("success",data.message);
             		//Public.goList();
