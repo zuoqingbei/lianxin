@@ -171,10 +171,12 @@ public class Roc102 {
                         //取一行数据
                         BaseProjectModel model = (BaseProjectModel) rows.get(i);
                         if(model.get("date")!=null && !"".equals(model.get("date"))) {
+                            Style style = new Style();
+                            style.setFontFamily("Times New Roman");
                             if(ReportTypeCons.ROC_HY.equals(reportType)) {
-                                map.put("endDate", " 截止至 " + DateUtils.getYmdHmsssZh(model.get("date") + ""));
+                                map.put("endDate", new TextRenderData(" 截止至 " + DateUtils.getYmdHmsssZh(model.get("date") + ""),style));
                             }else if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                                map.put("endDate","(" + "截止至 " + DateUtils.getYmdHmsssZh(model.get("date")+"") + ")");
+                                map.put("endDate",new TextRenderData("(" + "截止至 " + DateUtils.getYmdHmsssZh(model.get("date")+"") + ")",style));
                             }
                         }
                     }
@@ -225,20 +227,26 @@ public class Roc102 {
                 }
                 String c = p.get("className");
                 String cn = c.split("\\*")[0];
+                //取word里配置的关键词
+                String word_key = conf.get("word_key") + "";
                 //主表
-                if ("credit_company_info".equals(t)) {
-                    String word_key = conf.get("word_key") + "";
+                //if ("credit_company_info".equals(t)) {
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         List rs = report.getTableData(true,  companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             String v = model.get(word_key) + "";
-                            map.put(word_key, v);
+                            Style style = new Style();
+                            if("operation_scope".equals(word_key)){
+                                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                                    style.setFontFamily("Times New Roman");
+                                }
+                            }
+                            map.put(word_key, new TextRenderData(v, style));
                         }
                     }
-                } else {
-                    //取word里配置的关键词
-                    String word_key = conf.get("word_key") + "";
+                /*}
+                else {
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         //取数据
                         List rs = report.getTableData(true, companyId, t, cn, ci, "",reportType);
@@ -248,7 +256,7 @@ public class Roc102 {
                             map.put(word_key, v);
                         }
                     }
-                }
+                }*/
             }
 
             //7 输入框取数
@@ -267,18 +275,31 @@ public class Roc102 {
                 for (int i = 0; i < rows.size(); i++) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     for (String column : cols.keySet()) {
+                        if("operation_scope".equals(column)){
+                            System.out.println("-----------------");
+                        }
                         String[] strs = cols.get(column).split("\\|");
                         String fieldType = strs.length == 2 ? strs[1] : "";
                         String value = model.get(column) != null ? model.get(column) + "" : "";
+                        Style style = new Style();
                         if ("textarea".equals(fieldType)) {
                             //分支机构使用分号换行
                             if("embranchment_count".equals(column)){
                                 value = value.replaceAll("\\；", "\n");
                             }
                             value = value.replaceAll("(\\\\r\\\\n|\\\\n)", "\n");
-                            map.put(column, value);
+                            //经营范围设置字体
+                            if("operation_scope".equals(column)){
+                                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                                    style.setFontFamily("Times New Roman");
+                                }
+                            }
+                            //map.put(column, value);
+                            map.put(column, new TextRenderData(value, style));
                         }else{
+
                             map.put(column, value);
+
                         }
                     }
                 }
@@ -508,7 +529,7 @@ public class Roc102 {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
-                //email = "hu_cheng86@126.com";
+                email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();

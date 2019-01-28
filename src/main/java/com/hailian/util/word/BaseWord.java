@@ -524,7 +524,7 @@ public class BaseWord {
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                if("principal_type".equals(column)){
+                if("operation_scope".equals(column)){
                     log.error("---------company_type-------------");
                 }
                 String[] strs = cols.get(column).split("\\|");
