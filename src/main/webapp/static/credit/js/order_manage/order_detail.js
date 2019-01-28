@@ -115,7 +115,7 @@ let OrderDetail = {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info px-4 mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
         // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
-        this.data.modules.forEach((item, index) => {
+        this.data.modules.forEach((item, index, items) => {
             let smallModuleType = item.smallModileType;
             let itemId = item.title.id;
             let _this = this;
@@ -295,10 +295,31 @@ let OrderDetail = {
                     break;
                 // 9-财务模块结构和多行文本框数据
                 case '9':
-                    if (item.title.sort === 1) {
+
+                    if (item.title.sort === 1) { //财务
                         _this.type9MulText = item;
                     } else {
-                        _this.type9TableHead.push(item)
+                        items.forEach((item0, index0) => {
+
+                            if (item.title.float_parent === item0.title.id) {//财务表头
+                                if (item0.smallModileType === '10') {
+                                    _this.type9TableHead.push(item)
+                                } else {
+                                    //非财务的浮动——表格上面的时间
+                                    // 12-102中文；14-102English；下面给这两种的出资情况加时间
+                                    if ((['12', '14'].includes(_this.row.report_type) && item0.title.temp_name === '出资情况')||
+                                        (['15'].includes(_this.row.report_type) && item0.title.temp_name === '股东信息')){
+                                        $.get(this.getUrl(item), (data) => {
+                                            let date = data.rows&&data.rows.length>0?data.rows[0].date:'';
+                                            $("#" + item0.title.id+" .module-content").prepend(`<h4>截止日期：${date}</h4>`);
+                                        })
+
+
+                                    }
+
+                                }
+                            }
+                        })
                     }
                     break;
                 // 10-财务模块表格数据
@@ -387,7 +408,7 @@ let OrderDetail = {
                                 let quality_type = this.row.quality_type;
                                 let status = this.row.status;
                                 this.quality_deal = data.rows[0].quality_deal;
-                                if(this.quality_deal === '3'){
+                                if (this.quality_deal === '3') {
                                     $('.select2-container').addClass('disable');
                                 }
                                 switch (quality_type) {
