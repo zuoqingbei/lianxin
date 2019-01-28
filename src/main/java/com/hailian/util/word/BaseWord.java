@@ -377,7 +377,7 @@ public class BaseWord {
                         style.setAlign(STJc.RIGHT);
                     }
                     //字体
-                    if(ReportTypeCons.ROC_EN.equals(reportType)){
+                    if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
                         style.setFontFamily("Times New Roman");
                     }else{
                         if("sh_name".equals(column)){
