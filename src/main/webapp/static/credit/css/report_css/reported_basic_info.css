@@ -5,6 +5,10 @@
 	word-wrap:break-word
  /* 	width:auto;  */
 }
+.nowrap .table:not(.table-condensed), .nowrap .table:not(.table-condensed) > tbody > tr > th, .nowrap .table:not(.table-condensed) > tfoot > tr > th, .nowrap .table:not(.table-condensed) > thead > tr > td, .nowrap .table:not(.table-condensed) > tbody > tr > td, .nowrap .table:not(.table-condensed) > tfoot > tr > td {
+	white-space:nowrap;
+
+}
 .fixed-table-footer table {
 	table-layout:fixed;
 }
@@ -13,6 +17,9 @@
 }
 .fixed-table-container thead th .th-inner, .fixed-table-container tbody td .th-inner {
     white-space: normal;
+}
+.nowrap .fixed-table-container thead th .th-inner, .nowrap .fixed-table-container tbody td .th-inner {
+    white-space: nowrap;
 }
 .bootstrap-table .table > thead > tr > th {
     vertical-align: middle;

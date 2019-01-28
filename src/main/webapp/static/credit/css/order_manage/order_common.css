@@ -784,6 +784,7 @@
 /*导航栏样式 start*/
 .detail_tab-bar{
     position: relative;
+    padding-top: 2rem;
 }
 .tab_bar {
     padding-left: 0;
