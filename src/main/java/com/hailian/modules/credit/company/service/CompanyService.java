@@ -247,43 +247,10 @@ public class CompanyService {
 							}else if ("副总经理".equals(job)) {
 								vice_general_manager+=name+";";
 							}
-							if(chairman.lastIndexOf(";") != -1) {
-								chairman=chairman.substring(0, chairman.lastIndexOf(";"));
-							}
-							if(executive_director.lastIndexOf(";") != -1) {
-								executive_director=executive_director.substring(0, executive_director.lastIndexOf(";"));
-							}
-							if(vice_president.lastIndexOf(";") != -1) {
-								vice_president=vice_president.substring(0, vice_president.lastIndexOf(";"));
-							}
-							if(board_members.lastIndexOf(";") != -1) {
-								board_members=board_members.substring(0, board_members.lastIndexOf(";"));
-							}
-							if(supervisory_board_chairman.lastIndexOf(";") != -1) {
-								supervisory_board_chairman=supervisory_board_chairman.substring(0, supervisory_board_chairman.lastIndexOf(";"));
-							}
-							if(members_of_the_supervisors.lastIndexOf(";") != -1) {
-								members_of_the_supervisors=members_of_the_supervisors.substring(0, members_of_the_supervisors.lastIndexOf(";"));
-							}
-							if(supervisory_board_chairman.lastIndexOf(";") != -1) {
-								supervisory_board_chairman=supervisory_board_chairman.substring(0, supervisory_board_chairman.lastIndexOf(";"));
-							}
-							if(general_manager.lastIndexOf(";") != -1) {
-								general_manager=general_manager.substring(0, general_manager.lastIndexOf(";"));
-							}
-							if(vice_general_manager.lastIndexOf(";") != -1) {
-								vice_general_manager=vice_general_manager.substring(0, vice_general_manager.lastIndexOf(";"));
-							}
-							companyinfoModel.set("chairman", chairman);
-							companyinfoModel.set("executive_director", executive_director);
-							companyinfoModel.set("vice_president", vice_president);
-							companyinfoModel.set("board_members", board_members);
-							companyinfoModel.set("supervisory_board_chairman", supervisory_board_chairman);
-							companyinfoModel.set("members_of_the_supervisors", members_of_the_supervisors);
-							companyinfoModel.set("general_manager", general_manager);
-							companyinfoModel.set("vice_general_manager", vice_general_manager);
-						}
 						
+							
+						}
+			
 						
 						CreditCompanyManagement managementModel = new CreditCompanyManagement();
 						
@@ -307,7 +274,41 @@ public class CompanyService {
 					}
 					Db.batchSave(managementlist, managementlist.size());
 				}
-				
+				if(chairman.lastIndexOf(";") != -1) {
+					chairman=chairman.substring(0, chairman.lastIndexOf(";"));
+				}
+				if(executive_director.lastIndexOf(";") != -1) {
+					executive_director=executive_director.substring(0, executive_director.lastIndexOf(";"));
+				}
+				if(vice_president.lastIndexOf(";") != -1) {
+					vice_president=vice_president.substring(0, vice_president.lastIndexOf(";"));
+				}
+				if(board_members.lastIndexOf(";") != -1) {
+					board_members=board_members.substring(0, board_members.lastIndexOf(";"));
+				}
+				if(supervisory_board_chairman.lastIndexOf(";") != -1) {
+					supervisory_board_chairman=supervisory_board_chairman.substring(0, supervisory_board_chairman.lastIndexOf(";"));
+				}
+				if(members_of_the_supervisors.lastIndexOf(";") != -1) {
+					members_of_the_supervisors=members_of_the_supervisors.substring(0, members_of_the_supervisors.lastIndexOf(";"));
+				}
+				if(supervisory_board_chairman.lastIndexOf(";") != -1) {
+					supervisory_board_chairman=supervisory_board_chairman.substring(0, supervisory_board_chairman.lastIndexOf(";"));
+				}
+				if(general_manager.lastIndexOf(";") != -1) {
+					general_manager=general_manager.substring(0, general_manager.lastIndexOf(";"));
+				}
+				if(vice_general_manager.lastIndexOf(";") != -1) {
+					vice_general_manager=vice_general_manager.substring(0, vice_general_manager.lastIndexOf(";"));
+				}
+				companyinfoModel.set("chairman", chairman);
+				companyinfoModel.set("executive_director", executive_director);
+				companyinfoModel.set("vice_president", vice_president);
+				companyinfoModel.set("board_members", board_members);
+				companyinfoModel.set("supervisory_board_chairman", supervisory_board_chairman);
+				companyinfoModel.set("members_of_the_supervisors", members_of_the_supervisors);
+				companyinfoModel.set("general_manager", general_manager);
+				companyinfoModel.set("vice_general_manager", vice_general_manager);
 				companyinfoModel.update();//当报告类型为102时获取主表管理层信息
 				//股东信息
 				JSONArray partners = null;

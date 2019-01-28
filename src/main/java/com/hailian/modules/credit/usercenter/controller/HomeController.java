@@ -470,13 +470,13 @@ public class HomeController extends BaseProjectController {
 	    String is_fastsubmmit=model.get("is_fastsubmmit");
 		CreditOrderInfo theSameOrder=null;
 		//查询到有相同公司报告直接提交
-		if(!is_fastsubmmit.equals("-1")){
+		/*if(!is_fastsubmmit.equals("-1")){
 			theSameOrder = OrderManagerService.service.getTheSameOrder(right_company_name_en,model.get("report_type")+"",model.get("report_language")+"", this);
 			toString(model,418);
 			model.set("is_fastsubmmit", theSameOrder.get("id"));
 			model.set("company_id", theSameOrder.get("id"));
 			model.set("status", "311");
-		}
+		}*/
 		//获取报告员id
 		if(model.get("id")==null){
 			String reportIdtoOrder = OrderManagerService.service.getUserIdtoOrder(RoleCons.REPORTER);//根据自动分配规则获取该订单指定的报告员
