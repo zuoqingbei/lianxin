@@ -1413,13 +1413,35 @@ let ReportConfig = {
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(item.contents)
                 			_this.title.push(item.title)
-                			contentHtml += `<div class="table-content1" style="background:#fff">
-				                				<table id="table${index}"
-				                				data-toggle="table"
-				                				style="table-layout: fixed;position: relative"
-				                				>
-				                				</table>
-                				</div>`
+                			if(item.title.temp_name && item.title.temp_name.includes('质检意见')){
+                				//质检意见无新增
+                				contentHtml += `<div class="table-content1" style="background:#fff">
+                					<table id="table${index}"
+                					data-toggle="table"
+                					style="position: relative;table-layout: fixed;"
+                					>
+                					</table>
+                					</div>`
+                			}else if(item.title.temp_name && item.title.temp_name.includes('股东详情')){
+                				//法人，自然人股东 不换行
+                				contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
+                					<table id="table${index}"
+                					data-toggle="table"
+                					style="position: relative"
+                					>
+                					</table>
+                					<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
+                					</div>`
+                			}else {
+                				contentHtml += `<div class="table-content1" style="background:#fff">
+                					<table id="table${index}"
+                					data-toggle="table"
+                					style="position: relative;table-layout: fixed;"
+                					>
+                					</table>
+                					<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
+                					</div>`
+                			}
                 		
                 			break;
                 		case '11':
@@ -1731,7 +1753,16 @@ let ReportConfig = {
             			_this.idArrEn.push(index)
             			_this.contentsArrEn.push(item_en.contents)
             			_this.titleEn.push(item_en.title)
-            			if(!item_en.title.temp_name.includes('质检意见')){
+            			if(item_en.title.temp_name && (item_en.title.temp_name.includes('股东详情') || item_en.title.temp_name.includes('管理层'))){
+            				//法人，自然人股东 不换行
+            				contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
+            					<table id="table${index}"
+            					data-toggle="table"
+            					style="position: relative"
+            					>
+            					</table>
+            					</div>`
+            			}else if(!item_en.title.temp_name.includes('质检意见')){
             				contentHtml += `<div class="table-content1" style="background:#fff">
             					<table id="table${index}En"
             					data-toggle="table"
@@ -1740,7 +1771,7 @@ let ReportConfig = {
             					</table>
             					</div>`
             			}
-            		
+            			
             			break;
             		case '11':
             			//table类型
