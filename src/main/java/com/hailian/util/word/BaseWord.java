@@ -524,7 +524,7 @@ public class BaseWord {
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                if("operation_scope".equals(column)){
+                if("name".equals(column)){
                     log.error("---------company_type-------------");
                 }
                 String[] strs = cols.get(column).split("\\|");
@@ -569,7 +569,7 @@ public class BaseWord {
                     }
                 } else {
                     if("business_date_end".equals(column)) {
-                        //营业期限
+                        //营业期限只有两种格式1. 自xxxx至xxxx  2.长期
                         if (value.contains("至")) {
                             String[] _qx = value.split("至");
                             if (_qx.length > 1) {
