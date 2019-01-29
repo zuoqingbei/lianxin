@@ -12,6 +12,7 @@ import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.util.StrUtils;
 import com.hailian.util.encrypt.AES;
+import com.hailian.util.encrypt.URLCoder;
 import com.jfinal.aop.Before;
 import com.jfinal.kit.JsonKit;
 import org.apache.commons.lang.StringUtils;
@@ -88,20 +89,13 @@ public class ApiController extends BaseProjectController {
         Map<String,String> result = new HashMap<String,String>();
         result.put("status","success");
         result.put("message","保存成功！");
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
+        //获取参数
         String data = getPara("data");
         //解密参数
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+        if(StringUtils.isNotEmpty(data)) {
             try {
-                data = URLEncoder.encode(data, "utf-8");
-                //密码生成
-                String sKey = companyID + timestamp + randomCode;
                 //解密参数串
-                String params = AES.decrypt(data, sKey);
+                String params = this.decodeData(data);
                 //参数转对象
                 JSONObject jsonObj = JSON.parseObject(params);
                 String customId = jsonObj.getString("customId");
@@ -128,7 +122,7 @@ public class ApiController extends BaseProjectController {
                     String num =CreditOrderInfo.dao.getNumber();
                     CreditOrderInfo orderInfo = new CreditOrderInfo();
                     orderInfo.set("num",num);
-                    orderInfo.setCompanyId(companyID);
+                    orderInfo.setCompanyId("");
                     orderInfo.setContinent(continent);
                     orderInfo.setCountry(countryName);
                     orderInfo.setReportType(reportType);
@@ -153,7 +147,7 @@ public class ApiController extends BaseProjectController {
             }catch (Exception e){
                 e.printStackTrace();
                 result.put("status","false");
-                result.put("message","数据异常！");
+                result.put("message","格式不正确！");
             }
         }else{
             result.put("status","false");
@@ -168,16 +162,14 @@ public class ApiController extends BaseProjectController {
         Map<String,String> result = new HashMap<String,String>();
         result.put("status","success");
         result.put("message","保存成功！");
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
         String data = getPara("data");
         //解密参数
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+        if(!StringUtils.isEmpty(data)) {
+            result.put("status","false");
+            result.put("message","缺少参数！");
+        }else{
             //密码生成
-            String sKey = companyID+randomCode+timestamp;
+            String sKey = this.getKey();
             //解密参数串
             String params = AES.decrypt(data,sKey);
             //参数转对象
@@ -206,7 +198,7 @@ public class ApiController extends BaseProjectController {
                 if(orderList.size()>0){
                     CreditOrderInfo order = orderList.get(0);
                     CreditOrderInfo orderInfo = new CreditOrderInfo();
-                    orderInfo.setCompanyId(companyID);
+                    orderInfo.setCompanyId("");
                     orderInfo.setContinent(continent);
                     orderInfo.setCountry(countryName);
                     orderInfo.setReportType(reportType);
@@ -229,9 +221,6 @@ public class ApiController extends BaseProjectController {
                 result.put("status","false");
                 result.put("message","有必传参数未传值！");
             }
-        }else{
-            result.put("status","false");
-            result.put("message","缺少参数！");
         }
         renderJson(result);
     }
@@ -239,25 +228,23 @@ public class ApiController extends BaseProjectController {
     //修改订单
     public void delOrder() {
         Map<String,String> result = new HashMap<String,String>();
-        result.put("status","success");
-        result.put("message","保存成功！");
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
+        //获取数据参数
         String data = getPara("data");
         //解密参数
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
-            //密码生成
-            String sKey = companyID+randomCode+timestamp;
+        if(StringUtils.isEmpty(data)){
+            result.put("status","false");
+            result.put("message","缺少参数！");
+        } else{
+            //通过浏览器传来的json自动解码了，再做一次转码
+            data = URLCoder.getURLEncoderString(data);
+            //获取加密key
+            String sKey = getKey();
             //解密参数串
             String params = AES.decrypt(data,sKey);
             //参数转对象
             JSONObject jsonObj = JSON.parseObject(params);
             String onlineId = jsonObj.getString("onlineId");
             String reason = jsonObj.getString("reason");
-
             if(StringUtils.isNotEmpty(onlineId)){
                 List<CreditOrderInfo> orderList = CreditOrderInfo.dao.findByWhere(" where online_id = ? ",onlineId);
                 if(orderList.size()>0){
@@ -267,15 +254,37 @@ public class ApiController extends BaseProjectController {
                     orderInfo.setRemarks(reason);
                     //删除
                     orderInfo.delete();
+                    result.put("status","success");
+                    result.put("message","保存成功！");
+                }else{
+                    result.put("status","false");
+                    result.put("message","订单不存在！");
                 }
             }else{
                 result.put("status","false");
                 result.put("message","有必传参数未传值！");
             }
-        }else{
-            result.put("status","false");
-            result.put("message","缺少参数！");
         }
         renderJson(result);
     }
+
+    //生成加密key
+    public String getKey(){
+        String companyID = getPara("companyID");
+        String randomCode = getPara("randomCode");
+        String timestamp = getPara("timestamp");
+        //密码生成
+        return companyID+timestamp+randomCode;
+    }
+
+    //解密参数
+    public String decodeData(String data){
+        data = URLCoder.getURLEncoderString(data);
+        //密码生成
+        String sKey = this.getKey();
+        //解密参数串
+        return AES.decrypt(data,sKey);
+    }
+
+
 }

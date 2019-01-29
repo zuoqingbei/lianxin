@@ -101,15 +101,8 @@ public class AES {
         String value = Base64Util.encode(binary);
 
         // URL解码
-
         //加密
-        //value = URLCoder.getURLEncoderString(value);
-        try {
-            value = URLEncoder.encode(value ,"utf-8" );
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
+        value = URLCoder.getURLEncoderString(value);
         return value;
     }
 
@@ -132,12 +125,7 @@ public class AES {
         }
 
         //解密
-        //data = URLCoder.getURLDecoderString(data);
-        try {
-            data = java.net.URLDecoder.decode(data,"utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        data = URLCoder.getURLDecoderString(data);
 
         byte[] binary = Base64Util.decode(data);
         if (binary == null) {
