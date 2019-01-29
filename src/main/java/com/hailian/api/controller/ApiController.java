@@ -300,18 +300,16 @@ public class ApiController extends BaseProjectController {
 	 */
     public void addCustomer() {
         Map<String,String> result = new HashMap<String,String>();
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
+        result.put("status","success");
+        result.put("message","保存成功！");
+        //获取参数
         String data = getPara("data");
+       
+        
         //解密参数
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
-            //密码生成
-            String sKey = companyID+randomCode+timestamp;
-            //解密参数串
-            String params = AES.decrypt(data,sKey);
+        if(StringUtils.isNotEmpty(data)) {
+        	//解密参数串
+            String params = this.decodeData(data);
             //参数转对象
             JSONObject jsonObj = JSON.parseObject(params);
             String id = jsonObj.getString("id");//客户编码
@@ -392,17 +390,13 @@ public class ApiController extends BaseProjectController {
  */
 	public void paySave(){
 		Map<String,String> result = new HashMap<String,String>();
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
+		result.put("status","success");
+        result.put("message","保存成功！");
+        //获取参数
         String data = getPara("data");
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
-            //密码生成
-            String sKey = companyID+randomCode+timestamp;
-            //解密参数串
-            String params = AES.decrypt(data,sKey);
+        if(StringUtils.isNotEmpty(data)) {
+        	//解密参数串
+            String params = this.decodeData(data);
             //参数转对象
             JSONObject jsonObj = JSON.parseObject(params);
             String id = jsonObj.getString("userId");//客户编码
@@ -466,17 +460,13 @@ public class ApiController extends BaseProjectController {
 	 */
 	public void chargeSave(){
 		Map<String,String> result = new HashMap<String,String>();
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
+		
+        //获取参数
         String data = getPara("data");
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+        if(StringUtils.isNotEmpty(data)) {
             //密码生成
-            String sKey = companyID+randomCode+timestamp;
-            //解密参数串
-            String params = AES.decrypt(data,sKey);
+        	//解密参数串
+            String params = this.decodeData(data);
             //参数转对象
             JSONObject jsonObj = JSON.parseObject(params);
             String id = jsonObj.getString("userId");//客户编码
@@ -485,7 +475,7 @@ public class ApiController extends BaseProjectController {
             String money = jsonObj.getString("money");//充值金额
             int moneyToInt =	Integer.parseInt(money); //充值金额
             String updateTime = jsonObj.getString("userId");//时间
-            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(count)){
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(count) && StringUtils.isNotEmpty(money)){
             	 List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
                  if(CollectionUtils.isEmpty(customByid)) {
                  	 result.put("status","false");
