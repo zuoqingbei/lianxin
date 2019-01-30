@@ -74,7 +74,7 @@ public class HttpTest {
 		
 		//getCourtUrl();//爬取全国法院被执行人信息查询网站
 		//getYjapi();
-		getYjapi("上海伟佳家具有限公司东海分厂");
+		getYjapi("大连万达集团股份有限公司");
 //		getBrandandpatent("青岛海联软件科技有限公司", "");
 //		getJudgmentDoc("青岛海联软件科技有限公司", "");
 

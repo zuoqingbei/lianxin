@@ -334,14 +334,19 @@ public class CompanyService {
 
 							String StockPercent = partner.getString("StockPercent");//出资比例
 							String StockPercentEd = StockPercent.replace("%", "").trim();//去除%
-							String ShouldCapi = partner.getString("ShouldCapi");//出资金额
+							String ShouldCapi = partner.getString("ShouldCapi").replace(",", "");//出资金额
 							CreditCompanyShareholder shareholderModel=new CreditCompanyShareholder(); 
 							shareholderModel.set("sh_name", Crawlername);
 							shareholderModel.set("money", StockPercentEd);
-							if(StringUtils.isNotBlank(ShouldCapi.replace(",", ""))){
-								BigDecimal a = new BigDecimal(ShouldCapi.replace(",", ""));
-								BigDecimal b = new BigDecimal("10000");
-								shareholderModel.set("contribution", a.multiply(b).toString());
+							try {
+								if(StringUtils.isNotBlank(ShouldCapi.replace(",", ""))){
+									BigDecimal a = new BigDecimal(ShouldCapi);
+									BigDecimal b = new BigDecimal("10000");
+									shareholderModel.set("contribution", a.multiply(b).toString());
+								}
+							} catch (Exception e) {
+								// TODO Auto-generated catch block
+								shareholderModel.set("contribution", "");
 							}
 							shareholderModel.set("company_id", companyId);
 							shareholderModel.set("sys_language", sys_language);
