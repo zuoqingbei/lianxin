@@ -194,11 +194,19 @@ public class AES {
         map.put("updateTime",time);*/
 
         //扣款
-        map.put("userId","406");
+        /*map.put("userId","406");
         map.put("money","0");
         map.put("currency","RMB");
         map.put("units","50");
-        map.put("updateTime",time);
+        map.put("updateTime",time);*/
+
+        //员工
+        map.put("userId","10");
+        map.put("userName","王虎成");
+        map.put("role","2");
+        map.put("mobileNumber","15953295779");
+        map.put("emailAddress","610754056@qq.com");
+
 
         JSONObject json = JSONObject.fromObject(map);
 

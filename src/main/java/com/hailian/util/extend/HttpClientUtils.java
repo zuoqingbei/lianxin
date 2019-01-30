@@ -156,8 +156,11 @@ public class HttpClientUtils {
         //String result = HttpClientUtils.sendPost("http://192.168.1.152:8080/api/paySave", key + "&" + "data=" + data);
 
         //扣款
-        String data = "%2Bg7zIa2OqjCjMkqRg2vKQxLQvvuITXUkdRq7r%2BixOw079C21pRS2UPl9HuE9%2FJRdjKHmh4B%2BoXfpN9%2Bu6HoVlHOnY2ccgSPqre8x9q8w01Q1mrWIWgOkV5pkJTL9g29i";
-        String result = HttpClientUtils.sendPost("http://192.168.1.152:8080/api/chargeSave", key + "&" + "data=" + data);
+        /*String data = "%2Bg7zIa2OqjCjMkqRg2vKQxLQvvuITXUkdRq7r%2BixOw079C21pRS2UPl9HuE9%2FJRdjKHmh4B%2BoXfpN9%2Bu6HoVlHOnY2ccgSPqre8x9q8w01Q1mrWIWgOkV5pkJTL9g29i";
+        String result = HttpClientUtils.sendPost("http://192.168.1.152:8080/api/chargeSave", key + "&" + "data=" + data);*/
+
+        String data = "p3f1M6pizje3iSBPW%2B%2BxnP1rBMfhelruuWmW1TnBSz6Bpo9dJVxkj%2BqmUzyfowBRjtOkwLhpKO390UUTa1o08D6N4nDUx401Dcp%2FQFlNACESoN%2BV8Rb%2BdEaT9DGX9p3m9XqyC6TxSyigfwsYRw%2FOsIOr4xgypWdGrR%2BncIIzZ%2F8%3D";
+        String result = HttpClientUtils.sendPost("http://192.168.1.152:8080/api/addUser", key + "&" + "data=" + data);
 
 
         System.out.println(result);
