@@ -144,7 +144,22 @@ public class HttpClientUtils {
 		return result;
 	}
 
-    public static void main(String args[]){
-        HttpClientUtils.sendPost("http://localhost:8400/api/addOrder","companyID=LX&randomCode=1111&timestamp=0000000000&data=pGzNOXrAd5XLDp8RjAEHt3DQXb%2BUs4SR4fVFnRCbaDZzN6AqmxFoQFlC6htjSRNcwt13dIYx786nHQ8eArL%2FB9QzGvekFyGb%2B6DESqF36jeBetormSk7xwvm0kRQECtFZA1n4DkeEY1eX8R43bhzGeWZTWWHgEbAWHFlVBDPS9wwj2sCLADSfh4wkNw1aP%2B4UD%2FkRQ67B1UZtzMKP3VDoahcThFhb6imAOCjx%2B%2FVyibKFOtF5vpt6%2BF3POh%2BH711VEM6%2F2hFVYUo%2FuGiZDNp%2BWf4pGq96mGo6HoBYk0ULieCBouR1vxBbirpbZ4D12AUSJAt7JKGHO0GLtdFPkJM1w%3D%3D");
+    public static void main(String args[]) {
+        //HttpClientUtils.sendPost("http://localhost:8400/api/addOrder","companyID=LX&randomCode=1111&timestamp=0000000000&data=pGzNOXrAd5XLDp8RjAEHt3DQXb%2BUs4SR4fVFnRCbaDZzN6AqmxFoQFlC6htjSRNcwt13dIYx786nHQ8eArL%2FB9QzGvekFyGb%2B6DESqF36jeBetormSk7xwvm0kRQECtFZA1n4DkeEY1eX8R43bhzGeWZTWWHgEbAWHFlVBDPS9wwj2sCLADSfh4wkNw1aP%2B4UD%2FkRQ67B1UZtzMKP3VDoahcThFhb6imAOCjx%2B%2FVyibKFOtF5vpt6%2BF3POh%2BH711VEM6%2F2hFVYUo%2FuGiZDNp%2BWf4pGq96mGo6HoBYk0ULieCBouR1vxBbirpbZ4D12AUSJAt7JKGHO0GLtdFPkJM1w%3D%3D");
+        String key = "companyID=LX&randomCode=1111&timestamp=0000000000";
+        //客户
+        //String data = "e1q0TQBlonJivoZP34fSywtFLdPvyx972XJl%2Ff3gaAd7PPMYlsFg%2BqmnXJtFLf7garGUx0UVS7aIqyagIufbO0x1AedX1%2Bkt9ADhGJb9nEvsqkFUAYBsqodAFAnrdL6Rm3BpcbwG%2Basouol2qOgv15OVbQpbxdkUv4pcly%2B7s%2FeK%2Fent001MkD9UaQOkXsFdX10OA%2FzBf4piwAqJac4VZEm4y4K9S9B52uaocNlCPUcz4u2QmIEDot2srFejNY%2FOGYLwtEkYJnupNvRwg16Hx5xPBRM%2FYLLqtumkXuzLhgPqMBwVLBy9VOp%2B4UPJwW9epLxJ9W2tLc5N233n1%2BuMQbl9cH80F7yuMkmfa3XOJVCpbrwO6AvCfVbGEUt7187j8T%2FHNSp9OCGx%2FSn7ObiJ5w%3D%3D";
+        //String result = HttpClientUtils.sendPost("http://192.168.1.152:8080/api/addCustomer", key + "&" + "data=" + data);
+
+        //充值
+        //String data = "%2Bg7zIa2OqjCjMkqRg2vKQxLQvvuITXUkdRq7r%2BixOw079C21pRS2UPl9HuE9%2FJRdhe%2F6WhT9vfljd8zhoGCv4KZ7XvHYBGPoATOyzjvqhpmT8WnQfh6O1%2Bj%2B6DoAjbHb";
+        //String result = HttpClientUtils.sendPost("http://192.168.1.152:8080/api/paySave", key + "&" + "data=" + data);
+
+        //扣款
+        String data = "%2Bg7zIa2OqjCjMkqRg2vKQxLQvvuITXUkdRq7r%2BixOw079C21pRS2UPl9HuE9%2FJRdjKHmh4B%2BoXfpN9%2Bu6HoVlHOnY2ccgSPqre8x9q8w01Q1mrWIWgOkV5pkJTL9g29i";
+        String result = HttpClientUtils.sendPost("http://192.168.1.152:8080/api/chargeSave", key + "&" + "data=" + data);
+
+
+        System.out.println(result);
     }
 }

@@ -278,25 +278,25 @@ public class BaseWord {
                 Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 //合计项计算
-                if(hasTotal){
-                    //数字和金额类型的字段才能计算
-                    if("number".equals(fieldType)||"money".equals(fieldType)) {
-                        String val = totalRow.get(column);
-                        val = val != null ? val.replaceAll(",","") : "0";
-                        val = new BigDecimal(val).add(new BigDecimal(value.replaceAll(",",""))).toString();
-                        try {
-                            if("money".equals(fieldType)) {
+                if(hasTotal) {
+                    try {
+                        //数字和金额类型的字段才能计算
+                        if ("number".equals(fieldType) || "money".equals(fieldType)) {
+                            String val = totalRow.get(column);
+                            val = val != null ? val.replaceAll(",", "") : "0";
+                            val = new BigDecimal(val).add(new BigDecimal(value.replaceAll(",", ""))).toString();
+                            if ("money".equals(fieldType)) {
                                 DecimalFormat df = new DecimalFormat("###,###.##");
                                 NumberFormat nf = NumberFormat.getInstance();
                                 val = df.format(nf.parse(val));
                             }
-                            totalRow.put(column,val);
-                        } catch (ParseException e) {
-                            e.printStackTrace();
+                            totalRow.put(column, val);
+                        } else {
+                            String val = totalRow.get(column);
+                            totalRow.put(column, totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val) ? val : "-");
                         }
-                    }else {
-                        String val = totalRow.get(column);
-                        totalRow.put(column, totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val) ? val : "-");
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
 
