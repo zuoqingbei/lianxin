@@ -21,8 +21,8 @@ import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
-import com.hailian.util.http.showapi.util.StringUtils;
 import com.jfinal.upload.UploadFile;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtilities;
@@ -250,7 +250,7 @@ public class BaseWord {
         //存放行数据-word模板
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         //表格列字段集合
-        LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, Map<String,String>> cols = new LinkedHashMap<String, Map<String,String>>();
         //存放表格数据
         List<LinkedHashMap<String, String>> datas = new ArrayList<LinkedHashMap<String, String>>();
         //合计项
@@ -261,10 +261,19 @@ public class BaseWord {
             CreditReportModuleConf module = child.get(i);
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
+            if("日期".equals(temp_name)){
+                System.out.println(temp_name);
+            }
             String field_type = module.getStr("field_type");
+            String word_default = module.get("word_default") != null ? module.get("word_default") : "";
             if ("操作".equals(temp_name) || "Operation".equals(temp_name) || "Summary".equals(temp_name)) {
             } else {
-                cols.put(column_name, temp_name + "|" + field_type);
+                Map<String, String> colMap = new HashMap<>();
+                colMap.put("temp_name", temp_name);
+                colMap.put("field_type", field_type);
+                colMap.put("word_default", word_default);
+                //cols.put(column_name, temp_name + "|" + field_type);
+                cols.put(column_name, colMap);
             }
         }
         //取数据
@@ -273,8 +282,10 @@ public class BaseWord {
             //取一行数据
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
-                String[] strs = cols.get(column).split("\\|");
-                String fieldType = strs.length > 1 ? strs[1] : "";
+                Map<String,String> colMap = cols.get(column);
+                String tempName = colMap.get("temp_name");
+                String fieldType = colMap.get("field_type");
+                String wordDefault = colMap.get("word_default");
                 Integer id = model.getInt("id");
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 //合计项计算
@@ -303,16 +314,28 @@ public class BaseWord {
                 //出资情况，出资金额后面跟币种
                 if("contribution".equals(column)) {
                     if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType) || ReportTypeCons.ROC_HY.equals(reportType)) {
-                        if(!cols.get("contribution").contains("(")) {
-                            String str = cols.get("contribution").split("\\|")[0] + "(" + temp + ")" + "|" + strs[1];
-                            cols.put("contribution", str);
+                        if(!tempName.contains("(")){
+                            String str = tempName + "(" + temp + ")";
+                            colMap.put("temp_name", str);
                         }
                     }
                 }
 
                 //下拉选择
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value, reportType, sysLanguage) : "";
+                    value = !"".equals(value) ? ReportInfoGetDataController.dictIdToString(value, reportType, sysLanguage) : "";
+                }
+                //下拉多选
+                else if("select2".equals(fieldType)){
+                    String[] vals = value.split("\\$");
+                    String selName = "";
+                    for(String val : vals){
+                        selName += ReportInfoGetDataController.dictIdToString(val, reportType, sysLanguage) + ",";
+                    }
+                    if(selName.contains(",")) {
+                        selName = selName.substring(0, selName.length() - 1);
+                    }
+                    value = selName;
                 }
                 //处理千位符号
                 else if ("money".equals(fieldType)) {
@@ -322,6 +345,12 @@ public class BaseWord {
                         value = df.format(nf.parse(value));
                     } catch (ParseException e) {
                         e.printStackTrace();
+                    }
+                }
+                //日期
+                else if("date".equals(fieldType)){
+                    if(StringUtils.isEmpty(value)){
+                        value = wordDefault;
                     }
                 }
                 //专利和商标图片先用占位符占用，再二次替换成图片
@@ -448,9 +477,9 @@ public class BaseWord {
      * 生成表头
      * @param cols
      * @param reportType
-     * @param temp
+     * @param sysLanguage
      */
-    public static RowRenderData tableHeaderH(LinkedHashMap<String,String> cols,String reportType,String sysLanguage) {
+    public static RowRenderData tableHeaderH(LinkedHashMap<String, Map<String,String>> cols,String reportType,String sysLanguage) {
         RowRenderData rowRenderData = null;
         TableStyle tableStyle = new TableStyle();
         //表格边框
@@ -462,7 +491,8 @@ public class BaseWord {
         TextRenderData[] header = new TextRenderData[colSize.length];
         int i = 0;
         for (String column : cols.keySet()) {
-            String value = cols.get(column).split("\\|")[0];
+            Map<String,String> colMap = cols.get(column);
+            String temp_name = colMap.get("temp_name");
             Style style = new Style();
             //102 股东信息
             if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
@@ -485,7 +515,7 @@ public class BaseWord {
                     style.setAlign(STJc.RIGHT);
                 }
             }
-            header[i] = new TextRenderData(value, style);
+            header[i] = new TextRenderData(temp_name, style);
             i++;
         }
         //表头居中
