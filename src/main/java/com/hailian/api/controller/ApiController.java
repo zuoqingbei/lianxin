@@ -23,6 +23,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.custom.model.CustomTranFlowModel;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
 import com.hailian.util.encrypt.AES;
 import com.hailian.util.encrypt.URLCoder;
@@ -549,6 +550,66 @@ public class ApiController extends BaseProjectController {
         		flowmodel.save();
         		result.put("status","success");
                 result.put("message","扣款成功！");
+            }else {
+            	result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else {
+        	 result.put("status","false");
+             result.put("message","缺少参数！");
+        }
+        renderJson(result);
+	}
+	/**
+	 * 同步报告员，翻译员线上用户
+	 * @author dou_shuiahi
+	 * @date: 2019年1月30日下午2:27:53
+	 * @Description:
+	 */
+	public void addUser(){
+		Map<String,String> result = new HashMap<String,String>();
+        //获取参数
+        String data = getPara("data");
+        if(StringUtils.isNotEmpty(data)) {
+            //密码生成
+        	//解密参数串
+            String params = this.decodeData(data);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String id = jsonObj.getString("userId");//线上客户编码
+            String userName = jsonObj.getString("userName");//用户名
+            String role = jsonObj.getString("role");//角色
+            String mobileNumber = jsonObj.getString("mobileNumber");//手机
+            String emailAddress = jsonObj.getString("emailAddress");//邮箱
+            SysUser findByUserName = SysUser.dao.findByUserName(userName);
+    		if(null!=findByUserName){
+    			result.put("status","false");
+                result.put("message","登录名不允许重复");
+                renderJson(result);
+                return;
+    		}
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(role)){
+            	SysUser model = new SysUser();
+            	model.set("usertype", "2");//线上用户默认普通用户
+            	model.set("online_userid", id);
+            	if("2".equals(role) ) {//报告员
+            		role="14";
+            	}else if("6".equals(role)) {//翻译员
+            		role="15";
+            	}else {
+            		result.put("status","success");
+                    result.put("message","添加用户成功");
+                    renderJson(result);
+                    return;
+            	}
+         	    model.set("departid", role);
+         	    model.set("username", userName);
+         	    model.set("tel", mobileNumber);
+         	    model.set("email", emailAddress);
+         	    model.set("create_time", getNow());
+         	    model.save();
+        		result.put("status","success");
+        		result.put("message","添加用户成功");
             }else {
             	result.put("status","false");
                 result.put("message","有必传参数未传值！");
