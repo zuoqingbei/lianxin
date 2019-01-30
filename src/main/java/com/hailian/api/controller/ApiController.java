@@ -1,5 +1,15 @@
 package com.hailian.api.controller;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hailian.api.form.ApiForm;
@@ -18,14 +28,6 @@ import com.hailian.util.encrypt.AES;
 import com.hailian.util.encrypt.URLCoder;
 import com.jfinal.aop.Before;
 import com.jfinal.kit.JsonKit;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
-
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @ControllerBind(controllerKey = "/api")
 @Before(ApiInterceptor.class)
@@ -321,12 +323,13 @@ public class ApiController extends BaseProjectController {
             String fax = jsonObj.getString("fax");//传真
             String country = jsonObj.getString("country");//国家
             String accountCount = jsonObj.getString("accountCount");//账户点数
+            String money = jsonObj.getString("money");//充值金额
             String isArrearage = jsonObj.getString("isArrearage");//是否可以欠费
             String isOldCustomer = jsonObj.getString("isOldCustomer");//是否为老用户
             String address = jsonObj.getString("address");
             String remarks = jsonObj.getString("remarks");
            
-            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(country)
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(country)&&StringUtils.isNotEmpty(name)&&StringUtils.isNotEmpty(money)
                     &&StringUtils.isNotEmpty(accountCount)&&StringUtils.isNotEmpty(isArrearage)
                     &&StringUtils.isNotEmpty(isOldCustomer)&&StringUtils.isNotEmpty(email)){
             	CustomInfoModel model = new CustomInfoModel();
@@ -347,22 +350,28 @@ public class ApiController extends BaseProjectController {
                 List<SysDictDetail> dictDetailBy=null;
                 dictDetailBy = SysDictDetail.dao.getDictDetailBy(country,"country");
                
-                if(CollectionUtils.isEmpty(dictDetailBy)){
+                if(CollectionUtils.isNotEmpty(dictDetailBy)){
                 	model.set("country", dictDetailBy.get(0).get("detail_id"));
+                }else {
+                	result.put("status","false");
+                    result.put("message","国家不存在，请先手工同步国家信息");
+                    renderJson(result);
+                    return;
                 }
                 
                 model.set("account_count", accountCount);
+                model.set("money", money);//金额
                 if(isArrearage.equals("1")) {
                 	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("是","isArrearage");
                 	  model.set("is_arrearage", dictDetailBy.get(0).get("detail_id"));
-                }else if(isArrearage.equals("2")) {
+                }else if(isArrearage.equals("0")) {
                 	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("否","isArrearage");
                 	  model.set("is_arrearage", dictDetailBy.get(0).get("detail_id"));
                 }
                 if(isOldCustomer.equals("1")) {
                	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("是","is_old_customer");
                	  model.set("is_old_customer", dictDetailBy.get(0).get("detail_id"));
-               }else if(isOldCustomer.equals("2")) {
+               }else if(isOldCustomer.equals("0")) {
                	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("否","is_old_customer");
                	  model.set("is_old_customer", dictDetailBy.get(0).get("detail_id"));
                }
@@ -390,8 +399,7 @@ public class ApiController extends BaseProjectController {
  */
 	public void paySave(){
 		Map<String,String> result = new HashMap<String,String>();
-		result.put("status","success");
-        result.put("message","保存成功！");
+		
         //获取参数
         String data = getPara("data");
         if(StringUtils.isNotEmpty(data)) {
@@ -401,11 +409,12 @@ public class ApiController extends BaseProjectController {
             JSONObject jsonObj = JSON.parseObject(params);
             String id = jsonObj.getString("userId");//客户编码
             String money = jsonObj.getString("money");//充值金额
-            int moneyToInt =	Integer.parseInt(money); //充值金额
-            String currency = getPara("currency");//充值币种
+            BigDecimal moneyToInt =	new BigDecimal(money); //充值金额
+            String currency = jsonObj.getString("currency");//充值币种
             String count = jsonObj.getString("units");//充值点数
             int countToInt =	Integer.parseInt(count); //充值点数
-            String updateTime = jsonObj.getString("userId");//时间
+            String updateTime = jsonObj.getString("updateTime");//时间
+            String timeStamp2Date = timeStamp2Date(updateTime);
             if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(money)
                     &&StringUtils.isNotEmpty(currency)&&StringUtils.isNotEmpty(count)){
             	 List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
@@ -415,19 +424,34 @@ public class ApiController extends BaseProjectController {
                      renderJson(result);
                      return;
                  }
-            	CustomInfoModel model = new CustomInfoModel();
+              
+                 
+                 
+                 
+                 
+               CustomInfoModel model = new CustomInfoModel();
+        	   List<SysDictDetail> dictDetailBy=null;
+               dictDetailBy = SysDictDetail.dao.getDictDetailByNameEn(currency,"currency");//查询币种对应类型编码
+               if(CollectionUtils.isNotEmpty(dictDetailBy)){
+//               	model.set("currency", dictDetailBy.get(0).get("detail_id"));
+               }else {
+               	result.put("status","false");
+                   result.put("message","币种不存在，请先手工同步币种信息");
+                   renderJson(result);
+                   return;
+               }
             	int account_count=0;
-            	int account_money=0;
+            	BigDecimal account_money = new BigDecimal(0);
             	if (null!=customByid.get(0).get("account_count")) {
          	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有点数	
          		}
             	if (null!=customByid.get(0).get("money")) {
-         	 	    account_money=  Integer.parseInt(customByid.get(0).get("money").toString());//获取已有点数	
+         	 	    account_money=   new BigDecimal(customByid.get(0).get("money").toString());//获取已有金额
          		}
             	model.set("table_id", customByid.get(0).get("table_id"));
             	model.set("account_count", countToInt+account_count);//点数
-            	model.set("money", moneyToInt+account_money);//金额
-         	    model.set("money_updatetime", getNow());
+            	model.set("money", moneyToInt.add(account_money));//金额
+         	    model.set("money_updatetime", timeStamp2Date);
          	    model.update();
          	    //充值新增流水记录表，修改客户当前账户点数与金额更新时间
         		CustomTranFlowModel flowmodel=new CustomTranFlowModel();
@@ -472,9 +496,10 @@ public class ApiController extends BaseProjectController {
             String id = jsonObj.getString("userId");//客户编码
             String count = jsonObj.getString("units");//扣款点数
             int countToInt =	Integer.parseInt(count); //扣款点数
-            String money = jsonObj.getString("money");//充值金额
-            int moneyToInt =	Integer.parseInt(money); //充值金额
-            String updateTime = jsonObj.getString("userId");//时间
+            String money = jsonObj.getString("money");//扣款金额
+            BigDecimal moneyToInt =	new BigDecimal(money); //扣款金额
+            String updateTime = jsonObj.getString("updateTime");//时间
+            String timeStamp2Date = timeStamp2Date(updateTime);
             if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(count) && StringUtils.isNotEmpty(money)){
             	 List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
                  if(CollectionUtils.isEmpty(customByid)) {
@@ -497,19 +522,20 @@ public class ApiController extends BaseProjectController {
                     return;
      			}
             	model.set("account_count", surplus_count);
-            	int account_money=0;
+            	BigDecimal account_money=new BigDecimal(0);
             	if (null!=customByid.get(0).get("money")) {
-         	 	    account_money=  Integer.parseInt(customByid.get(0).get("money").toString());//获取已有金额	
+         	 	    account_money=  new BigDecimal(customByid.get(0).get("money").toString());//获取已有金额	
          		}
-            	int surplus_money=account_money-moneyToInt;//剩余金额
-            	if ("508".equals(customByid.get(0).get("is_arrearage"))&&surplus_money<0) {
+            	BigDecimal surplus_money=account_money.subtract(moneyToInt);//剩余金额
+            	int i=surplus_money.compareTo(BigDecimal.ZERO); 
+            	if ("508".equals(customByid.get(0).get("is_arrearage"))&&i==-1) {
             		result.put("status","false");
                     result.put("message","扣款失败，该客户不允许欠费");
                     renderJson(result);
                     return;
      			}
             	model.set("money", surplus_money);
-         	    model.set("money_updatetime", getNow());
+         	    model.set("money_updatetime", timeStamp2Date);
          	    model.update();
          	    //流水记录表
         		CustomTranFlowModel flowmodel=new CustomTranFlowModel();
@@ -533,4 +559,16 @@ public class ApiController extends BaseProjectController {
         }
         renderJson(result);
 	}
+	public static String timeStamp2Date(String time) {
+	    Long timeLong = Long.parseLong(time);
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//要转换的时间格式
+	    Date date;
+	    try {
+	        date = sdf.parse(sdf.format(timeLong));
+	        return sdf.format(date);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}  
 }
