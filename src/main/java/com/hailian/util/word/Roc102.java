@@ -101,10 +101,22 @@ public class Roc102 {
         String currency = companyInfo.get("currency")!=null?companyInfo.getStr("currency"):"";
         //订单公司名称
         if(ReportTypeCons.ROC_EN.equals(reportType)){
-            map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
+            map.put("company", order.getStr("right_company_name_en"));
         }else{
             map.put("company", companyInfo.getStr("name_en"));
         }
+
+        //订单公司名称和报告公司名称相同，则显示“與註冊記錄同”
+        if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
+            String orderCompanyName = order.getStr("right_company_name_en");
+            String reportCompanyName = companyInfo.getStr("name");
+            if(orderCompanyName.equals(reportCompanyName)){
+                map.put("as_registered_zh", "與註冊記錄同");
+                map.put("as_registered_en", "as registered");
+            }
+        }
+
+        map.put("company", companyInfo.getStr("name_en"));
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
@@ -173,10 +185,8 @@ public class Roc102 {
                         if(model.get("date")!=null && !"".equals(model.get("date"))) {
                             Style style = new Style();
                             style.setFontFamily("Times New Roman");
-                            if(ReportTypeCons.ROC_HY.equals(reportType)) {
-                                map.put("endDate", new TextRenderData(" 截止至 " + DateUtils.getYmdHmsssZh(model.get("date") + ""),style));
-                            }else if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                                map.put("endDate",new TextRenderData("(" + "截止至 " + DateUtils.getYmdHmsssZh(model.get("date")+"") + ")",style));
+                            if(ReportTypeCons.ROC_HY.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
+                                map.put("endDate",new TextRenderData(" (" + "截止至 " + DateUtils.getYmdHmsssZh(model.get("date")+"") + ")",style));
                             }
                         }
                     }
@@ -286,6 +296,9 @@ public class Roc102 {
                             //分支机构使用分号换行
                             if("embranchment_count".equals(column)){
                                 value = value.replaceAll("\\；", "\n");
+                                if(StringUtils.isEmpty(value)){
+                                    value = "無";
+                                }
                             }
                             value = value.replaceAll("(\\\\r\\\\n|\\\\n)", "\n");
                             //经营范围设置字体
@@ -294,7 +307,6 @@ public class Roc102 {
                                     style.setFontFamily("Times New Roman");
                                 }
                             }
-                            //map.put(column, value);
                             map.put(column, new TextRenderData(value, style));
                         }else{
 
@@ -467,7 +479,6 @@ public class Roc102 {
             }
             //财务-评价
             map.put("financial_eval", financialEval(statementsConf,reportType,sysLanguage));
-            
         }
 
         //生成word
