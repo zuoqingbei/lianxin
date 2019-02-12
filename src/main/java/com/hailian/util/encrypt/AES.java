@@ -101,15 +101,8 @@ public class AES {
         String value = Base64Util.encode(binary);
 
         // URL解码
-
         //加密
-        //value = URLCoder.getURLEncoderString(value);
-        try {
-            value = URLEncoder.encode(value ,"utf-8" );
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-
+        value = URLCoder.getURLEncoderString(value);
         return value;
     }
 
@@ -132,12 +125,7 @@ public class AES {
         }
 
         //解密
-        //data = URLCoder.getURLDecoderString(data);
-        try {
-            data = java.net.URLDecoder.decode(data,"utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        data = URLCoder.getURLDecoderString(data);
 
         byte[] binary = Base64Util.decode(data);
         if (binary == null) {
@@ -164,6 +152,7 @@ public class AES {
         String cKey = "LX00000000001111";
 
         Map<String,String> map = new HashMap<String,String>();
+        /*
         map.put("customId","1");
         map.put("continent","2");
         map.put("countryName","3");
@@ -179,7 +168,46 @@ public class AES {
         map.put("email","13");
         map.put("contacts","14");
         map.put("remarks","15");
-        map.put("onlineId","16");
+        map.put("onlineId","16");*/
+        //客户
+        /*map.put("id","406");
+        map.put("name","接口");
+        map.put("contacts","王先生");
+        map.put("contactsShortName","王先生1");
+        map.put("telphone","15953295779");
+        map.put("email","610754@qq.com");
+        map.put("fax","123456");
+        map.put("country","中国大陆");
+        map.put("accountCount","0");
+        map.put("money","100.05");
+        map.put("isArrearage","0");
+        map.put("isOldCustomer","1");
+        map.put("address","青岛崂山区");
+        map.put("remarks","这里是备注");*/
+
+        //充值
+        String time = System.currentTimeMillis()+"";
+        /*map.put("userId","406");
+        map.put("money","0");
+        map.put("currency","RMB");
+        map.put("units","50");
+        map.put("updateTime",time);*/
+
+        //扣款
+        /*map.put("userId","406");
+        map.put("money","0");
+        map.put("currency","RMB");
+        map.put("units","50");
+        map.put("updateTime",time);*/
+
+        //员工
+        map.put("userId","10");
+        map.put("userName","王虎成");
+        map.put("role","2");
+        map.put("mobileNumber","15953295779");
+        map.put("emailAddress","610754056@qq.com");
+
+
         JSONObject json = JSONObject.fromObject(map);
 
         // 需要加密的字串

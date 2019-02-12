@@ -69,6 +69,15 @@ public class SendMailUtil {
 		this.title = title;
 		this.content = content;
 	}
+
+    /**
+     * 发送邮件
+     * @param recipientAddress
+     * @param recipientAddressCC
+     * @param title 邮件标题
+     * @param content 邮件内容
+     * @param list  文件列表
+     */
     public SendMailUtil(String recipientAddress,String recipientAddressCC,String title, String content,List<Map<String,String>> list) {
 		super();
 		this.recipientAddress = recipientAddress;

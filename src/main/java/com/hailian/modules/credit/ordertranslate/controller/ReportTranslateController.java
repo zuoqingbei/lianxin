@@ -75,9 +75,13 @@ public class ReportTranslateController extends BaseProjectController {
 //							value_cht=value;
 						}
 					}
-			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value);//翻译校正
+			    	TranslateModel translateByError = TranslateService.service.getTranslateByError(value_en);//翻译校正
+			    	TranslateModel translateByError2 = TranslateService.service.getTranslateByError(value_cht);//翻译校正
 			    	if(translateByError!=null){
 			    		value_en = translateByError.get("correct_phrase");//翻译校正
+			    	}
+			    	if(translateByError2!=null){
+			    		value_cht = translateByError2.get("correct_phrase");//翻译校正
 			    	}
 			    	if(StringUtils.isNotBlank(value_en) && StringUtils.isNotBlank(value_cht)){
 			    		//value=value_en+"|"+value_cht;

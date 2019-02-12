@@ -1,5 +1,15 @@
 package com.hailian.api.controller;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hailian.api.form.ApiForm;
@@ -10,16 +20,15 @@ import com.hailian.api.util.ApiUtils;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.custom.model.CustomInfoModel;
+import com.hailian.modules.credit.custom.model.CustomTranFlowModel;
+import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.user.SysUser;
 import com.hailian.util.StrUtils;
 import com.hailian.util.encrypt.AES;
+import com.hailian.util.encrypt.URLCoder;
 import com.jfinal.aop.Before;
 import com.jfinal.kit.JsonKit;
-import org.apache.commons.lang.StringUtils;
-
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @ControllerBind(controllerKey = "/api")
 @Before(ApiInterceptor.class)
@@ -88,20 +97,13 @@ public class ApiController extends BaseProjectController {
         Map<String,String> result = new HashMap<String,String>();
         result.put("status","success");
         result.put("message","保存成功！");
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
+        //获取参数
         String data = getPara("data");
         //解密参数
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+        if(StringUtils.isNotEmpty(data)) {
             try {
-                data = URLEncoder.encode(data, "utf-8");
-                //密码生成
-                String sKey = companyID + timestamp + randomCode;
                 //解密参数串
-                String params = AES.decrypt(data, sKey);
+                String params = this.decodeData(data);
                 //参数转对象
                 JSONObject jsonObj = JSON.parseObject(params);
                 String customId = jsonObj.getString("customId");
@@ -128,7 +130,7 @@ public class ApiController extends BaseProjectController {
                     String num =CreditOrderInfo.dao.getNumber();
                     CreditOrderInfo orderInfo = new CreditOrderInfo();
                     orderInfo.set("num",num);
-                    orderInfo.setCompanyId(companyID);
+                    orderInfo.setCompanyId("");
                     orderInfo.setContinent(continent);
                     orderInfo.setCountry(countryName);
                     orderInfo.setReportType(reportType);
@@ -153,7 +155,7 @@ public class ApiController extends BaseProjectController {
             }catch (Exception e){
                 e.printStackTrace();
                 result.put("status","false");
-                result.put("message","数据异常！");
+                result.put("message","格式不正确！");
             }
         }else{
             result.put("status","false");
@@ -168,16 +170,14 @@ public class ApiController extends BaseProjectController {
         Map<String,String> result = new HashMap<String,String>();
         result.put("status","success");
         result.put("message","保存成功！");
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
         String data = getPara("data");
         //解密参数
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
+        if(!StringUtils.isEmpty(data)) {
+            result.put("status","false");
+            result.put("message","缺少参数！");
+        }else{
             //密码生成
-            String sKey = companyID+randomCode+timestamp;
+            String sKey = this.getKey();
             //解密参数串
             String params = AES.decrypt(data,sKey);
             //参数转对象
@@ -206,7 +206,7 @@ public class ApiController extends BaseProjectController {
                 if(orderList.size()>0){
                     CreditOrderInfo order = orderList.get(0);
                     CreditOrderInfo orderInfo = new CreditOrderInfo();
-                    orderInfo.setCompanyId(companyID);
+                    orderInfo.setCompanyId("");
                     orderInfo.setContinent(continent);
                     orderInfo.setCountry(countryName);
                     orderInfo.setReportType(reportType);
@@ -229,9 +229,6 @@ public class ApiController extends BaseProjectController {
                 result.put("status","false");
                 result.put("message","有必传参数未传值！");
             }
-        }else{
-            result.put("status","false");
-            result.put("message","缺少参数！");
         }
         renderJson(result);
     }
@@ -239,25 +236,23 @@ public class ApiController extends BaseProjectController {
     //修改订单
     public void delOrder() {
         Map<String,String> result = new HashMap<String,String>();
-        result.put("status","success");
-        result.put("message","保存成功！");
-        //获取4个固定参数
-        String companyID = getPara("companyID");
-        String randomCode = getPara("randomCode");
-        String timestamp = getPara("timestamp");
+        //获取数据参数
         String data = getPara("data");
         //解密参数
-        if(StringUtils.isNotEmpty(companyID) && StringUtils.isNotEmpty(randomCode)
-                && StringUtils.isNotEmpty(timestamp) && StringUtils.isNotEmpty(data)) {
-            //密码生成
-            String sKey = companyID+randomCode+timestamp;
+        if(StringUtils.isEmpty(data)){
+            result.put("status","false");
+            result.put("message","缺少参数！");
+        } else{
+            //通过浏览器传来的json自动解码了，再做一次转码
+            data = URLCoder.getURLEncoderString(data);
+            //获取加密key
+            String sKey = getKey();
             //解密参数串
             String params = AES.decrypt(data,sKey);
             //参数转对象
             JSONObject jsonObj = JSON.parseObject(params);
             String onlineId = jsonObj.getString("onlineId");
             String reason = jsonObj.getString("reason");
-
             if(StringUtils.isNotEmpty(onlineId)){
                 List<CreditOrderInfo> orderList = CreditOrderInfo.dao.findByWhere(" where online_id = ? ",onlineId);
                 if(orderList.size()>0){
@@ -267,7 +262,126 @@ public class ApiController extends BaseProjectController {
                     orderInfo.setRemarks(reason);
                     //删除
                     orderInfo.delete();
+                    result.put("status","success");
+                    result.put("message","保存成功！");
+                }else{
+                    result.put("status","false");
+                    result.put("message","订单不存在！");
                 }
+            }else{
+                result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }
+        renderJson(result);
+    }
+
+    //生成加密key
+    public String getKey(){
+        String companyID = getPara("companyID");
+        String randomCode = getPara("randomCode");
+        String timestamp = getPara("timestamp");
+        //密码生成
+        return companyID+timestamp+randomCode;
+    }
+
+    //解密参数
+    public String decodeData(String data){
+        data = URLCoder.getURLEncoderString(data);
+        //密码生成
+        String sKey = this.getKey();
+        //解密参数串
+        return AES.decrypt(data,sKey);
+    }
+
+
+    /**
+	 * api对接线上新增客户同步
+	 * @author dou_shuiahi
+	 * @date: 2019年1月24日下午3:45:21
+	 * @Description:
+	 */
+    public void addCustomer() {
+        Map<String,String> result = new HashMap<String,String>();
+        result.put("status","success");
+        result.put("message","保存成功！");
+        //获取参数
+        String data = getPara("data");
+       
+        
+        //解密参数
+        if(StringUtils.isNotEmpty(data)) {
+        	//解密参数串
+            String params = this.decodeData(data);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String id = jsonObj.getString("id");//客户编码
+            String name = jsonObj.getString("name");//客户名称
+            String contacts = jsonObj.getString("contacts");//联系人全称
+            String contactsShortName = jsonObj.getString("contactsShortName");//联系人简称
+            String telphone = jsonObj.getString("telphone");//电话
+            String email = jsonObj.getString("email");//邮箱
+            String fax = jsonObj.getString("fax");//传真
+            String country = jsonObj.getString("country");//国家
+            String accountCount = jsonObj.getString("accountCount");//账户点数
+            String money = jsonObj.getString("money");//充值金额
+            String isArrearage = jsonObj.getString("isArrearage");//是否可以欠费
+            String isOldCustomer = jsonObj.getString("isOldCustomer");//是否为老用户
+            String address = jsonObj.getString("address");
+            String remarks = jsonObj.getString("remarks");
+           
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(country)&&StringUtils.isNotEmpty(name)&&StringUtils.isNotEmpty(money)
+                    &&StringUtils.isNotEmpty(accountCount)&&StringUtils.isNotEmpty(isArrearage)
+                    &&StringUtils.isNotEmpty(isOldCustomer)&&StringUtils.isNotEmpty(email)){
+            	CustomInfoModel model = new CustomInfoModel();
+            	List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
+            	if(customByid.size()>0) {
+            		result.put("status","false");
+                    result.put("message","已经存在该客户编码！");
+                    renderJson(result);
+                    return;
+            	}
+                model.set("id", id);
+                model.set("name", name);
+                model.set("contacts", contacts);
+                model.set("contacts_short_name", contactsShortName);
+                model.set("telphone", telphone);
+                model.set("email", email);
+                model.set("fax", fax);
+                List<SysDictDetail> dictDetailBy=null;
+                dictDetailBy = SysDictDetail.dao.getDictDetailBy(country,"country");
+               
+                if(CollectionUtils.isNotEmpty(dictDetailBy)){
+                	model.set("country", dictDetailBy.get(0).get("detail_id"));
+                }else {
+                	result.put("status","false");
+                    result.put("message","国家不存在，请先手工同步国家信息");
+                    renderJson(result);
+                    return;
+                }
+                
+                model.set("account_count", accountCount);
+                model.set("money", money);//金额
+                if(isArrearage.equals("1")) {
+                	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("是","isArrearage");
+                	  model.set("is_arrearage", dictDetailBy.get(0).get("detail_id"));
+                }else if(isArrearage.equals("0")) {
+                	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("否","isArrearage");
+                	  model.set("is_arrearage", dictDetailBy.get(0).get("detail_id"));
+                }
+                if(isOldCustomer.equals("1")) {
+               	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("是","is_old_customer");
+               	  model.set("is_old_customer", dictDetailBy.get(0).get("detail_id"));
+               }else if(isOldCustomer.equals("0")) {
+               	 dictDetailBy = SysDictDetail.dao.getDictDetailBy("否","is_old_customer");
+               	  model.set("is_old_customer", dictDetailBy.get(0).get("detail_id"));
+               }
+                model.set("address", address);
+                model.set("remarks", remarks);
+                //保存
+                model.save();
+                result.put("status","success");
+                result.put("message","保存成功！");
             }else{
                 result.put("status","false");
                 result.put("message","有必传参数未传值！");
@@ -278,4 +392,244 @@ public class ApiController extends BaseProjectController {
         }
         renderJson(result);
     }
+/**
+ * api对接线上客户充值
+ * @author dou_shuiahi
+ * @date: 2019年1月25日下午3:33:27
+ * @Description:
+ */
+	public void paySave(){
+		Map<String,String> result = new HashMap<String,String>();
+		
+        //获取参数
+        String data = getPara("data");
+        if(StringUtils.isNotEmpty(data)) {
+        	//解密参数串
+            String params = this.decodeData(data);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String id = jsonObj.getString("userId");//客户编码
+            String money = jsonObj.getString("money");//充值金额
+            BigDecimal moneyToInt =	new BigDecimal(money); //充值金额
+            String currency = jsonObj.getString("currency");//充值币种
+            String count = jsonObj.getString("units");//充值点数
+            int countToInt =	Integer.parseInt(count); //充值点数
+            String updateTime = jsonObj.getString("updateTime");//时间
+            String timeStamp2Date = timeStamp2Date(updateTime);
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(money)
+                    &&StringUtils.isNotEmpty(currency)&&StringUtils.isNotEmpty(count)){
+            	 List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
+                 if(CollectionUtils.isEmpty(customByid)) {
+                 	result.put("status","false");
+                     result.put("message","目标系统不存在该客户编码！");
+                     renderJson(result);
+                     return;
+                 }
+              
+                 
+                 
+                 
+                 
+               CustomInfoModel model = new CustomInfoModel();
+        	   List<SysDictDetail> dictDetailBy=null;
+               dictDetailBy = SysDictDetail.dao.getDictDetailByNameEn(currency,"currency");//查询币种对应类型编码
+               if(CollectionUtils.isNotEmpty(dictDetailBy)){
+//               	model.set("currency", dictDetailBy.get(0).get("detail_id"));
+               }else {
+               	result.put("status","false");
+                   result.put("message","币种不存在，请先手工同步币种信息");
+                   renderJson(result);
+                   return;
+               }
+            	int account_count=0;
+            	BigDecimal account_money = new BigDecimal(0);
+            	if (null!=customByid.get(0).get("account_count")) {
+         	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有点数	
+         		}
+            	if (null!=customByid.get(0).get("money")) {
+         	 	    account_money=   new BigDecimal(customByid.get(0).get("money").toString());//获取已有金额
+         		}
+            	model.set("table_id", customByid.get(0).get("table_id"));
+            	model.set("account_count", countToInt+account_count);//点数
+            	model.set("money", moneyToInt.add(account_money));//金额
+         	    model.set("money_updatetime", timeStamp2Date);
+         	    model.update();
+         	    //充值新增流水记录表，修改客户当前账户点数与金额更新时间
+        		CustomTranFlowModel flowmodel=new CustomTranFlowModel();
+        		flowmodel.remove("id");
+        		flowmodel.set("custom_id", model.get("table_id"));
+        		flowmodel.set("transaction_type", "充值");
+        		flowmodel.set("money",money);
+        		flowmodel.set("currency", currency);
+        		flowmodel.set("oper_point_num", count);
+        		flowmodel.set("oper_point_after_num", model.get("account_count"));
+        		flowmodel.set("create_time", getNow());
+        		flowmodel.save();
+        		result.put("status","success");
+                result.put("message","保存成功！");
+            }else {
+            	result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else {
+        	 result.put("status","false");
+             result.put("message","缺少参数！");
+        }
+        renderJson(result);
+	}
+	/**
+	 * api对接线上客户扣款
+	 * @author dou_shuiahi
+	 * @date: 2019年1月25日下午3:34:23
+	 * @Description:
+	 */
+	public void chargeSave(){
+		Map<String,String> result = new HashMap<String,String>();
+		
+        //获取参数
+        String data = getPara("data");
+        if(StringUtils.isNotEmpty(data)) {
+            //密码生成
+        	//解密参数串
+            String params = this.decodeData(data);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String id = jsonObj.getString("userId");//客户编码
+            String count = jsonObj.getString("units");//扣款点数
+            int countToInt =	Integer.parseInt(count); //扣款点数
+            String money = jsonObj.getString("money");//扣款金额
+            BigDecimal moneyToInt =	new BigDecimal(money); //扣款金额
+            String updateTime = jsonObj.getString("updateTime");//时间
+            String timeStamp2Date = timeStamp2Date(updateTime);
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(count) && StringUtils.isNotEmpty(money)){
+            	 List<CustomInfoModel> customByid = CustomInfoModel.dao.getCustomByid(Integer.parseInt(id));//根据客户编码查找
+                 if(CollectionUtils.isEmpty(customByid)) {
+                 	 result.put("status","false");
+                     result.put("message","目标系统不存在该客户编码！");
+                     renderJson(result);
+                     return;
+                 }
+            	CustomInfoModel model = new CustomInfoModel();
+            	model.set("table_id", customByid.get(0).get("table_id"));
+            	int account_count=0;
+            	if (null!=customByid.get(0).get("account_count")) {
+         	 	    account_count=  Integer.parseInt(customByid.get(0).get("account_count").toString());//获取已有點數
+         		}
+            	int surplus_count=account_count-countToInt;//剩余点数
+            	if ("508".equals(customByid.get(0).get("is_arrearage"))&&surplus_count<0) {
+            		result.put("status","false");
+                    result.put("message","扣款失败，该客户不允许欠费");
+                    renderJson(result);
+                    return;
+     			}
+            	model.set("account_count", surplus_count);
+            	BigDecimal account_money=new BigDecimal(0);
+            	if (null!=customByid.get(0).get("money")) {
+         	 	    account_money=  new BigDecimal(customByid.get(0).get("money").toString());//获取已有金额	
+         		}
+            	BigDecimal surplus_money=account_money.subtract(moneyToInt);//剩余金额
+            	int i=surplus_money.compareTo(BigDecimal.ZERO); 
+            	if ("508".equals(customByid.get(0).get("is_arrearage"))&&i==-1) {
+            		result.put("status","false");
+                    result.put("message","扣款失败，该客户不允许欠费");
+                    renderJson(result);
+                    return;
+     			}
+            	model.set("money", surplus_money);
+         	    model.set("money_updatetime", timeStamp2Date);
+         	    model.update();
+         	    //流水记录表
+        		CustomTranFlowModel flowmodel=new CustomTranFlowModel();
+        		flowmodel.remove("id");
+        		flowmodel.set("custom_id", model.get("table_id"));
+        		flowmodel.set("transaction_type", "扣款");
+        		flowmodel.set("money",money);
+        		flowmodel.set("oper_point_num", countToInt);
+        		flowmodel.set("oper_point_after_num",surplus_count);
+        		flowmodel.set("create_time", getNow());
+        		flowmodel.save();
+        		result.put("status","success");
+                result.put("message","扣款成功！");
+            }else {
+            	result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else {
+        	 result.put("status","false");
+             result.put("message","缺少参数！");
+        }
+        renderJson(result);
+	}
+	/**
+	 * 同步报告员，翻译员线上用户
+	 * @author dou_shuiahi
+	 * @date: 2019年1月30日下午2:27:53
+	 * @Description:
+	 */
+	public void addUser(){
+		Map<String,String> result = new HashMap<String,String>();
+        //获取参数
+        String data = getPara("data");
+        if(StringUtils.isNotEmpty(data)) {
+            //密码生成
+        	//解密参数串
+            String params = this.decodeData(data);
+            //参数转对象
+            JSONObject jsonObj = JSON.parseObject(params);
+            String id = jsonObj.getString("userId");//线上客户编码
+            String userName = jsonObj.getString("userName");//用户名
+            String role = jsonObj.getString("role");//角色
+            String mobileNumber = jsonObj.getString("mobileNumber");//手机
+            String emailAddress = jsonObj.getString("emailAddress");//邮箱
+            SysUser findByUserName = SysUser.dao.findByUserName(userName);
+    		if(null!=findByUserName){
+    			result.put("status","false");
+                result.put("message","登录名不允许重复");
+                renderJson(result);
+                return;
+    		}
+            if(StringUtils.isNotEmpty(id)&&StringUtils.isNotEmpty(userName) && StringUtils.isNotEmpty(role)){
+            	SysUser model = new SysUser();
+            	model.set("usertype", "2");//线上用户默认普通用户
+            	model.set("online_userid", id);
+            	if("2".equals(role) ) {//报告员
+            		role="14";
+            	}else if("6".equals(role)) {//翻译员
+            		role="15";
+            	}else {
+            		result.put("status","success");
+                    result.put("message","添加用户成功");
+                    renderJson(result);
+                    return;
+            	}
+         	    model.set("departid", role);
+         	    model.set("username", userName);
+         	    model.set("tel", mobileNumber);
+         	    model.set("email", emailAddress);
+         	    model.set("create_time", getNow());
+         	    model.save();
+        		result.put("status","success");
+        		result.put("message","添加用户成功");
+            }else {
+            	result.put("status","false");
+                result.put("message","有必传参数未传值！");
+            }
+        }else {
+        	 result.put("status","false");
+             result.put("message","缺少参数！");
+        }
+        renderJson(result);
+	}
+	public static String timeStamp2Date(String time) {
+	    Long timeLong = Long.parseLong(time);
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//要转换的时间格式
+	    Date date;
+	    try {
+	        date = sdf.parse(sdf.format(timeLong));
+	        return sdf.format(date);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return null;
+	    }
+	}  
 }
