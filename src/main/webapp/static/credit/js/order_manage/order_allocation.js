@@ -20,7 +20,7 @@ let Allocation = {
     		row.seleteStr = '<option>请选择</option>' +row.seleteStr
 		  $("#reporter_select_all").html(row.seleteStr);
     	})
-    	$("#modal_submit_allocation2").click(()=>{
+    	$("#modal_submit_allocation2").unbind().click(()=>{
     		 let reporter = $("#reporter_select_all option:selected").val();
              let remarks = $("#remarks_all").val();
              let id = this.idArr
