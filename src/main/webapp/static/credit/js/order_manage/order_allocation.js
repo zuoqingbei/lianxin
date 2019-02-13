@@ -20,14 +20,14 @@ let Allocation = {
     		row.seleteStr = '<option>请选择</option>' +row.seleteStr
 		  $("#reporter_select_all").html(row.seleteStr);
     	})
-    	$("#modal_submit_allocation2").click(()=>{
+    	$("#modal_submit_allocation2").unbind().click(()=>{
     		 let reporter = $("#reporter_select_all option:selected").val();
              let remarks = $("#remarks_all").val();
              let id = this.idArr
              $.ajax({
         			type:"post",
         			 url : BASE_PATH+"credit/front/orderProcess/statusSave",
-        			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id+"&statusCode="+"&searchType=-1",
+        			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&ids="+id+"&statusCode="+"&searchType=-1",
         			dataType:"json",
         			success:function(data){
         			//提交成功关闭模态窗
