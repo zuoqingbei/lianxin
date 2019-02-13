@@ -15,19 +15,23 @@ let Allocation = {
     },
     all_allocation(row){
     	//批量分配
-    	$("#btn_all_allocation").click(()=>{
+    	$("#btn_all_allocation").unbind().click(()=>{
     		row.seleteStr = row.seleteStr.replace("selected='selected'",'')
     		row.seleteStr = '<option>请选择</option>' +row.seleteStr
 		  $("#reporter_select_all").html(row.seleteStr);
     	})
     	$("#modal_submit_allocation2").unbind().click(()=>{
     		 let reporter = $("#reporter_select_all option:selected").val();
+    		 if(reporter === '请选择') {
+    			 Public.message("info","请选择分配员")
+    			 return
+    		 }
              let remarks = $("#remarks_all").val();
              let id = this.idArr
              $.ajax({
         			type:"post",
         			 url : BASE_PATH+"credit/front/orderProcess/statusSave",
-        			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&ids="+id+"&statusCode="+"&searchType=-1",
+        			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id=&ids="+id+"&statusCode="+"&searchType=-1",
         			dataType:"json",
         			success:function(data){
         			//提交成功关闭模态窗
