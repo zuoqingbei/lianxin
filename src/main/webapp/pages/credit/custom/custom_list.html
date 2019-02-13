@@ -75,10 +75,21 @@ var bodyContent = {
 
 		<div class="tableSearch">
 			<%  //查询列表 %>
-			搜索内容
 			<div class="form-group">
-				<input class="form-control" type="text" name="keyword"
-					value="${keyWord!''}" placeholder="请输入关键字" required='required' />
+				<input class="form-control" type="text" name="attr.id"
+					value="${attr.id!''}" placeholder="请输入客户编码" required='required' />
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" name="attr.name"
+					value="${attr.name!''}" placeholder="请输入客户名称" required='required' />
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" name="attr.contacts"
+					value="${attr.contacts!''}" placeholder="请输入联系人全称" required='required' />
+			</div>
+			<div class="form-group">
+				<input class="form-control" type="text" name="attr.email"
+					value="${attr.email!''}" placeholder="请输入邮箱" required='required' />
 			</div>
 			<button type="button" class="btn btn-default" onclick="oper.list();" name="search">
 			 		<span class="glyphicon glyphicon-search"></span> 查 询
@@ -107,6 +118,7 @@ var bodyContent = {
 					<th name="t.email" class="sorting">邮箱</th> 
 					<th name="t.fax" class="sorting">传真</th>
 					<th name="t.account_count" class="sorting">当前账户点数</th>
+					<th name="t.money" class="sorting">金额</th>
 					<th name="t.money_updatetime" class="sorting">金额更新时间</th>
 					<th name="t.is_arrearage" class="sorting">是否可以欠费</th>
 					<th name="t5.name" class="sorting">所属国家(地区)</th>  
@@ -130,6 +142,7 @@ var bodyContent = {
 					</td>
 					<td>${item.fax}</td>
 					<td>${item.account_count}</td>
+					<td>${item.money}</td>
 					<td>${item.money_updatetime}</td>
 					<td>${item.is_arrearage}</td>
 					<td>${item.countryName}</td>
