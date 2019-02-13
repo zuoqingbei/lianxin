@@ -26,6 +26,10 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
+import com.hailian.util.encrypt.AES;
+
+import net.sf.json.JSONObject;
+
 /**
  * TODO 这个有待完善
  * 
@@ -164,5 +168,20 @@ public class HttpClientUtils {
 
 
         System.out.println(result);
+    }
+    /**
+     * 同步到联信
+     * @author dou_shuiahi
+     * @date: 2019年2月13日上午10:32:58
+     * @Description: url为请求url，data为请求的参数集合
+     */
+    public static String sendPost2Credit(String url,Map<String,String> data) {
+    	String key = "companyID=LX&randomCode=1111&timestamp=0000000000";
+    	JSONObject json = JSONObject.fromObject(data);
+    	String cSrc = json.toString();
+    	String cKey = "LX00000000001111";
+    	String enString = AES.encrypt(cSrc, cKey);
+    	String result = HttpClientUtils.sendPost(url, key + "&" + "data=" + enString);
+		return result;
     }
 }

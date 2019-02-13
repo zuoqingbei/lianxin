@@ -1,8 +1,9 @@
 package com.hailian.modules.credit.custom.controller;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.Map;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
@@ -10,7 +11,6 @@ import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.custom.model.CustomTranFlowModel;
 import com.hailian.modules.credit.custom.service.CustomService;
-import com.hailian.system.dict.DictController;
 import com.hailian.system.dict.SysDictDetail;
 import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/credit/custom")
@@ -29,7 +29,7 @@ public class CustomController extends BaseProjectController {
 		CustomInfoModel attr = getModelByAttr(CustomInfoModel.class);
 		String keyword = getPara("keyword");
 		String orderBy = getBaseForm().getOrderBy();
-		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),orderBy,keyword,this);
+		Page<CustomInfoModel> page = CustomService.service.getPage(getPaginator(),orderBy,attr,this);
 		setAttr("page",page);
 		render(path+"list.html");
 	}
@@ -159,10 +159,25 @@ public class CustomController extends BaseProjectController {
 	    if (Infomodel.get("account_count")!=null) {
 	 	    account_count=  Integer.parseInt(Infomodel.get("account_count").toString());	
 		}
+	    BigDecimal account_money = new BigDecimal(0);
+	    BigDecimal moneyToInt =	new BigDecimal(money); //充值金额
+	    if (null!=Infomodel.get("money")) {
+ 	 	    account_money=   new BigDecimal(Infomodel.get("money").toString());//获取已有金额
+ 		}
 	    model.set("account_count", count+account_count);
+	    model.set("money", moneyToInt.add(account_money));
 	    model.set("money_updatetime", now);
 	    model.set("update_by", userid);
 	    model.update();
+	    //封装相关参数同步海联线上接口
+	    Map<String,String> map = new HashMap<String,String>();
+	    map.put("userId",model.get("id")+"");
+        map.put("money",money);
+        map.put("currency",currency);
+        map.put("units",getPara("count"));
+        map.put("updateTime",System.currentTimeMillis()+"");
+//	    HttpClientUtils.sendPost2Credit("", map);
+	    
 		//充值新增流水记录表，修改客户当前账户点数与金额更新时间
 		CustomTranFlowModel model2=new CustomTranFlowModel();
 		  model2.remove("id");
@@ -193,6 +208,8 @@ public class CustomController extends BaseProjectController {
 		setAttr("model", model);
 		List<CompanyModel> company = CompanyModel.dao.getCompany(null);
 		setAttr("company", company);
+		List<SysDictDetail>  details=SysDictDetail.dao.getDictByType("currency");
+		setAttr("dict", details);
 		// 查询下拉框
 		render(path + "charge_add.html");
 	}
@@ -208,8 +225,11 @@ public class CustomController extends BaseProjectController {
 			Integer paraToInt = Integer.parseInt(getPara("table_id"));
 			CustomInfoModel model=getModel(CustomInfoModel.class);
 			CustomInfoModel infoModel = CustomInfoModel.dao.findById(paraToInt);
-			int count =	Integer.parseInt(getPara("count")); //充值点数
+			int count =	Integer.parseInt(getPara("count")); //充值金额
+			int money =	Integer.parseInt(getPara("money")); //扣款金额
+			BigDecimal moneyToInt =	new BigDecimal(money); 
 		    String remarks = getPara("remarks");
+		    String currency = getPara("currency");//充值币种
 		    String now = getNow();
 		    Integer userid = getSessionUser().getUserid();
 		   //修改当前账户点数
@@ -220,11 +240,31 @@ public class CustomController extends BaseProjectController {
 		    
 		   if ("508".equals(infoModel.get("is_arrearage"))&&account_count-count<0) {
 			   renderMessage("扣款失败，该客户不允许欠费");		
-			}else {
+			}
+		   BigDecimal account_money=new BigDecimal(0);
+	       	if (null!=infoModel.get("money")) {
+	    	 	    account_money=  new BigDecimal(infoModel.get("money").toString());//获取已有金额	
+	    		}
+	       	BigDecimal surplus_money=account_money.subtract(moneyToInt);//剩余金额
+	       	int i=surplus_money.compareTo(BigDecimal.ZERO); 
+	       	if ("508".equals(infoModel.get("is_arrearage"))&&i==-1) {
+	       		renderMessage("扣款失败，该客户不允许欠费");
+				}
+		   
+		   else {
 		    model.set("account_count", account_count-count);
+		    model.set("money", surplus_money);
 		    model.set("money_updatetime", now);
 		    model.set("update_by", userid);
 		    model.update();
+		  //封装相关参数同步海联线上接口
+		    Map<String,String> map = new HashMap<String,String>();
+		    map.put("userId",model.get("id")+"");
+	        map.put("money",getPara("money"));
+	        map.put("currency",currency);
+	        map.put("units",getPara("count"));
+	        map.put("updateTime",System.currentTimeMillis()+"");
+//		    HttpClientUtils.sendPost2Credit("", map);
 		  //交易流水  
 		  CustomTranFlowModel model2=new CustomTranFlowModel();
 		  model2.remove("id");

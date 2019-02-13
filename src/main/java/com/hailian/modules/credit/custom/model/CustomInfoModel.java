@@ -3,6 +3,8 @@ package com.hailian.modules.credit.custom.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
@@ -48,7 +50,7 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 	* @date 2018年9月3日下午2:30:06  
 	* @TODO
 	 */
-	public Page<CustomInfoModel> getPage(Paginator paginator,String orderBy, String keyword, BaseProjectController c) {
+	public Page<CustomInfoModel> getPage(Paginator paginator,String orderBy, CustomInfoModel attr, BaseProjectController c) {
 		// TODO Auto-generated method stub
 		List<Object> params=new ArrayList<Object>();
 		StringBuffer sql=new StringBuffer(" from credit_custom_info t left join sys_dict_detail t2 on  t.usabled=t2.detail_id ");
@@ -62,21 +64,23 @@ public class CustomInfoModel extends BaseProjectModel<CustomInfoModel> {
 			sql.append(" and t.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
-		if (StringUtil.isNotEmpty(keyword)) {
-			sql.append(" and ");
-			for (int i = 0; i < columnnNames.size(); i++) {
-				if("create_date".equals(columnnNames.get(i))){
-					continue;
-				}
-				if(i!=0){
-					sql.append(" || ");
-				}
-				//搜索类型
-				sql.append(columnnNames.get(i)+" like binary ? ");
-				params.add('%'+keyword+'%');
-//				sql.append(columnnNames.get(i)+" like concat('%',?,'%')");
-//				params.add(keyword);//传入的参数
-			}
+	
+		
+		if (null != attr.get("id") && StringUtils.isNotBlank(attr.get("id").toString())) {
+			sql.append(" and t.id like concat('%',?,'%')");
+			params.add(attr.get("id").toString());
+		}
+		if (null != attr.get("name") && StringUtils.isNotBlank(attr.get("name"))) {
+			sql.append(" and t.name like concat('%',?,'%')");
+			params.add(attr.get("name"));
+		}
+		if (null != attr.get("contacts") && StringUtils.isNotBlank(attr.get("contacts"))) {
+			sql.append(" and t.contacts like concat('%',?,'%')");
+			params.add(attr.get("contacts"));
+		}
+		if (null != attr.get("email") && StringUtils.isNotBlank(attr.get("email"))) {
+			sql.append(" and t.email like concat('%',?,'%')");
+			params.add(attr.get("email"));
 		}
 		// 排序
 		if (StrUtils.isEmpty(orderBy)) {
