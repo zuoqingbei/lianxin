@@ -311,6 +311,7 @@ let Allocation = {
           },
           onCheck:(row)=>{
           	this.idArr.push(row.id)
+          	console.log(this.idArr);
           },
           onUncheck:(rows)=>{
           	let index =this.idArr.indexOf(rows.id)
@@ -318,6 +319,11 @@ let Allocation = {
           	console.log(this.idArr);
           },onCheckAll:(rows)=>{
          	 for(var i=0;i<rows.length;i++){
+         		let index =this.idArr.indexOf(rows[i].id)
+         		console.log(index)
+         		if(index !== -1){
+         			this.idArr.splice(index,1);
+         		}
          		this.idArr.push(rows[i].id) 
          		console.log(this.idArr);
          	 }
