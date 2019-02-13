@@ -311,7 +311,9 @@ let Allocation = {
               };  
           },  
           onLoadSuccess:(data)=>{
+        	  this.idArr = []
         	  _this.all_allocation(data.rows[0])
+        	  
           },
           onCheck:(row)=>{
           	this.idArr.push(row.id)
