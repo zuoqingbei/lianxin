@@ -464,6 +464,7 @@ $(document).ready(function () {
 	        		//弹出提示
 	        		$("#show_checked_modal").trigger("click")
            		 }else{
+//           			 Public.message(data.flag.message)
            			tableSubmit();
            		 }
 	        	

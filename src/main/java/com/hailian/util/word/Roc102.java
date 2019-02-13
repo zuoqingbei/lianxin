@@ -540,8 +540,12 @@ public class Roc102 {
             try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
+                String content = "Dear Sir/Madam, <br/><br/>"
+                        + " Good day! <br/><br/>"
+                        + " Attached is the report requested. If there is any problem, please do not hesitate to contact us. <br/>"
+                        + " Thanks for using our services!";
                 //email = "hu_cheng86@126.com";
-                new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
+                new SendMailUtil(email, "", reportName, content, fileList).sendEmail();
             } catch (Exception e) {
                 e.printStackTrace();
             }
