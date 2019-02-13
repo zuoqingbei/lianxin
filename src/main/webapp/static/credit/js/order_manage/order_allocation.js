@@ -1,5 +1,5 @@
 let Allocation = {
-	
+	idArr:[],
     init(){
     	console.log(BASE_PATH)
         /**初始化函数 */
@@ -13,7 +13,37 @@ let Allocation = {
         this.popperFilter();
         this.modalSubmit();
     },
- 
+    all_allocation(row){
+    	//批量分配
+    	$("#btn_all_allocation").click(()=>{
+    		row.seleteStr = row.seleteStr.replace("selected='selected'",'')
+    		row.seleteStr = '<option>请选择</option>' +row.seleteStr
+		  $("#reporter_select_all").html(row.seleteStr);
+    	})
+    	$("#modal_submit_allocation2").click(()=>{
+    		 let reporter = $("#reporter_select_all option:selected").val();
+             let remarks = $("#remarks_all").val();
+             let id = this.idArr
+             $.ajax({
+        			type:"post",
+        			 url : BASE_PATH+"credit/front/orderProcess/statusSave",
+        			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id+"&statusCode="+"&searchType=-1",
+        			dataType:"json",
+        			success:function(data){
+        			//提交成功关闭模态窗
+        			 $(".modal-header .close").trigger("click");
+        			if(data.statusCode===1){
+	                   	Public.message("success",data.message);
+	                   }else{
+	                   	Public.message("error",data.message);
+	                   }
+	        			//回显
+	        			$("#table").bootstrapTable("refresh")
+        			}
+             	
+        		})
+    	})
+    },
     modalSubmit(){
         /**模态框提交事件 */
         $("#modal_submit").click(function(){
@@ -113,6 +143,12 @@ let Allocation = {
         $table.bootstrapTable({
             height: $(".table-content").height()*0.95,
             columns: [
+            	  {
+                      checkbox: true,
+                      visible: true,                  //是否显示复选框
+                      filed:'state',
+                      width: '18rem',
+                  }, 
                  {
                   title: '订单号',
                   field: 'num',
@@ -253,7 +289,7 @@ let Allocation = {
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
-            fixedColumns: true,
+            fixedColumns: false,
             fixedNumber: 1,
             queryParamsType:'',
             contentType:'application/x-www-form-urlencoded;charset=UTF-8',
@@ -270,6 +306,28 @@ let Allocation = {
             	  searchType: "-1",
               };  
           },  
+          onLoadSuccess:(data)=>{
+        	  _this.all_allocation(data.rows[0])
+          },
+          onCheck:(row)=>{
+          	this.idArr.push(row.id)
+          },
+          onUncheck:(rows)=>{
+          	let index =this.idArr.indexOf(rows.id)
+              this.idArr.splice(index,1);
+          	console.log(this.idArr);
+          },onCheckAll:(rows)=>{
+         	 for(var i=0;i<rows.length;i++){
+         		this.idArr.push(rows[i].id) 
+         		console.log(this.idArr);
+         	 }
+          },onUncheckAll:(rows)=>{
+	           	 for(var i=0;i<rows.length;i++){
+	           		let index =this.idArr.indexOf(rows[i].id)
+	                this.idArr.splice(index,1); 
+	           		console.log(this.idArr);
+	           	 }
+          }
           });
           // sometimes footer render error.
           setTimeout(() => {
