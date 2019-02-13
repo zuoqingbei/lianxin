@@ -493,45 +493,60 @@ public class OrderProcessController extends BaseProjectController{
             }else{
                 map.put("status", code);
             }
-            CreditOrderInfo model = getModel(CreditOrderInfo.class);
-            int orderId = model.get("id");
-            //计算绩效
-            if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
-            	 getKpi(model);
-            }
-
-            //报告填报完成
-            if("294".equals(code)){
-                //todo 报告填报完成后需要分配质检员
-                String iqcId = OrderManagerService.service.getUserIdtoOrder(RoleCons.IQC);
-                if(iqcId!=null){
-                    map.put("IQC",iqcId);
+          //说明批量操作
+            String ids=	getPara("ids");//订单批量重新分配
+            if(StringUtils.isNotBlank(ids)) {
+            	map = new HashMap<>();
+            	 String [] orderId=	ids.split(",");
+                 for (String oid : orderId) {
+     	           map.put("id", oid);
+     	           PublicUpdateMod(map);
+     	        //添加站内信，
+     	            addNoice(code,oid);
+     			}
+            }else {
+            	CreditOrderInfo model = getModel(CreditOrderInfo.class);
+                int orderId = model.get("id");
+                //计算绩效
+                if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
+                	 getKpi(model);
                 }
+                //报告填报完成
+                if("294".equals(code)){
+                    //todo 报告填报完成后需要分配质检员
+                    String iqcId = OrderManagerService.service.getUserIdtoOrder(RoleCons.IQC);
+                    if(iqcId!=null){
+                        map.put("IQC",iqcId);
+                    }
+                }
+                //修改订单状态
+                PublicUpdateMod(map);
+                if("595".equals(code)){
+                	//根据订单号找到填报语言对应的公司id
+                    CreditOrderInfo orderInfo = model.findById(orderId);
+                	String companyId = orderInfo.get("company_id")+"";
+                    String reportType = orderInfo.get("report_type")+"";
+                    //new CompanyService().enterpriseGrab(companyId,getPara("model.company_by_report"),"612");
+                    //调用香港查册网
+                    //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
+                    //爬取商务部业务系统网站
+                    //HttpCrawler.getMofcomUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
+                    //爬虫完毕更新状态
+                    //CreditOrderInfo model2 = new CreditOrderInfo(); model2.set("id", orderId).set("status", 694);  model2.update();
+                    //使用线程调用爬虫接口
+                    Thread td = new Thread(new CrawlerThreed(reportType,companyId,getPara("model.company_by_report"),orderInfo));
+                    td.start();
+                }
+                addNoice(code,"");
             }
-            //修改订单状态
-            PublicUpdateMod(map);
+           
+            
             Integer userid = getSessionUser().getUserid();
             CreditOperationLog.dao.addOneEntry(userid, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             
-            //添加站内信，
-            addNoice(code);
+            
             //调用企查查接口
-            if("595".equals(code)){
-            	//根据订单号找到填报语言对应的公司id
-                CreditOrderInfo orderInfo = model.findById(orderId);
-            	String companyId = orderInfo.get("company_id")+"";
-                String reportType = orderInfo.get("report_type")+"";
-                //new CompanyService().enterpriseGrab(companyId,getPara("model.company_by_report"),"612");
-                //调用香港查册网
-                //HttpCrawler.getIcrisUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
-                //爬取商务部业务系统网站
-                //HttpCrawler.getMofcomUrl(getPara("model.company_by_report"), getPara("companyId"), getModel(CreditOrderInfo.class));
-                //爬虫完毕更新状态
-                //CreditOrderInfo model2 = new CreditOrderInfo(); model2.set("id", orderId).set("status", 694);  model2.update();
-                //使用线程调用爬虫接口
-                Thread td = new Thread(new CrawlerThreed(reportType,companyId,getPara("model.company_by_report"),orderInfo));
-                td.start();
-            }
+           
             renderJson(new ResultType());
             return new ResultType();
         } catch (Exception e) {
@@ -541,14 +556,20 @@ public class OrderProcessController extends BaseProjectController{
         }
     }
 
-    public  void  addNoice(String status){
+    public  void  addNoice(String status,String orderid){
         //新增公告内容
         NoticeModel model=new NoticeModel();
         Integer userid = getSessionUser()==null?444:getSessionUser().getUserid();
         String now = getNow();
         CreditOrderInfoModel orderInfoModel=getModel(CreditOrderInfoModel.class);
         //查订单
-        CreditOrderInfo info=	CreditOrderInfo.dao.getId(orderInfoModel.get("id"), null);
+        CreditOrderInfo info=null;
+        if(StringUtils.isNotBlank(orderid)) {
+        	info=	CreditOrderInfo.dao.getId(Integer.parseInt(orderid), null);
+        }else {
+        	 info=	CreditOrderInfo.dao.getId(orderInfoModel.get("id"), null);
+        }
+       
         //公告子表添加
         NoticeLogModel logModel=new NoticeLogModel();
         //订单核实，向客服发起

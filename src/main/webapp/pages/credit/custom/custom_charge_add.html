@@ -60,7 +60,8 @@ var bodyContent = {
 %>
 <form name="form1" action="" method="post" class="form-horizontal">
 	<input type="hidden" name="model.table_id" value=" ${model.table_id}" />
-	<!-- 数据列表 -->
+	<input type="hidden" name="model.id" value=" ${model.id}" />
+	<!-- 鏁版嵁鍒楄〃 -->
 	<table class="table">
 	<tr>
 	    <tr>
@@ -69,7 +70,7 @@ var bodyContent = {
 				value="${model.id}"  disabled="disabled" style="width: 205px"/></td>		
 		</tr>
 		<tr>
-			<td>客户名称：</td>
+			<td>客户名称</td>
 			<td><input type="text" name="name" class="form-control"  valid="text"
 				value="${model.name}" disabled="disabled" style="width: 205px"/></td>
 		</tr>
@@ -84,9 +85,25 @@ var bodyContent = {
 				value="" style="width: 380px"/></td>
 			
 		</tr>
-		
 		<tr>
-			<td>备注：</td>
+			<td>扣款金额：</td>
+			<td><input onkeyup="(this.v=function(){this.value=this.value.replace(/[^0-9-]+/,'');}).call(this)" onblur="this.v();" placeholder="请输入数字" type="text" name="money" class="form-control"  valid="text"
+				value="" style="width: 205px"/></td>
+		</tr>
+		<tr>
+			<td>金额单位：</td>
+			<td>
+			<select id="sandbar" name="currency" class="form-control"   valid="vselect" validname="币种" style="width: 200px;">
+						<option value="-1" >请选择</option>
+						 <% for(item in dict){ %>
+						<option  m-type="${item.detail_id}" value="${item.detail_id}">${item.detail_name}</option>
+							
+						 <% } %>
+						</select>
+            </td>
+		</tr>
+		<tr>
+			<td>备注</td>
 			<td><input type="text" name="remarks" class="form-control"  valid="text"
 				value="" style="width: 205px"/></td>
 		</tr>
@@ -94,8 +111,8 @@ var bodyContent = {
 	<div style="height: 50px;clear: both;">&nbsp;</div>
 	<nav class="navbar navbar-default navbar-fixed-bottom">
 	  <div class="container" style="padding: 5px 0px 5px 0px;text-align: center;">
-	  		<button class="btn btn-primary save" onclick="oper.save(${model.table_id!'0'});return false;">确定</button>
-			<button class="btn btn-default" onclick="closeIframe();return false;">取消</button>
+	  		<button class="btn btn-primary save" onclick="oper.save(${model.table_id!'0'});return false;">纭畾</button>
+			<button class="btn btn-default" onclick="closeIframe();return false;">鍙栨秷</button>
 	  </div>
 	</nav>
 </form>

@@ -24,6 +24,7 @@ import com.hailian.modules.credit.custom.model.CustomInfoModel;
 import com.hailian.modules.credit.custom.model.CustomTranFlowModel;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
+import com.hailian.system.user.UserSvc;
 import com.hailian.util.StrUtils;
 import com.hailian.util.encrypt.AES;
 import com.hailian.util.encrypt.URLCoder;
@@ -593,21 +594,24 @@ public class ApiController extends BaseProjectController {
             	model.set("usertype", "2");//线上用户默认普通用户
             	model.set("online_userid", id);
             	if("2".equals(role) ) {//报告员
-            		role="14";
+            		model.set("realname", "线上报告员");
             	}else if("6".equals(role)) {//翻译员
-            		role="15";
+            		model.set("realname", "线上翻译员");
             	}else {
             		result.put("status","success");
                     result.put("message","添加用户成功");
                     renderJson(result);
                     return;
             	}
-         	    model.set("departid", role);
+         	   
          	    model.set("username", userName);
+         	    model.set("departid", "10");//部门默认联信集团
+         	    model.set("password", "EY3JNDE7nu8=");//默认密码123456
          	    model.set("tel", mobileNumber);
          	    model.set("email", emailAddress);
          	    model.set("create_time", getNow());
          	    model.save();
+         	    new UserSvc().saveAuth(model.get("userid"), role, null);
         		result.put("status","success");
         		result.put("message","添加用户成功");
             }else {
@@ -631,5 +635,6 @@ public class ApiController extends BaseProjectController {
 	        e.printStackTrace();
 	        return null;
 	    }
-	}  
+	}
+	
 }

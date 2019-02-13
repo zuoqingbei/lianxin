@@ -16,8 +16,8 @@ public class CustomService {
 	* @date 2018年9月3日下午2:31:12  
 	* @TODO
 	 */
-	public Page<CustomInfoModel> getPage(Paginator paginator,  String orderBy,String keyword,BaseProjectController c){
-		Page<CustomInfoModel> page = CustomInfoModel.dao.getPage(paginator,orderBy,keyword,c);
+	public Page<CustomInfoModel> getPage(Paginator paginator,  String orderBy,CustomInfoModel attr,BaseProjectController c){
+		Page<CustomInfoModel> page = CustomInfoModel.dao.getPage(paginator,orderBy,attr,c);
 		return page;
 	}
 	/**

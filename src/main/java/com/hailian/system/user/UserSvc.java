@@ -150,7 +150,7 @@ public class UserSvc extends BaseService {
 	 * @param userid
 	 * @param roleids
 	 */
-	public void saveAuth(int userid, String roleids, int update_id) {
+	public void saveAuth(int userid, String roleids, Object update_id) {
 		// 删除原有数据库
 		Db.update("delete from sys_user_role where userid = ? ", userid);
 
