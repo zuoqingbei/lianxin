@@ -502,12 +502,15 @@ public class OrderProcessController extends BaseProjectController{
                 map.put("status", code);
             }
           //说明批量操作
-            String ids=	getPara("ids");
+            String ids=	getPara("ids");//订单批量重新分配
             if(StringUtils.isNotBlank(ids)) {
+            	map = new HashMap<>();
             	 String [] orderId=	ids.split(",");
                  for (String oid : orderId) {
      	           map.put("id", oid);
      	           PublicUpdateMod(map);
+     	        //添加站内信，
+     	            addNoice(code,oid);
      			}
             }else {
             	CreditOrderInfo model = getModel(CreditOrderInfo.class);
@@ -542,14 +545,14 @@ public class OrderProcessController extends BaseProjectController{
                     Thread td = new Thread(new CrawlerThreed(reportType,companyId,getPara("model.company_by_report"),orderInfo));
                     td.start();
                 }
+                addNoice(code,"");
             }
            
             
             Integer userid = getSessionUser().getUserid();
             CreditOperationLog.dao.addOneEntry(userid, null,"订单管理/","/credit/front/orderProcess/statusSave");//操作日志记录
             
-            //添加站内信，
-            addNoice(code);
+            
             //调用企查查接口
            
             renderJson(new ResultType());
@@ -561,14 +564,20 @@ public class OrderProcessController extends BaseProjectController{
         }
     }
 
-    public  void  addNoice(String status){
+    public  void  addNoice(String status,String orderid){
         //新增公告内容
         NoticeModel model=new NoticeModel();
         Integer userid = getSessionUser()==null?444:getSessionUser().getUserid();
         String now = getNow();
         CreditOrderInfoModel orderInfoModel=getModel(CreditOrderInfoModel.class);
         //查订单
-        CreditOrderInfo info=	CreditOrderInfo.dao.getId(orderInfoModel.get("id"), null);
+        CreditOrderInfo info=null;
+        if(StringUtils.isNotBlank(orderid)) {
+        	info=	CreditOrderInfo.dao.getId(Integer.parseInt(orderid), null);
+        }else {
+        	 info=	CreditOrderInfo.dao.getId(orderInfoModel.get("id"), null);
+        }
+       
         //公告子表添加
         NoticeLogModel logModel=new NoticeLogModel();
         //订单核实，向客服发起
