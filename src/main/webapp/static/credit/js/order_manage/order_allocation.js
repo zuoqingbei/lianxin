@@ -27,7 +27,7 @@ let Allocation = {
              $.ajax({
         			type:"post",
         			 url : BASE_PATH+"credit/front/orderProcess/statusSave",
-        			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&model.id="+id+"&statusCode="+"&searchType=-1",
+        			data:"model.report_user="+reporter+"&model.remarks="+remarks+"&ids="+id+"&statusCode="+"&searchType=-1",
         			dataType:"json",
         			success:function(data){
         			//提交成功关闭模态窗
