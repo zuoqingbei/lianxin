@@ -40,6 +40,7 @@ public class BaseBusiCrdt {
 
     public static void main(String []args){
         try {
+        	 
             /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
             URL url = new URL(urlStr);
             HttpURLConnection uc = (HttpURLConnection) url.openConnection();
@@ -727,42 +728,56 @@ public class BaseBusiCrdt {
     }
 
     /**
-     * 获取财务类型
+        * 找到当前公司关联下的,内容不为空的所有财务类型
      * @param companyId
      * @param type
-     * @return
+     * @return  当前公司关联下的,内容不为空的所有财务类型
      */
-    public static  Integer getFinancialType (String companyId,Integer type) {
+    public static  List<Integer> getFinancialType (String companyId) {
+    	
+    	List<Integer> list = new ArrayList<>();
+    	
 		try {
-			if (type==null) { return -1; }
-			if (StrUtils.isEmpty(companyId,type+"")) { return -1; }
 			// 查询公司id下的财务配置
-			List<String> flagStr = Db.query(
-					"select date1,date2,id from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
-					Arrays.asList(new String[] { companyId   }));
-            if(flagStr.size()==0){
-                return -1;
+			List<CreditCompanyFinancialStatementsConf> flagList = CreditCompanyFinancialStatementsConf.dao.find(
+					"select * from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
+					Arrays.asList(new String[] { companyId   }).toArray());
+            if(flagList==null||flagList.size()==0){
+                return null;
             }
-			String dateStr1 = flagStr.get(0);
-			String dateStr2 = flagStr.get(1);
-			if (StrUtils.isEmpty(dateStr1, dateStr2)) { return -1; }
-			//查询配置下的财务信息
-			String confId = flagStr.get(2)+"";
-			List<Integer> targetValueList =  Db.query(
-					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=? and type=? ",
-					Arrays.asList(new String[] { confId ,type+""}));
-			
-			if(targetValueList!=null) {
-				for (Integer integer : targetValueList) {
-					if(integer!=null) { if(!(integer==null||integer==0)) { return type; } }
-				}
+            String type = null;
+            for (CreditCompanyFinancialStatementsConf entity : flagList) {
+    			String confId = entity.get("id")+"";//财务配置id
+    			  type = entity.get("type")+"";//财务类型
+    			if (StrUtils.isEmpty(confId, type+"")) { return null; }
+    			
+    			List<CreditCompanyFinancialEntry> targetValueList =  CreditCompanyFinancialEntry.dao.find(
+    					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=? and type=? ",
+    					Arrays.asList(new String[] { confId ,type+""}).toArray());
+    			
+    			if(targetValueList!=null) {
+    				for (CreditCompanyFinancialEntry entity1 : targetValueList) {
+    					Integer value1 = entity1.getInt("begin_date_value");
+    					Integer value2 = entity1.getInt("end_date_value");
+    					System.out.println(value1);
+    					System.out.println(value2);
+    					 if((value1!=null&&value1!=0)||(value2!=null&&value2!=0)) {list.add(Integer.parseInt(type));break;} 
+					}
+    					 
+    			}
+    			
+    			
 			}
+            
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			return -1;
+			return null;
 		}
-		return -1;
+		return list;
 	}
+    
+    
     
 }
