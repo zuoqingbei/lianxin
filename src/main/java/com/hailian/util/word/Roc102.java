@@ -70,7 +70,7 @@ public class Roc102 {
      * @param sysLanguage 报告内容语言
      * @param userid 当前登录人
      */
-    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) {
+    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) throws Exception{
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
