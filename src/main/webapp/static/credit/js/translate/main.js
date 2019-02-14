@@ -8,6 +8,7 @@ let ReportConfig = {
 	currentDom:'',
 	tableRowIndex:null,
 	orderNum:'',
+	wrongTranslate:'',
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -1951,6 +1952,7 @@ let ReportConfig = {
     			if($(e.target).val() !== ''&& $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
+					_this.wrongTranslate = $(e.target).val()
     				$(".triggerModal").trigger("click")
     				_this.currentDom = $(e.target)
     				$(".correctEn").val('')
@@ -1961,6 +1963,7 @@ let ReportConfig = {
     			if($(e.target).val() !== '' && $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
+					_this.wrongTranslate = $(e.target).val()
     				$(".triggerModal").trigger("click")
     				_this.currentDom = $(e.target)
     				$(".correctEn").val('')
@@ -2461,6 +2464,7 @@ let ReportConfig = {
     			if($(e.target).val() !== '' && $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
     				$(".wrongEn").val($(e.target).val())
+    				_this.wrongTranslate = $(e.target).val()
     				$(".triggerModal").trigger("click")
     				_this.currentDom = $(e.target)
     				$(".correctEn").val('')
@@ -2471,6 +2475,7 @@ let ReportConfig = {
     			if($(e.target).val() !== ''&& $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
+					_this.wrongTranslate = $(e.target).val()
     				$(".triggerModal").trigger("click")
     				_this.currentDom = $(e.target)
     				$(".correctEn").val('')
@@ -2489,12 +2494,13 @@ let ReportConfig = {
     			return
     		}
     		//console.log(_this.currentDom)
-    		this.currentDom.val(correct_phrase_en)
+    		let newTxt = _this.wrongTranslate.replace(error_phrase_en,correct_phrase_en)
+    		this.currentDom.val(newTxt)
     		$.ajax({
     			url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
     			type:'post',
     			data:{
-    				error_phrase_en,correct_phrase_en,correct_phrase_ch
+    				error_phrase_en:_this.wrongTranslate,correct_phrase_en:newTxt,correct_phrase_ch
     			},
     			success:(data)=>{
     				console.log(data)
