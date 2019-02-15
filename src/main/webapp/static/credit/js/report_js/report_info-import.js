@@ -62,6 +62,11 @@ let Verify = {
                           align: 'center',
                           valign: 'middle',
                         }, {
+                        title: '公司英文名称',
+                        field: 'info_en_name',
+                        align: 'center',
+                        valign: 'middle',
+                      }, {
                           title: '国家',
                           field: 'country',
                           align: 'center',
