@@ -408,13 +408,13 @@ public class BaseBusiCrdt {
             String end = statementsConf.get("date2");
             String finanId = statementsConf.getInt("id") + "";
             //取到对应的财务类型
-            Integer  financeType = -9;
+            Integer  financeType = -1;
             for (Integer tempType :  FinanceService.FINANCIAL_TYPE) {
             	financeType =  getFinancialType(companyId,tempType);
-            	if(financeType!=-9) {break;}
+            	if(financeType!=-1) {break;}
 			}
             
-            if(financeType!=-9) {
+            if(financeType!=-1) {
             	//财务-表格
                 map.put("financial", financial(financeType+"", finanId,begin,end));
                 //生成财务报告
@@ -730,7 +730,7 @@ public class BaseBusiCrdt {
      * 获取财务类型
      * @param companyId
      * @param type
-     * @return
+     * @return -1未查询到
      */
     public static  Integer getFinancialType (String companyId,Integer type) {
 		try {
