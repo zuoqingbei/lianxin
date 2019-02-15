@@ -2069,6 +2069,8 @@ let ReportConfig = {
     	this.numCop = 0   //计数器
 		let allTableData = [] //存放翻译过所有表格数据
     	tableTitlesEn.forEach((item,index)=>{
+    		let tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
+//    		console.log(tableTitleSourceClassName)
     		//循环表格表头
     		let alterSource = item["alter_source"];
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
@@ -2091,7 +2093,7 @@ let ReportConfig = {
 	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
 	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
 	   					//102报告类型需要传参
-	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
+	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${tableTitleSourceClassName}`
 	   				}
 	   				$.ajax({
 	   					url,
@@ -2262,6 +2264,8 @@ let ReportConfig = {
     	//_this.formDataArr
     	formIndexEn.forEach((item,index)=>{
     		let alterSource = formTitlesEn[index]["alter_source"];
+//    		console.log(alterSource)
+    		let formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
     		if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){ return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
@@ -2289,7 +2293,7 @@ let ReportConfig = {
     			let url = BASE_PATH + `credit/ordertranslate/translate`;
    				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
    					//102报告类型需要传参
-   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
+   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}`
    				}
    				//console.log(_this.formDataArr,index)
     			 $.ajax({
