@@ -28,7 +28,9 @@ public class FinanceService {
 	 */
 	public final static List<Integer>   FINANCIAL_TYPE = new ArrayList<>();
 	/**
-	 * 财务字典中文版到英文版的类型直接的映射
+	 * 由于财务模块需要翻译且百度翻译接口无法满足要求,
+	 * 所以财务字典中录入了中英文版本(以后可能拓展其它语言),
+	 * ZH_TO_EN_MAPPING这个变量目前记录了财务字典中文版到英文版的类型直接的映射
 	 */
 	 public final static Map<String,Integer> ZH_TO_EN_MAPPING = new HashMap<>();
 	 static {

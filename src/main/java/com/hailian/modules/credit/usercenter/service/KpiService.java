@@ -58,7 +58,7 @@ public class KpiService {
 	}
 	
 	/**
-	 * 计算方式2的计算规则
+	 * 计算方式2的计算规则 根据财务年限计算
 	 * @param companyId
 	 * @param tableName
 	 * @param column1
@@ -72,7 +72,8 @@ public class KpiService {
 			if (StrUtils.isEmpty(companyId )) { return new BigDecimal(0); }
 			// 查询公司id下的财务配置
 			List<String> flagStr = Db.query(
-					"select date1,date2,id from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
+					"select date1,date2,id from credit_company_financial_statements_conf "
+					+ "where del_flag=0 and company_id=?  and type in (1,2) ",
 					Arrays.asList(new String[] { companyId   }));
 			String dateStr1 = flagStr.get(0);
 			String dateStr2 = flagStr.get(1);
