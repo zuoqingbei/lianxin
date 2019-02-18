@@ -160,7 +160,7 @@ let
 					Public.message("error","未发现该报告价格,请联系管理员");
 					return;
 				}
-//				isTheSameCompany();暂时取消快速递交报告的功能
+				isTheSameCompany();//暂时取消快速递交报告的功能
 				tableSubmit();
 			    $('#exampleModalCenter3 .close').trigger('click')
 			}
