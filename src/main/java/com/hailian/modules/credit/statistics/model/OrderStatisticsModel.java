@@ -180,15 +180,14 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 	            +" from credit_order_info o"
 				+ " LEFT JOIN credit_custom_info cu on o.custom_id=cu.id"
 				+ " where '"+time+"' =date_format(o.receiver_date,'%Y-%m-%d')  and o.del_flag='0' GROUP BY o.custom_id";
-		List<Object> params = new ArrayList<>();
 		
 		if (StringUtils.isNotBlank(sortname)) {
-			sql+=" order by "+" ? ? ";
-			params.add(sortname);
-			params.add(sortorder);
+			if("desc".equals(sortorder)||"asc".equals(sortorder))
+			sql+=" order by "+sortname+" "+sortorder+" ";
+			 
 		}
 		
-		return OrderStatisticsModel.dao.find(sql,params.toArray());
+		return OrderStatisticsModel.dao.find(sql);
 	}
    /**
     * 
