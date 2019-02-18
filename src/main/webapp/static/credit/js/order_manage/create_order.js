@@ -161,7 +161,7 @@ let
 					return;
 				}
 				isTheSameCompany();//暂时取消快速递交报告的功能
-				tableSubmit();
+//				tableSubmit();
 			    $('#exampleModalCenter3 .close').trigger('click')
 			}
 		},
