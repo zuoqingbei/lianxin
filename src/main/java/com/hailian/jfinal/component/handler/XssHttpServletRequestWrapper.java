@@ -3,6 +3,8 @@ package com.hailian.jfinal.component.handler;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -37,6 +39,15 @@ public class XssHttpServletRequestWrapper extends javax.servlet.http.HttpServlet
         }
         for (int i = 0; i < values.length; i++) {
             values[i] = getBasicHtmlandimage(values[i]);
+        }
+
+        if(values != null) {
+            int length = values.length;
+            String[] escapseValues = new String[length];
+            for(int i = 0; i < length; i++){
+                escapseValues[i] = StringEscapeUtils.escapeHtml4(values[i]);
+            }
+            return escapseValues;
         }
         return values;
     }
