@@ -543,7 +543,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			params.add(status);
 		}
 		if (StringUtils.isNotBlank(sortname)) {
-			sql.append(" order by t." ).append("create_date").append("  "+sortorder);
+			sql.append(" order by t." ).append("create_date").append(" ? " );
+			params.add(sortorder);
 		} 
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(

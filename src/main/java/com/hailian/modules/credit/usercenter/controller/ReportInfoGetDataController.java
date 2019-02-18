@@ -437,14 +437,16 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                         status = "301"; //走分析
                         //todo 填报质检完成后自动分配分析员
                         analerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.ANALER);
-                    }else if((info.get("report_language").equals("216")||info.get("report_language").equals("217"))&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
-                    	//报告语言，中文简体+英文  ，中文繁体+英文 除信用报告 其余都是走翻译
+                    //}else if((info.get("report_language").equals("216")||info.get("report_language").equals("217"))&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
+                    }else if(isTrans(info)) {
+                        //报告语言，216中文简体+英文  ，217中文繁体+英文 除信用报告 其余都是走翻译
                         status = "306";//走翻译
                         //todo 分析质检完成后自动分配翻译员
                         transerId = OrderManagerService.service.getUserIdtoOrder(RoleCons.TRANSER);
-                    
-                    }else if((info.get("report_language").equals("213")||info.get("report_language").equals("215"))&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
-                       //报告语言是中文，或英文，除信用分析，全部直接结束报告
+
+                    //}else if((info.get("report_language").equals("213")||info.get("report_language").equals("215"))&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
+                    }else if(isEnd(info)){
+                       //报告语言是213中文，或215英文，除信用分析，全部直接结束报告
 		                status = "311";
 		                agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
                     }
@@ -509,6 +511,40 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             renderJson(record.set("submit", submit));
         }
 
+    }
+
+    /**
+     * 判断订单是否走翻译
+     * @param info
+     * @return true翻译  false不翻译
+     */
+    private boolean isTrans(CreditOrderInfo info){
+        if((info.get("report_language").equals("216")||info.get("report_language").equals("217")
+                ||(info.get("report_type").equals(ReportTypeCons.BASE_EN)||info.get("report_type").equals(ReportTypeCons.BUSI_EN)||info.get("report_type").equals(ReportTypeCons.CRED_EN)))
+                &&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
+            //1. 报告语言，216中文简体+英文  ，217中文繁体+英文 除信用报告 其余都是走翻译
+            //2. REGISTRATION REPORT / BUSINESS INFORMATION / CREDIT RISK ANALYSIS REPO 三个报告需要走翻译
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 判断订单是否结束
+     * @param info
+     * @return true结束  false未结束
+     */
+    private boolean isEnd(CreditOrderInfo info){
+        //报告语言是213中文，或215英文，除信用分析(走分析)和base/busi/credit(走翻译)，全部直接结束报告
+        if((info.get("report_language").equals("213")||info.get("report_language").equals("215"))&&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
+            if(info.get("report_type").equals(ReportTypeCons.BASE_EN)||info.get("report_type").equals(ReportTypeCons.BUSI_EN)||info.get("report_type").equals(ReportTypeCons.CRED_EN)){
+                //REGISTRATION REPORT / BUSINESS INFORMATION / CREDIT RISK ANALYSIS REPO 三个报告需要走翻译，不结束
+                return false;
+            }else{
+                return true;
+            }
+        }
+        return false;
     }
 
    /** 
