@@ -40,6 +40,7 @@
 }
 .main {
     margin-bottom: 10rem;
+    height:100%;
 }
 .order-info {
     position: relative;

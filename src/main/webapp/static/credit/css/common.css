@@ -6,6 +6,7 @@
 #main_content {
     padding: 0;
     transition: width ease .5s;
+    height:100%;
 }
 header {
     width: 100%;
