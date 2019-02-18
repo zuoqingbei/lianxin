@@ -139,11 +139,13 @@ public class OrderProcessController extends BaseProjectController{
         orderAllocationColumns.add("u1.realname");
         orderAllocationColumns.add("c.num");
         orderAllocationColumns.add("c.right_company_name_en");
+        orderAllocationColumns.add("c.info_en_name");//录入的公司英文名称
     }
     static{
         orderAllocationParamNames.add("report_user");
         orderAllocationParamNames.add("num");
         orderAllocationParamNames.add("right_company_name_en");
+        orderAllocationParamNames.add("info_en_name");
     }
     static{
         TYPE_KEY_COLUMN.put(orderAllocation,orderAllocationColumns);

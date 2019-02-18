@@ -1,5 +1,6 @@
 package com.hailian.modules.credit.statistics.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -179,8 +180,11 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 	            +" from credit_order_info o"
 				+ " LEFT JOIN credit_custom_info cu on o.custom_id=cu.id"
 				+ " where '"+time+"' =date_format(o.receiver_date,'%Y-%m-%d')  and o.del_flag='0' GROUP BY o.custom_id";
+		
 		if (StringUtils.isNotBlank(sortname)) {
-			sql+=" order by "+sortname+" "+sortorder;
+			if("desc".equals(sortorder)||"asc".equals(sortorder))
+			sql+=" order by "+sortname+" "+sortorder+" ";
+			 
 		}
 		
 		return OrderStatisticsModel.dao.find(sql);
@@ -278,18 +282,21 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 	 */
 	public  List<OrderStatisticsModel> getCusOrderTrend(String country,String customer){
 		String sql="";
-		
+		List<Object> params = new ArrayList<>();
 		sql="select `month` as time,COUNT(receiver_date) as num  from credit_order_info "
 		  + " where  status='314' and del_flag='0' and datediff(submit_date,end_date)>0 and  date_add(now(),interval -12 month)";
 		
 		if (StringUtils.isNotBlank(country)) {
-			sql+=" and country='"+country+"'";
-		}
-		if (StringUtils.isNotBlank(customer)) {
-			sql+=" and custom_id='"+customer+"'";
+			sql+=" and country=? ";
+			params.add(country);
 		}
 		
-		return OrderStatisticsModel.dao.find(sql);
+		if (StringUtils.isNotBlank(customer)) {
+			sql+=" and custom_id=? ";
+			params.add(customer);
+		}
+		
+		return OrderStatisticsModel.dao.find(sql,params.toArray());
 	}
 	/**
 	 * 

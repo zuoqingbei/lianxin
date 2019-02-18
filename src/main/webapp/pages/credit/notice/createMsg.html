@@ -96,6 +96,12 @@
     })
     //发布公告
 	function save(title,content){
+        let newStr = content.replace(/&lt;/g,"<").replace(/&gt;/g,">")
+   	    if(/<script[^>]*>(?:.*?)<\/script>/.test(newStr)) {
+   	    	Public.message ("info","输入的内容不合法！")
+   	    	return 
+   	    }
+    	content = newStr.replace(/</g,"&lt;").replace(/>/g,"&gt;")
 		$.ajax({
    			type:"post",
        		url:"/credit/sysuser/notice/save",
