@@ -417,7 +417,7 @@ let Index = {
                         },
                         "click .order-update":(e,value,row,index)=>{
                             $("#exampleModalCenter3 .file-upload2 .close").trigger('click')
-                            console.log('这是row',row)
+                            $("#client_company_by_report").val(row.company_by_report)
                           $("#orderNum3").text(row.num);
                           $("#client_userNname").val(row.customName);
                           let da=row.create_date;
