@@ -92,6 +92,10 @@ public class ReportTranslateController extends BaseProjectController {
 							
 						}
 						
+						//102 ROC English 出资情况中出资者字段 翻译方式为getUpEname
+						/*if("14".equals(reporttype)&&"CreditCompanyShareholder".equals(className)){
+							value_en = SpellHelper.getUpEname(value.trim());
+						}*/
 						
 					} catch (Exception e) {
                         e.printStackTrace();
@@ -100,19 +104,21 @@ public class ReportTranslateController extends BaseProjectController {
 					if("cht".equals(targetlanguage)){
 						try {
 							value_cht=TransApi.Trans(value.replace(" ", "").replace("%", ""),targetlanguage);
-							if("14".equals(reporttype)){
+							if("14".equals(reporttype)){//&&"CreditCompanyInfo".equals(className)
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
 										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)
-										|| "name".equals(key) || "legal".equals(key) || "executive_director".equals(key) || "members_of_the_supervisors".equals(key) || "operation_scope".equals(key) || "change_font".equals(key) || "change_back".equals(key) || "change_items".equals(key) || "embranchment_count".equals(key)){
-									value_en="";
+										|| "name".equals(key) || "legal".equals(key) || "executive_director".equals(key) || "members_of_the_supervisors".equals(key) 
+										|| "operation_scope".equals(key) || "change_font".equals(key) || "change_back".equals(key) || "change_items".equals(key) 
+										|| "embranchment_count".equals(key) || "sh_name".equals(key)){
+									 value_en="";
 								}
 								if("name_en".equals(key) || "business_date_end".equals(key) || "registration_authority".equals(key)){
-									value_cht="";
+									 value_cht="";
 								}
 								if("type_of_enterprise_remark".equals(key)){
 									continue;
 								}
-								
+								 
 							}
 							
 						} catch (Exception e) {
