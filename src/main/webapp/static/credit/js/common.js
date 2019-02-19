@@ -383,7 +383,17 @@ let Public = {
         		</div>
     		</div>
 		</div>`;
+        }else if(item.title.temp_name === "报告结果"){
+        	content += ` <div class="filingFile order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+        		<div class="uploadFile mt-3 mr-3 ml-3">
+        		<div class="over-box">
+        		<img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
+        		<p class="mt-2">暂无附件</p>
+        		</div>
+    		</div>
+		</div>`;
         }
+        
         let url = item.title.get_source ? item.title.get_source : item.title.data_source;
         url = BASE_PATH + url;
         $.ajax({
