@@ -30,6 +30,13 @@ public class CreditCompanyJudgmentdoc extends BaseProjectModel<CreditCompanyJudg
 		params.add(sys_language);
 		Db.update(sql, params.toArray());
 	}
+	public List<CreditCompanyJudgmentdoc> getBycomIdAndLanguage(String companyid,String sys_language){
+		String sql="select * from credit_company_judgmentdoc where del_flag=0 and company_id=? and sys_language=?";
+		List<Object> params=new ArrayList<Object>();
+		params.add(companyid);
+		params.add(sys_language);
+		return dao.find(sql, params.toArray());
+	}
 	
 
 }

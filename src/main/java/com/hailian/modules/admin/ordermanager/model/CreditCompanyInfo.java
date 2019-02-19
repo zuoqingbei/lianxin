@@ -25,6 +25,10 @@ public class CreditCompanyInfo extends BaseProjectModel<CreditCompanyInfo>{
 		
 		return dao.find("select * from credit_company_info order by id");
 	}
+	public CreditCompanyInfo getCompanyById(String id) {
+		
+		return dao.findFirst("select * from credit_company_info where id= ? order by id ",id);
+	}
 	/**
 	 * 
 	 * @time   2018年10月9日 下午5:12:31
