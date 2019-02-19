@@ -289,7 +289,7 @@ let Allocation = {
             sidePagination: 'server',
             pageNumber:1,
             pageSize:10,
-            pageList: [10,20,30],
+            pageList: [10,20,30,50],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
@@ -311,7 +311,9 @@ let Allocation = {
               };  
           },  
           onLoadSuccess:(data)=>{
+        	  this.idArr = []
         	  _this.all_allocation(data.rows[0])
+        	  
           },
           onCheck:(row)=>{
           	this.idArr.push(row.id)

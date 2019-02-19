@@ -539,7 +539,7 @@ let Filing = {
               sidePagination: 'server',
               pageNumber:1,
               pageSize:10,
-              pageList: [10,20,30],
+              pageList: [10,20,30,50],
               smartDisplay:false,
               iconsPrefix:'fa',
               locales:'zh-CN',

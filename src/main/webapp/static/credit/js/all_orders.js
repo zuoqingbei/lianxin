@@ -417,7 +417,7 @@ let Index = {
                         },
                         "click .order-update":(e,value,row,index)=>{
                             $("#exampleModalCenter3 .file-upload2 .close").trigger('click')
-                            console.log('这是row',row)
+                            $("#client_company_by_report").val(row.company_by_report)
                           $("#orderNum3").text(row.num);
                           $("#client_userNname").val(row.customName);
                           let da=row.create_date;
@@ -489,7 +489,7 @@ let Index = {
             sidePagination: 'server',
             pageNumber:1,
             pageSize:10,
-            pageList: [10 , 20],
+            pageList: [10 , 20 ,30 ,50],
             smartDisplay:false,
             iconsPrefix:'fa',
             locales:'zh-CN',
@@ -587,28 +587,28 @@ Index.init();
 function loadtable(){
 	var checked=[];
 	 var checkchar=""
-             $("input[name='status']:checked").each(function(i){
-                   checked[i] = $(this).val();
-                   checkchar+=checked[i]+","
-             });
-             console.log(checkchar);
-    		$.ajax({
-    			type:"post",
-    			url:"/credit/front/home/list",
-    			data:{"attr.custom_id":$("#txt_search_cus").find("option:selected").val(),
-    				"attr.country":$("#txt_search_country").find("option:selected").val(),
-    				"attr.end_date":$("#txt_search_date").val(),
-    				"attr.agent_id":$("#txt_search_agency").find("option:selected").val(),
-    				"attr.company_by_report":$("#txt_search_departmentname").val(),
-    				"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
-    				"attr.num":$("#num").val(),
-       			    "attr.reference_num":$("#reference_num").val(),
-    				"status":checkchar},
-    			 dataType:"json",
-    			 success:function(data){
-    			 	 $("#table").bootstrapTable("load",data)
-    			 }
-    		});
+     $("input[name='status']:checked").each(function(i){
+       checked[i] = $(this).val();
+       checkchar+=checked[i]+","
+     });
+     console.log(checkchar);
+	$.ajax({
+		type:"post",
+		url:"/credit/front/home/list",
+		data:{"attr.custom_id":$("#txt_search_cus").find("option:selected").val(),
+			"attr.country":$("#txt_search_country").find("option:selected").val(),
+			"attr.end_date":$("#txt_search_date").val(),
+			"attr.agent_id":$("#txt_search_agency").find("option:selected").val(),
+			"attr.company_by_report":$("#txt_search_departmentname").val(),
+			"attr.right_company_name_en":$("#txt_search_companyEngName").val(),
+			"attr.num":$("#num").val(),
+		    "attr.reference_num":$("#reference_num").val(),
+			"status":checkchar},
+		 dataType:"json",
+		 success:function(data){
+		 	 $("#table").bootstrapTable("load",data)
+		 }
+	});
 };
 function orderinfo(id){
 			Public.goToOrderDetail(id)

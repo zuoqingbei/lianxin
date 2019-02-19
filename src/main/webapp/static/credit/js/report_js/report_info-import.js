@@ -62,6 +62,11 @@ let Verify = {
                           align: 'center',
                           valign: 'middle',
                         }, {
+                        title: '公司英文名称',
+                        field: 'info_en_name',
+                        align: 'center',
+                        valign: 'middle',
+                      }, {
                           title: '国家',
                           field: 'country',
                           align: 'center',
@@ -227,7 +232,7 @@ let Verify = {
                     sidePagination: 'server',
                     pageNumber:1,
                     pageSize:10,
-                    pageList: [10,20,30],
+                    pageList: [10,20,30,50],
                     smartDisplay:false,
                     iconsPrefix:'fa',
                     locales:'zh-CN',
@@ -392,6 +397,7 @@ let Verify = {
         $("#modal_submit_allocation").click(()=>{
         	console.log("点击录入名称提交")
         	let val = $("#companyZHNames").val();
+        	let valEn = $("#companyEnNames").val()
         	if(!val){
         		Public.message("error","公司中文名称不能为空")
         	}else {
@@ -400,7 +406,7 @@ let Verify = {
         		$.ajax({
            			type:"post",
                		url:BASE_PATH+"credit/front/orderProcess/statusSave",
-               		data:"statusCode=595&isPa=yes&num="+$("#num").html()+"&model.id="+$("#orderId").val()+"&model.company_by_report="+$("#companyZHNames").val()+"&companyId="+$("#companyId").val(),
+               		data:"statusCode=595&isPa=yes&num="+$("#num").html()+"&model.id="+$("#orderId").val()+"&model.company_by_report="+val+"&companyId="+$("#companyId").val()+"&info_en_name="+valEn,
                		dataType:"json",
                		success:function(obj){
                			$("body").mLoading("hide");

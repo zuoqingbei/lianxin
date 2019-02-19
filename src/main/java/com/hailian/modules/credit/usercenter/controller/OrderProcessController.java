@@ -9,19 +9,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
 import com.hailian.api.constant.RoleCons;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.util.http.HttpCrawler;
-import com.hailian.util.word.MainReport;
-
 import org.apache.commons.lang3.StringUtils;
-
-
-
-
-
 //import ch.qos.logback.core.status.Status;
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
@@ -147,11 +139,13 @@ public class OrderProcessController extends BaseProjectController{
         orderAllocationColumns.add("u1.realname");
         orderAllocationColumns.add("c.num");
         orderAllocationColumns.add("c.right_company_name_en");
+        orderAllocationColumns.add("c.info_en_name");//录入的公司英文名称
     }
     static{
         orderAllocationParamNames.add("report_user");
         orderAllocationParamNames.add("num");
         orderAllocationParamNames.add("right_company_name_en");
+        orderAllocationParamNames.add("info_en_name");
     }
     static{
         TYPE_KEY_COLUMN.put(orderAllocation,orderAllocationColumns);

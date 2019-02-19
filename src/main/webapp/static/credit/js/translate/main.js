@@ -8,6 +8,7 @@ let ReportConfig = {
 	currentDom:'',
 	tableRowIndex:null,
 	orderNum:'',
+	wrongTranslate:'',
     init(){
     	this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -1951,6 +1952,7 @@ let ReportConfig = {
     			if($(e.target).val() !== ''&& $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
+					_this.wrongTranslate = $(e.target).val()
     				$(".triggerModal").trigger("click")
     				_this.currentDom = $(e.target)
     				$(".correctEn").val('')
@@ -1961,6 +1963,7 @@ let ReportConfig = {
     			if($(e.target).val() !== '' && $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
+					_this.wrongTranslate = $(e.target).val()
     				$(".triggerModal").trigger("click")
     				_this.currentDom = $(e.target)
     				$(".correctEn").val('')
@@ -2066,6 +2069,8 @@ let ReportConfig = {
     	this.numCop = 0   //计数器
 		let allTableData = [] //存放翻译过所有表格数据
     	tableTitlesEn.forEach((item,index)=>{
+    		let tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
+//    		console.log(tableTitleSourceClassName)
     		//循环表格表头
     		let alterSource = item["alter_source"];
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
@@ -2088,7 +2093,7 @@ let ReportConfig = {
 	   				let url = BASE_PATH + `credit/ordertranslate/translate`;
 	   				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
 	   					//102报告类型需要传参
-	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
+	   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${tableTitleSourceClassName}`
 	   				}
 	   				$.ajax({
 	   					url,
@@ -2259,6 +2264,8 @@ let ReportConfig = {
     	//_this.formDataArr
     	formIndexEn.forEach((item,index)=>{
     		let alterSource = formTitlesEn[index]["alter_source"];
+//    		console.log(alterSource)
+    		let formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
     		if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){ return}
     		let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
     		let dataJson = []
@@ -2286,7 +2293,7 @@ let ReportConfig = {
     			let url = BASE_PATH + `credit/ordertranslate/translate`;
    				if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
    					//102报告类型需要传参
-   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
+   					url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}`
    				}
    				//console.log(_this.formDataArr,index)
     			 $.ajax({
@@ -2461,6 +2468,7 @@ let ReportConfig = {
     			if($(e.target).val() !== '' && $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
     				$(".wrongEn").val($(e.target).val())
+    				_this.wrongTranslate = $(e.target).val()
     				$(".triggerModal").trigger("click")
     				_this.currentDom = $(e.target)
     				$(".correctEn").val('')
@@ -2471,6 +2479,7 @@ let ReportConfig = {
     			if($(e.target).val() !== ''&& $(e.target).val() !== 'Translation failure!'&& $(e.target).val() !== 'Translation failure!翻譯失敗!'){
     				$(".headtxt").html($(e.target).siblings("label").html()+'-翻译校正')
 					$(".wrongEn").val($(e.target).val())
+					_this.wrongTranslate = $(e.target).val()
     				$(".triggerModal").trigger("click")
     				_this.currentDom = $(e.target)
     				$(".correctEn").val('')
@@ -2489,12 +2498,13 @@ let ReportConfig = {
     			return
     		}
     		//console.log(_this.currentDom)
-    		this.currentDom.val(correct_phrase_en)
+    		let newTxt = _this.wrongTranslate.replace(error_phrase_en,correct_phrase_en)
+    		this.currentDom.val(newTxt)
     		$.ajax({
     			url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
     			type:'post',
     			data:{
-    				error_phrase_en,correct_phrase_en,correct_phrase_ch
+    				error_phrase_en:_this.wrongTranslate,correct_phrase_en:newTxt,correct_phrase_ch
     			},
     			success:(data)=>{
     				console.log(data)

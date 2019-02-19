@@ -872,7 +872,7 @@ public class BaseWord {
         commonFiles.add(file);
         String now = UUID.randomUUID().toString().replaceAll("-", "");
         CreditUploadFileModel fileModel = new CreditUploadFileModel();
-        fileModel.set("business_type", "0");
+        fileModel.set("business_type", "311");//订单完成
         fileModel.set("business_id", orderId);
         try {
             for(File fl:commonFiles) {

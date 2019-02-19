@@ -32,6 +32,7 @@
 
 #container {
 	height:100%;
+	padding-bottom:4.5rem;
 }
 
 .layui-laydate .layui-this{
@@ -40,6 +41,7 @@
 }
 .main {
     margin-bottom: 10rem;
+    height:100%;
 }
 .order-info {
     position: relative;

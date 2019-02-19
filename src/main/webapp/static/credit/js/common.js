@@ -383,7 +383,17 @@ let Public = {
         		</div>
     		</div>
 		</div>`;
+        }else if(item.title.temp_name === "报告结果"){
+        	content += ` <div class="reportRes order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+        		<div class="uploadFile mt-3 mr-3 ml-3">
+        		<div class="over-box">
+        		<img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
+        		<p class="mt-2">暂无附件</p>
+        		</div>
+    		</div>
+		</div>`;
         }
+        
         let url = item.title.get_source ? item.title.get_source : item.title.data_source;
         url = BASE_PATH + url;
         $.ajax({
@@ -404,6 +414,8 @@ let Public = {
                     	$(".verifyFile").html("")
                     }else if(item.title.temp_name === "查档附件"){
                     	$(".filingFile").html("")
+                    }else if(item.title.temp_name === "报告结果"){
+                    	$(".reportRes").html("")
                     }
                     //   	$(".uploadFile:not(.upload-over)").show()
                     for (var i = 0; i < files.length; i++) {
@@ -448,6 +460,8 @@ let Public = {
                             	$(".verifyFile").append(fileArr)
                             }else if(item.title.temp_name === "查档附件"){
                             	$(".filingFile").append(fileArr)
+                            }else if(item.title.temp_name === "报告结果"){
+                            	$(".reportRes").append(fileArr)
                             }
                         
                         $(".upload-over").click(function (e) {

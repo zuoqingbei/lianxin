@@ -400,7 +400,7 @@ public class BaseBusiCrdt {
         }
 
         //财务模块生成
-        String excelPath = "";
+        List<String> excelPath = new ArrayList<>();
         List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
         if(finanConfList!=null && finanConfList.size()>0) {
             CreditCompanyFinancialStatementsConf statementsConf = finanConfList.get(0);
@@ -408,21 +408,22 @@ public class BaseBusiCrdt {
             String end = statementsConf.get("date2");
             String finanId = statementsConf.getInt("id") + "";
             //取到对应的财务类型
-            Integer  financeType = -1;
+            /*Integer  financeType = -1;
             for (Integer tempType :  FinanceService.FINANCIAL_TYPE) {
-            	financeType =  getFinancialType(companyId,tempType);
+            	financeType =  getFinancialType(companyId);
             	if(financeType!=-1) {break;}
-			}
-            
-            if(financeType!=-1) { 
-            	//财务-表格
-                map.put("financial", financial(financeType+"", finanId,begin,end));
-                //生成财务报告
-                excelPath = financialExcel(financeType+"",finanId,_prePath,orderId,userid,begin,end);
+			}*/
+            List<Integer> financeTypes = getFinancialType(companyId);
+            for(Integer financeType:financeTypes) {
+                //word里财务模块生成
+                financial(financeType, finanId, begin, end, map);
+                //生成财务报告EXCEL
+                String expath = financialExcel(financeType,finanId,_prePath,orderId,userid,begin,end);
+                excelPath.add(expath);
             }
+
             //财务-评价
             map.put("financial_eval", financialEval(statementsConf,reportType,sysLanguage));
-            
         }
 
         //生成word
@@ -434,8 +435,8 @@ public class BaseBusiCrdt {
         List<Map<String, String>> fileList = new ArrayList<>();
         Map<String, String> fileMap = new HashMap();
         fileMap.put(reportName + ".doc",_pre + wordPath);
-        if(!"".equals(excelPath)) {
-            fileMap.put(reportName + ".xls", _pre + excelPath);
+        for(String path:excelPath) {
+            fileMap.put(reportName + ".xls", _pre + path);
         }
         fileList.add(fileMap);
         sendMail(reportName,customId, fileList);
@@ -543,17 +544,18 @@ public class BaseBusiCrdt {
      * @param financialConfId
      * @param begin
      * @param end
+     * @param map
      * @return
      */
-    public static MiniTableRenderData financial(String financeType,String financialConfId,String begin,String end) {
+    public static List<RowRenderData> financial(int financeType,String financialConfId,String begin,String end,HashMap<String, Object> map) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
-        if("3".equals(financeType)){
+        if(financeType==3){
             //todo 大数渲染
         }else{
             //财务
             //取数据
             //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-            List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType);
+            List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType+"");
             int j = 0;
             Integer old = null;
             for (CreditCompanyFinancialEntry ccf : finDataRows) {
@@ -638,9 +640,10 @@ public class BaseBusiCrdt {
                 rowList.add(RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString()), new TextRenderData(endValue.toString())));
                 j++;
             }
+            //财务-表格
+            map.put("financial", new MiniTableRenderData(rowList));
         }
-
-        return new MiniTableRenderData(rowList);
+        return rowList;
     }
 
     /**
@@ -654,14 +657,14 @@ public class BaseBusiCrdt {
      * @param end
      * @return
      */
-    public static String financialExcel(String financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
+    public static String financialExcel(int financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
         String filePath = "";
-        if("3".equals(financeType)){
+        if(financeType==3){
             //todo 大数渲染
         }else{
             //财务
             //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
-            List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType);
+            List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType+"");
             FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end);
             try {
                 String path = _prePath + ".xls";
@@ -727,42 +730,55 @@ public class BaseBusiCrdt {
     }
 
     /**
-     * 获取财务类型
+        * 找到当前公司关联下的,内容不为空的所有财务类型
      * @param companyId
-     * @param type
-     * @return
+     * @return  当前公司关联下的,内容不为空的所有财务类型
      */
-    public static  Integer getFinancialType (String companyId,Integer type) {
+    public static  List<Integer> getFinancialType (String companyId) {
+    	
+    	List<Integer> list = new ArrayList<>();
+    	
 		try {
-			if (type==null) { return -1; }
-			if (StrUtils.isEmpty(companyId,type+"")) { return -1; }
 			// 查询公司id下的财务配置
-			List<String> flagStr = Db.query(
-					"select date1,date2,id from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
-					Arrays.asList(new String[] { companyId   }));
-            if(flagStr.size()==0){
-                return -1;
+			List<CreditCompanyFinancialStatementsConf> flagList = CreditCompanyFinancialStatementsConf.dao.find(
+                    "select * from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
+                    Arrays.asList(new String[]{companyId   }).toArray());
+            if(flagList==null||flagList.size()==0){
+                return null;
             }
-			String dateStr1 = flagStr.get(0);
-			String dateStr2 = flagStr.get(1);
-			if (StrUtils.isEmpty(dateStr1, dateStr2)) { return -1; }
-			//查询配置下的财务信息
-			String confId = flagStr.get(2)+"";
-			List<Integer> targetValueList =  Db.query(
-					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=? and type=? ",
-					Arrays.asList(new String[] { confId ,type+""}));
-			
-			if(targetValueList!=null) {
-				for (Integer integer : targetValueList) {
-					if(integer!=null) { if(!(integer==null||integer==0)) { return type; } }
-				}
+            String type = null;
+            for (CreditCompanyFinancialStatementsConf entity : flagList) {
+    			String confId = entity.get("id")+"";//财务配置id
+    			  type = entity.get("type")+"";//财务类型
+    			if (StrUtils.isEmpty(confId, type+"")) { return null; }
+    			
+    			List<CreditCompanyFinancialEntry> targetValueList =  CreditCompanyFinancialEntry.dao.find(
+    					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=? and type=? ",
+    					Arrays.asList(new String[] { confId ,type+""}).toArray());
+    			
+    			if(targetValueList!=null) {
+    				for (CreditCompanyFinancialEntry entity1 : targetValueList) {
+    					Integer value1 = entity1.getInt("begin_date_value");
+    					Integer value2 = entity1.getInt("end_date_value");
+    					System.out.println(value1);
+    					System.out.println(value2);
+    					 if((value1!=null&&value1!=0)||(value2!=null&&value2!=0)) {list.add(Integer.parseInt(type));break;} 
+					}
+    					 
+    			}
+    			
+    			
 			}
+            
+			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			return -1;
+			return null;
 		}
-		return -1;
+		return list;
 	}
+    
+    
     
 }

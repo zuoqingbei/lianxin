@@ -16,6 +16,7 @@
  */
 package com.hailian.component.config;
 
+import com.hailian.jfinal.component.handler.XssHandler;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
 import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal3.JFinal3BeetlRenderFactory;
@@ -184,6 +185,8 @@ public class BaseConfig extends JFinalConfig {
 		me.add(new ContextPathHandler(Config.getStr("PATH.CONTEXT_PATH")));
 		// 当前获取
 		me.add(new CurrentPathHandler(Config.getStr("PATH.CURRENT_PATH")));
+        // xss防范
+        me.add(new XssHandler(Config.getStr("PATH.BASE_PATH")));
 	}
 
 	/**
