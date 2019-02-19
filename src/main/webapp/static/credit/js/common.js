@@ -384,7 +384,7 @@ let Public = {
     		</div>
 		</div>`;
         }else if(item.title.temp_name === "报告结果"){
-        	content += ` <div class="filingFile order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
+        	content += ` <div class="reportRes order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">
         		<div class="uploadFile mt-3 mr-3 ml-3">
         		<div class="over-box">
         		<img src="/static/credit/imgs/order/fujian.png" class="m-auto"/>
@@ -414,6 +414,8 @@ let Public = {
                     	$(".verifyFile").html("")
                     }else if(item.title.temp_name === "查档附件"){
                     	$(".filingFile").html("")
+                    }else if(item.title.temp_name === "报告结果"){
+                    	$(".reportRes").html("")
                     }
                     //   	$(".uploadFile:not(.upload-over)").show()
                     for (var i = 0; i < files.length; i++) {
@@ -458,6 +460,8 @@ let Public = {
                             	$(".verifyFile").append(fileArr)
                             }else if(item.title.temp_name === "查档附件"){
                             	$(".filingFile").append(fileArr)
+                            }else if(item.title.temp_name === "报告结果"){
+                            	$(".reportRes").append(fileArr)
                             }
                         
                         $(".upload-over").click(function (e) {
