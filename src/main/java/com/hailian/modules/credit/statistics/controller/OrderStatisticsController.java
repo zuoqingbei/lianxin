@@ -1,5 +1,7 @@
 package com.hailian.modules.credit.statistics.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,14 +147,29 @@ public class OrderStatisticsController extends BaseProjectController{
 	public void customDay(){
 		String time=getPara("time");
 		String sortname=getPara("sortName");
-		if(!StringUtils.isNotBlank(sortname)) {
+		//防止sql注入,所以不能这么弄 建议:可以用switch case 限定sortname范围
+		//if(!StringUtils.isNotBlank(sortname)) { 
 			sortname="num";
-		}
+		//}
 		String sortorder=getPara("sortOrder");
 		if(!StringUtils.isNotBlank(sortorder)) {
 			sortorder="desc";
 		}
-	List<OrderStatisticsModel> customDay = OrderStatisticsService.service.getcustomDay(time,sortname,sortorder);
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+		
+		List<OrderStatisticsModel> customDay = null;
+		
+		//为了防止time参数sql注入,判断其格式,格式错误则over
+		try {
+			sdf.parse(time);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			renderJson(new ResultType(0,null));
+			return;
+		}
+		 
+		
+	 customDay = OrderStatisticsService.service.getcustomDay(time,sortname,sortorder);
 	int total=customDay.size();
 	List<OrderStatisticsModel> rows=customDay;
 	ResultType resultType=new ResultType(total,rows); 

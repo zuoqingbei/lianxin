@@ -249,10 +249,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         }
         List rows = null;
         try {
+        	
             System.out.println(confId + "=" + className);
             Class<?> table = Class.forName(PAKAGENAME_PRE + className);
             BaseProjectModel model = (BaseProjectModel) table.newInstance();
-            rows = model.find("select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
+           
+            String targetStr = "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
+            targetStr = this.sortStatementSpecialHandling(targetStr,className);//对语句有条件的特殊处理
+            rows = model.find(targetStr);
             //使用ehcache缓存数据
             //System.out.println(tableName + sqlSuf);
             //rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
@@ -293,7 +297,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return rows;
     }
 
-    //详情
+    private String sortStatementSpecialHandling(String targetStr, String className) {
+    	//历史记录表添加日期降序语句
+        if("CreditCompanyHis".equals(className.trim())) {
+        	targetStr += " order by date desc ";
+        }
+		return targetStr;
+	}
+	//详情
     public List getTableDatas(boolean isCompanyMainTable, String companyId,String tableName,String className,String confId,String orderId){
         // 获取关联字典表需要转义的下拉选
 		String selectInfo = getPara("selectInfo");

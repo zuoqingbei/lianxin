@@ -182,7 +182,7 @@ public class OrderStatisticsModel extends BaseProjectModel<OrderStatisticsModel>
 				+ " where '"+time+"' =date_format(o.receiver_date,'%Y-%m-%d')  and o.del_flag='0' GROUP BY o.custom_id";
 		
 		if (StringUtils.isNotBlank(sortname)) {
-			if("desc".equals(sortorder)||"asc".equals(sortorder))
+			if("desc".equals(sortorder)||"asc".equals(sortorder))//防止sql注入
 			sql+=" order by "+sortname+" "+sortorder+" ";
 			 
 		}
