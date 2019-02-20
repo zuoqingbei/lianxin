@@ -629,6 +629,86 @@ public class CompanyService {
 		}
 		
 	}
+	public void enterGrabTheSameCompany(String companyId,String sys_language,String reporttype){
+		List<CreditCompanyManagement> managementList = CreditCompanyManagement.dao.getBycomIdAndLanguage(companyId, sys_language);//管理层
+		for(int i=0;i<managementList.size();i++){
+			CreditCompanyManagement management= managementList.get(i);
+			management.remove("id");
+			management.set("company_id", companyId);
+			management.set("sys_language", sys_language);
+		 
+			}
+		Db.batchSave(managementList, managementList.size());
+		List<CreditCompanyShareholder> shareholderList = CreditCompanyShareholder.dao.getBycomIdAndLanguage(companyId, sys_language);//股东
+		for(int i=0;i<shareholderList.size();i++){
+			CreditCompanyShareholder shareholder= shareholderList.get(i);
+			shareholder.remove("id");
+			shareholder.set("company_id", companyId);
+			shareholder.set("sys_language", sys_language);
+		 
+			}
+		Db.batchSave(shareholderList, shareholderList.size());
+		List<CreditCompanyHis> creditcompanyhisList = CreditCompanyHis.dao.getBycomIdAndLanguage(companyId, sys_language);//历史变更
+		for(int i=0;i<creditcompanyhisList.size();i++){
+			CreditCompanyHis creditcompanyhis= creditcompanyhisList.get(i);
+			creditcompanyhis.remove("id");
+			creditcompanyhis.set("company_id", companyId);
+			creditcompanyhis.set("sys_language", sys_language);
+		 
+			}
+		Db.batchSave(creditcompanyhisList, creditcompanyhisList.size());
+		if("8".equals(reporttype) || "10".equals(reporttype)){
+			//裁判文书，法院公告，开庭公告信息,商标数据并保存
+			List<CreditCompanyJudgmentdoc> judgmentdocList = CreditCompanyJudgmentdoc.dao.getBycomIdAndLanguage(companyId, sys_language);
+			for(int i=0;i<judgmentdocList.size();i++){
+				CreditCompanyJudgmentdoc judgmentdoc= judgmentdocList.get(i);
+				judgmentdoc.remove("id");
+				judgmentdoc.set("company_id", companyId);
+				judgmentdoc.set("sys_language", sys_language);
+			 
+				}
+			Db.batchSave(judgmentdocList, judgmentdocList.size());
+			List<CreditCompanyCourtannouncement> courtannouncementList = CreditCompanyCourtannouncement.dao.getBycomIdAndLanguage(companyId, sys_language);
+			for(int i=0;i<courtannouncementList.size();i++){
+				CreditCompanyCourtannouncement courtannouncement= courtannouncementList.get(i);
+				courtannouncement.remove("id");
+				courtannouncement.set("company_id", companyId);
+				courtannouncement.set("sys_language", sys_language);
+				}
+			Db.batchSave(courtannouncementList, courtannouncementList.size());
+			List<CreditCompanyCourtnotice> courtnoticeList = CreditCompanyCourtnotice.dao.getBycomIdAndLanguage(companyId, sys_language);
+			for(int i=0;i<courtnoticeList.size();i++){
+				CreditCompanyCourtnotice courtnotice= courtnoticeList.get(i);
+				courtnotice.remove("id");
+				courtnotice.set("company_id", companyId);
+				courtnotice.set("sys_language", sys_language);
+				}
+			Db.batchSave(courtnoticeList, courtnoticeList.size());
+			}
+	}
+	/**
+	 * 创建新订单时如果之前有相同报告引用之前报告，不再走企查查录入步骤
+	 * @author dou_shuiahi
+	 * @date: 2019年2月19日下午3:20:51
+	 * @Description:
+	 */
+	class threadEnterGrabTheSameCompany implements Runnable{
+		String companyId = "";
+	    String reporttype = "";
+	    String sys_language="";
+		public threadEnterGrabTheSameCompany(String companyId, String reporttype, String sys_language) {
+			super();
+			this.companyId = companyId;
+			this.reporttype = reporttype;
+			this.sys_language = sys_language;
+		}
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			enterGrabTheSameCompany(companyId,sys_language,reporttype);
+		}
+		
+	}
 	public static void main(String[] args) {
 		String s="a;b;c;";
 		if(s.lastIndexOf(";") != -1) {

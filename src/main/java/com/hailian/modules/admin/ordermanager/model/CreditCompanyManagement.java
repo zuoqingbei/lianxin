@@ -32,5 +32,19 @@ public class CreditCompanyManagement extends BaseProjectModel<CreditCompanyManag
 		params.add(reporttype);
 		Db.update(sql, params.toArray());
 	}
+	/**
+	 * 根据公司id和报告类型删除记录
+	* @author doushuihai  
+	 * @return 
+	* @date 2018年11月9日上午9:24:47  
+	* @TODO
+	 */
+	public List<CreditCompanyManagement> getBycomIdAndLanguage(String companyid,String reporttype){
+		String sql="select * from credit_company_management where del_flag=0 and  company_id=? and sys_language=?";
+		List<Object> params=new ArrayList<Object>();
+		params.add(companyid);
+		params.add(reporttype);
+		return dao.find(sql, params.toArray());
+	}
 
 }
