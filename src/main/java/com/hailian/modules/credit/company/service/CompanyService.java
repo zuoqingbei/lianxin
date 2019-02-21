@@ -432,6 +432,12 @@ public class CompanyService {
 		
 		return StartDate;
 	}
+	/**
+	 * 爬取裁判文书,开庭公告，图标等等
+	 * @author dou_shuiahi
+	 * @date: 2019年2月21日上午9:13:16
+	 * @Description:
+	 */
 	public void enterpriseGrabOther(String companyId,String companyName,String sys_language) throws Exception{
 		JSONObject caipanjson = HttpTest.getJudgmentDoc(companyName,"");//裁判文书
 		String caipanstatus = caipanjson.getString("Status");
@@ -686,29 +692,7 @@ public class CompanyService {
 			Db.batchSave(courtnoticeList, courtnoticeList.size());
 			}
 	}
-	/**
-	 * 创建新订单时如果之前有相同报告引用之前报告，不再走企查查录入步骤
-	 * @author dou_shuiahi
-	 * @date: 2019年2月19日下午3:20:51
-	 * @Description:
-	 */
-	class threadEnterGrabTheSameCompany implements Runnable{
-		String companyId = "";
-	    String reporttype = "";
-	    String sys_language="";
-		public threadEnterGrabTheSameCompany(String companyId, String reporttype, String sys_language) {
-			super();
-			this.companyId = companyId;
-			this.reporttype = reporttype;
-			this.sys_language = sys_language;
-		}
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			enterGrabTheSameCompany(companyId,sys_language,reporttype);
-		}
-		
-	}
+
 	public static void main(String[] args) {
 		String s="a;b;c;";
 		if(s.lastIndexOf(";") != -1) {

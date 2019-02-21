@@ -636,8 +636,13 @@ public class HomeController extends BaseProjectController {
 		CreditCompanyInfo company = new CreditCompanyInfo();
 		//如果之前有此订单，获取之前报告公司的工商信息。以省略企查查录入步骤
 		CreditOrderInfo theSameOrder=CreditOrderInfo.dao.isTheSameOrder(model.get("right_company_name_en").toString(), model.get("report_type").toString(), model.get("report_language").toString(), this);
-		company=CreditCompanyInfo.dao.getCompanyById(theSameOrder.getStr("company_id").toString());
-		String companyid=company.get("id").toString();
+		
+		String companyid="";
+		if(null!=theSameOrder) {
+			company=CreditCompanyInfo.dao.getCompanyById(theSameOrder.getStr("company_id").toString());
+			companyid=company.get("id").toString();
+		}
+		
 		company.remove("id");
 		company.set("order_id", id);
 		company.set("update_date", getNow());
@@ -709,9 +714,12 @@ public class HomeController extends BaseProjectController {
 			if(infoLanguage.equals("613")) { company.set("sys_language", "613"); company.remove("id").save();  companInfoId = company.get("id");}
 			if(infoLanguage.equals("614")) { company.set("sys_language", "614"); company.remove("id").save();  companInfoId = company.get("id");}
 		}
-		//引用之前的报告，就无需企查查接口，降低成本
-		Thread td = new Thread(new threadEnterGrabTheSameCompany(companyid, reprotType, "612"));
-		td.start();
+		if(org.apache.commons.lang3.StringUtils.isNotBlank(companyid)) {
+			//引用之前的报告，就无需企查查接口，降低成本
+			Thread td = new Thread(new threadEnterGrabTheSameCompany(companyid, reprotType, "612"));
+			td.start();
+		}
+		
 		return companInfoId;
 	}
 	class threadEnterGrabTheSameCompany implements Runnable{
