@@ -170,7 +170,10 @@ public class BaseBusiCrdt {
                     }
                 }
             }
-
+            System.out.print(key);
+            if("legalDetails".equals(key)) {
+            	 System.out.print("开始解析法人股东详情!");
+            }
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";

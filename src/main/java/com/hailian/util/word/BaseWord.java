@@ -42,6 +42,7 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.Align;
 import org.jfree.ui.TextAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 
@@ -196,6 +197,9 @@ public class BaseWord {
     public static MiniTableRenderData createTableS(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
+        Style style = new Style();
+        style.setColor("000000");
+        style.setFontFamily("宋体");
         //取列值
         for(int i=0;i< child.size();i++) {
             CreditReportModuleConf module = child.get(i);
@@ -220,8 +224,15 @@ public class BaseWord {
                 } else {
                     value = !"".equals(value) ? value : "N/A";
                 }
-                Style style = new Style();
-                style.setColor("000000");
+                
+                //如果是数字类型的,靠右边
+                try {
+                	String styleFlag = value.replace("%", "").trim();
+                	Integer.parseInt(styleFlag);
+                	style.setAlign(STJc.RIGHT);
+				} catch (NumberFormatException e) {}
+                
+                
                 if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
                     style.setFontFamily("PMingLiU");
                 }else{
@@ -233,6 +244,9 @@ public class BaseWord {
                 }
                 rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
             }
+            
+            //每一个实体之间空一行
+            if(i!=rows.size()-1) {rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));}
         }
         return new MiniTableRenderData(rowList);
     }
