@@ -307,11 +307,11 @@ let OrderDetail = {
                                 } else {
                                     //非财务的浮动——表格上面的时间
                                     // 12-102中文；14-102English；下面给这两种的出资情况加时间
-                                    if ((['12', '14'].includes(_this.row.report_type) && item0.title.temp_name === '出资情况')||
-                                        (['15'].includes(_this.row.report_type) && item0.title.temp_name === '股东信息')){
+                                    if ((['12', '14'].includes(_this.row.report_type) && item0.title.temp_name === '出资情况') ||
+                                        (['15'].includes(_this.row.report_type) && item0.title.temp_name === '股东信息')) {
                                         $.get(this.getUrl(item), (data) => {
-                                            let date = data.rows&&data.rows.length>0?data.rows[0].date:'';
-                                            $("#" + item0.title.id+" .module-content").prepend(`<h4>截止日期：${date}</h4>`);
+                                            let date = data.rows && data.rows.length > 0 ? data.rows[0].date : '';
+                                            $("#" + item0.title.id + " .module-content").prepend(`<h4>截止日期：${date}</h4>`);
                                         })
 
 
@@ -965,6 +965,34 @@ let OrderDetail = {
                         });
                         $wrap.find('tbody').append($tr);
                     });
+                    //股东信息表格加合计功能
+                    if (['股东信息','Shareholding'].includes(item.title.temp_name)) {
+                        let $sumTr = $('<tr class="tableSum font-weight-bold" style="background-color: var(--bg-thead);"></tr>');
+                        $wrap.find('thead th').each(function (index, elem) {
+                            let tdHtml = '';
+                            if (index === 0) {
+                                tdHtml = item.title.temp_name ==='股东信息'? '<td>合计</td>':'<td>total</td>';
+                            } else if (['出资金额(元)','Amount', '出资比例（%）','% of Shareholding'].includes($(elem).text())) {
+                                let sum = 0;
+                                $(this).parents('table').find('tbody>tr').each(function (i, tr) {
+                                    sum += ($(tr).find("td").eq(index).text().replace(/[,]/g, "") - 0.0)
+                                });
+                                if(['出资比例（%）','% of Shareholding'].includes($(elem).text())){
+                                    console.log('~sum',sum);
+                                    sum = sum.toFixed(2);
+                                    if(sum === '99.99'){
+                                        sum = '100.00'
+                                    }
+                                }
+                                console.log('~~sum',sum);
+                                tdHtml = `<td>${sum}</td>`;
+                            } else {
+                                tdHtml = '<td></td>';
+                            }
+                            $sumTr.append(tdHtml)
+                        });
+                        $wrap.find('tbody').append($sumTr);
+                    }
                     // 设置千分位
                     let index = $wrap.find('table th.moneyCol').index();
                     $wrap.find('table td:nth-child(' + (index + 1) + ')').text(function () {
