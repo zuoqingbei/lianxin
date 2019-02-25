@@ -97,6 +97,7 @@ public class CompanyService {
 			if("200".equals(status)){
 				flag=true;
 				JSONObject jsonResulet = json.getJSONObject("Result");
+				
 				//企业基本信息
 				String No = jsonResulet.getString("No"); //注册号
 				String CreditCode = jsonResulet.getString("CreditCode").replace("null", ""); //统一信用社信用代码
@@ -189,6 +190,15 @@ public class CompanyService {
 				companyinfoModel.set("address", Address);
 				companyinfoModel.set("province", Province);
 				companyinfoModel.set("operation_scope", Scope);
+				//业务范围
+				try {
+					JSONObject bus = json.getJSONObject("Result").getJSONObject("Industry");
+					String Industry = bus.getString("Industry"); 
+					companyinfoModel.set("business_scope", Industry);
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 				companyinfoModel.set("id", companyId);
 				companyinfoModel.set("sys_language", sys_language);
@@ -360,7 +370,7 @@ public class CompanyService {
 				}
 				
 			
-
+				
 				//变更事项
 				JSONArray ChangeRecords = null;
 				try {
