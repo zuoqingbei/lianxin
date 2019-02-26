@@ -12,27 +12,27 @@
 			height : 500,
 			form : document.form1,
 			list : function() {
-				var url = 'credit/industrysit/list';
+				var url = 'credit/industrysitTitle/list';
 				this.form.action = url;
 				this.form.submit();
 			},
 			view : function(id) {
-				var url = 'credit/industrysit/view/'+id;
+				var url = 'credit/industrysitTitle/view/'+id;
 				var title = '查看';
 				Iframe(url, this.width, this.height, title, false, false, false, EmptyFunc);
 			},
 			add : function() {
-				var url = 'credit/industrysit/add';
+				var url = 'credit/industrysitTitle/add';
 				var title = '新增';
 				Iframe(url, this.width, this.height, title);
 			},
 			edit : function(id) {
-				var url = 'credit/industrysit/edit/'+id;
+				var url = 'credit/industrysitTitle/edit/'+id;
 				var title = '修改';
 				Iframe(url, this.width, this.height, title);
 			},
 			del : function(id) {
-				var url = 'credit/translatelibrary/delete/'+id;
+				var url = 'credit/industrysitTitle/delete/'+id;
 				var title = '确定要删除吗？';
 				Confirm(title, function() {
 					form1.action = url;
@@ -41,7 +41,7 @@
 			}
 		};
 		//显示Menu索引
-		showMenu('page_industrysituation');
+		showMenu('page_industrysituationTitle');
 	});
 	
 	//分页
@@ -86,10 +86,7 @@ var bodyContent = {
 				<tr>
 					<th>序号</th>
 					<%  // 列表头部 %>
-					<th name="t2.title" class="sorting">标题</th> 
-					<th name="t.year" class="sorting">年份</th> 
-					<th name="t.gdp" class="sorting">GDP</th> 
-					<th name="t.growth_rate" class="sorting">增长率(%)</th> 
+					<th name="t.title" class="sorting">标题</th> 
 					<th name="t.remarks" class="sorting">备注</th>
  					<th width="300px" style="text-align: center;">操作</th>
 				</tr>
@@ -99,10 +96,7 @@ var bodyContent = {
 				<tr>
 				<td>${itemLP.index }</td>
 					<%  // 列表内容 %>
-					<td>${item.titlename}</td> 
-					<td>${item.year}</td> 
-					<td>${item.gdp}</td> 
-					<td>${item.growth_rate}</td>
+					<td>${item.title}</td> 
 					<td>
 					<% if (strutil.length(item.remarks) >
 					15) { %> ${strutil.subStringTo(item.remarks, 0, 15)}... <% } else { %>
