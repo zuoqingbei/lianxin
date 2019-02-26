@@ -32,7 +32,7 @@ import java.util.*;
  * 基本信息报告样本
  * Created by Thinkpad on 2018/11/17.
  */
-public class BaseBusiCrdt {
+public class BaseBusiCrdt extends BaseWord{
     //ftp文件服务器 ip
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
@@ -171,8 +171,8 @@ public class BaseBusiCrdt {
                 }
             }
             System.out.print(key);
-            if("legalDetails".equals(key)) {
-            	 System.out.print("开始解析法人股东详情!");
+            if("partner".equals(key)) {
+            	 System.out.print("开始解析股东信息!");
             }
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
@@ -180,11 +180,11 @@ public class BaseBusiCrdt {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(reportType,child, rows,sysLanguage);
+                    table = BaseWord.createTableS(key,reportType,child, rows,sysLanguage);
                 } else if ("h".equals(tableType)) {
                     //"出资情况"需要增加合计项
                     boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
-                    table = BaseWord.createTableH(reportType, child, rows, sysLanguage, hasTotal,"");
+                    table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,"");
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
@@ -406,27 +406,31 @@ public class BaseBusiCrdt {
         List<String> excelPath = new ArrayList<>();
         List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
         if(finanConfList!=null && finanConfList.size()>0) {
-            CreditCompanyFinancialStatementsConf statementsConf = finanConfList.get(0);
-            String begin = statementsConf.get("date1");
-            String end = statementsConf.get("date2");
-            String finanId = statementsConf.getInt("id") + "";
-            //取到对应的财务类型
-            /*Integer  financeType = -1;
-            for (Integer tempType :  FinanceService.FINANCIAL_TYPE) {
-            	financeType =  getFinancialType(companyId);
-            	if(financeType!=-1) {break;}
-			}*/
-            List<Integer> financeTypes = getFinancialType(companyId);
-            for(Integer financeType:financeTypes) {
-                //word里财务模块生成
-                financial(financeType, finanId, begin, end, map);
-                //生成财务报告EXCEL
-                String expath = financialExcel(financeType,finanId,_prePath,orderId,userid,begin,end);
-                excelPath.add(expath);
-            }
-
-            //财务-评价
-            map.put("financial_eval", financialEval(statementsConf,reportType,sysLanguage));
+        	for (CreditCompanyFinancialStatementsConf financialConf : finanConfList) {
+                   String begin = financialConf.get("date1");
+                   String end = financialConf.get("date2");
+                   String finanId = financialConf.getInt("id") + "";
+                   int realFinanceTypes = financialConf.getInt("type") ;
+                   //取到对应的财务类型
+                   /*Integer  financeType = -1;
+                   for (Integer tempType :  FinanceService.FINANCIAL_TYPE) {
+                   	financeType =  getFinancialType(companyId);
+                   	if(financeType!=-1) {break;}
+       			}*/
+                  //word里财务模块生成
+                  financial(realFinanceTypes, finanId, begin, end, map,reportType);
+                 //生成财务报告EXCEL
+                  String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
+                  excelPath.add(expath);
+                  //财务-评价
+                  map.put("financial_eval", financialEval(financialConf,reportType,sysLanguage));
+			}
+        	
+         
+        }else {
+        	map.put("financial_eval", "");
+            map.put("financial", new MiniTableRenderData(null));
+            map.put("bigFinancial", new MiniTableRenderData(null));
         }
 
         //生成word
@@ -550,11 +554,15 @@ public class BaseBusiCrdt {
      * @param map
      * @return
      */
-    public static List<RowRenderData> financial(int financeType,String financialConfId,String begin,String end,HashMap<String, Object> map) {
+    public static List<RowRenderData> financial(int financeType,String financialConfId,String begin,String end,HashMap<String, Object> map,String reportType) {
+    	
+    	begin = detailDate(begin,reportType);
+    	end = detailDate(begin,reportType);
+    	
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
-        if(financeType==3){
+        //(financeType==3){
             //todo 大数渲染
-        }else{
+       // }else{
             //财务
             //取数据
             //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
@@ -644,8 +652,12 @@ public class BaseBusiCrdt {
                 j++;
             }
             //财务-表格
-            map.put("financial", new MiniTableRenderData(rowList));
-        }
+            if(financeType==3||financeType==4) {
+            	 map.put("bigFinancial", new MiniTableRenderData(rowList));
+            }else {
+            	 map.put("financial", new MiniTableRenderData(rowList));
+            }
+        //}
         return rowList;
     }
 
@@ -662,9 +674,9 @@ public class BaseBusiCrdt {
      */
     public static String financialExcel(int financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
         String filePath = "";
-        if(financeType==3){
+       // if(financeType==3){
             //todo 大数渲染
-        }else{
+        //}else{
             //财务
             //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
             List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType+"");
@@ -678,7 +690,7 @@ public class BaseBusiCrdt {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        }
+        //}
         return filePath;
     }
 

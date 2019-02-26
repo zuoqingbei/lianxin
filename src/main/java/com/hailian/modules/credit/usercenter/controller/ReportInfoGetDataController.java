@@ -77,14 +77,16 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String selectStr = "";
 		String type = getPara("type");
 		String disPalyCol =  getPara("disPalyCol");
-		if(!StrUtils.isEmpty(type)&&"country".equals(type)) {
+		if(!StrUtils.isEmpty(type)&&("country".equals(type))) {//若是国家类型
 			if("detail_name_en".equals(disPalyCol)) {
 			 selectStr =  template.getCounty(getPara("selectedId"), "name_en");
-			}else if("name".equals(disPalyCol)) {
+			}else if("detail_name".equals(disPalyCol)) {
 		     selectStr =  template.getCounty(getPara("selectedId"), "name");
 			 }
+		 }else {
+			selectStr =  template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), disPalyCol);
 		 }
-		selectStr =  template.getSysDictDetailString3(getPara("type"), getPara("selectedId"), disPalyCol);
+		
 		renderJson(new Record().set("selectStr", selectStr));
 	}
 	/**
@@ -282,6 +284,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 // 解析前端传入的字符串
                 List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
                 // 将id转化为字典表中对应的字符串
+                if("CreditCompanyNaturalpersonShareholderDetail".equals(className)) {
+                	System.out.println(1);
+                }
                 dictIdToString(rows, selectInfoMap);
             }
         } catch (ClassNotFoundException e) {
