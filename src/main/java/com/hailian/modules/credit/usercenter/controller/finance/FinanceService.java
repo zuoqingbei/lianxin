@@ -37,7 +37,8 @@ public class FinanceService {
 		 ZH_TO_EN_MAPPING.put(1+"", 2);
 		 ZH_TO_EN_MAPPING.put(2+"", 2);
 		 ZH_TO_EN_MAPPING.put(3+"", 3);
-		 FINANCIAL_TYPE.add(1);FINANCIAL_TYPE.add(2);FINANCIAL_TYPE.add(3);
+		 ZH_TO_EN_MAPPING.put(3+"", 4);
+		 FINANCIAL_TYPE.add(1);FINANCIAL_TYPE.add(2);FINANCIAL_TYPE.add(3);FINANCIAL_TYPE.add(4);
 	 }
 	 
 	/**

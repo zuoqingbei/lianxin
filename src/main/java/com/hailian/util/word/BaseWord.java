@@ -21,6 +21,7 @@ import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.hailian.util.StrUtils;
 import com.jfinal.upload.UploadFile;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -57,6 +58,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+
+import javax.xml.soap.Detail;
 
 /**
  * poi-tl
@@ -190,11 +193,12 @@ public class BaseWord {
 
     /**
      * 生成表格 - 竖表
+     * @param reportType2 
      * @param child
      * @param rows
      * @return
      */
-    public static MiniTableRenderData createTableS(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage){
+    public static MiniTableRenderData createTableS(String moduleName,String reportType,  List<CreditReportModuleConf> child,List rows,String sysLanguage){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         Style style = new Style();
@@ -212,6 +216,7 @@ public class BaseWord {
                 cols.put(column_name, temp_name + "|" + field_type);
             }
         }
+        
         //取数据
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
@@ -221,27 +226,17 @@ public class BaseWord {
                 String value = model.get(column) != null ? model.get(column) + "" : "";
                 if ("select".equals(fieldType)) {
                     value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
-                } else {
+                }else  if("date".equals(fieldType)){
+                    value = detailDate(value,reportType);
+                }else {
                     value = !"".equals(value) ? value : "N/A";
                 }
                 
-                //如果是数字类型的,靠右边
-                try {
-                	String styleFlag = value.replace("%", "").trim();
-                	Integer.parseInt(styleFlag);
-                	style.setAlign(STJc.RIGHT);
-				} catch (NumberFormatException e) {}
                 
                 
-                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                    style.setFontFamily("PMingLiU");
-                }else{
-                    style.setFontFamily("宋体");
-                }
-                //102红印用14号字体
-                if(ReportTypeCons.ROC_HY.equals(reportType)){
-                    style.setFontSize(14);
-                }
+                //针对不同模块中的不同字段的样式的特殊处理
+                style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
+                
                 rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
             }
             
@@ -250,8 +245,35 @@ public class BaseWord {
         }
         return new MiniTableRenderData(rowList);
     }
+    
+    //针对不同模块中的不同字段的样式的特殊处理
+    private static Style MiniTableRenderDataForCellStyle(String moduleName, String columnName,String reportType, Style style) {
+    	
+    	if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+            style.setFontFamily("PMingLiU");
+        }else{
+            style.setFontFamily("宋体");
+        }
+        //102红印用14号字体
+        if(ReportTypeCons.ROC_HY.equals(reportType)){
+            style.setFontSize(14);
+        }
+    	
+    	//股东模块
+    	if("partner".equals(moduleName)) {
+    		switch(columnName) {
+    			//出资金额
+    			case "contribution" : style.setAlign(STJc.RIGHT);
+    			//出资比例
+    			case "money" : style.setAlign(STJc.RIGHT);
+    			default : break;
+    		}
+    		
+    	}
+		return style;
+	}
 
-    /**
+	/**
      * 生成表格 - 横表
      * @param child
      * @param rows
@@ -260,7 +282,7 @@ public class BaseWord {
      * @param temp
      * @return
      */
-    public static MiniTableRenderData createTableH(String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal,String temp) {
+    public static MiniTableRenderData createTableH(String moduleName,String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal,String temp) {
         //存放行数据-word模板
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         //表格列字段集合
@@ -363,9 +385,13 @@ public class BaseWord {
                 }
                 //日期
                 else if("date".equals(fieldType)){
+                	 
+                	value = detailDate(value,reportType);
+                	 
                     if(StringUtils.isEmpty(value)){
                         value = wordDefault;
                     }
+                   
                 }
                 //专利和商标图片先用占位符占用，再二次替换成图片
                 else if ("file".equals(fieldType)) {
@@ -477,6 +503,8 @@ public class BaseWord {
                     //4号字体
                     style.setFontSize(14);
                 }
+                //针对不同模块中的不同字段的样式的特殊处理
+                style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
                 row[j] = new TextRenderData(value, style);
                 j++;
             }
@@ -486,8 +514,27 @@ public class BaseWord {
         }
         return new MiniTableRenderData(rowRenderData, rowsList);
     }
-
+    
     /**
+     * 日期的特殊处理
+     * @param value
+     * @param reportType
+     * @return
+     */
+    protected static String detailDate(String value, String reportType) {
+    	if(StrUtils.isEmpty(value)) {return "";}
+    	 String currentLanguage = ReportTypeCons.whichLanguage(reportType);
+		 if("ZH".equals(currentLanguage)) { 
+			 value = sdf_zh.format(value); 
+		 }else if("EN".equals(currentLanguage)) {
+			 value = sdf_zh.format(value); 
+		 }else if("HY".equals(currentLanguage)) {
+			 value = sdf_zh.format(value); 
+		 }
+		return value;
+	}
+
+	/**
      * 生成表头
      * @param cols
      * @param reportType
@@ -710,7 +757,7 @@ public class BaseWord {
         }
         return cols;
     }
-
+    
     /**
      * 解析url
      *
