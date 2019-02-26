@@ -284,6 +284,7 @@ let InitObj = {
 				dataObj[str] = val;
 				dataObj["id"] = entityid;
 				dataJson.push(dataObj)
+//				console.log(dataJson)
 				$.ajax({
 					url,
 					data:{dataJson:JSON.stringify(dataJson)},
@@ -292,6 +293,7 @@ let InitObj = {
 						if(data.statusCode === 1) {
 							//保存合计项
 							_this.saveCwSummation(alterSource)
+							_this.saveCwEveryTableSUmmation(alterSource)
 						}
 					}
 				})
@@ -759,10 +761,42 @@ let InitObj = {
 						_this.refreshCwModal(tableCwId,getSource,id,rows)
 						$(e.target).val("")
 						_this.saveCwSummation(alterSource)
+						_this.saveCwEveryTableSUmmation(alterSource)
 					}
 				}
 			})
 			
+		})
+	},
+	saveCwEveryTableSUmmation(alterSource){
+		//保存财务每一个表格下面的合计
+		let _this = this;
+		let dataJson = [];
+		let tableArr = $("table[id*='tableCwFz']").get().concat($("table[id*='tableCwLr']").get())
+		tableArr.forEach((item,index)=>{
+			let tempObj = {}
+			let td1 = $(item).children("tbody").children("tr:last-child").children("td").eq(1)
+			let td2 = $(item).children("tbody").children("tr:last-child").children("td").eq(2)
+			let val1 = $(td1).children("input").val();
+			let val2 = $(td2).children("input").val();
+			let id = $(td1).children("input").attr("entityid")
+			let column_name1 = _this.tableColumnNameArr[1]
+			let column_name2 = _this.tableColumnNameArr[2]
+			tempObj["id"] = id
+			tempObj[column_name1] = val1
+			tempObj[column_name2] = val2
+			dataJson.push(tempObj)
+		})
+//		console.log(dataJson)
+		$.ajax({
+			url:BASE_PATH + `credit/front/ReportGetData/` + alterSource,
+			type:'post',
+			data:{
+				dataJson:JSON.stringify(dataJson)
+			},
+			success:(data)=>{
+				
+			}
 		})
 	},
 	saveCwSummation(alterSource){

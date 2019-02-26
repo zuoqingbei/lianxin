@@ -406,7 +406,7 @@ let Verify = {
         		$.ajax({
            			type:"post",
                		url:BASE_PATH+"credit/front/orderProcess/statusSave",
-               		data:"statusCode=595&isPa=yes&num="+$("#num").html()+"&model.id="+$("#orderId").val()+"&model.company_by_report="+val+"&companyId="+$("#companyId").val()+"&info_en_name="+valEn,
+               		data:"statusCode=595&isPa=yes&num="+$("#num").html()+"&model.id="+$("#orderId").val()+"&model.company_by_report="+val+"&companyId="+$("#companyId").val(),
                		dataType:"json",
                		success:function(obj){
                			$("body").mLoading("hide");
