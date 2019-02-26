@@ -250,10 +250,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 						}else if("detail_name".equals(disPalyCol)) { 
 					       value = Db.queryStr("select name from credit_country where del_flag=0 and id="+ model.get(columnName)+"");
 						}
-						model.put(columnName,value);
+						model.put(columnName,value==null?"":value);
 					}else {
-						if(columnName.contains("position")){
-							System.out.println(14);
+						if(columnName.contains("id_type")){
+							System.out.println("id_type");
 						}
 						String targetValue =  model.get(columnName)!=null? model.get(columnName)+"" : "";
 						if(!StrUtils.isEmpty(targetValue)) {
@@ -262,11 +262,13 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 							 if(tempStrs!=null) {
 								 for (String tempStr : tempStrs) {
 									if(!StrUtils.isEmpty(tempStr)) {
-										a += ","+DictCache.getValueByCode(type, tempStr, disPalyCol);
+										String finalValue = DictCache.getValueByCode(type, tempStr, disPalyCol);
+										if(finalValue!=null)
+										a += ","+finalValue;
 									}
 								 }
 							 }
-							 model.put(columnName,a.substring(1,a.length()));
+							 model.put(columnName,a.length()>0?a.substring(1,a.length()):"");
 						}else {
 							model.put(columnName,"");
 						}
