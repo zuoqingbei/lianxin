@@ -51,11 +51,14 @@ public class DictCache {
 		List<CreditCompanyFinancialDict> simplifiedChineseDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=1 order by sort_no,id");
 		List<CreditCompanyFinancialDict>  englishDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=2 order by sort_no,id");
 		List<CreditCompanyFinancialDict> chineseTraditionalDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=3 order by sort_no,id");
+		List<CreditCompanyFinancialDict> enBigFinancials = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=4 order by sort_no,id");
+		
 		Map<Integer,List<CreditCompanyFinancialDict>>  FinancialDictMap = new HashMap<>();
 		List<SysDictDetail> listDetail = new ArrayList<SysDictDetail>();
 		FinancialDictMap.put(1, simplifiedChineseDict);
 		FinancialDictMap.put(2, englishDict);
 		FinancialDictMap.put(3, chineseTraditionalDict);
+		FinancialDictMap.put(4, enBigFinancials);
 		// detailSort
 		listDetail = SysDictDetail.dao.findByWhere(" order by detail_sort,detail_id");
 		//财务字典表子模块代码集合

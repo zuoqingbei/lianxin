@@ -108,7 +108,7 @@ let ReportConfig = {
         			smartDisplay:false,
         			locales:'zh-CN',
         			onLoadSuccess:(data)=>{
-        				console.log(data)
+//        				console.log(data)
         				if(data.rows === null){
 //        					alert("出错了")
         					return
@@ -138,7 +138,7 @@ let ReportConfig = {
         				setTimeout(() => {
     	    				if(rows.length < 1) {
     	    					$table.parents(".fixed-table-container").css("height","80px!important")
-    	    					console.log($table.parents(".fixed-table-container"))
+//    	    					console.log($table.parents(".fixed-table-container"))
     	    				}else if(rows.length < 4) {
     	    					$table.parents(".fixed-table-container").css("height","180px")
     	    				}
@@ -595,7 +595,7 @@ let ReportConfig = {
     					this.formIndex.push(i)
     					this.formTitle.push(this.floatTitle[index])
     				}else{
-    					if(_this.entityTitle[i]["get_source"].includes("type=3")){
+    					if(_this.entityTitle[i]["get_source"].includes("type=3") || this.entityTitle[i]["get_source"].includes("type=4")){
     						//大数财务模块浮动
     						ds_cw_title.push(this.floatTitle[index])
     						ds_cw_contents.push(this.floatContents[index])
@@ -714,6 +714,7 @@ let ReportConfig = {
 			})
     		if(item.sort === 1) {
     			//财务模块杂七腊八的配置
+    			console.log(this_content)
     			let radioArr = this_content[1]["get_source"].split("&");
     			cw_top_html += `<div class="top-html mx-4">
     								<div class="cw-box d-flex justify-content-between align-items-center mt-4">
@@ -1041,7 +1042,7 @@ let ReportConfig = {
                 			}
                 		}else if(smallModileType === '10'){
                 			//财务模块
-                			if(item["title"]["get_source"].includes("type=3")){
+                			if(item["title"]["get_source"].includes("type=3") || item["title"]["get_source"].includes("type=4")){
                 				//大数
                 				_this.dsGetSource = item.title.get_source;
                 				_this.dsAlterSource = item.title.alter_source;

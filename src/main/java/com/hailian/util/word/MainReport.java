@@ -50,6 +50,7 @@ public class MainReport {
                 }
             }
         } catch (Exception e) {
+        	e.printStackTrace();
             System.out.println("报告生成异常");
             sendErrMsg(order, userid);
         }

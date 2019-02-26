@@ -79,20 +79,21 @@ public class BaseWord {
     public static final String password = Config.getStr("ftp_password");//域用户密码
     public static final String ftpStore = Config.getStr("ftp_store");//ftp文件夹
 
-    private static TemplateDictService template = new TemplateDictService();
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    private static SimpleDateFormat sdf_zh = new SimpleDateFormat("yyyy年MM月dd日");
-    private static SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+    public static TemplateDictService template = new TemplateDictService();
+    public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    public static SimpleDateFormat sdf_zh = new SimpleDateFormat("yyyy年MM月dd日");
+    public static SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
 
     public static void main(String args[]) throws Exception{
         /*DecimalFormat demo=new DecimalFormat("###,###.##");
         NumberFormat nf = NumberFormat.getInstance();
         System.out.println(demo.format(nf.parse("5000.1")));*/
 
-        BigDecimal bd = new BigDecimal("1");
+        /*BigDecimal bd = new BigDecimal("1");
         BigDecimal bd2 = new BigDecimal("1");
         bd.add(bd2);
-        System.out.println(bd);
+        System.out.println(bd);*/
+    	 
     }
 
     public static void tableData(RowRenderData header2,Map<String,Object> data){
@@ -227,7 +228,12 @@ public class BaseWord {
                 if ("select".equals(fieldType)) {
                     value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
                 }else  if("date".equals(fieldType)){
-                    value = detailDate(value,reportType);
+                    try {
+						value = detailDate(sdf.parse(value),reportType);
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }else {
                     value = !"".equals(value) ? value : "N/A";
                 }
@@ -386,7 +392,11 @@ public class BaseWord {
                 //日期
                 else if("date".equals(fieldType)){
                 	 
-                	value = detailDate(value,reportType);
+                	try {
+						value = detailDate(sdf.parse(value),reportType);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
                 	 
                     if(StringUtils.isEmpty(value)){
                         value = wordDefault;
@@ -517,21 +527,22 @@ public class BaseWord {
     
     /**
      * 日期的特殊处理
-     * @param value
+     * @param date
      * @param reportType
      * @return
      */
-    protected static String detailDate(String value, String reportType) {
-    	if(StrUtils.isEmpty(value)) {return "";}
+    protected static String detailDate(Date date, String reportType) {
+    	if(date == null) {return "";}
+    	String result = "";
     	 String currentLanguage = ReportTypeCons.whichLanguage(reportType);
 		 if("ZH".equals(currentLanguage)) { 
-			 value = sdf_zh.format(value); 
+			 result = sdf_zh.format(date); 
 		 }else if("EN".equals(currentLanguage)) {
-			 value = sdf_zh.format(value); 
+			 result = sdf_zh.format(date+""); 
 		 }else if("HY".equals(currentLanguage)) {
-			 value = sdf_zh.format(value); 
+			 result = sdf_zh.format(date+""); 
 		 }
-		return value;
+		return result;
 	}
 
 	/**

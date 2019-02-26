@@ -450,6 +450,7 @@ let InitObj = {
 		let id = $(".gjds").attr("dsconfigid")
 		let _this = this
 		let symbol =  getSource.includes("?")?'&':'?'
+			console.log(getSource,'11',id)
 		$.ajax({
 			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + symbol + 'ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',

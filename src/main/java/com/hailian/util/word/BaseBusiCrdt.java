@@ -25,6 +25,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -556,8 +557,14 @@ public class BaseBusiCrdt extends BaseWord{
      */
     public static List<RowRenderData> financial(int financeType,String financialConfId,String begin,String end,HashMap<String, Object> map,String reportType) {
     	
-    	begin = detailDate(begin,reportType);
-    	end = detailDate(begin,reportType);
+    	
+    	try {
+    		begin = detailDate(sdf.parse(begin),reportType);
+			end = detailDate(sdf.parse(end),reportType);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         //(financeType==3){
@@ -619,10 +626,13 @@ public class BaseBusiCrdt extends BaseWord{
                             title = "重要比率表";
                             break;
                     }
-                    rowList.add(RowRenderData.build(
-                            new TextRenderData(""),
-                            new TextRenderData(""),
-                            new TextRenderData("")));
+                    if(financeType==1||financeType==2) {
+                    	rowList.add(RowRenderData.build(
+                                new TextRenderData(""),
+                                new TextRenderData(""),
+                                new TextRenderData("")));
+                    }
+                    
 
                     //大标题
                     Style titileStyle = new Style();
