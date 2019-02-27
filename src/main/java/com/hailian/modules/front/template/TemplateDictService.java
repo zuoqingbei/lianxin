@@ -7,6 +7,8 @@ import java.util.Map;
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.jfinal.base.BaseService;
 import com.hailian.modules.admin.ordermanager.model.CreditCountry;
+import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.common.service.CountryService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.user.SysUser;
@@ -341,13 +343,13 @@ public class TemplateDictService extends BaseService {
 	 * @return
 	 */
 	public String getCounty(Object selectedId,String showColumnName ) {
-		List<CreditCountry> listDetail = new ArrayList<>();
+		List<CountryModel> listDetail = new ArrayList<>();
 		StringBuffer sb=new StringBuffer();
-	 listDetail = CreditCountry.dao.find("select *  from credit_country where del_flag=0");
+		listDetail = CountryService.service.CountrySelect(null);
 	
-		for(CreditCountry detail:listDetail){
+		for(CountryModel detail:listDetail){
 			 if(selectedId!=null&&selectedId.toString().equals(detail.get("id").toString())){
-				sb.append("<option selected='selected' m-detail-id='"+detail.get("id")+"' value='"+detail.get("id")+"'>"+detail.get(showColumnName)+"</option>");
+				sb.append("<option selected='selected'  m-detail-id='"+detail.get("id")+"'   m-detail-name='"+detail.get("detail_name")+"'    value='"+detail.get("id")+"'>"+detail.get(showColumnName)+"</option>");
 			}else{
 				sb.append("<option  m-detail-id='"+detail.get("id")+"' value='"+detail.get("id")+"'>"+detail.get(showColumnName)+"</option>");
 			}
