@@ -12,7 +12,7 @@ var headContent = {
 				return false;
 			}
 			id = id || '0';
-			var url = 'credit/industrysit/save/'+id;
+			var url = 'credit/industrysitTitle/save/'+id;
 			form1.action = url;
 			form1.submit();
 			return true;
@@ -64,28 +64,9 @@ var bodyContent = {
 				<tr>
 					<td>标题</td>
 					<td>
-						<select name="model.title" class="form-control" >
-						<option value="">--选择行业标题--</option>
-					 <% for(item in allIndustryTitle){ %>
-					 	<option  m-type="${item.id}" value="${item.id}">${item.title}</option>
+						<input class="form-control" type="text" name="model.title" value="${model.title}" valid="vtext" validname="标题"/>
 					</td>
-					 <% } %>
-				</tr>
-				<tr>
-					<td>年份</td>
-					<td>
-					<input class="form-control" type="text" name="model.year" value="${model.year}" />
-					</td>
-				</tr>
-				<tr>
-					<td>GDP</td>
-					<td>
-					<input class="form-control" type="text" name="model.gdp" value="${model.gdp}" />
-					</td>
-					<td>增长率(%)</td>
-					<td>
-					<input class="form-control" type="text" name="model.growth_rate" value="${model.growth_rate}" />
-					</td>
+					
 				</tr>
 				<tr>
 					<td>备注</td>
