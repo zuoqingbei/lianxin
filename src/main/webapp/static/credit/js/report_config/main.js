@@ -242,9 +242,15 @@ let ReportConfig = {
             							if($("#"+id).is('select')) {
             								//如果是select
             								console.log($("#"+id),row[anotherId])
-            								if(row[anotherId] === 'null'){
-            									$(".modal-body #"+id).find("option:first").attr("selected",true);
+            								if(row[anotherId] === 'null' || row[anotherId] === ''){
+            									$(".modal-body #"+id).find("option").each((index,item)=>{
+            										//遍历select的option，如果没有默认的select
+            										if(!$(item).attr("selected")) {
+            											$(".modal-body #"+id).find("option:first").attr("selected",true);
+            										}
+            									})
             								}else {
+            									$(".modal-body #"+id).find("option:first").removeAttr("selected");
             									$(".modal-body #"+id).find("option[m-detail-name='"+row[anotherId]+"']").attr("selected",true);
             								}
             							}else {
@@ -281,7 +287,9 @@ let ReportConfig = {
             						})
             					}
             				},
-            				formatter: function(){return _this.formatBtnArr[tempI]}
+            				formatter: function(){
+        						return _this.formatBtnArr[tempI]
+            				}
         				})
         			}
         		})
@@ -1087,26 +1095,58 @@ let ReportConfig = {
 		                				let formGroup = ''
 		                        		//判断input的类型
 		                        		let field_type = item.field_type
+		                        		console.log(item)
+		                        		let isDisabled = item.is_disable === '1'?true:false;//是否禁用
 		                        		if(!field_type) {
-		                        			formGroup += `<div class="form-group">
-		        						            		<label for="" class="mb-2">${item.temp_name}</label>
-		        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
-		        						            		<p class="errorInfo">${item.error_msg}</p>
-		        					            		</div>`
+		                        			if(isDisabled){
+			                        			formGroup += `<div class="form-group">
+			        						            		<label for="" class="mb-2">${item.temp_name}</label>
+			        						            		<input 
+				        						            		type="text" 
+				        						            		class="form-control" 
+				        						            		id="${item.column_name}_${ind}" 
+				        						            		placeholder="" name=${item.column_name} 
+				        						            		reg=${item.reg_validation}
+				        						            		disabled
+				        						            	>
+			        						            		<p class="errorInfo">${item.error_msg}</p>
+			        					            		</div>`
+		                        			}else {
+		                        				formGroup += `<div class="form-group">
+        						            		<label for="" class="mb-2">${item.temp_name}</label>
+        						            		<input 
+	        						            		type="text" 
+	        						            		class="form-control" 
+	        						            		id="${item.column_name}_${ind}" 
+	        						            		placeholder="" name=${item.column_name} 
+	        						            		reg=${item.reg_validation}
+	        						            	>
+        						            		<p class="errorInfo">${item.error_msg}</p>
+        					            		</div>`
+		                        			}
 		                        		}else {
 		                        			
 		                        			switch(field_type) {
 		                        				case 'text':
-		                        					formGroup += `<div class="form-group">
-	        						            		<label for="" class="mb-2">${item.temp_name}</label>
-	        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
-	        						            		<p class="errorInfo">${item.error_msg}</p>
-	        					            		</div>`
+		                        					if(isDisabled){
+		                        						formGroup += `<div class="form-group">
+		                        							<label for="" class="mb-2">${item.temp_name}</label>
+		                        							<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" disabled name=${item.column_name} reg=${item.reg_validation}>
+		                        							<p class="errorInfo">${item.error_msg}</p>
+		                        							</div>`
+		                        					}else {
+		                        						formGroup += `<div class="form-group">
+		                        							<label for="" class="mb-2">${item.temp_name}</label>
+		                        							<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder=""  name=${item.column_name} reg=${item.reg_validation}>
+		                        							<p class="errorInfo">${item.error_msg}</p>
+		                        							</div>`
+		                        					}
 	                        						break;
 		                        				case 'number':
+		                        					
 			                    						formGroup += `<div class="form-group">
 					                        							<label for="" class="mb-2">${item.temp_name}</label>
-					                        							<input type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+					                        							<input type="number" class="form-control" id="${item.column_name}_${ind}" placeholder=""  name=${item.column_name} reg=${item.reg_validation}>
 					                        							<p class="errorInfo">${item.error_msg}</p>
 				                        							</div>`
 		                        					
@@ -1123,7 +1163,7 @@ let ReportConfig = {
 		                        					formGroup += `<div class="form-group date-form" style="position: relative">
                                                                     <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 1rem;top: 2.4rem;width: 1rem;height: 1.125rem;">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
-												            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+												            		<input type="text" class="form-control" id="${item.column_name}_${ind}"  placeholder="" name=${item.column_name}>
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
@@ -1152,7 +1192,7 @@ let ReportConfig = {
 							            				success:(data)=>{
 							            				formGroup += `<div class="form-group">
 										            					<label for="" class="mb-2">${item.temp_name}</label>
-										            					<select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
+										            					<select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" >
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
@@ -1172,7 +1212,7 @@ let ReportConfig = {
 							            					let a = data.selectStr.replace(/value/g,'a')
 							            					formGroup += `<div class="form-group">
 							            						<label for="" class="mb-2">${item.temp_name}</label>
-							            						<input name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
+							            						<input name=${item.column_name} id="${item.column_name}_${ind}"  class="form-control" list="cars">
 							            						<datalist id="cars">
 							            							${a}
 							            						</datalist>
@@ -1184,7 +1224,7 @@ let ReportConfig = {
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <textarea class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
+									                                    <textarea class="form-control"   style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
 									                                </div>`
 									                break;
 		        							    default :
@@ -1212,7 +1252,7 @@ let ReportConfig = {
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(item.contents)
                 			_this.title.push(item.title)
-                			if(item.title.temp_name && item.title.temp_name.includes('质检意见')){
+                			if(item.title.temp_name && item.title.temp_name.includes('质检意见') || item.title.is_disable === '1'){
                 				//质检意见无新增
                 				contentHtml += `<div class="table-content1" style="background:#fff">
                 					<table id="table${index}"
