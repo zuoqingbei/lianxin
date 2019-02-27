@@ -41,7 +41,7 @@
 			}
 		};
 		//显示Menu索引
-		showMenu('page_translate');
+		showMenu('page_industrysituation');
 	});
 	
 	//分页
@@ -86,7 +86,7 @@ var bodyContent = {
 				<tr>
 					<th>序号</th>
 					<%  // 列表头部 %>
-					<th name="t.title" class="sorting">标题</th> 
+					<th name="t2.title" class="sorting">标题</th> 
 					<th name="t.year" class="sorting">年份</th> 
 					<th name="t.gdp" class="sorting">GDP</th> 
 					<th name="t.growth_rate" class="sorting">增长率(%)</th> 
@@ -99,7 +99,7 @@ var bodyContent = {
 				<tr>
 				<td>${itemLP.index }</td>
 					<%  // 列表内容 %>
-					<td>${item.title}</td> 
+					<td>${item.titlename}</td> 
 					<td>${item.year}</td> 
 					<td>${item.gdp}</td> 
 					<td>${item.growth_rate}</td>
