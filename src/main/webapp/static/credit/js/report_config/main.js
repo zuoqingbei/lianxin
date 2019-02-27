@@ -41,7 +41,7 @@ let ReportConfig = {
         	}
 			 
 			 let selectInfo = []
-        	selectInfo.push(_this.selectInfoObj)
+        	selectInfo.push(_this.selectInfoObj[index])
         	//合计
     		if(titles[index]["get_source"].includes("credit_company_shareholder")) {
     			$table.bootstrapTable({
@@ -355,7 +355,8 @@ let ReportConfig = {
     					if(!ele.get_source) {return}
     					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
     					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
-    					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					_this.selectInfoObj[myIndex] = _this.selectInfoObj[myIndex]?_this.selectInfoObj[myIndex]:{}
+    					_this.selectInfoObj[myIndex][ele.get_source] = ele.column_name
             			$.ajax({
             				type:'get',
             				url,
@@ -375,7 +376,8 @@ let ReportConfig = {
     					if(!ele.get_source) {return}
     					let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
     					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
-    					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					_this.selectInfoObj[myIndex] = _this.selectInfoObj[index]?_this.selectInfoObj[myIndex]:{}
+    					_this.selectInfoObj[myIndex][ele.get_source] = ele.column_name
     					$.ajax({
     						type:'get',
     						url:url1,
@@ -1067,7 +1069,7 @@ let ReportConfig = {
                 		
                 	}else {
                 		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent || item.title.temp_name === '行业分析') {
-                			contentHtml +=  `<div class="bg-f pb-4" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                			contentHtml +=  `<div class="bg-f pb-4" style="overflow:hidden"><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                 		}else if(smallModileType === '10'){
                 			//财务模块
                 			_this.cwGetSource = item.title.get_source;
@@ -1095,7 +1097,7 @@ let ReportConfig = {
 		                				let formGroup = ''
 		                        		//判断input的类型
 		                        		let field_type = item.field_type
-		                        		console.log(item)
+//		                        		console.log(item)
 		                        		let isDisabled = item.is_disable === '1'?true:false;//是否禁用
 		                        		if(!field_type) {
 		                        			if(isDisabled){
@@ -1532,7 +1534,9 @@ let ReportConfig = {
 					if($("#"+id).hasClass("select2")) {
 						let name = $('#'+id).attr("name")
 						let val = $('#'+id).val()
-						val = val.join("$")
+						if(val){
+							val = val.join("$")
+						}
 						dataJsonObj[name] = val
 						return
 					}
