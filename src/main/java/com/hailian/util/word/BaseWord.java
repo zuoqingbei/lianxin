@@ -538,9 +538,9 @@ public class BaseWord {
 		 if("ZH".equals(currentLanguage)) { 
 			 result = sdf_zh.format(date); 
 		 }else if("EN".equals(currentLanguage)) {
-			 result = sdf_zh.format(date+""); 
+			 result = sdf_en_hy.format(date+""); 
 		 }else if("HY".equals(currentLanguage)) {
-			 result = sdf_zh.format(date+""); 
+			 result = sdf_en_hy.format(date+""); 
 		 }
 		return result;
 	}
