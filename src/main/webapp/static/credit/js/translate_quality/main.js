@@ -1706,11 +1706,11 @@ let ReportConfig = {
                         report_type: _this.rows.report_type,
                         grade: $("#grade").val() || 0
                     }, (data) => {
-                        this.quality_deal = data.rows[0].quality_deal;
-                        if(this.quality_deal === '3'){
-                            $('.select2-container').addClass('disable');
-                        }
                         if (data.rows && data.rows.length > 0) {
+                        	this.quality_deal = data.rows[0].quality_deal;
+                        	if(this.quality_deal === '3'){
+                        		$('.select2-container').addClass('disable');
+                        	}
                             $("#quality_opinion").val(data.rows[0].quality_opinion || '');
                             $("#grade").val(data.rows[0].grade);
                             $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
