@@ -1,0 +1,1753 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="creditReport:war" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bff62d77-5e5c-48a9-8856-4996578f5433" name="Default" comment="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;解决冲突，同步代码">
+      <change afterPath="$PROJECT_DIR$/.idea/.rebel.xml.bak" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    </list>
+    <ignored path="jfinal_cms.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <ignored path=".idea/dataSources.local.xml" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Commander">
+    <leftPanel />
+    <rightPanel />
+    <splitter proportion="0.5" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="jfinal_cms" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="224">
+              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="240">
+              <caret line="12" selection-start-line="12" selection-end-line="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="9" column="40" lean-forward="true" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/copyright/profiles_settings.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/scopes/scope_settings.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/.rebel.xml.bak">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/uiDesigner.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/RocEn.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word10702.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word10701.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word396.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word394.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word105.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/RocHy.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/CreditZh.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/CreditEn.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/BusinessZh.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseInfoEn.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/utils/Office2PDF.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/deepoove/poi/render/RenderAPI.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/deepoove/poi/data/style/Style.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/deepoove/poi/util/StyleUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/company/service/CompanyService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/ordertranslate/controller/ReportTranslateController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/reportmanager/model/CreditReportModuleConf.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/deepoove/poi/util/TableTools.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/http/HttpCrawler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/deepoove/poi/data/style/TableStyle.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseInfoZh.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetData.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseBusiCrdt.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/deepoove/poi/policy/MiniTableRenderPolicy.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/Base64.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/admin/ordermanager/model/CreditOrderInfo.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/api/interceptor/ApiInterceptor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/AES2.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/Base64Util.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/DateUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/EncodingUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/front/template/TemplateDictService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/URLCoder.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/api/controller/ApiController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/utils/SendMailUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseWord.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/AES.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/extend/HttpClientUtils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Roc102.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/MainReport.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/jfinal/component/handler/XssHttpServletRequestWrapper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/jfinal/component/handler/XssHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/component/config/BaseConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/OrderProcessController.java" />
+        <option value="$PROJECT_DIR$/.idea/misc.xml" />
+        <option value="$PROJECT_DIR$/.idea/compiler.xml" />
+        <option value="$PROJECT_DIR$/.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+      </list>
+    </option>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="E:\apache-maven-3.1.0" />
+        <option name="userSettingsFile" value="E:\apache-maven-3.1.0\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="creditReport" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+      </PATH>
+      <PATH>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$RootNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="creditReport" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$ProjectNode" />
+        </PATH_ELEMENT>
+        <PATH_ELEMENT>
+          <option name="myItemId" value="Lifecycle" />
+          <option name="myItemType" value="org.jetbrains.idea.maven.navigator.MavenProjectsStructure$LifecycleNode" />
+        </PATH_ELEMENT>
+      </PATH>
+    </treeState>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1386" />
+    <option name="height" value="788" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+              <item name="imgs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="order_manage" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="60" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="90" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="90" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="859" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="108" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="126" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="127" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="738" />
+    <property name="FullScreen" value="false" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="SearchEverywhereHistoryKey" value="Wrapper&#9;PSI&#9;JAVA://com.deepoove.poi.XWPFParagraphWrapper&#10;handler&#9;PSI&#9;JAVA://com.hailian.jfinal.component.handler.BasePathHandler&#10;API&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/api/controller/ApiController.java&#10;Comment&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/admin/comment/CommentService.java&#10;Mess&#9;PSI&#9;JAVA://com.hailian.modules.front.controller.MessageController&#10;Ae&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/encrypt/AES.java&#10;http&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/extend/HttpClientUtils.java&#10;roc&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/Roc102.java&#10;basew&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseWord.java&#10;api&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/api/controller/ApiController.java&#10;Role&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/api/constant/RoleCons.java&#10;102&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/Roc102.java&#10;baseword&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseWord.java&#10;credit&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java&#10;Roc&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/Roc102.java&#10;column&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/pages/credit/reportColumn/column_edit.html&#10;home&#9;PSI&#9;JAVA://com.hailian.modules.credit.usercenter.controller.HomeController&#10;AES&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/encrypt/AES.java&#10;Aes&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/encrypt/AES.java&#10;base&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseWord.java&#10;getOrsaveOpintion&#9;PSI&#9;JAVA://com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController#getOrsaveOpintion&#10;Tab&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/deepoove/poi/util/TableTools.java&#10;main.js&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/static/credit/js/translate/main.js&#10;Table&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/deepoove/poi/util/TableTools.java&#10;Too&#9;FILE&#9;jar://H:/whc/m2/Repos/com/deepoove/poi-tl/1.4.2/poi-tl-1.4.2-sources.jar!/com/deepoove/poi/util/TableTools.java&#10;CreditReport&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java&#10;BASE&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseInfoZh.java&#10;To&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/deepoove/poi/util/TableTools.java&#10;tran&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/ordertranslate/controller/ReportTranslateController.java&#10;companyser&#9;PSI&#9;JAVA://com.hailian.modules.credit.company.service.CompanyService&#10;trans&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/translate/TransApi.java&#10;baseInfo&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseInfoZh.java&#10;TableT&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/deepoove/poi/util/TableTools.java&#10;cred&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java&#10;订单分配&#9;null&#9;null&#10;main&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/MainReport.java&#10;report&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java&#10;creditrepor&#9;PSI&#9;JAVA://com.hailian.modules.credit.usercenter.controller.CreditReportController&#10;creat&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/static/credit/js/order_manage/create_order.js&#10;all_or&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/static/credit/js/all_orders.js&#10;word&#9;PSI&#9;JAVA://com.hailian.util.word.Word105&#10;creditorderinfo&#9;PSI&#9;JAVA://com.hailian.modules.admin.ordermanager.model.CreditOrderInfo&#10;report_info&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/static/credit/js/report_js/report_info-import.js" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551433051287" />
+    <property name="dynamic.classpath" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="options.lastSelected" value="application.passwordSafe" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="recentsLimit" value="5" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="H:\hailian\lianxin\src\main\java\com\hailian\util\encrypt" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.hailian.util.word" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Tomcat Server.Tomcat 8.5.37">
+    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
+      <module name="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <option name="FILTER_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet">
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="passParentEnv" value="true" />
+      <setting name="launchBrowser" value="false" />
+      <setting name="launchBrowserUrl" value="" />
+      <setting name="depsClasspath" value="false" />
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="jetty" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 8.1.3.v20120416" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="">
+      <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="creditReport:war exploded">
+          <settings DEPLOYMENT_METHOD="contexts">
+            <option name="defaultContextRoot" value="false" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <data>
+          <option name="configFiles">
+            <list>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-ajp.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-annotations.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-bio-ssl.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-bio.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-contexts.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-debug.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-deploy.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-fileserver.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-ipaccess.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="active" value="true" />
+                <option name="path" value="etc\jetty-jmx.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-logging.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-monitor.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-overlay.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-plus.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-policy.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-proxy.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-requestlog.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-rewrite.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-spdy.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-ssl.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-stats.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-testrealm.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-webapps.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-xinetd.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty.xml" />
+              </JettyConfigFile>
+            </list>
+          </option>
+          <option name="myConfigFiles">
+            <list>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-ajp.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-annotations.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-bio-ssl.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-bio.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-contexts.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-debug.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-deploy.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-fileserver.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-ipaccess.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="active" value="true" />
+                <option name="path" value="etc\jetty-jmx.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-logging.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-monitor.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-overlay.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-plus.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-policy.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-proxy.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-requestlog.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-rewrite.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-spdy.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-ssl.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-stats.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-testrealm.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-webapps.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty-xinetd.xml" />
+              </JettyConfigFile>
+              <JettyConfigFile>
+                <option name="path" value="etc\jetty.xml" />
+              </JettyConfigFile>
+            </list>
+          </option>
+        </data>
+      </server-settings>
+      <predefined_log_file enabled="true" id="Jetty" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <RunnerSettings RunnerId="JRebel Debug">
+        <option name="DEBUG_PORT" value="" />
+        <option name="TRANSPORT" value="0" />
+        <option name="LOCAL" value="true" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="" RunnerId="JRebel Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="creditReport:war exploded" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG">
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tomcat 8.5.37" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.37" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="HOT_SWAP_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="creditReport:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Tomcat_8_5_37_jfinal_cms" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="57172" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="creditReport:war" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.37" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="HOT_SWAP_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="creditReport:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/creditReport_war" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="_jfinal_cms" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="57172" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="creditReport:war" />
+        </option>
+      </method>
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
+      <option name="PROGRAM_PARAMETERS" />
+      <predefined_log_file enabled="true" id="idea.log" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <pass-parent-envs>true</pass-parent-envs>
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Jetty Server.jetty" />
+      <item itemvalue="Tomcat Server.Tomcat 8.5.37" />
+    </list>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bff62d77-5e5c-48a9-8856-4996578f5433" name="Default" comment="" />
+      <created>1546848328941</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1546848328941</updated>
+      <workItem from="1546848331793" duration="7745000" />
+      <workItem from="1546910538244" duration="19443000" />
+      <workItem from="1546993596358" duration="3915000" />
+      <workItem from="1547013289990" duration="16488000" />
+      <workItem from="1547083113074" duration="7886000" />
+      <workItem from="1547101004041" duration="9096000" />
+      <workItem from="1547362938696" duration="3408000" />
+      <workItem from="1547369679063" duration="1876000" />
+      <workItem from="1547428876341" duration="23816000" />
+      <workItem from="1547470157779" duration="1531000" />
+      <workItem from="1547540521300" duration="7962000" />
+      <workItem from="1547556919897" duration="14663000" />
+      <workItem from="1547623893568" duration="9456000" />
+      <workItem from="1547652032917" duration="2549000" />
+      <workItem from="1547690957767" duration="16603000" />
+      <workItem from="1547729914621" duration="3059000" />
+      <workItem from="1547774012660" duration="25335000" />
+      <workItem from="1547872394379" duration="8440000" />
+      <workItem from="1547945755201" duration="10658000" />
+      <workItem from="1548033450639" duration="18525000" />
+      <workItem from="1548120109646" duration="14744000" />
+      <workItem from="1548206349575" duration="20593000" />
+      <workItem from="1548292123057" duration="28085000" />
+      <workItem from="1548340552508" duration="56000" />
+      <workItem from="1548379134533" duration="24598000" />
+      <workItem from="1548622218126" duration="13985000" />
+      <workItem from="1548670964270" duration="2607000" />
+      <workItem from="1548725146987" duration="17503000" />
+      <workItem from="1548812221616" duration="20313000" />
+      <workItem from="1548900460352" duration="314000" />
+      <workItem from="1548901339391" duration="11291000" />
+      <workItem from="1549942372212" duration="128000" />
+      <workItem from="1550020856442" duration="8855000" />
+      <workItem from="1550107160068" duration="2421000" />
+      <workItem from="1551431293463" duration="142000" />
+      <workItem from="1551431477505" duration="1560000" />
+    </task>
+    <task id="LOCAL-00026" summary="bug修复">
+      <created>1547620422099</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1547620422099</updated>
+    </task>
+    <task id="LOCAL-00027" summary="bug修复">
+      <created>1547625882734</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1547625882734</updated>
+    </task>
+    <task id="LOCAL-00028" summary="getTableData方法增加参数">
+      <created>1547626374204</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1547626374204</updated>
+    </task>
+    <task id="LOCAL-00029" summary="bug修复">
+      <created>1547629110210</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1547629110210</updated>
+    </task>
+    <task id="LOCAL-00030" summary="字体调整">
+      <created>1547653493436</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1547653493436</updated>
+    </task>
+    <task id="LOCAL-00031" summary="报告生成优化">
+      <created>1547776479905</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1547776479905</updated>
+    </task>
+    <task id="LOCAL-00032" summary="报告生成优化">
+      <created>1547801474307</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1547801474307</updated>
+    </task>
+    <task id="LOCAL-00033" summary="报告生成优化">
+      <created>1547945870931</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1547945870931</updated>
+    </task>
+    <task id="LOCAL-00034" summary="102 管理层分隔符换成“空格”">
+      <created>1547946888378</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1547946888378</updated>
+    </task>
+    <task id="LOCAL-00035" summary="报告生成优化">
+      <created>1547998664590</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1547998664590</updated>
+    </task>
+    <task id="LOCAL-00036" summary="报告生成优化">
+      <created>1548039072602</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1548039072602</updated>
+    </task>
+    <task id="LOCAL-00037" summary="报告生成优化">
+      <created>1548039232271</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1548039232271</updated>
+    </task>
+    <task id="LOCAL-00038" summary="报告生成优化">
+      <created>1548041523703</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1548041523703</updated>
+    </task>
+    <task id="LOCAL-00039" summary="报告生成优化">
+      <created>1548050518479</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1548050518479</updated>
+    </task>
+    <task id="LOCAL-00040" summary="报告生成优化">
+      <created>1548054112194</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1548054112194</updated>
+    </task>
+    <task id="LOCAL-00041" summary="报告生成优化">
+      <created>1548120695245</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1548120695245</updated>
+    </task>
+    <task id="LOCAL-00042" summary="增加目录">
+      <created>1548150359929</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1548150359929</updated>
+    </task>
+    <task id="LOCAL-00043" summary="报告生成优化">
+      <created>1548150389193</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1548150389193</updated>
+    </task>
+    <task id="LOCAL-00044" summary="报告生成优化">
+      <created>1548150439431</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1548150439431</updated>
+    </task>
+    <task id="LOCAL-00045" summary="报告生成优化">
+      <created>1548208126838</created>
+      <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
+      <option name="project" value="LOCAL" />
+      <updated>1548208126839</updated>
+    </task>
+    <task id="LOCAL-00046" summary="报告生成优化">
+      <created>1548212591788</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1548212591788</updated>
+    </task>
+    <task id="LOCAL-00047" summary="报告生成优化">
+      <created>1548241278221</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1548241278221</updated>
+    </task>
+    <task id="LOCAL-00048" summary="报告生成优化">
+      <created>1548296502818</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1548296502818</updated>
+    </task>
+    <task id="LOCAL-00049" summary="下单接口">
+      <created>1548311979004</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1548311979004</updated>
+    </task>
+    <task id="LOCAL-00050" summary="bug修复">
+      <created>1548322977575</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1548322977582</updated>
+    </task>
+    <task id="LOCAL-00051" summary="bug修复">
+      <created>1548339596625</created>
+      <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
+      <option name="project" value="LOCAL" />
+      <updated>1548339596626</updated>
+    </task>
+    <task id="LOCAL-00052" summary="报告生成优化">
+      <created>1548381941548</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1548381941549</updated>
+    </task>
+    <task id="LOCAL-00053" summary="接口修改">
+      <created>1548385882565</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1548385882565</updated>
+    </task>
+    <task id="LOCAL-00054" summary="接口修改">
+      <created>1548386319977</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1548386319977</updated>
+    </task>
+    <task id="LOCAL-00055" summary="报告生成优化">
+      <created>1548403170057</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1548403170057</updated>
+    </task>
+    <task id="LOCAL-00056" summary="报告生成优化">
+      <created>1548403472188</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1548403472188</updated>
+    </task>
+    <task id="LOCAL-00057" summary="报告生成优化">
+      <created>1548404002896</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1548404002896</updated>
+    </task>
+    <task id="LOCAL-00058" summary="报告生成优化">
+      <created>1548404595037</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1548404595037</updated>
+    </task>
+    <task id="LOCAL-00059" summary="报告生成优化">
+      <created>1548404802223</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1548404802223</updated>
+    </task>
+    <task id="LOCAL-00060" summary="报告生成优化">
+      <created>1548405611447</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1548405611447</updated>
+    </task>
+    <task id="LOCAL-00061" summary="报告生成优化">
+      <created>1548406898965</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1548406898965</updated>
+    </task>
+    <task id="LOCAL-00062" summary="报告生成优化">
+      <created>1548407592710</created>
+      <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1548407592710</updated>
+    </task>
+    <task id="LOCAL-00063" summary="报告生成优化">
+      <created>1548409986196</created>
+      <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1548409986196</updated>
+    </task>
+    <task id="LOCAL-00064" summary="报告生成优化">
+      <created>1548625282198</created>
+      <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1548625282200</updated>
+    </task>
+    <task id="LOCAL-00065" summary="报告生成优化">
+      <created>1548625314825</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1548625314825</updated>
+    </task>
+    <task id="LOCAL-00066" summary="报告生成优化">
+      <created>1548668366010</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1548668366010</updated>
+    </task>
+    <task id="LOCAL-00067" summary="报告生成优化">
+      <created>1548668442927</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1548668442927</updated>
+    </task>
+    <task id="LOCAL-00068" summary="报告生成优化">
+      <created>1548672268148</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1548672268149</updated>
+    </task>
+    <task id="LOCAL-00069" summary="报告生成优化">
+      <created>1548746981180</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1548746981182</updated>
+    </task>
+    <task id="LOCAL-00070" summary="报告生成优化">
+      <created>1548756944835</created>
+      <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
+      <option name="project" value="LOCAL" />
+      <updated>1548756944835</updated>
+    </task>
+    <task id="LOCAL-00071" summary="报告生成优化">
+      <created>1548828716011</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1548828716015</updated>
+    </task>
+    <task id="LOCAL-00072" summary="报告生成优化">
+      <created>1548841333278</created>
+      <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
+      <option name="project" value="LOCAL" />
+      <updated>1548841333278</updated>
+    </task>
+    <task id="LOCAL-00073" summary="报告生成优化">
+      <created>1548842175739</created>
+      <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
+      <option name="project" value="LOCAL" />
+      <updated>1548842175739</updated>
+    </task>
+    <task id="LOCAL-00074" summary="1. 增加xss防护模块&#10;2. 报告生成失败发送提醒">
+      <created>1550052638294</created>
+      <option name="number" value="00074" />
+      <option name="presentableId" value="LOCAL-00074" />
+      <option name="project" value="LOCAL" />
+      <updated>1550052638296</updated>
+    </task>
+    <option name="localTasksCounter" value="75" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="379649000" />
+  </component>
+  <component name="TodoView" selected-index="4">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1382" height="753" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49827588" visible="true" weight="0.2647504" />
+      <window_info id="Structure" order="1" weight="0.24962293" />
+      <window_info id="UI Designer" order="2" />
+      <window_info id="Web" order="3" side_tool="true" />
+      <window_info id="JRebel" order="4" sideWeight="0.5017241" side_tool="true" weight="0.22192514" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Palette&#9;" order="6" />
+      <window_info id="Image Layers" order="7" />
+      <window_info id="Capture Tool" order="8" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32408434" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.57967913" visible="true" weight="0.42972535" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.9" weight="0.5382908" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.32963374" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.21871658" side_tool="true" weight="0.37069923" />
+      <window_info anchor="bottom" id="Application Servers" order="8" weight="0.32963374" />
+      <window_info anchor="bottom" id="JRebel Executor" order="9" />
+      <window_info anchor="bottom" id="Changes" order="10" weight="0.32963374" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.78128344" weight="0.12079511" />
+      <window_info anchor="bottom" id="Java Enterprise" order="12" />
+      <window_info anchor="bottom" id="Version Control" order="13" sideWeight="0.61122996" weight="0.36833602" />
+      <window_info anchor="bottom" id="Terminal" order="14" weight="0.32956383" />
+      <window_info anchor="bottom" id="IDEtalk Messages" order="15" />
+      <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.21871658" side_tool="true" weight="0.37069923" />
+      <window_info anchor="bottom" id="Docker" order="17" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="18" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Maven Projects" order="4" visible="true" weight="0.13743316" />
+      <window_info anchor="right" id="Designer" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="IDEtalk" order="7" />
+      <window_info anchor="right" id="Maven" order="8" />
+      <window_info anchor="right" id="Capture Analysis" order="9" />
+      <window_info anchor="right" id="Theme Preview" order="10" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="查档状态 814 改为 295" />
+    <MESSAGE value="冲突解决" />
+    <MESSAGE value="注册资本类型 默认为 “注册资本”" />
+    <MESSAGE value="企查查接口增加参数" />
+    <MESSAGE value="报告生成bug修复" />
+    <MESSAGE value="生成报告增加 “合计” 项" />
+    <MESSAGE value="getTableData方法增加参数" />
+    <MESSAGE value="字体调整" />
+    <MESSAGE value="102 管理层分隔符换成“空格”" />
+    <MESSAGE value="增加目录" />
+    <MESSAGE value="下单接口" />
+    <MESSAGE value="bug修复" />
+    <MESSAGE value="接口修改" />
+    <MESSAGE value="报告生成优化" />
+    <MESSAGE value="1. 增加xss防护模块&#10;2. 报告生成失败发送提醒" />
+    <MESSAGE value="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;解决冲突，同步代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;解决冲突，同步代码" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java</url>
+          <line>502</line>
+          <properties />
+          <option name="timeStamp" value="262" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/HomeController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="467" column="60" selection-start-line="467" selection-start-column="60" selection-end-line="467" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/reportColumn/column_edit.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="40" column="16" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/reportNodes/reportNodes_edit.html">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/jfinal/base/BaseModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="55" selection-start-line="55" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/front/template/TemplateDictService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="259" selection-start-line="259" selection-end-line="259" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/utils/Office2PDF.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="81" selection-start-line="81" selection-end-line="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseBusiCrdt.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/net/URLDecoder.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/URLCoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/api/constant/RoleCons.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="16" column="1" selection-start-line="16" selection-start-column="1" selection-end-line="16" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/commons-lang/commons-lang/2.5/commons-lang-2.5-sources.jar!/org/apache/commons/lang/StringUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="123" column="13" selection-start-line="123" selection-start-column="13" selection-end-line="123" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/jfinal/jfinal/3.0/jfinal-3.0-sources.jar!/com/jfinal/plugin/activerecord/Model.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="179" column="17" selection-start-line="179" selection-start-column="17" selection-end-line="179" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/AES.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="209" selection-start-line="209" selection-end-line="209" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/extend/HttpClientUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="167" column="1" selection-start-line="167" selection-start-column="1" selection-end-line="167" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/utils/SendMailUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="250" column="22" selection-start-line="250" selection-start-column="22" selection-end-line="250" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="64" column="9" selection-start-line="62" selection-start-column="8" selection-end-line="64" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/notice/controller/NoticeController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="234" column="7" selection-start-line="234" selection-start-column="7" selection-end-line="234" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/front/controller/CommentController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="74" column="29" selection-start-line="74" selection-start-column="29" selection-end-line="74" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/admin/comment/CommentService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="38" column="16" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/front/controller/MessageController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="32" column="39" selection-start-line="32" selection-start-column="39" selection-end-line="32" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/component/base/BaseProjectController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="94" column="23" selection-start-line="94" selection-start-column="23" selection-end-line="94" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="503" column="13" selection-start-line="503" selection-start-column="13" selection-end-line="503" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/DateUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="69" column="31" selection-start-line="69" selection-start-column="31" selection-end-line="69" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/Roc102.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="484" selection-start-line="484" selection-end-line="484" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/jfinal/base/BaseController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="87" column="7" selection-start-line="87" selection-start-column="7" selection-end-line="87" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/MainReport.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="52" column="41" selection-start-line="52" selection-start-column="41" selection-end-line="52" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/jfinal/component/handler/BasePathHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="32" column="11" selection-start-line="32" selection-start-column="11" selection-end-line="32" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/jfinal/component/handler/XssHttpServletRequestWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="15" column="11" selection-start-line="15" selection-start-column="11" selection-end-line="15" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/jfinal/component/handler/XssHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="32" column="51" selection-start-line="32" selection-start-column="51" selection-end-line="32" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/conf/config.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseWord.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="60" selection-start-line="60" selection-end-line="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/OrderProcessController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="615" column="47" selection-start-line="615" selection-start-column="47" selection-end-line="615" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/api/controller/ApiController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="70" column="33" selection-start-line="70" selection-start-column="33" selection-end-line="70" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/component/config/BaseConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="188" column="32" selection-start-line="188" selection-start-column="30" selection-end-line="188" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="155" column="24" selection-start-line="155" selection-start-column="24" selection-end-line="155" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/jfinal/component/handler/HtmlHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="42" column="42" selection-start-line="42" selection-start-column="42" selection-end-line="42" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/apache/poi/xwpf/usermodel/NumberingWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="39" selection-start-line="10" selection-start-column="39" selection-end-line="10" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/deepoove/poi/XWPFParagraphWrapper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="38" column="13" selection-start-line="38" selection-start-column="13" selection-end-line="38" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/order_detail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#li#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#tr#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/compiler.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" column="40" lean-forward="true" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/copyright/profiles_settings.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/scopes/scope_settings.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/.rebel.xml.bak">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/uiDesigner.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>creditReport:war</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>JRebel</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>Web|creditReport</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>Maven: c3p0:c3p0:0.9.1.2</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
