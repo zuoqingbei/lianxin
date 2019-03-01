@@ -315,7 +315,7 @@ let OrderDetail = {
                                     } else {
                                         _this.type9TableHeadBigData.push(item)
                                     }
-
+                                    console.log(_this.type9TableHead,_this.type9TableHeadBigData)
                                 } else {
                                     //非财务的浮动——表格上面的时间
                                     // 12-102中文；14-102English；下面给这两种的出资情况加时间
@@ -693,10 +693,10 @@ let OrderDetail = {
         * type9TableHead：表格4个部分的标题
         * type10Items：其data_source可获取表格数据内容，其中parent_sector、son_sector和表格顺序对应
         * */
-        let [type9MulText, type9TableHead, type10Items] = bigData ? [this.type9MulText, this.type9TableHead, this.type10Items] : [this.type9MulText, this.type9TableHeadBigData, this.type10Items];
+        let [type9MulText, type9TableHead, type10Items] = bigData ?[this.type9BigData, this.type9TableHeadBigData, this.type10BigData]:  [this.type9MulText, this.type9TableHead, this.type10Items] ;
         let $tableBox = $('<div class="tableBox m-4"><h4 class="text-center p-3"></h4></div>');
         let $allTable = $('<div class="tableAll"></div>');
-        type9TableHead.forEach(function (item) {
+        type9TableHead.forEach(function (item) { //每个表格组的标题
             $allTable.append($tableBox.find('h4').text(item.title.temp_name).end()[0].outerHTML);
         });
         // 获取多行文本框的标签
@@ -704,11 +704,11 @@ let OrderDetail = {
         if (!type9MulText.contents) {
             return
         }
-        type9MulText.contents.forEach(function (content, index) {
+        type9MulText.contents.forEach(function (content, index) {// 多行文本框
             if (index < 9) {
                 return
             }
-            if (index % 2 === 0) { //固定顺序，从第10个开始
+            if (index % 2 === 0) { //固定顺序，从第10个开始，一个名字一个内容
                 $mulTextBox.append(`<div class="item">
                                         <h4>${content.temp_name}: <span id="${content.column_name}"></span></h4>
                                         <div class="border multiText mt-2 m-3 p-2"></div><div class="pt-1"></div>
@@ -726,10 +726,10 @@ let OrderDetail = {
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
                         let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
-                        $allTable.children().eq(row.parent_sector - 1).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
+                        $allTable.children().eq(row.parent_sector - 1 - (bigData?4:0)).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
                             .append(`<tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
                     } else {
-                        $allTable.children().eq(row.parent_sector - 1)
+                        $allTable.children().eq(row.parent_sector - 1 - (bigData?4:0))
                             .append(`<table class="table table-hover"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
                         addTableMark.push(row.parent_sector + '-' + row.son_sector);
                     }
@@ -749,14 +749,14 @@ let OrderDetail = {
                         [dateStart, dateEnd] = [type9MulTextData.rows[0].date3, type9MulTextData.rows[0].date4];
                     }
                     $(this).find('table:eq(0)').prepend(`<thead>
-                    <tr><th></th><th></th><th>${type9MulText.contents[4].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
+                    <tr><th></th><th></th><th>${type9MulText.contents[(bigData?0:4)].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
                     <tr><th></th><th>开始日期：${dateStart || '&emsp;'}</th><th>结束日期：${dateEnd || '&emsp;'}</th></tr>
                 </thead>`);
                 });
                 // 通过企业父title的某个内容获取下拉框来转换单位
                 $.when(
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[4].get_source}`),
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[5].get_source}`)
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData?0:4)].get_source}`),
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData?1:5)].get_source}`)
                 ).done(function (unitData, currencyUbitData) {
                     let [currency, currency_ubit] = [type9MulTextData.rows[0].currency, type9MulTextData.rows[0].currency_ubit]
                     let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
@@ -778,77 +778,9 @@ let OrderDetail = {
                 });
             })
         });
-        $(".type10-content:eq(" + (bigData ? 0 : 1) + ")").append($allTable, '');
-        /* if (this.type9BigData.title && this.type10BigData.title) {
-             this.setBigDataCwData();
-         }*/
-
+        console.log('$mulTextBox',$mulTextBox)
+        $(".type10-content:eq(" + (bigData ? 1 : 0) + ")").append($allTable, bigData?'':$mulTextBox);
     },
-    // 大数财务
-    /*setBigDataCwData() {
-
-        let [type9, type9Head,type10] = [this.type9MulText,this.type9TableHeadBigData, this.type10Items];
-        let $tableBox = $('<div class="tableBox m-4"><h4 class="text-center p-3"></h4></div>');
-        let $allTable = $('<div class="tableAll"></div>');
-        if (!type9.contents) {
-            return
-        }
-        type9Head.forEach(function (item) {
-            $allTable.append($tableBox.find('h4').text(item.title.temp_name).end()[0].outerHTML);
-        });
-        let addTableMark = [];
-        // 通过企业父title获取表格头部的日期
-        $.get(BASE_PATH + `credit/front/ReportGetData/${type9.title.get_source}&company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9Data) => {
-            $.get(BASE_PATH + `credit/front/ReportGetData/${type10.title.get_source}&ficConf_id=${type9Data.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
-                data.rows.forEach((row) => {
-                    if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
-                        //孩子顺序是固定的
-                        let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
-                        $allTable.children().eq(row.parent_sector - 1).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
-                            .append(`<tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
-                    } else {
-                        $allTable.children().eq(row.parent_sector - 1)
-                            .append(`<table class="table table-hover"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
-                        addTableMark.push(row.parent_sector + '-' + row.son_sector);
-                    }
-                });
-                //根据合并设置标题
-                $allTable.find('h4').each(function () {
-                    if (type9Data.rows[0].is_merge === '1') {
-                        $(this).text($(this).text().split('||')[1])
-                    } else {
-                        $(this).text($(this).text().split('||')[0])
-                    }
-                });
-                //表格头部的日期和单位
-                $allTable.find('.tableBox').each(function (index, item) {
-                    let [dateStart, dateEnd] = [type9Data.rows[0].date1, type9Data.rows[0].date2];
-                    if ($(this).find('h4').text().includes('利润表')) {
-                        [dateStart, dateEnd] = [type9Data.rows[0].date3, type9Data.rows[0].date4];
-                    }
-                    $(this).find('table:eq(0)').prepend(`<thead>
-                    <tr><th></th><th></th><th>${type9.contents[4].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
-                    <tr><th></th><th>开始日期：${dateStart || '&emsp;'}</th><th>结束日期：${dateEnd || '&emsp;'}</th></tr>
-                </thead>`);
-                });
-                // 通过企业父title的某个内容获取下拉框来转换单位
-                $.when(
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9.contents[4].get_source}`),
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9.contents[5].get_source}`)
-                ).done(function (unitData, currencyUbitData) {
-                    let [currency, currency_ubit] = [type9Data.rows[0].currency, type9Data.rows[0].currency_ubit]
-                    let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
-                    let $select2 = $(`<select id="currencyUbitDataTrans">${currencyUbitData[0].selectStr}</select>`);
-                    let currencyText = $select1.val(currency).find("option:selected").text();
-                    let currencyUbitText = $select2.val(currency_ubit).find("option:selected").text();
-                    $allTable.find(".currency").text(currencyText);
-                    $allTable.find(".currency_ubit").text(currencyUbitText);
-                });
-            })
-        });
-        $(".type10-content:eq("+bigData?1:0+")").append($allTable, '');
-
-    },*/
     // 获取质检结果下拉框的数据
     getQualitySelectData(param) {
         let _this = this;
