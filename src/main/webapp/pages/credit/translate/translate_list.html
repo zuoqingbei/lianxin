@@ -86,6 +86,7 @@ var bodyContent = {
 				<tr>
 					<th>序号</th>
 					<%  // 列表头部 %>
+					<th name="t1.correct_phrase_ch" class="sorting">原来的中文</th> 
 					<th name="t1.error_phrase" class="sorting">错误语句</th> 
 					<th name="t1.correct_phrase" class="sorting">正确语句</th> 
 					<th name="t4.realname" class="sorting">创建人</th> 
@@ -99,6 +100,7 @@ var bodyContent = {
 				<tr>
 				<td>${itemLP.index }</td>
 					<%  // 列表内容 %>
+					<td>${item.correct_phrase_ch}</td> 
 					<td>${item.error_phrase}</td> 
 					<td>${item.correct_phrase}</td> 
 					<td>
