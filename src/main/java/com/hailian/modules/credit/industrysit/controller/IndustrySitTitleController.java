@@ -2,7 +2,7 @@ package com.hailian.modules.credit.industrysit.controller;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyIndustrySituationTitleDict;
+import com.hailian.modules.credit.industrysituation.model.IndustrySitTitleModel;
 import com.hailian.modules.credit.industrysituation.service.IndustrySitTitleService;
 import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/credit/industrysitTitle")
@@ -18,10 +18,10 @@ public class IndustrySitTitleController extends BaseProjectController {
 	* @TODO
 	 */
 	public void list() {
-		CreditCompanyIndustrySituationTitleDict attr = getModelByAttr(CreditCompanyIndustrySituationTitleDict.class);
+		IndustrySitTitleModel attr = getModelByAttr(IndustrySitTitleModel.class);
 		String keyword = getPara("keyword");
 		String orderBy = getBaseForm().getOrderBy();
-		Page<CreditCompanyIndustrySituationTitleDict> page = IndustrySitTitleService.service.getPage(getPaginator(),orderBy,attr,this);
+		Page<IndustrySitTitleModel> page = IndustrySitTitleService.service.getPage(getPaginator(),orderBy,attr,this);
 		setAttr("page",page);
 		render(path+"list.html");
 	}
@@ -32,7 +32,7 @@ public class IndustrySitTitleController extends BaseProjectController {
 	* @TODO
 	 */
 	public void view() {
-		CreditCompanyIndustrySituationTitleDict item=IndustrySitTitleService.service.getIndustrySit(getParaToInt());
+		IndustrySitTitleModel item=IndustrySitTitleService.service.getIndustrySit(getParaToInt());
 		setAttr("item", item);
 		render(path + "view.html");
 	}
@@ -44,7 +44,7 @@ public class IndustrySitTitleController extends BaseProjectController {
 	 */
 	public void add() {
 		// 获取页面信息,设置目录传入
-		CreditCompanyIndustrySituationTitleDict attr = getModel(CreditCompanyIndustrySituationTitleDict.class);
+		IndustrySitTitleModel attr = getModel(IndustrySitTitleModel.class);
 		setAttr("model", attr);
 		render(path + "add.html");
 	}
@@ -56,7 +56,7 @@ public class IndustrySitTitleController extends BaseProjectController {
 	 */
 	public void edit() {
 		Integer paraToInt = getParaToInt();
-		CreditCompanyIndustrySituationTitleDict model = CreditCompanyIndustrySituationTitleDict.dao.findById(paraToInt);
+		IndustrySitTitleModel model = IndustrySitTitleModel.dao.findById(paraToInt);
 		setAttr("model", model);
 		// 查询下拉框
 		render(path + "edit.html");
@@ -83,7 +83,7 @@ public class IndustrySitTitleController extends BaseProjectController {
 	public void save() {
 		Integer pid = getParaToInt();
 		// 日志添加
-		CreditCompanyIndustrySituationTitleDict model = getModel(CreditCompanyIndustrySituationTitleDict.class);
+		IndustrySitTitleModel model = getModel(IndustrySitTitleModel.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);

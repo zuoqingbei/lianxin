@@ -6,7 +6,7 @@ let OrderDetail = {
         this.quality_deal = '';
         this.qualityOpinionId = '';
         this.cwModules = [];
-        [this.type9MulText, this.type9TableHead, this.type10Items] = [{}, [], {}];
+        [this.type9MulText, this.type9BigData, this.type9TableHead, this.type9TableHeadBigData, this.type10Items, type10BigData] = [{}, {}, [], [], {}, {}];
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         /**
          *
@@ -297,13 +297,25 @@ let OrderDetail = {
                 case '9':
 
                     if (item.title.sort === 1) { //财务
-                        _this.type9MulText = item;
+                        if (item.title.get_source.includes('type=1')) {
+                            _this.type9MulText = item;
+                            console.log('正常财务', item)
+                        } else {
+                            _this.type9BigData = item;
+                            console.log('大数财务', item)
+                        }
+
                     } else {
                         items.forEach((item0, index0) => {
 
-                            if (item.title.float_parent === item0.title.id) {//财务表头
-                                if (item0.smallModileType === '10') {
-                                    _this.type9TableHead.push(item)
+                            if (item.title.float_parent === item0.title.id) {
+                                if (item0.smallModileType === '10') {//财务表头
+                                    if (item0.title.get_source.includes('type=1')) {
+                                        _this.type9TableHead.push(item)
+                                    } else {
+                                        _this.type9TableHeadBigData.push(item)
+                                    }
+                                    console.log(_this.type9TableHead,_this.type9TableHeadBigData)
                                 } else {
                                     //非财务的浮动——表格上面的时间
                                     // 12-102中文；14-102English；下面给这两种的出资情况加时间
@@ -325,7 +337,12 @@ let OrderDetail = {
                 // 10-财务模块表格数据
                 case '10':
                     $wrap.append(`<div class="module-content type10-content"></div>`);
-                    _this.type10Items = item;
+                    if (item.title.get_source.includes('type=1')) {
+                        _this.type10Items = item;
+                    } else {
+                        _this.type10BigData = item;
+                    }
+
                     break;
                 // 20-单选框判断后加一个多行文本框
                 case '20':
@@ -643,6 +660,12 @@ let OrderDetail = {
             }
         });
         this.setCwData();
+        // 此处数据结构有改动(190226)，根据item.title.get_source里面的参数type判断，为1是普通财务，否则是大数财务
+        const bigData = this.type9BigData.title && this.type10BigData.title;
+        if (bigData) {
+            this.setCwData(bigData);
+        }
+
         // 质检结果下拉列表
         if (this.isQuality) {
             this.setQualitySelect();
@@ -653,8 +676,7 @@ let OrderDetail = {
             layer.confirm('是否要保存？', {
                 btn: ['保存', '取消'] //按钮
             }, function () {
-                $('#save').trigger('click')
-
+                $('#save').trigger('click');
                 location.reload();
             }, function () {
                 location.reload();
@@ -663,7 +685,7 @@ let OrderDetail = {
         })
     },
     //财务部分
-    setCwData() {
+    setCwData(bigData) {
         /*
         * type9MulText：包含单位、多行文本框部分的标签，其data_source可获取对应的值、表格头部的日期；
         *               其中的contents的[4,5]是单位的标签，其中的data_source可获取下拉框来将数值转换为对应文本，
@@ -671,11 +693,10 @@ let OrderDetail = {
         * type9TableHead：表格4个部分的标题
         * type10Items：其data_source可获取表格数据内容，其中parent_sector、son_sector和表格顺序对应
         * */
-        let [type9MulText, type9TableHead, type10Items] = [this.type9MulText, this.type9TableHead, this.type10Items];
+        let [type9MulText, type9TableHead, type10Items] = bigData ?[this.type9BigData, this.type9TableHeadBigData, this.type10BigData]:  [this.type9MulText, this.type9TableHead, this.type10Items] ;
         let $tableBox = $('<div class="tableBox m-4"><h4 class="text-center p-3"></h4></div>');
         let $allTable = $('<div class="tableAll"></div>');
-        type9TableHead.forEach(function (item) {
-            // $allTable.append($tableBox.find('h4').text(item.title.temp_name).end());
+        type9TableHead.forEach(function (item) { //每个表格组的标题
             $allTable.append($tableBox.find('h4').text(item.title.temp_name).end()[0].outerHTML);
         });
         // 获取多行文本框的标签
@@ -683,11 +704,11 @@ let OrderDetail = {
         if (!type9MulText.contents) {
             return
         }
-        type9MulText.contents.forEach(function (content, index) {
+        type9MulText.contents.forEach(function (content, index) {// 多行文本框
             if (index < 9) {
                 return
             }
-            if (index % 2 === 0) { //固定顺序，从第10个开始
+            if (index % 2 === 0) { //固定顺序，从第10个开始，一个名字一个内容
                 $mulTextBox.append(`<div class="item">
                                         <h4>${content.temp_name}: <span id="${content.column_name}"></span></h4>
                                         <div class="border multiText mt-2 m-3 p-2"></div><div class="pt-1"></div>
@@ -705,10 +726,10 @@ let OrderDetail = {
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
                         let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
-                        $allTable.children().eq(row.parent_sector - 1).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
+                        $allTable.children().eq(row.parent_sector - 1 - (bigData?4:0)).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
                             .append(`<tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
                     } else {
-                        $allTable.children().eq(row.parent_sector - 1)
+                        $allTable.children().eq(row.parent_sector - 1 - (bigData?4:0))
                             .append(`<table class="table table-hover"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
                         addTableMark.push(row.parent_sector + '-' + row.son_sector);
                     }
@@ -728,14 +749,14 @@ let OrderDetail = {
                         [dateStart, dateEnd] = [type9MulTextData.rows[0].date3, type9MulTextData.rows[0].date4];
                     }
                     $(this).find('table:eq(0)').prepend(`<thead>
-                    <tr><th></th><th></th><th>${type9MulText.contents[4].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
+                    <tr><th></th><th></th><th>${type9MulText.contents[(bigData?0:4)].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
                     <tr><th></th><th>开始日期：${dateStart || '&emsp;'}</th><th>结束日期：${dateEnd || '&emsp;'}</th></tr>
                 </thead>`);
                 });
                 // 通过企业父title的某个内容获取下拉框来转换单位
                 $.when(
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[4].get_source}`),
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[5].get_source}`)
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData?0:4)].get_source}`),
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData?1:5)].get_source}`)
                 ).done(function (unitData, currencyUbitData) {
                     let [currency, currency_ubit] = [type9MulTextData.rows[0].currency, type9MulTextData.rows[0].currency_ubit]
                     let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
@@ -757,7 +778,8 @@ let OrderDetail = {
                 });
             })
         });
-        $(".type10-content").append($allTable, $mulTextBox);
+        console.log('$mulTextBox',$mulTextBox)
+        $(".type10-content:eq(" + (bigData ? 1 : 0) + ")").append($allTable, bigData?'':$mulTextBox);
     },
     // 获取质检结果下拉框的数据
     getQualitySelectData(param) {
@@ -966,25 +988,23 @@ let OrderDetail = {
                         $wrap.find('tbody').append($tr);
                     });
                     //股东信息表格加合计功能
-                    if (['股东信息','Shareholding'].includes(item.title.temp_name)) {
+                    if (['股东信息', 'Shareholding'].includes(item.title.temp_name)) {
                         let $sumTr = $('<tr class="tableSum font-weight-bold" style="background-color: var(--bg-thead);"></tr>');
                         $wrap.find('thead th').each(function (index, elem) {
                             let tdHtml = '';
                             if (index === 0) {
-                                tdHtml = item.title.temp_name ==='股东信息'? '<td>合计</td>':'<td>total</td>';
-                            } else if (['出资金额(元)','Amount', '出资比例（%）','% of Shareholding'].includes($(elem).text())) {
+                                tdHtml = item.title.temp_name === '股东信息' ? '<td>合计</td>' : '<td>total</td>';
+                            } else if (['出资金额', 'Amount', '出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
                                 let sum = 0;
                                 $(this).parents('table').find('tbody>tr').each(function (i, tr) {
                                     sum += ($(tr).find("td").eq(index).text().replace(/[,]/g, "") - 0.0)
                                 });
-                                if(['出资比例（%）','% of Shareholding'].includes($(elem).text())){
-                                    console.log('~sum',sum);
+                                if (['出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
                                     sum = sum.toFixed(2);
-                                    if(sum === '99.99'){
+                                    if (sum === '99.99') {
                                         sum = '100.00'
                                     }
                                 }
-                                console.log('~~sum',sum);
                                 tdHtml = `<td>${sum}</td>`;
                             } else {
                                 tdHtml = '<td></td>';

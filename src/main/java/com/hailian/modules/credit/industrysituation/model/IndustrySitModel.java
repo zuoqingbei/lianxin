@@ -1,4 +1,4 @@
-package com.hailian.modules.admin.ordermanager.model;
+package com.hailian.modules.credit.industrysituation.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +20,10 @@ import com.jfinal.plugin.activerecord.Page;
 * @date 2018年9月3日上午11:48:31  
 * @TODO
  */
-@ModelBind(table = "credit_company_industry_situation_title_dict")
-public class CreditCompanyIndustrySituationTitleDict extends BaseProjectModel<CreditCompanyIndustrySituationTitleDict> {
+@ModelBind(table = "credit_company_industry_situation_dict")
+public class IndustrySitModel extends BaseProjectModel<IndustrySitModel> {
 	private static final long serialVersionUID = 1L;
-	public static final CreditCompanyIndustrySituationTitleDict dao = new CreditCompanyIndustrySituationTitleDict();
+	public static final IndustrySitModel dao = new IndustrySitModel();
 	
 	/**
 	 * 分页
@@ -31,10 +31,10 @@ public class CreditCompanyIndustrySituationTitleDict extends BaseProjectModel<Cr
 	 * @date: 2019年2月25日下午3:53:15
 	 * @Description:
 	 */
-	public Page<CreditCompanyIndustrySituationTitleDict> getPage(Paginator paginator,String orderBy, CreditCompanyIndustrySituationTitleDict attr, BaseProjectController c) {
+	public Page<IndustrySitModel> getPage(Paginator paginator,String orderBy, IndustrySitModel attr, BaseProjectController c) {
 		// TODO Auto-generated method stub
 		List<Object> params=new ArrayList<Object>();
-		StringBuffer sql=new StringBuffer(" from credit_company_industry_situation_title_dict t ");
+		StringBuffer sql=new StringBuffer(" from credit_company_industry_situation_dict t left join credit_company_industry_situation_title_dict t2 on t2.id=t.title ");
 		sql.append(" where 1=1 and t.del_flag=0 ");
 
 		if(!c.isAdmin(c.getSessionUser())){
@@ -42,7 +42,7 @@ public class CreditCompanyIndustrySituationTitleDict extends BaseProjectModel<Cr
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}
 		if(StringUtils.isNotBlank(attr.getStr("title"))) {
-			sql.append(" and t.title=? ");
+			sql.append(" and t2.title like concat('%',?,'%')");
 			params.add(attr.getStr("title"));//传入的参数
 		}
 		// 排序
@@ -51,8 +51,8 @@ public class CreditCompanyIndustrySituationTitleDict extends BaseProjectModel<Cr
 		} else {
 			sql.append(" order by ").append(orderBy);
 		}
-		Page<CreditCompanyIndustrySituationTitleDict> page = CreditCompanyIndustrySituationTitleDict.dao
-				.paginate(paginator, "select t.* ", sql.toString(),params.toArray());
+		Page<IndustrySitModel> page = IndustrySitModel.dao
+				.paginate(paginator, "select t.*,t2.title as titlename", sql.toString(),params.toArray());
 		System.out.println(sql);
 		return page;
 	}
@@ -64,7 +64,7 @@ public class CreditCompanyIndustrySituationTitleDict extends BaseProjectModel<Cr
 	 */
 	public void delete(Integer id, Integer userid) {
 		String now = DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
-		String sql="update credit_company_industry_situation_title_dict set del_flag=1,update_by=?,update_date=? where id=?";
+		String sql="update credit_company_industry_situation_dict set del_flag=1,update_by=?,update_date=? where id=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(userid);
 		params.add(now);
@@ -72,19 +72,14 @@ public class CreditCompanyIndustrySituationTitleDict extends BaseProjectModel<Cr
 		Db.update(sql,params.toArray());
 		
 	}
-	public CreditCompanyIndustrySituationTitleDict getIndustrySit(Integer id){
-		StringBuffer sql=new StringBuffer("select * from credit_company_industry_situation_title_dict where del_flag=0");
+	public IndustrySitModel getIndustrySit(Integer id){
+		StringBuffer sql=new StringBuffer("select * from credit_company_industry_situation_dict where del_flag=0");
 		List<Object> params=new ArrayList<Object>();
 		if(id !=null){
 			sql.append(" and id=?");
 			params.add(id);
 		}
-		CreditCompanyIndustrySituationTitleDict find = CreditCompanyIndustrySituationTitleDict.dao.findFirst(sql.toString(),params.toArray());
-		return find;
-	}
-	public List<CreditCompanyIndustrySituationTitleDict> getAllIndustrySit(){
-		StringBuffer sql=new StringBuffer("select * from credit_company_industry_situation_title_dict where del_flag=0");
-		List<CreditCompanyIndustrySituationTitleDict> find = CreditCompanyIndustrySituationTitleDict.dao.find(sql.toString());
+		IndustrySitModel find = IndustrySitModel.dao.findFirst(sql.toString(),params.toArray());
 		return find;
 	}
 

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyIndustrySituationDict;
+import com.hailian.modules.credit.industrysituation.model.IndustrySitModel;
 import com.jfinal.plugin.activerecord.Page;
 
 public class IndustrySitService {
@@ -16,8 +16,8 @@ public class IndustrySitService {
 	* @date 2018年9月3日下午2:31:12  
 	* @TODO
 	 */
-	public Page<CreditCompanyIndustrySituationDict> getPage(Paginator paginator,  String orderBy,CreditCompanyIndustrySituationDict attr,BaseProjectController c){
-		Page<CreditCompanyIndustrySituationDict> page = CreditCompanyIndustrySituationDict.dao.getPage(paginator,orderBy,attr,c);
+	public Page<IndustrySitModel> getPage(Paginator paginator,  String orderBy,IndustrySitModel attr,BaseProjectController c){
+		Page<IndustrySitModel> page = IndustrySitModel.dao.getPage(paginator,orderBy,attr,c);
 		return page;
 	}
 	/**
@@ -27,13 +27,13 @@ public class IndustrySitService {
 	* @TODO
 	 */
 	public void delete(Integer id, Integer userid){
-		CreditCompanyIndustrySituationDict.dao.delete(id,userid);
+		IndustrySitModel.dao.delete(id,userid);
 	}
 	/*
 	 * 查询
 	 */
-	public CreditCompanyIndustrySituationDict getIndustrySit(Integer id){
-		CreditCompanyIndustrySituationDict industrysit = CreditCompanyIndustrySituationDict.dao.getIndustrySit(id);
+	public IndustrySitModel getIndustrySit(Integer id){
+		IndustrySitModel industrysit = IndustrySitModel.dao.getIndustrySit(id);
 		return industrysit;
 	}
 
