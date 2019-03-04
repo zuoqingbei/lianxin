@@ -124,7 +124,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			a++;
 		}
 		try {
-			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE + getPara("className"), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"),isCompanyMainTable());
+			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE + getPara("className"), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"),isCompanyMainTable(),null);
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -271,10 +271,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     if(detail!=null) {
                         CreditCompanyInfo cmodel = new CreditCompanyInfo();
                         cmodel.set("id", companyId);
-                        if (ReportTypeCons.ROC_ZH.equals(type)) {
+                        if (ReportTypeCons.ROC_ZH.equals(type)) {//102Chinese
                             cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
-                        } else if (ReportTypeCons.ROC_EN.equals(type)) {
+                        } else if (ReportTypeCons.ROC_EN.equals(type)) {//102English
                             cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));
+                        }else {//其它类型
+                        	 cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
                         }
                         cmodel.update();
                     }

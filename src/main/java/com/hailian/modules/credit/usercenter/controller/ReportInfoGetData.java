@@ -10,9 +10,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.system.dict.DictCache;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
@@ -20,6 +24,8 @@ import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationExceptio
 import com.sun.star.sdb.application.CopyTableContinuation;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.xmlbeans.impl.piccolo.util.DuplicateKeyException;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
@@ -87,7 +93,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public <T> List<BaseProjectModel> infoEntry(String jsonStr,String className,String sysLanguage,boolean isMainTable) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+	public <T> List<BaseProjectModel> infoEntry(String jsonStr,String className,String sysLanguage,boolean isMainTable,String reportType) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 			Integer userId = 8;//getSessionUser().getUserid();
 			String now = getNow();
 			//实体是否存在id
@@ -121,8 +127,41 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			for (Map<Object, Object> entry : entrys) {
 				if(isMainTable) {
 					String id = entry.get("company_id")+"";
+					//String companyType = entry.get("company_type")+"";
+					
+					/*if(StrUtils.isEmpty(reportType)&&!StrUtils.isEmpty(id)) {
+						String orderId = Db.query("select order_id from  credit_company_info where id=?",id)+"";
+						if(!StrUtils.isEmpty(orderId)) {
+							CreditOrderInfo order = CreditOrderInfo.dao.findById(orderId);
+							if(order!=null) {
+								reportType = order.get("report_type")+"";
+							}
+						}
+						
+					}*/
+					
 					entry.remove("company_id");
 					entry.put("id",id);
+					
+					//关联设置企业类型注释
+					/*if(!StrUtils.isEmpty(companyType,reportType)) {
+						SysDictDetail detail = SysDictDetail.dao.findById(companyType);
+	                    if(detail!=null) {
+	                        CreditCompanyInfo cmodel = new CreditCompanyInfo();
+	                        cmodel.set("id", id);
+	                        if (ReportTypeCons.ROC_ZH.equals(reportType)) {//102Chinese
+	                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
+	                        } else if (ReportTypeCons.ROC_EN.equals(reportType)) {//102English
+	                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));
+	                        }else {//其它类型
+	                        	 cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
+	                        }
+	                        cmodel.update();
+	                    }
+					}*/
+	                    
+					
+					
 				}else {
 					if(!("".equals(sysLanguage)||sysLanguage==null)) {
 						entry.put("sys_language", Integer.parseInt(sysLanguage));
@@ -143,6 +182,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 				}
 				list.add(model);
 			}
+			
+			
 			
 			//批量执行
 			if(!exitsId){

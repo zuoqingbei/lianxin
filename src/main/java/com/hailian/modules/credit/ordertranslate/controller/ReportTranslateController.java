@@ -98,7 +98,7 @@ public class ReportTranslateController extends BaseProjectController {
 						}*/
 						
 					} catch (Exception e) {
-                        e.printStackTrace();
+						System.err.println(value+"   翻译为英文失败,"+e.getMessage());
 						value_en="";
 					}
 					if("cht".equals(targetlanguage)){

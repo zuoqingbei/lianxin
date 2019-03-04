@@ -32,6 +32,13 @@ public class ReportTypeCons {
     public static final String[] EN_ARRAY = new String[] {BASE_EN,BUSI_EN,CRED_EN,ROC_EN };
     public static final String[] HY_ARRAY = new String[] {ROC_HY};
     
+    public static boolean isRoc102(String reportType) {
+    	if(ROC_HY.equals(reportType)||ROC_EN.equals(reportType)||ROC_ZH.equals(reportType)) {
+    		return true;
+    	}
+    	
+		return false;
+    }
     
     public static String whichLanguage(String reportType) {
     	for (String str : ZH_ARRAY) {

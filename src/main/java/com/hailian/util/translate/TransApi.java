@@ -10,6 +10,8 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import com.hailian.util.Config;
@@ -98,11 +100,13 @@ public class TransApi {
 	}
 	//解析百度服务器平台返回的相关数据信息
 	public static String getDate(String result){
+		System.out.println("百度云返回的数据如下一行:");
         System.out.println(result);
 		String date="";
 		
 		JSONObject object=JSONObject.fromObject(result);
 		JSONArray array=object.getJSONArray("trans_result");
+		System.out.println("解析后的数据如下几行:");
 		int length=array.size();
 		for(int i=0;i<length;i++){
 			JSONObject params=JSONObject.fromObject(array.get(i));
@@ -110,6 +114,7 @@ public class TransApi {
 			try {
 				str=URLDecoder.decode(str,"utf-8");
 				date=str;
+				System.out.println(array.get(i)+":"+date);
 			} catch (UnsupportedEncodingException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
