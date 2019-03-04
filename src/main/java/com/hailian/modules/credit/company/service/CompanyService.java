@@ -14,6 +14,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyCourtannouncement;
@@ -28,6 +29,7 @@ import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
 import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
 import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.util.StrUtils;
 import com.hailian.util.http.HttpCrawler;
 import com.hailian.util.http.HttpTest;
 import com.hailian.util.translate.TransApi;
@@ -116,19 +118,28 @@ public class CompanyService {
 				String Status = jsonResulet.getString("Status"); //登记状态
 				CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 				companyinfoModel.set("registration_num", No);
-				
-				List<SysDictDetail> companytype = SysDictDetail.dao.getDictDetailBy(EconKind.trim(),"companyType");
+				String typeFlagStr = "";
+				if(ReportTypeCons.isRoc102(reporttype)) {
+					typeFlagStr = "companyType102";
+				}else {
+					typeFlagStr = "companyType"; 
+				}
+				List<SysDictDetail> companytype = SysDictDetail.dao.getDictDetailBy(EconKind.trim(),typeFlagStr);
 				if(companytype !=null && CollectionUtils.isNotEmpty(companytype)){
 					companyinfoModel.set("company_type", companytype.get(0).get("detail_id"));
 				}else{
-					SysDictDetail detailmodel=new SysDictDetail();
-					detailmodel.set("dict_type", "companyType");
-					detailmodel.set("detail_name", EconKind.trim());
-					String value_en = TransApi.Trans(EconKind.trim(),"en");
-					detailmodel.set("detail_name_en", value_en);
-					detailmodel.set("isprimitive", "1");
-					detailmodel.save();
-					companyinfoModel.set("company_type", detailmodel.get("detail_id"));
+					if(!StrUtils.isEmpty(EconKind)) {
+						SysDictDetail detailmodel=new SysDictDetail();
+						detailmodel.set("dict_type", typeFlagStr);
+						detailmodel.set("detail_name", EconKind.trim());
+						String value_en = TransApi.Trans(EconKind.trim(),"en");
+						detailmodel.set("detail_name_en", value_en);
+						detailmodel.set("isprimitive", "1");
+						detailmodel.save();
+						companyinfoModel.set("company_type", detailmodel.get("detail_id"));
+					}else {
+						companyinfoModel.set("company_type","-1");
+					}
 				}
 				companyinfoModel.set("register_code_type", "632");
 				companyinfoModel.set("register_codes", CreditCode);
