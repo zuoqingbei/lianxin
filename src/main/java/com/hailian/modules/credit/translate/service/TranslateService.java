@@ -38,8 +38,8 @@ public class TranslateService {
 		TranslateModel translate = TranslateModel.dao.getTranslate(paraToInt);
 		return translate;
 	}
-	public TranslateModel getTranslateByError(String error) {
-		TranslateModel translate = TranslateModel.dao.getTranslateByError(error);
+	public TranslateModel getTranslateByError(String original,String error) {
+		TranslateModel translate = TranslateModel.dao.getTranslateByError(original,error);
 		return translate;
 	}
 }

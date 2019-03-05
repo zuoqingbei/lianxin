@@ -24,6 +24,10 @@ import com.jfinal.plugin.activerecord.Page;
 public class TranslateModel extends BaseProjectModel<TranslateModel> {
 	private static final long serialVersionUID = 1L;
 	public static final TranslateModel dao = new TranslateModel();
+	
+	public List<TranslateModel> refreshDict() {
+		return TranslateModel.dao.find("select * from credit_translate where del_flag=0 ");
+	}
 	/**
 	 * 列表展示
 	* @author doushuihai  
@@ -87,14 +91,15 @@ public class TranslateModel extends BaseProjectModel<TranslateModel> {
 		TranslateModel findFirst = TranslateModel.dao.findFirst(sql,params.toArray());
 		return findFirst;
 	}
-	public TranslateModel getTranslateByError(String error) {
+	public TranslateModel getTranslateByError(String original,String error) {
 		// TODO Auto-generated method stub
 		String sql="select t.*,t4.realname as createName,t5.realname as updateName from credit_translate t ";
 		sql+=" left join sys_user t4 on t4.userid=t.create_by ";
 		sql+=" left join sys_user t5 on t5.userid=t.update_by ";
-		sql+=" where t.del_flag=0 and t.error_phrase=?";
+		sql+=" where t.del_flag=0 and t.error_phrase=? and t.correct_phrase_ch=?";
 		List<Object> params=new ArrayList<Object>();
 		params.add(error);
+		params.add(original);
 		TranslateModel findFirst = TranslateModel.dao.findFirst(sql,params.toArray());
 		return findFirst;
 	}

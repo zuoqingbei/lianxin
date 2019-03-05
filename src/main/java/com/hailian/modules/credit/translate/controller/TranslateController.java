@@ -94,18 +94,20 @@ public class TranslateController extends BaseProjectController{
 			model.remove("id");
 			model.set("create_by", userid);
 			model.set("create_date", now);
-			model.save();
+			if(model.save()) {
+			}
+			
 		}
 		renderMessage("保存成功");
 	}
 	public void saveTranslate(){
-		String error_phrase_en=getPara("error_phrase_en");//错误的英文
-		String correct_phrase_en=getPara("correct_phrase_en");//应该翻译成的正确的英文
-		String correct_phrase_ch=getPara("correct_phrase_ch");//应该翻译成的正确的中文
+		String error_phrase_en=getPara("error_phrase_en");
+		String correct_phrase_en=getPara("correct_phrase_en");
+		String correct_phrase_ch=getPara("correct_phrase_ch");
 		TranslateModel model = getModel(TranslateModel.class);
-		model.set("error_phrase", error_phrase_en);
-		model.set("correct_phrase", correct_phrase_en);
-		model.set("correct_phrase_ch", correct_phrase_ch);
+		model.set("error_phrase", error_phrase_en);//错误的翻译
+		model.set("correct_phrase", correct_phrase_en);//正确的翻译
+		model.set("correct_phrase_ch", correct_phrase_ch);//正确的中文简体
 		boolean flag = model.save();
 		if(flag){
 			ResultType resultType = new ResultType();
