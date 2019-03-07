@@ -127,39 +127,9 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			for (Map<Object, Object> entry : entrys) {
 				if(isMainTable) {
 					String id = entry.get("company_id")+"";
-					//String companyType = entry.get("company_type")+"";
-					
-					/*if(StrUtils.isEmpty(reportType)&&!StrUtils.isEmpty(id)) {
-						String orderId = Db.query("select order_id from  credit_company_info where id=?",id)+"";
-						if(!StrUtils.isEmpty(orderId)) {
-							CreditOrderInfo order = CreditOrderInfo.dao.findById(orderId);
-							if(order!=null) {
-								reportType = order.get("report_type")+"";
-							}
-						}
-						
-					}*/
 					
 					entry.remove("company_id");
 					entry.put("id",id);
-					
-					//关联设置企业类型注释
-					/*if(!StrUtils.isEmpty(companyType,reportType)) {
-						SysDictDetail detail = SysDictDetail.dao.findById(companyType);
-	                    if(detail!=null) {
-	                        CreditCompanyInfo cmodel = new CreditCompanyInfo();
-	                        cmodel.set("id", id);
-	                        if (ReportTypeCons.ROC_ZH.equals(reportType)) {//102Chinese
-	                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
-	                        } else if (ReportTypeCons.ROC_EN.equals(reportType)) {//102English
-	                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));
-	                        }else {//其它类型
-	                        	 cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
-	                        }
-	                        cmodel.update();
-	                    }
-					}*/
-	                    
 					
 					
 				}else {
@@ -188,6 +158,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			//批量执行
 			if(!exitsId){
                 try {
+                	
                     Db.batchSave(list, list.size());
                 }catch (Exception e){
                     e.printStackTrace();
@@ -221,39 +192,6 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 */
 	public static  List<Map<Object,Object>> parseJsonArray(String jsonStr){
         List<Map<Object,Object>> list = new ArrayList<>();
-		/*if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
-			return new ArrayList<>();
-		}
-		String jsonStr2 = jsonStr.replace("\"", "");
-		
-		String[] jsonStr3 = jsonStr2.split("}");
-		Map<Object,Object> map = null;
-		if(jsonStr3!=null&&jsonStr3.length!=0){
-			for (String string : jsonStr3) {
-				map = new LinkedHashMap<>();
-				if(string==null||"".equals(string.trim())||"]".equals(string.trim())){
-					continue;
-				}
-				String[] string4 = string.split(",");
-				for (String string2 : string4) {
-					if(string2==null||"".equals(string2)){
-						continue;
-					}
-					String string5 = string2.substring(string2.indexOf("{")+1,string2.indexOf(":"));
-					String string6 =  string2.substring(string2.indexOf(":")+1);
-					if("null".equals(string6)){
-						continue;
-					}
-					map.put(string5.replace("锟斤拷锟斤拷之锟斤拷锟窖э拷锟", ":").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷", ",").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷1", "}").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷2", "{").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷3", "]")
-						  , string6.replace("锟斤拷锟斤拷之锟斤拷锟窖э拷锟", ":").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷", ",").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷1", "}").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷2", "{").replace("锟э窖拷锟锟斤拷锟斤拷*锟斤拷3", "]"));
-				}
-				list.add(map);
-				for (Object key : map.keySet()) {
-					System.out.println(key+":"+map.get(key));
-				}
-				
-			}
-		}*/
         JSONArray jsonArray = JSONArray.fromObject(jsonStr);
         for(int i=0;i<jsonArray.size();i++){
             Map<String,Object> map = jsonArray.getJSONObject(i);
