@@ -216,7 +216,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      */
     public List getTableData(boolean isCompanyMainTable,String companyId,String tableName,String className,String confId,String selectInfo,String type) {
         String getSource = "";
+        if(StrUtils.isEmpty(confId)) {
+        	return new ArrayList<>();
+        }
         CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
+        if(confModel==null) {return null;}
         getSource = confModel.getStr("get_source");
 
         StringBuffer sqlSuf = new StringBuffer();
@@ -272,11 +276,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                         CreditCompanyInfo cmodel = new CreditCompanyInfo();
                         cmodel.set("id", companyId);
                         if (ReportTypeCons.ROC_ZH.equals(type)) {//102Chinese
-                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
+                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));//中文企业注释
                         } else if (ReportTypeCons.ROC_EN.equals(type)) {//102English
-                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));
+                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));//英文企业注释
                         }else {//其它类型
-                        	 cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));
+                        	 cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));//中文企业注释
                         }
                         cmodel.update();
                     }

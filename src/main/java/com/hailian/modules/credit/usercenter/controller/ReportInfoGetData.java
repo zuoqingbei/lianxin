@@ -1,32 +1,14 @@
 package com.hailian.modules.credit.usercenter.controller;
-
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
-import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.system.dict.DictCache;
-import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Model;
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import com.sun.star.sdb.application.CopyTableContinuation;
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.xmlbeans.impl.piccolo.util.DuplicateKeyException;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
   /**

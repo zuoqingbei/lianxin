@@ -391,7 +391,7 @@ public class OrdermanagerController extends BaseProjectController{
 		ca.setTime(new Date());
 		hour = ca.get(Calendar.HOUR_OF_DAY);
 		if(hour<12) {
-			days=(int)Math.ceil(time/24.0);
+			days=(int)Math.ceil(time/24.0)-1;
 		}else {
 			days=(int)Math.ceil(time/24.0);
 		}
