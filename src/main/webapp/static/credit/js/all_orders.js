@@ -422,7 +422,8 @@ let Index = {
                           $("#client_userNname").val(row.customName);
                           let da=row.create_date;
                           $("#client_order_date").val(da.split(' ')[0]);
-                          $('#right_company_name_en').val(row.companyName);
+                          // $('#right_company_name_en').val(row.companyName);
+                          $('#right_company_name_en').val(row.right_company_name_en);
                           $('#client_reportTime').val(row.user_time);
                             $('#client_referenceNumber').val(row.reference_num);
                             $('#client_address').val(row.address);
@@ -440,7 +441,8 @@ let Index = {
                                 // $('#client_country').val(row.country)
                                 $("#client_orderType").val(row.order_type);
                                 $('#client_ID').val(row.custom_id);
-                                $('#right_company_name_en').val(row.englishName);
+                                // $('#right_company_name_en').val(row.englishName);
+                                $('#right_company_name_en').val(row.right_company_name_en);
                                 $('#client_reportLanguage').val(row.report_language);
                                 $('#client_speed').val(row.speedId);
                                 $('#client_referenceNumber').val(row.reference_num);

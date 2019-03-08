@@ -2,19 +2,100 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="creditReport:war" />
+      <artifact name="creditReport:war exploded" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bff62d77-5e5c-48a9-8856-4996578f5433" name="Default" comment="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;解决冲突，同步代码">
-      <change afterPath="$PROJECT_DIR$/.idea/.rebel.xml.bak" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="bff62d77-5e5c-48a9-8856-4996578f5433" name="Default" comment="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;同步代码">
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/jfinal_cms_war.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/jfinal_cms_war_exploded.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_belerweb_pinyin4j_2_5_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_guava_guava_18_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_beanutils_commons_beanutils_1_8_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_io_commons_io_2_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__commons_net_commons_net_3_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_activation_activation_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_mail_mail_1_4_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__log4j_log4j_1_2_16.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_poi_3_16.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jdom_jdom_1_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__stax_stax_api_1_0_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/all_orders.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/all_orders.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/order_allocation.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/order_allocation.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/order_filing.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/order_filing.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/create_order.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/create_order.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/order_detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/order_detail.js" afterDir="false" />
     </list>
     <ignored path="jfinal_cms.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -31,6 +112,11 @@
     <rightPanel />
     <splitter proportion="0.5" />
   </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/jfinal_cms$tomcat_9_0_14.ic" NAME="tomcat-9.0.14 Coverage Results" MODIFIED="1551930042293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/jfinal_cms$tomcat_8_5_37.ic" NAME="tomcat-8.5.37 Coverage Results" MODIFIED="1552011295101" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/jfinal_cms$Tomcat_8_5_37.ic" NAME="Tomcat 8.5.37 Coverage Results" MODIFIED="1551929304506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
@@ -39,69 +125,67 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/order_detail.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="40">
+              <caret line="5" column="31" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/all_orders.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="359">
+              <caret line="80" column="65" lean-forward="true" selection-start-line="80" selection-start-column="65" selection-end-line="80" selection-end-column="65" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="15" selection-start-line="15" selection-end-line="15" />
+            <state relative-caret-position="299">
+              <caret line="456" column="54" lean-forward="true" selection-start-line="456" selection-start-column="54" selection-end-line="456" selection-end-column="54" />
+              <folding>
+                <element signature="e#80#87#1" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+                <element signature="e#5#11#0" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="12" selection-start-line="12" selection-end-line="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="9" column="40" lean-forward="true" selection-start-line="9" selection-start-column="40" selection-end-line="9" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/copyright/profiles_settings.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/scopes/scope_settings.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/.rebel.xml.bak">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/uiDesigner.xml">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>console.log</find>
+      <find>order-dead</find>
+      <find>creat</find>
+      <find>${item2.urlkey}</find>
+      <find>isTheSameCompany</find>
+      <find>请选择报告语言</find>
+      <find>订单公司名称</find>
+      <find>poi</find>
+      <find>poi-ooxml</find>
+      <find>订单公司名称777</find>
+      <find>attr</find>
+      <find>initTable</find>
+      <find>btn_query</find>
+      <find>txt_search_companyEngName</find>
+      <find>666</find>
+      <find>66</find>
+      <find>right_company_name_en</find>
+    </findStrings>
+    <replaceStrings>
+      <replace />
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -109,14 +193,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/RocEn.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word10702.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word10701.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word396.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word394.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/Word105.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/RocHy.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/CreditZh.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/CreditEn.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/BusinessZh.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseInfoEn.java" />
@@ -160,6 +236,14 @@
         <option value="$PROJECT_DIR$/.idea/compiler.xml" />
         <option value="$PROJECT_DIR$/.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/index.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/order_allocation.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/order_filing.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/order_detail.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/create_order.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/create_order.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/all_orders.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js" />
       </list>
     </option>
   </component>
@@ -173,9 +257,14 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="E:\apache-maven-3.1.0" />
+        <option name="localRepository" value="B:\maven" />
         <option name="userSettingsFile" value="E:\apache-maven-3.1.0\conf\settings.xml" />
       </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
     </option>
   </component>
   <component name="MavenProjectNavigator">
@@ -218,7 +307,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -240,62 +328,26 @@
             <path>
               <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
               <item name="lianxin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
               <item name="lianxin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="creditReport" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
               <item name="lianxin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="credit" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="credit" type="462c0819:PsiDirectoryNode" />
-              <item name="imgs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="credit" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
-              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="credit" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-              <item name="order_manage" type="462c0819:PsiDirectoryNode" />
+              <item name="target" type="462c0819:PsiDirectoryNode" />
+              <item name="creditReport" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -325,16 +377,17 @@
     <property name="SearchEverywhereHistoryKey" value="Wrapper&#9;PSI&#9;JAVA://com.deepoove.poi.XWPFParagraphWrapper&#10;handler&#9;PSI&#9;JAVA://com.hailian.jfinal.component.handler.BasePathHandler&#10;API&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/api/controller/ApiController.java&#10;Comment&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/admin/comment/CommentService.java&#10;Mess&#9;PSI&#9;JAVA://com.hailian.modules.front.controller.MessageController&#10;Ae&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/encrypt/AES.java&#10;http&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/extend/HttpClientUtils.java&#10;roc&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/Roc102.java&#10;basew&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseWord.java&#10;api&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/api/controller/ApiController.java&#10;Role&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/api/constant/RoleCons.java&#10;102&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/Roc102.java&#10;baseword&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseWord.java&#10;credit&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java&#10;Roc&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/Roc102.java&#10;column&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/pages/credit/reportColumn/column_edit.html&#10;home&#9;PSI&#9;JAVA://com.hailian.modules.credit.usercenter.controller.HomeController&#10;AES&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/encrypt/AES.java&#10;Aes&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/encrypt/AES.java&#10;base&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseWord.java&#10;getOrsaveOpintion&#9;PSI&#9;JAVA://com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController#getOrsaveOpintion&#10;Tab&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/deepoove/poi/util/TableTools.java&#10;main.js&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/static/credit/js/translate/main.js&#10;Table&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/deepoove/poi/util/TableTools.java&#10;Too&#9;FILE&#9;jar://H:/whc/m2/Repos/com/deepoove/poi-tl/1.4.2/poi-tl-1.4.2-sources.jar!/com/deepoove/poi/util/TableTools.java&#10;CreditReport&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java&#10;BASE&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseInfoZh.java&#10;To&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/deepoove/poi/util/TableTools.java&#10;tran&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/ordertranslate/controller/ReportTranslateController.java&#10;companyser&#9;PSI&#9;JAVA://com.hailian.modules.credit.company.service.CompanyService&#10;trans&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/translate/TransApi.java&#10;baseInfo&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/BaseInfoZh.java&#10;TableT&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/deepoove/poi/util/TableTools.java&#10;cred&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java&#10;订单分配&#9;null&#9;null&#10;main&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/util/word/MainReport.java&#10;report&#9;FILE&#9;file://H:/hailian/lianxin/src/main/java/com/hailian/modules/credit/usercenter/controller/CreditReportController.java&#10;creditrepor&#9;PSI&#9;JAVA://com.hailian.modules.credit.usercenter.controller.CreditReportController&#10;creat&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/static/credit/js/order_manage/create_order.js&#10;all_or&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/static/credit/js/all_orders.js&#10;word&#9;PSI&#9;JAVA://com.hailian.util.word.Word105&#10;creditorderinfo&#9;PSI&#9;JAVA://com.hailian.modules.admin.ordermanager.model.CreditOrderInfo&#10;report_info&#9;FILE&#9;file://H:/hailian/lianxin/src/main/webapp/static/credit/js/report_js/report_info-import.js" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1551433051287" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1552014142378" />
     <property name="dynamic.classpath" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="options.lastSelected" value="application.passwordSafe" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.5241379" />
     <property name="recentsLimit" value="5" />
+    <property name="settings.editor.selected.configurable" value="MavenSettings" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -356,7 +409,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Tomcat Server.Tomcat 8.5.37">
+  <component name="RunManager">
     <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android Application">
       <module name="" />
       <option name="ACTIVITY_CLASS" value="" />
@@ -427,228 +480,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="jetty" type="JettyConfiguration" factoryName="Local" APPLICATION_SERVER_NAME="Jetty 8.1.3.v20120416" ALTERNATIVE_JRE_ENABLED="false" ALTERNATIVE_JRE_PATH="">
-      <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
-      <option name="UPDATING_POLICY" value="restart-server" />
-      <deployment>
-        <artifact name="creditReport:war exploded">
-          <settings DEPLOYMENT_METHOD="contexts">
-            <option name="defaultContextRoot" value="false" />
-          </settings>
-        </artifact>
-      </deployment>
-      <server-settings>
-        <data>
-          <option name="configFiles">
-            <list>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-ajp.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-annotations.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-bio-ssl.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-bio.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-contexts.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-debug.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-deploy.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-fileserver.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-ipaccess.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="active" value="true" />
-                <option name="path" value="etc\jetty-jmx.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-logging.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-monitor.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-overlay.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-plus.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-policy.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-proxy.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-requestlog.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-rewrite.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-spdy.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-ssl.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-stats.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-testrealm.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-webapps.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-xinetd.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty.xml" />
-              </JettyConfigFile>
-            </list>
-          </option>
-          <option name="myConfigFiles">
-            <list>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-ajp.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-annotations.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-bio-ssl.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-bio.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-contexts.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-debug.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-deploy.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-fileserver.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-ipaccess.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="active" value="true" />
-                <option name="path" value="etc\jetty-jmx.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-logging.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-monitor.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-overlay.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-plus.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-policy.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-proxy.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-requestlog.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-rewrite.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-spdy.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-ssl.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-stats.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-testrealm.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-webapps.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty-xinetd.xml" />
-              </JettyConfigFile>
-              <JettyConfigFile>
-                <option name="path" value="etc\jetty.xml" />
-              </JettyConfigFile>
-            </list>
-          </option>
-        </data>
-      </server-settings>
-      <predefined_log_file enabled="true" id="Jetty" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <RunnerSettings RunnerId="JRebel Debug">
-        <option name="DEBUG_PORT" value="" />
-        <option name="TRANSPORT" value="0" />
-        <option name="LOCAL" value="true" />
-      </RunnerSettings>
-      <ConfigurationWrapper VM_VAR="" RunnerId="Debug">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="" RunnerId="JRebel Debug">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <method v="2">
-        <option name="Make" enabled="true" />
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="creditReport:war exploded" />
-        </option>
-      </method>
-    </configuration>
     <configuration default="true" type="TestNG">
       <option name="TEST_OBJECT" value="CLASS" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
@@ -656,80 +487,6 @@
       <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Tomcat 8.5.37" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.37" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
-      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
-      <option name="HOT_SWAP_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
-      <option name="UPDATING_POLICY" value="restart-server" />
-      <deployment>
-        <artifact name="creditReport:war">
-          <settings>
-            <option name="CONTEXT_PATH" value="/" />
-          </settings>
-        </artifact>
-      </deployment>
-      <server-settings>
-        <option name="BASE_DIRECTORY_NAME" value="Tomcat_8_5_37_jfinal_cms" />
-      </server-settings>
-      <predefined_log_file enabled="true" id="Tomcat" />
-      <predefined_log_file enabled="true" id="Tomcat Catalina" />
-      <predefined_log_file id="Tomcat Manager" />
-      <predefined_log_file id="Tomcat Host Manager" />
-      <predefined_log_file id="Tomcat Localhost Access" />
-      <RunnerSettings RunnerId="Debug">
-        <option name="DEBUG_PORT" value="57172" />
-      </RunnerSettings>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
-        <option name="USE_ENV_VARIABLES" value="true" />
-        <STARTUP>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </STARTUP>
-        <SHUTDOWN>
-          <option name="USE_DEFAULT" value="true" />
-          <option name="SCRIPT" value="" />
-          <option name="VM_PARAMETERS" value="" />
-          <option name="PROGRAM_PARAMETERS" value="" />
-        </SHUTDOWN>
-      </ConfigurationWrapper>
-      <method v="2">
-        <option name="Make" enabled="true" />
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="creditReport:war" />
-        </option>
       </method>
     </configuration>
     <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 8.5.37" ALTERNATIVE_JRE_ENABLED="false">
@@ -802,7 +559,82 @@
       <method v="2">
         <option name="Make" enabled="true" />
         <option name="BuildArtifacts" enabled="true">
-          <artifact name="creditReport:war" />
+          <artifact name="jfinal_cms:war exploded" />
+          <artifact name="creditReport:war exploded" />
+          <artifact name="jfinal_cms:war" />
+        </option>
+      </method>
+    </configuration>
+    <configuration name="tomcat-8.5.37" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="tomcat-8.5.37" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="SHOW_DIALOG_ON_UPDATE" value="false" />
+      <deployment>
+        <artifact name="creditReport:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Tomcat_8_5_37_jfinal_cms" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="57172" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="creditReport:war exploded" />
         </option>
       </method>
     </configuration>
@@ -824,10 +656,6 @@
       <pass-parent-envs>true</pass-parent-envs>
       <method v="2" />
     </configuration>
-    <list>
-      <item itemvalue="Jetty Server.jetty" />
-      <item itemvalue="Tomcat Server.Tomcat 8.5.37" />
-    </list>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -874,14 +702,13 @@
       <workItem from="1550020856442" duration="8855000" />
       <workItem from="1550107160068" duration="2421000" />
       <workItem from="1551431293463" duration="142000" />
-      <workItem from="1551431477505" duration="1560000" />
-    </task>
-    <task id="LOCAL-00026" summary="bug修复">
-      <created>1547620422099</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1547620422099</updated>
+      <workItem from="1551431477505" duration="2695000" />
+      <workItem from="1551920690797" duration="591000" />
+      <workItem from="1551921334071" duration="6649000" />
+      <workItem from="1551928065247" duration="2134000" />
+      <workItem from="1551930292492" duration="1099000" />
+      <workItem from="1551952852540" duration="1091000" />
+      <workItem from="1552007927195" duration="6089000" />
     </task>
     <task id="LOCAL-00027" summary="bug修复">
       <created>1547625882734</created>
@@ -1219,37 +1046,33 @@
       <option name="project" value="LOCAL" />
       <updated>1550052638296</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;同步代码">
+      <created>1551433095663</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1551433095665</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="379649000" />
+    <option name="totallyTimeSpent" value="398437000" />
   </component>
-  <component name="TodoView" selected-index="4">
+  <component name="TodoView">
     <todo-panel id="selected-file">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
       <is-autoscroll-to-source value="true" />
     </todo-panel>
     <todo-panel id="all">
       <are-packages-shown value="true" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
       <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="default-changelist">
-      <are-packages-shown value="false" />
-      <are-modules-shown value="false" />
-      <flatten-packages value="false" />
-      <is-autoscroll-to-source value="false" />
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="753" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49827588" visible="true" weight="0.2647504" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49827588" visible="true" weight="0.2193646" />
       <window_info id="Structure" order="1" weight="0.24962293" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Web" order="3" side_tool="true" />
@@ -1260,7 +1083,49 @@
       <window_info id="Capture Tool" order="8" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32408434" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.57967913" visible="true" weight="0.42972535" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.88275343" weight="0.5831987" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.6490166" weight="0.3974152" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Event Log" order="6" sideWeight="0.1172466" side_tool="true" weight="0.44426495" />
+      <window_info anchor="bottom" id="TODO" order="7" sideWeight="0.49848714" weight="0.32956383" />
+      <window_info anchor="bottom" id="Application Servers" order="8" sideWeight="0.49848714" weight="0.32956383" />
+      <window_info anchor="bottom" id="JRebel Executor" order="9" />
+      <window_info anchor="bottom" id="Changes" order="10" weight="0.32963374" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.7806354" weight="0.36672053" />
+      <window_info anchor="bottom" id="Java Enterprise" order="12" sideWeight="0.49924356" weight="0.32956383" />
+      <window_info anchor="bottom" id="Version Control" order="13" sideWeight="0.6104387" weight="0.22617124" />
+      <window_info anchor="bottom" id="Terminal" order="14" sideWeight="0.49848714" weight="0.32956383" />
+      <window_info anchor="bottom" id="IDEtalk Messages" order="15" />
+      <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.21871658" side_tool="true" weight="0.37069923" />
+      <window_info anchor="bottom" id="Docker" order="17" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="18" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Maven Projects" order="4" visible="true" weight="0.13743316" />
+      <window_info anchor="right" id="Designer" order="5" />
+      <window_info anchor="right" id="Database" order="6" />
+      <window_info anchor="right" id="IDEtalk" order="7" />
+      <window_info anchor="right" id="Maven" order="8" />
+      <window_info anchor="right" id="Capture Analysis" order="9" />
+      <window_info anchor="right" id="Theme Preview" order="10" />
+      <window_info anchor="right" id="Coverage" order="11" side_tool="true" weight="0.32980332" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49827588" visible="true" weight="0.1785174" />
+      <window_info id="Structure" order="1" weight="0.24962293" />
+      <window_info id="UI Designer" order="2" />
+      <window_info id="Web" order="3" side_tool="true" />
+      <window_info id="JRebel" order="4" sideWeight="0.5017241" side_tool="true" weight="0.22192514" />
+      <window_info id="Favorites" order="5" side_tool="true" />
+      <window_info id="Palette&#9;" order="6" />
+      <window_info id="Image Layers" order="7" />
+      <window_info id="Capture Tool" order="8" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32408434" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.57967913" weight="0.42972535" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.9" weight="0.5382908" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1269,9 +1134,9 @@
       <window_info anchor="bottom" id="Application Servers" order="8" weight="0.32963374" />
       <window_info anchor="bottom" id="JRebel Executor" order="9" />
       <window_info anchor="bottom" id="Changes" order="10" weight="0.32963374" />
-      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.78128344" weight="0.12079511" />
+      <window_info anchor="bottom" id="Messages" order="11" sideWeight="0.78128344" weight="0.11954766" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" />
-      <window_info anchor="bottom" id="Version Control" order="13" sideWeight="0.61122996" weight="0.36833602" />
+      <window_info anchor="bottom" id="Version Control" order="13" sideWeight="0.61122996" weight="0.22617124" />
       <window_info anchor="bottom" id="Terminal" order="14" weight="0.32956383" />
       <window_info anchor="bottom" id="IDEtalk Messages" order="15" />
       <window_info anchor="bottom" id="JRebel Console" order="16" sideWeight="0.21871658" side_tool="true" weight="0.37069923" />
@@ -1288,7 +1153,7 @@
       <window_info anchor="right" id="Maven" order="8" />
       <window_info anchor="right" id="Capture Analysis" order="9" />
       <window_info anchor="right" id="Theme Preview" order="10" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -1318,14 +1183,15 @@
     <MESSAGE value="报告生成优化" />
     <MESSAGE value="1. 增加xss防护模块&#10;2. 报告生成失败发送提醒" />
     <MESSAGE value="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;解决冲突，同步代码" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;解决冲突，同步代码" />
+    <MESSAGE value="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;同步代码" />
+    <option name="LAST_COMMIT_MESSAGE" value="Merge branch 'deploy' of https://github.com/zuoqingbei/lianxin into deploy&#10;&#10;# Conflicts:&#10;#&#9;.idea/compiler.xml&#10;#&#9;.idea/encodings.xml&#10;#&#9;.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml&#10;#&#9;.idea/libraries/Maven__cglib_cglib_nodep_3_1.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_access_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_classic_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__ch_qos_logback_logback_core_1_1_3.xml&#10;#&#9;.idea/libraries/Maven__com_alibaba_fastjson_1_2_28.xml&#10;#&#9;.idea/libraries/Maven__com_aliyun_oss_aliyun_sdk_oss_2_0_6.xml&#10;#&#9;.idea/libraries/Maven__com_artofsolving_jodconverter_2_2_2.xml&#10;#&#9;.idea/libraries/Maven__com_deepoove_poi_tl_1_4_2.xml&#10;#&#9;.idea/libraries/Maven__com_feizhou_jfinal_swagger_1_0_SNAPSHOT.xml&#10;#&#9;.idea/libraries/Maven__com_github_jai_imageio_jai_imageio_core_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__com_github_virtuald_curvesapi_1_04.xml&#10;#&#9;.idea/libraries/Maven__com_google_guava_guava_18_0.xml&#10;#&#9;.idea/libraries/Maven__com_ibeetl_beetl_2_7_11.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_cos_26Dec2008.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_jfinal_jfinal_sources_3_0.xml&#10;#&#9;.idea/libraries/Maven__com_lowagie_itext_2_1_7.xml&#10;#&#9;.idea/libraries/Maven__commons_codec_commons_codec_1_9.xml&#10;#&#9;.idea/libraries/Maven__commons_collections_commons_collections_3_2_1.xml&#10;#&#9;.idea/libraries/Maven__commons_fileupload_commons_fileupload_1_3_1.xml&#10;#&#9;.idea/libraries/Maven__commons_io_commons_io_2_4.xml&#10;#&#9;.idea/libraries/Maven__commons_lang_commons_lang_2_5.xml&#10;#&#9;.idea/libraries/Maven__commons_logging_commons_logging_1_2.xml&#10;#&#9;.idea/libraries/Maven__commons_net_commons_net_3_6.xml&#10;#&#9;.idea/libraries/Maven__de_ruedigermoeller_fst_1_58.xml&#10;#&#9;.idea/libraries/Maven__dom4j_dom4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__javax_activation_activation_1_1.xml&#10;#&#9;.idea/libraries/Maven__javax_mail_mail_1_4_4.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_jsp_jsp_api_2_2.xml&#10;#&#9;.idea/libraries/Maven__javax_servlet_servlet_api_2_5.xml&#10;#&#9;.idea/libraries/Maven__log4j_log4j_1_2_16.xml&#10;#&#9;.idea/libraries/Maven__mysql_mysql_connector_java_5_1_35.xml&#10;#&#9;.idea/libraries/Maven__net_java_dev_jna_jna_4_1_0.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ehcache_ehcache_core_2_6_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_ezmorph_ezmorph_1_0_6.xml&#10;#&#9;.idea/libraries/Maven__net_sf_json_lib_json_lib_jdk15_2_4.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_htmlcleaner_htmlcleaner_2_19.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_lept4j_lept4j_1_6_1.xml&#10;#&#9;.idea/libraries/Maven__net_sourceforge_tess4j_tess4j_3_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_abego_treelayout_org_abego_treelayout_core_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_annotations_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_antlr_antlr4_runtime_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_collections4_4_1.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_lang3_3_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_commons_commons_pool2_2_4_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_4_5_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpclient_cache_4_5.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpcore_4_4_4.xml&#10;#&#9;.idea/libraries/Maven__org_apache_httpcomponents_httpmime_4_3_2.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_poi_poi_ooxml_schemas_3_16.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlbeans_xmlbeans_2_6_0.xml&#10;#&#9;.idea/libraries/Maven__org_apache_xmlgraphics_xmlgraphics_commons_1_4.xml&#10;#&#9;.idea/libraries/Maven__org_ghost4j_ghost4j_1_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_jboss_vfs_3_2_12_Final.xml&#10;#&#9;.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_1_4_GA.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom2_2_0_5.xml&#10;#&#9;.idea/libraries/Maven__org_jdom_jdom_1_1.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jcommon_1_0_23.xml&#10;#&#9;.idea/libraries/Maven__org_jfree_jfreechart_1_0_19.xml&#10;#&#9;.idea/libraries/Maven__org_jsoup_jsoup_1_8_3.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_juh_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_jurt_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_ridl_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_openoffice_unoil_3_0_1.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jcl_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_log4j_over_slf4j_1_7_25.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_api_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_log4j12_1_6_3.xml&#10;#&#9;.idea/libraries/Maven__org_slf4j_slf4j_nop_1_7_24.xml&#10;#&#9;.idea/libraries/Maven__redis_clients_jedis_2_9_0.xml&#10;#&#9;.idea/libraries/Maven__stax_stax_api_1_0_1.xml&#10;#&#9;.idea/misc.xml&#10;#&#9;.idea/modules.xml&#10;&#10;同步代码" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java</url>
-          <line>502</line>
+          <line>504</line>
           <properties />
           <option name="timeStamp" value="262" />
         </line-breakpoint>
@@ -1337,59 +1203,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/HomeController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="467" column="60" selection-start-line="467" selection-start-column="60" selection-end-line="467" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/reportColumn/column_edit.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="40" column="16" selection-start-line="40" selection-start-column="16" selection-end-line="40" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/reportNodes/reportNodes_edit.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/jfinal/base/BaseModel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="55" selection-start-line="55" selection-end-line="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/front/template/TemplateDictService.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="259" selection-start-line="259" selection-end-line="259" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/utils/Office2PDF.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="81" selection-start-line="81" selection-end-line="81" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseBusiCrdt.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="34" column="13" selection-start-line="34" selection-start-column="13" selection-end-line="34" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_191/src.zip!/java/net/URLDecoder.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/encrypt/URLCoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="16" column="27" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/api/constant/RoleCons.java">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1602,20 +1415,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/order_detail.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="13" column="29" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="29" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#li#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#tr#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/misc.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -1644,16 +1443,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="10" column="12" selection-start-line="10" selection-start-column="12" selection-end-line="10" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/component/filemanager/scripts/zeroclipboard/.jshintrc">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/copyright/profiles_settings.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/scopes/scope_settings.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/.rebel.xml.bak">
@@ -1662,13 +1465,91 @@
     <entry file="file://$PROJECT_DIR$/.idea/uiDesigner.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/admin/home/home.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="126" column="38" lean-forward="true" selection-start-line="126" selection-start-column="38" selection-end-line="126" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/common/menu.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="71" column="48" selection-start-line="71" selection-start-column="48" selection-end-line="71" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/order_filing.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10360">
+          <caret line="518" column="69" selection-start-line="518" selection-start-column="69" selection-end-line="518" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/copyright/profiles_settings.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/scopes/scope_settings.xml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="766">
+          <caret line="258" column="25" selection-start-line="258" selection-start-column="25" selection-end-line="258" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/create_order.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="450" column="18" lean-forward="true" selection-start-line="450" selection-start-column="18" selection-end-line="450" selection-end-column="18" />
+          <folding>
+            <element signature="e#6934#9740#0" />
+            <element signature="e#80#87#1" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/order_manage/create_order.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="105" column="83" selection-start-line="105" selection-start-column="83" selection-end-line="105" selection-end-column="83" />
+          <folding>
+            <element signature="n#src#0;n#img#0;n#div#0;n#div#0;n#div#0;n#div#10;n#form#0;n#div#1;n#div#0;n#div#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/order_manage/order_detail.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="40">
+          <caret line="5" column="31" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/all_orders.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="80" column="65" lean-forward="true" selection-start-line="80" selection-start-column="65" selection-end-line="80" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="456" column="54" lean-forward="true" selection-start-line="456" selection-start-column="54" selection-end-line="456" selection-end-column="54" />
+          <folding>
+            <element signature="e#80#87#1" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="e#5#11#0" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1682,7 +1563,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.5241379" />
                 <option value="0.5" />
               </list>
             </option>
@@ -1691,11 +1572,11 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>JRebel</last-edited>
+          <last-edited>Web (jfinal_cms)|Web</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.5241379" />
               </list>
             </option>
           </splitter-proportions>
@@ -1706,7 +1587,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.5241379" />
               </list>
             </option>
           </splitter-proportions>
@@ -1718,7 +1599,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.5241379" />
               </list>
             </option>
           </splitter-proportions>
@@ -1726,11 +1607,12 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>Web|creditReport</last-edited>
+          <last-edited>jfinal_cms</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.5241379" />
+                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>
@@ -1742,7 +1624,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.5241379" />
               </list>
             </option>
           </splitter-proportions>
