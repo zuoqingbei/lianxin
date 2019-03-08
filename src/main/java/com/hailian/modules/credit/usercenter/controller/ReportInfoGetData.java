@@ -23,6 +23,14 @@ public abstract class ReportInfoGetData extends BaseProjectController {
    * 英文
    */
   public final static String English = "613";
+  
+  private static Map<String,String> countryColumn = new HashMap<>();
+  
+  static {
+	  countryColumn.put("credit_company_naturalperson_shareholder_detail", "country_type");
+	  countryColumn.put("credit_company_management", "nationality");
+  }
+  
 	/**
 	 * 获取bootStrapTable式的数据
 	 */
@@ -192,7 +200,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @param rows
 	 * @param columnName
 	 */
-	public static void dictIdToString(List<BaseProjectModel> rows,List<Map<Object,Object>>  selectInfoMap){
+	public static void dictIdToString(List<BaseProjectModel> rows,List<Map<Object,Object>>  selectInfoMap,String className){
 		for (Map<Object, Object> entry : selectInfoMap) {
 			for (Object key : entry.keySet()) {
 				//将字典id转化
@@ -205,12 +213,17 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 						continue;
 					} */
 					if("country".equals(type)) {
-						String value ="";
+						String value ="";;
+						String flagStr = "name";
 						if("detail_name_en".equals(disPalyCol)) {
-						   value = Db.queryStr("select name_en from credit_country where del_flag=0 and id="+ model.get(columnName)+"");
-						}else if("detail_name".equals(disPalyCol)) { 
-					       value = Db.queryStr("select name from credit_country where del_flag=0 and id="+ model.get(columnName)+"");
+							flagStr += "_en";
 						}
+						
+						value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id="+  model.get(columnName) +"");
+						 if(StrUtils.isEmpty(value)) {
+							 columnName =countryColumn.get(className);
+							 value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id="+  model.get(columnName) +"");
+						 }
 						model.put(columnName,value==null?"":value);
 					}else {
 						if(columnName.contains("id_type")){

@@ -293,7 +293,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 if("CreditCompanyNaturalpersonShareholderDetail".equals(className)) {
                 	System.out.println(1);
                 }
-                dictIdToString(rows, selectInfoMap);
+                dictIdToString(rows, selectInfoMap,tableName);
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -339,7 +339,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 				List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
 
 				// 将id转化为字典表中对应的字符串
-				dictIdToString(rows, selectInfoMap);
+				dictIdToString(rows, selectInfoMap,tableName);
 			}
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

@@ -1492,8 +1492,10 @@ let ReportConfig = {
 					if($("#"+id).hasClass("select2")) {
 						let name = $('#'+id).attr("name")
 						let val = $('#'+id).val()
-						val = val.join("$")
-						dataJsonObj[name] = val
+						if(val){
+							val = val.join("$")
+							dataJsonObj[name] = val
+						}
 						return
 					}
 					
