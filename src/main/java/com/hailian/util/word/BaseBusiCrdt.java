@@ -69,10 +69,21 @@ public class BaseBusiCrdt extends BaseWord{
      * @param userid 当前登录人
      */
     public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) {
+    	HashMap<String, Object> map = new HashMap<String, Object>();
+    	//报告名称
+    	String reportNameCh = Db.query("select name from credit_report_type where del_flag=0 and id=?",reportType)+"";
+    	String reportNameEn = Db.query("select name_en from credit_report_type where del_flag=0 and id=?",reportType)+"";
+    	if("612".equals(reportNameCh)) {
+    		 map.put("reportName",reportNameCh);
+    	}else if("613".equals(reportNameCh)) {
+    		 map.put("reportName",reportNameEn);
+    	}
+    	
+    	
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        HashMap<String, Object> map = new HashMap<String, Object>();
+        
         //获取报告信息
         ReportTypeModel reportTypeModel = ReportTypeModel.dao.findById(reportType);
         //报告文件路劲
@@ -105,7 +116,9 @@ public class BaseBusiCrdt extends BaseWord{
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
         map.put("order_code",orderCode);
-
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
+        map.put("currentTime",sdf2.format(new Date()));
+        
         //报告名称
         //String reportName = reportTypeModel.getStr("name");
         String reportName = referenceNum;
@@ -181,11 +194,11 @@ public class BaseBusiCrdt extends BaseWord{
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(key,reportType,child, rows,sysLanguage);
+                    table = BaseWord.createTableS(key,reportType,child, rows,sysLanguage,companyId);
                 } else if ("h".equals(tableType)) {
                     //"出资情况"需要增加合计项
                     boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
-                    table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,"");
+                    table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,"",companyId);
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }

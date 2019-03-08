@@ -22,6 +22,7 @@ import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.StrUtils;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -93,9 +94,19 @@ public class BaseWord {
         BigDecimal bd2 = new BigDecimal("1");
         bd.add(bd2);
         System.out.println(bd);*/
-    	 
+    	String[] a = "|w ".split("\\|");
+    	
+    	for (int i=0;i<a.length;i++) {
+    		System.out.println(i+a[i]);
+		}
     }
-
+    private static List<String> mergerKeyList = new ArrayList<>();
+    private static List<String> mergerValueList = new ArrayList<>();
+    static {
+    	mergerKeyList.add("register_code_type");   mergerValueList.add("register_codes");mergerValueList.add("register_code");
+    	mergerKeyList.add("principal_type");	   mergerValueList.add("legal");mergerValueList.add("principal");
+    	
+    }
     public static void tableData(RowRenderData header2,Map<String,Object> data){
 
     }
@@ -199,7 +210,7 @@ public class BaseWord {
      * @param rows
      * @return
      */
-    public static MiniTableRenderData createTableS(String moduleName,String reportType,  List<CreditReportModuleConf> child,List rows,String sysLanguage){
+    public static MiniTableRenderData createTableS(String moduleName,String reportType,  List<CreditReportModuleConf> child,List rows,String sysLanguage,String companyId){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         Style style = new Style();
@@ -217,14 +228,29 @@ public class BaseWord {
                 cols.put(column_name, temp_name + "|" + field_type);
             }
         }
-        
+        List<String> mergeList = new ArrayList<>();
         //取数据
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
             for (String column : cols.keySet()) {
                 String[] strs = cols.get(column).split("\\|");
                 String fieldType = strs.length == 2 ? strs[1] : "";
-                String value = model.get(column) != null ? model.get(column) + "" : "";
+                String tempName  = strs[0];
+                
+                int tempNameLength = tempName.length();
+                String value = "";
+                
+                //特殊处理
+                if("name_en".equals(column)) {
+                	if("name_en".equals(column)&&(tempName.replace("英文", "").length()<tempNameLength ||
+                            tempName.replace("ENGLISH", "").length()<tempNameLength||tempName.replace("English", "").length()<tempNameLength)) {
+                         	value = detailByColumn(companyId);
+                         }else {
+                         	value = model.get(column) != null ? model.get(column) + "" : "";
+                         }
+                }
+                
+               
                 if ("select".equals(fieldType)) {
                     value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
                 }else  if("date".equals(fieldType)){
@@ -238,12 +264,13 @@ public class BaseWord {
                     value = !"".equals(value) ? value : "N/A";
                 }
                 
-                
-                
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
-                
-                rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
+                //二合一的特殊处理
+                if(merger(value,column,reportType,mergeList,rowList,style)) {
+                	 rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
+                }
+               
             }
             
             //每一个实体之间空一行
@@ -252,7 +279,44 @@ public class BaseWord {
         return new MiniTableRenderData(rowList);
     }
     
-    //针对不同模块中的不同字段的样式的特殊处理
+    /**
+         * 下拉选二合一的特殊处理
+     * @param value
+     * @param column
+     * @param reportType
+     * @param mergeList
+     * @param rowList
+     * @param style
+     * @return
+     */
+    private static boolean merger(String value, String column, String reportType, List<String> mergeList,
+			List<RowRenderData> rowList, Style style) {
+    	 if(mergerFlagKey(column,reportType)) { mergeList.add(value); return false;}
+         if(mergerFlagValue(column,reportType)) { mergeList.add(value);}
+         if(mergeList.size()==2) {
+         	rowList.add(RowRenderData.build(new TextRenderData(mergeList.get(0), style), new TextRenderData(mergeList.get(1), style)));
+         	mergeList.clear();
+         	return false; 
+         }
+         mergeList.clear();
+		 return true;
+	}
+    
+	//判断是否为二合一中的key
+	private static boolean mergerFlagKey(String column, String reportType) {if(mergerKeyList.contains(column)) {return true; }return false;}
+	//判断是否为二合一中的值
+	private static boolean mergerFlagValue(String column, String reportType) {if(mergerValueList.contains(column)) {return true;}return false;}
+	
+	
+	private static String detailByColumn(String companyId) {
+    	if(StrUtils.isEmpty(companyId)) return "";
+    	String orderId = Db.query("select order_id from credit_company_info where del_flag=0 and id=? ",companyId).get(0)+"";
+    	if(StrUtils.isEmpty(orderId)) return "";
+    	String result = Db.query("select info_en_name from credit_order_info where del_flag=0 and id=? ",orderId).get(0)+"";
+		return result;
+	}
+
+	//针对不同模块中的不同字段的样式的特殊处理
     private static Style MiniTableRenderDataForCellStyle(String moduleName, String columnName,String reportType, Style style) {
     	
     	if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
@@ -288,7 +352,7 @@ public class BaseWord {
      * @param temp
      * @return
      */
-    public static MiniTableRenderData createTableH(String moduleName,String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal,String temp) {
+    public static MiniTableRenderData createTableH(String moduleName,String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal,String temp,String companyId) {
         //存放行数据-word模板
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         //表格列字段集合
@@ -329,7 +393,13 @@ public class BaseWord {
                 String fieldType = colMap.get("field_type");
                 String wordDefault = colMap.get("word_default");
                 Integer id = model.getInt("id");
-                String value = model.get(column) != null ? model.get(column) + "" : "";
+                String value = "";
+                //不同字段的特殊处理
+                if("name_en".equals(column)) {
+                	value = detailByColumn(companyId);
+                }else {
+                	value = model.get(column) != null ? model.get(column) + "" : "";
+                }
                 //合计项计算
                 if(hasTotal) {
                     try {
@@ -407,6 +477,7 @@ public class BaseWord {
                 else if ("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 }
+              
                 row.put(column,value);
             }
             datas.add(row);

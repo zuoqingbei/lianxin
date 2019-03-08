@@ -199,7 +199,6 @@ public class Roc102 {
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(key,reportType,child, rows,sysLanguage);
                 } else if ("h".equals(tableType)) {
                     //是否添加合计项
                     boolean hasTotal = false;
@@ -216,7 +215,7 @@ public class Roc102 {
                             }
                         }
                     }
-                    table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,temp);
+                    table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,temp,companyId);
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }

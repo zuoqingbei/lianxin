@@ -393,7 +393,7 @@ public class OrdermanagerController extends BaseProjectController{
 		if(hour<12) {
 			days=(int)Math.ceil(time/24.0);
 		}else {
-			days=(int)Math.ceil(time/24.0)+1;
+			days=(int)Math.ceil(time/24.0);
 		}
 		Calendar c = 
 				new DateAddUtil().addDateByWorkDay(ca,//当前时间
