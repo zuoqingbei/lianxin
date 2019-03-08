@@ -175,7 +175,6 @@ let OrderDetail = {
                         $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
                             if (data.rows && data.rows.length > 0) {
                                 $wrap.find('span[data-column_name]').each(function (index, dom) {
-                                    // console.log($(this).data('column_name')+$(this).hasClass('radioBox') )
                                     let column_name = $(this).data('column_name');
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
@@ -299,10 +298,8 @@ let OrderDetail = {
                     if (item.title.sort === 1) { //财务
                         if (item.title.get_source.includes('type=1')) {
                             _this.type9MulText = item;
-                            console.log('正常财务', item)
                         } else {
                             _this.type9BigData = item;
-                            console.log('大数财务', item)
                         }
 
                     } else {
@@ -315,7 +312,6 @@ let OrderDetail = {
                                     } else {
                                         _this.type9TableHeadBigData.push(item)
                                     }
-                                    console.log(_this.type9TableHead,_this.type9TableHeadBigData)
                                 } else {
                                     //非财务的浮动——表格上面的时间
                                     // 12-102中文；14-102English；下面给这两种的出资情况加时间
@@ -778,7 +774,6 @@ let OrderDetail = {
                 });
             })
         });
-        console.log('$mulTextBox',$mulTextBox)
         $(".type10-content:eq(" + (bigData ? 1 : 0) + ")").append($allTable, bigData?'':$mulTextBox);
     },
     // 获取质检结果下拉框的数据
