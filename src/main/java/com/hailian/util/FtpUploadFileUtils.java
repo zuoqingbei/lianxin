@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPReply;
 
 import com.hailian.modules.credit.utils.FileTypeUtils;
@@ -193,7 +194,10 @@ public class FtpUploadFileUtils {
 		FileInputStream fis = null;
 		boolean result = false;
 		FTPClient ftp = new FTPClient();
-		ftp.setControlEncoding("UTF-8");
+		ftp.setControlEncoding("GBK");
+        FTPClientConfig conf = new FTPClientConfig(FTPClientConfig.SYST_NT);
+        conf.setServerLanguageCode("zh");  
+		//ftp.setControlEncoding("UTF-8");
 		ftp.setPassiveNatWorkaround(true);
 		try {
 			// 连接至服务器，端口默认为21时，可直接通过URL连接
