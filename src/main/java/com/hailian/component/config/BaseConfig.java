@@ -41,7 +41,6 @@ import com.hailian.jfinal.component.interceptor.SessionAttrInterceptor;
 import com.hailian.modules.admin.ordermanager.model.TemplateCompanyService;
 import com.hailian.modules.credit.agentmanager.service.TemplateAgentService;
 import com.hailian.modules.credit.common.service.TemplateCountryService;
-import com.hailian.modules.credit.interceptor.CreditFrontUserInterceptor;
 import com.hailian.modules.credit.reportmanager.service.TemplateReportModuleService;
 import com.hailian.modules.front.template.TemplateCustomService;
 import com.hailian.modules.front.template.TemplateDictService;

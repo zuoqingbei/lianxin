@@ -35,7 +35,7 @@ import java.util.*;
  * 基本信息报告样本
  * Created by Thinkpad on 2018/11/17.
  */
-public class Roc102 {
+public class Roc102 extends BaseWord{
     //ftp文件服务器 ip
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
@@ -94,7 +94,9 @@ public class Roc102 {
         CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
         String companyId = companyInfo.getInt("id")+"";
         //报告速度
-        map.put("speed",order.getStr("speedName"));
+        Style style1 = new Style();
+        style1.setFontFamily("Times New Roman");
+        map.put("speed",new TextRenderData(order.getStr("speedName"), style1));
         //客户参考号
         map.put("reference_num",referenceNum);
         //币种
@@ -108,18 +110,20 @@ public class Roc102 {
 
         //订单公司名称和报告公司名称相同，则显示“與註冊記錄同”
         if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
-            String orderCompanyName = order.getStr("right_company_name_en");
-            String reportCompanyName = companyInfo.getStr("name");
-            if(orderCompanyName.equals(reportCompanyName)){
+            String translatedName = 
+            		Db.query("select name from credit_company_info where order_id=? and sys_language=613 and del_flag=0 ").get(0)+""; 
+            String reportCompanyName = order.getStr("company_by_report");
+            if(!StrUtils.isEmpty(translatedName)) {
+            if(translatedName.equals(reportCompanyName)){
                 map.put("as_registered_zh", "與註冊記錄同");
                 map.put("as_registered_en", "as registered");
             }
-        }
+        }}
 
         map.put("company", companyInfo.getStr("name_en"));
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
-        map.put("date", sdf.format(new Date()));
+        map.put("date", detailDate(new Date(), reportType)); 
         map.put("order_code",orderCode);
 
         //报告名称

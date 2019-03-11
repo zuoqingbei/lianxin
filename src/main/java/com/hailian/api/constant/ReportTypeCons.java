@@ -40,6 +40,14 @@ public class ReportTypeCons {
 		return false;
     }
     
+    /**
+     * 
+     * @param reportType
+     * @return
+     * ZH
+     * EN
+     * HY
+     */
     public static String whichLanguage(String reportType) {
     	for (String str : ZH_ARRAY) {
 			if(str.equals(reportType)) return "ZH";

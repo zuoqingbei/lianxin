@@ -13,10 +13,17 @@ public class MainReport {
 
     //生成报告入口
     public void build(int orderId, Integer userid) {
-        String sql = "select t.*,s1.detail_name as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
+    	String speedLanguage = "s1.detail_name";
+        String meataSql = "select report_type,report_language from credit_order_info  where id = ?";
+        CreditOrderInfo metaOrder = CreditOrderInfo.dao.findFirst(meataSql, orderId);
+        String reportType = metaOrder.getStr("report_type");
+        String report_language = metaOrder.getStr("report_language");
+        if("EN".equals(ReportTypeCons.whichLanguage(reportType))) {
+        	speedLanguage += "_en";
+        }
+        //业务sql
+        String sql = "select t.*,"+speedLanguage+" as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
         CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, orderId);
-        String reportType = order.getStr("report_type");
-        String report_language = order.getStr("report_language");
         try {
             if (ReportTypeCons.ROC_HY.equals(reportType) || ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                 //中文繁体+英文

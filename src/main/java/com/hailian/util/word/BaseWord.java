@@ -307,7 +307,11 @@ public class BaseWord {
 	//判断是否为二合一中的值
 	private static boolean mergerFlagValue(String column, String reportType) {if(mergerValueList.contains(column)) {return true;}return false;}
 	
-	
+	/**
+	 * lzg
+	 * @param companyId
+	 * @return
+	 */
 	private static String detailByColumn(String companyId) {
     	if(StrUtils.isEmpty(companyId)) return "";
     	String orderId = Db.query("select order_id from credit_company_info where del_flag=0 and id=? ",companyId).get(0)+"";
@@ -315,7 +319,9 @@ public class BaseWord {
     	String result = Db.query("select info_en_name from credit_order_info where del_flag=0 and id=? ",orderId).get(0)+"";
 		return result;
 	}
-
+	
+	
+	
 	//针对不同模块中的不同字段的样式的特殊处理
     private static Style MiniTableRenderDataForCellStyle(String moduleName, String columnName,String reportType, Style style) {
     	
@@ -555,6 +561,7 @@ public class BaseWord {
                 String value = totalRow.get(column);
                 Style style = new Style();
                 style.setBold(true);
+                //style.setBold(true);
                 //对齐方式
                 if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_HY.equals(reportType)) {
                     if ("sh_name".equals(column)) {
