@@ -5,6 +5,7 @@ let OrderDetail = {
         this.isQuality = !!this.row.quality_type;
         this.quality_deal = '';
         this.qualityOpinionId = '';
+        this.selectInfo = '';
         this.cwModules = [];
         [this.type9MulText, this.type9BigData, this.type9TableHead, this.type9TableHeadBigData, this.type10Items, type10BigData] = [{}, {}, [], [], {}, {}];
         this.BASE_PATH = BASE_PATH + 'credit/front/';
@@ -62,7 +63,7 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         this.creditLevel = this.english ? creditLevel_en : creditLevel_cn;
         this.initContent();
-        let tis = this
+        let tis = this;
         $('.return_back').on('click', function () {
             if (tis.isQuality) {
                 layer.confirm('是否保存已录入信息？', {
@@ -114,6 +115,22 @@ let OrderDetail = {
     setContent: function () {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info px-4 mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
+
+        //获取将数字转换成汉字的selectInfo
+        let selectInfoObj = {};
+        this.data.modules.forEach((item, index) => {
+            if ([0, 1, 11].includes(item.smallModileType - 0)) {
+                item.contents.forEach(content=> {
+                    if (content.get_source && ['select', 'select2'].includes(content.field_type)) {
+                        let key =content.get_source.replace(new RegExp(/&/g), "$");
+                        selectInfoObj[key]=content.column_name
+                    }
+                });
+            }
+        });
+        this.selectInfo = '['+JSON.stringify(selectInfoObj)+']';
+        // console.log('~~this.selectInfo:', this.selectInfo);
+
         // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
         this.data.modules.forEach((item, index, items) => {
             let smallModuleType = item.smallModileType;
@@ -124,7 +141,6 @@ let OrderDetail = {
                 $wrap = $moduleWrap.clone().attr('id', itemId)
                     .append($moduleTitle.clone().text(item.title.temp_name));
             }
-
             switch (smallModuleType) {
                 // 0-表单
                 case '0':
@@ -172,7 +188,7 @@ let OrderDetail = {
                             return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');
                         });
                     } else {
-                        $.post(this.getUrl(item), {selectInfo: type0_extraUrl}, (data) => {
+                        $.post(this.getUrl(item), {selectInfo: this.selectInfo}, (data) => {
                             if (data.rows && data.rows.length > 0) {
                                 $wrap.find('span[data-column_name]').each(function (index, dom) {
                                     let column_name = $(this).data('column_name');
@@ -689,7 +705,7 @@ let OrderDetail = {
         * type9TableHead：表格4个部分的标题
         * type10Items：其data_source可获取表格数据内容，其中parent_sector、son_sector和表格顺序对应
         * */
-        let [type9MulText, type9TableHead, type10Items] = bigData ?[this.type9BigData, this.type9TableHeadBigData, this.type10BigData]:  [this.type9MulText, this.type9TableHead, this.type10Items] ;
+        let [type9MulText, type9TableHead, type10Items] = bigData ? [this.type9BigData, this.type9TableHeadBigData, this.type10BigData] : [this.type9MulText, this.type9TableHead, this.type10Items];
         let $tableBox = $('<div class="tableBox m-4"><h4 class="text-center p-3"></h4></div>');
         let $allTable = $('<div class="tableAll"></div>');
         type9TableHead.forEach(function (item) { //每个表格组的标题
@@ -722,10 +738,10 @@ let OrderDetail = {
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
                         let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
-                        $allTable.children().eq(row.parent_sector - 1 - (bigData?4:0)).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
+                        $allTable.children().eq(row.parent_sector - 1 - (bigData ? 4 : 0)).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
                             .append(`<tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
                     } else {
-                        $allTable.children().eq(row.parent_sector - 1 - (bigData?4:0))
+                        $allTable.children().eq(row.parent_sector - 1 - (bigData ? 4 : 0))
                             .append(`<table class="table table-hover"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
                         addTableMark.push(row.parent_sector + '-' + row.son_sector);
                     }
@@ -745,14 +761,14 @@ let OrderDetail = {
                         [dateStart, dateEnd] = [type9MulTextData.rows[0].date3, type9MulTextData.rows[0].date4];
                     }
                     $(this).find('table:eq(0)').prepend(`<thead>
-                    <tr><th></th><th></th><th>${type9MulText.contents[(bigData?0:4)].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
+                    <tr><th></th><th></th><th>${type9MulText.contents[(bigData ? 0 : 4)].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
                     <tr><th></th><th>开始日期：${dateStart || '&emsp;'}</th><th>结束日期：${dateEnd || '&emsp;'}</th></tr>
                 </thead>`);
                 });
                 // 通过企业父title的某个内容获取下拉框来转换单位
                 $.when(
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData?0:4)].get_source}`),
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData?1:5)].get_source}`)
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData ? 0 : 4)].get_source}`),
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData ? 1 : 5)].get_source}`)
                 ).done(function (unitData, currencyUbitData) {
                     let [currency, currency_ubit] = [type9MulTextData.rows[0].currency, type9MulTextData.rows[0].currency_ubit]
                     let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
@@ -774,7 +790,7 @@ let OrderDetail = {
                 });
             })
         });
-        $(".type10-content:eq(" + (bigData ? 1 : 0) + ")").append($allTable, bigData?'':$mulTextBox);
+        $(".type10-content:eq(" + (bigData ? 1 : 0) + ")").append($allTable, bigData ? '' : $mulTextBox);
     },
     // 获取质检结果下拉框的数据
     getQualitySelectData(param) {
@@ -941,7 +957,7 @@ let OrderDetail = {
             $(".main .table-content").append($wrap);
         }
         // 绑数
-        $.post(this.getUrl(item, otherProperty), {selectInfo: type0_extraUrl}, (data) => {
+        $.post(this.getUrl(item, otherProperty), {selectInfo: this.selectInfo}, (data) => {
                 if (data.rows) {
                     if (data.rows.length === 0) {
                         $wrap.find('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</td></tr>`);
