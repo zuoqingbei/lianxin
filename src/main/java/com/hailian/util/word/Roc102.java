@@ -93,6 +93,10 @@ public class Roc102 extends BaseWord{
         String sql = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
         CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
         String companyId = companyInfo.getInt("id")+"";
+        //中文对应的公司id
+        String sqlZh = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
+        CreditCompanyInfo companyInfoZH = CreditCompanyInfo.dao.findFirst(sql,orderId,612);
+        String companyIdZH = companyInfoZH.getInt("id")+"";
         //报告速度
         Style style1 = new Style();
         style1.setFontFamily("Times New Roman");
@@ -111,7 +115,7 @@ public class Roc102 extends BaseWord{
         //订单公司名称和报告公司名称相同，则显示“與註冊記錄同”
         if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
             String translatedName = 
-            		Db.query("select name from credit_company_info where order_id=? and sys_language=613 and del_flag=0 ").get(0)+""; 
+            		Db.query("select name from credit_company_info where order_id=? and sys_language=613 and del_flag=0 ",orderId).get(0)+""; 
             String reportCompanyName = order.getStr("company_by_report");
             if(!StrUtils.isEmpty(translatedName)) {
             if(translatedName.equals(reportCompanyName)){
@@ -322,7 +326,7 @@ public class Roc102 extends BaseWord{
 
             //8-单选框 - 商业报告付款情况 / 102 分支机构
             if("8".equals(moduleType)){
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
+                List rows = report.getTableData(sysLanguage, companyIdZH, tableName, className, confId, "",reportType);
                 //取列值
                 LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值

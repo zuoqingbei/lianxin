@@ -334,7 +334,9 @@ public class BaseWord {
         if(ReportTypeCons.ROC_HY.equals(reportType)){
             style.setFontSize(14);
         }
-    	
+        if(ReportTypeCons.ROC_EN.equals(reportType)) {
+        	style.setFontFamily("Times New Roman");
+        }
     	//股东模块
     	if("partner".equals(moduleName)) {
     		switch(columnName) {
@@ -560,7 +562,7 @@ public class BaseWord {
             for (String column : cols.keySet()) {
                 String value = totalRow.get(column);
                 Style style = new Style();
-                style.setBold(true);
+                style.setFontFamily("Times New Roman");
                 //style.setBold(true);
                 //对齐方式
                 if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_HY.equals(reportType)) {
@@ -581,6 +583,7 @@ public class BaseWord {
                         value += "%";
                     }
                     style.setFontSize(11);
+                    
                 }else if(ReportTypeCons.ROC_HY.equals(reportType)){
                     style.setBold(false);
                     if ("sh_name".equals(column)) {
@@ -593,6 +596,7 @@ public class BaseWord {
                 }
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
+                
                 row[j] = new TextRenderData(value, style);
                 j++;
             }
