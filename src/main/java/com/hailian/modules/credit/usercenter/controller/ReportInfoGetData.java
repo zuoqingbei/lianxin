@@ -3,6 +3,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.log4j.Logger;
+
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.system.dict.DictCache;
@@ -23,6 +26,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
    * 英文
    */
   public final static String English = "613";
+  
   
   private static Map<String,String> countryColumn = new HashMap<>();
   
@@ -58,6 +62,17 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * 导出财务excel
 	 */
 	abstract void getFinanceExcelExport( );
+	
+	
+	public static void outPutErroLog(Logger log,Exception e) {
+		 String sOut = "";
+	        sOut += e.getMessage() + "\r\n";
+	        StackTraceElement[] trace = e.getStackTrace();
+	        for (StackTraceElement s : trace) {
+	            sOut += "\tat " + s + "\r\n";
+	        }
+	        log.error("PLUS-ERRO-INPUT==================\n"+sOut);
+	}
 	
 	void deleteOneEntry(String className,String id) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 		Class entryType = null;

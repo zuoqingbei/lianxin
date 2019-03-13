@@ -10,6 +10,7 @@ import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.*;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
@@ -18,7 +19,10 @@ import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.template.ext.directive.Str;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
@@ -34,6 +38,7 @@ import java.util.*;
  * Created by Thinkpad on 2018/11/17.
  */
 public class BaseBusiCrdt extends BaseWord{
+	 public static Logger log = Logger.getLogger(BaseBusiCrdt.class);
     //ftp文件服务器 ip
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
@@ -67,8 +72,9 @@ public class BaseBusiCrdt extends BaseWord{
      * @param reportType 报告类型
      * @param sysLanguage 报告内容语言
      * @param userid 当前登录人
+     * @throws Exception 
      */
-    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) {
+    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) throws Exception {
     	HashMap<String, Object> map = new HashMap<String, Object>();
     	//报告名称
     	String reportNameCh = Db.query("select name from credit_report_type where del_flag=0 and id=?",reportType)+"";
@@ -498,19 +504,16 @@ public class BaseBusiCrdt extends BaseWord{
      * 发送带附件邮件
      * @param customerId
      * @param fileList
+     * @throws Exception 
      */
-    public static void sendMail(String reportName,String customerId,List<Map<String, String>> fileList){
+    public static void sendMail(String reportName,String customerId,List<Map<String, String>> fileList) throws Exception{
         //发送邮件
         CreditCustomInfo  customInfo = CreditCustomInfo.dao.getCustomerById(customerId);
         if(customerId!=null) {
-            try {
                 String email = customInfo.getStr("email");
                 System.out.println("email==================:"+email);
                 //email = "hu_cheng86@126.com";
                 new SendMailUtil(email, "", reportName, "", fileList).sendEmail();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -572,7 +575,9 @@ public class BaseBusiCrdt extends BaseWord{
     	
     	
     	try {
+    		if(!StrUtils.isEmpty(begin))
     		begin = detailDate(sdf.parse(begin),reportType);
+    		if(!StrUtils.isEmpty(end))
 			end = detailDate(sdf.parse(end),reportType);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block

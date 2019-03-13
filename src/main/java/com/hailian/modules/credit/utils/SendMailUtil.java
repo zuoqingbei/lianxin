@@ -33,10 +33,16 @@ import javax.mail.util.ByteArrayDataSource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
+import com.hailian.util.word.BaseBusiCrdt;
 import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.MimeUtility;
 
 public class SendMailUtil {
+	
+	public static Logger log = Logger.getLogger(SendMailUtil.class);
+	
 //	 //发件人地址
 //    public static String SenderAddress = "2530644578@qq.com";
     public static String SenderAddress = "international@inter-credit.net";
@@ -191,7 +197,6 @@ public class SendMailUtil {
    
     public  boolean sendEmail() throws Exception  {
     	boolean result=false;
-        try {
             Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
             Properties props = new Properties();
             props.setProperty("mail.smtp.socketFactory.class",
@@ -211,12 +216,6 @@ public class SendMailUtil {
             Transport.send(msg);
             result=true;
             return result;
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-		return result;
     }
     public static InputStream  downLoadFromUrl(String urlStr) throws IOException{
         URL url = new URL(urlStr);  
@@ -229,17 +228,11 @@ public class SendMailUtil {
         InputStream inputStream = conn.getInputStream();  
         return inputStream;
  }
-    public static String sendMailCode(String recipientAddress) {
+    public static String sendMailCode(String recipientAddress) throws Exception {
     	String title="这是一个重置密码的验证码";
     	String code=getCode();
     	String content="您的验证码是:"+code+"。如果不是本人操作请忽略。";
-    	
-    	try {
-    		new SendMailUtil(recipientAddress, "", title, content).sendMail();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return code;
-		}
+    	new SendMailUtil(recipientAddress, "", title, content).sendMail();
     	return code; 
     }
     public static void main(String[] args) throws Exception {

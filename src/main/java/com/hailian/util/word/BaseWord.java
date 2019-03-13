@@ -11,6 +11,7 @@ import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
@@ -241,19 +242,19 @@ public class BaseWord {
                 String value = "";
                 
                 //特殊处理
-                if("name_en".equals(column)) {
+                /*if("name_en".equals(column)) {
                 	if("name_en".equals(column)&&(tempName.replace("英文", "").length()<tempNameLength ||
                             tempName.replace("ENGLISH", "").length()<tempNameLength||tempName.replace("English", "").length()<tempNameLength)) {
                          	value = detailByColumn(companyId);
-                         }else {
-                         	value = model.get(column) != null ? model.get(column) + "" : "";
                          }
-                }
-                
+                }else {
+                 	value = model.get(column) != null ? model.get(column) + "" : "";
+                 }*/
+                value = model.get(column) != null ? model.get(column) + "" : "";
                
                 if ("select".equals(fieldType)) {
                     value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
-                }else  if("date".equals(fieldType)){
+                }else  if("date".equals(fieldType)&&!StrUtils.isEmpty(value)){
                     try {
 						value = detailDate(sdf.parse(value),reportType);
 					} catch (ParseException e) {
@@ -280,7 +281,7 @@ public class BaseWord {
     }
     
     /**
-         * 下拉选二合一的特殊处理
+         * 两个下拉选二合一的特殊处理
      * @param value
      * @param column
      * @param reportType
@@ -402,12 +403,13 @@ public class BaseWord {
                 String wordDefault = colMap.get("word_default");
                 Integer id = model.getInt("id");
                 String value = "";
-                //不同字段的特殊处理
+                /*//不同字段的特殊处理
                 if("name_en".equals(column)) {
                 	value = detailByColumn(companyId);
                 }else {
                 	value = model.get(column) != null ? model.get(column) + "" : "";
-                }
+                }*/
+                value = model.get(column) != null ? model.get(column) + "" : "";
                 //合计项计算
                 if(hasTotal) {
                     try {
@@ -1049,6 +1051,7 @@ public class BaseWord {
                         pdf = Office2PDF.toPdf(fl);
                     }catch (Exception e){
                         e.printStackTrace();
+                        ReportInfoGetData.outPutErroLog(log, e);
                     }
                 }
                 //commonFiles.add(fl);
@@ -1096,17 +1099,13 @@ public class BaseWord {
     /**
      * 发送邮件
      * @param
+     * @throws Exception 
      */
-    public static void sendReportMail(String toMail,List<Map<String,String>> fileList){
+    public static void sendReportMail(String toMail,List<Map<String,String>> fileList) throws Exception{
         //List<Map<String,String>> list=new ArrayList<Map<String,String>>();
         //Map<String,String> map=new HashMap<String, String>();
         //map.put("哈哈.doc", "http://"+ip+":"+port+"/"+filePath);
         //list.add(map);
-        try {
-            new SendMailUtil("15269274025@163.com", "", "你好", "mycontent", fileList).sendEmail();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("ok");
+          new SendMailUtil("15269274025@163.com", "", "你好", "mycontent", fileList).sendEmail();
     }
 }

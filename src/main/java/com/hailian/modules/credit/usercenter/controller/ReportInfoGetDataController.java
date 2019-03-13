@@ -17,6 +17,7 @@ import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
@@ -34,6 +35,8 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
 import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
+import com.hailian.modules.credit.notice.model.NoticeLogModel;
+import com.hailian.modules.credit.notice.model.NoticeModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
@@ -41,7 +44,9 @@ import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateDictService;
+import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
+import com.hailian.util.word.BaseWord;
 import com.hailian.util.word.MainReport;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
@@ -51,7 +56,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	private TemplateDictService template = new TemplateDictService();
 	private final static String PAKAGENAME_PRE = "com.hailian.modules.admin.ordermanager.model.";
 	//private static FinanceService  financeService = new FinanceService();
-
+	public static Logger log = Logger.getLogger(ReportInfoGetDataController.class);
 	/**
 	 * 获取form类型的数据 2018/11/12 10:13 lzg
 	 */
@@ -521,20 +526,66 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 }
             }
             model.update();
+            
+            boolean isSuccess = true;
             //如果报告状态是311 发送邮件，报告
             if (status.equals("311")) {
-
-                new MainReport().build(Integer.parseInt(orderId), getSessionUser().getUserid());
+            	try {
+            		new MainReport().build(Integer.parseInt(orderId), getSessionUser().getUserid());
+				} catch (Exception e) {
+					isSuccess = false;
+					//日志输出
+					e.printStackTrace();
+					outPutErroLog(log, e);
+					
+					//报告发送失败,改变状态
+					CreditOrderInfo tempModel = new CreditOrderInfo();
+					tempModel.set("id", orderId).set("status", 999).update();
+					
+					//增加跟踪记录
+					CreditOrderFlow.addOneEntry(this, tempModel._setAttrs(model).set("status", 999));
+					
+					//操作日志记录
+					CreditOperationLog.dao.addOneEntry(userId, null, "订单管理/", "/credit/front/orderProcess/statusSave");
+					renderJson(new ResultType(0, "报告生成或者发送失败!请联系管理员!"));
+					
+					
+				}
+                
             }
-
-            //增加跟踪记录
-            CreditOrderFlow.addOneEntry(this, model);
-            CreditOperationLog.dao.addOneEntry(userId, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
-            renderJson(record.set("submit", submit));
+            
+            if(isSuccess) {
+            	//增加跟踪记录
+                CreditOrderFlow.addOneEntry(this, model);
+                CreditOperationLog.dao.addOneEntry(userId, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
+                renderJson(record.set("submit", submit));
+            }
+            
         }
 
     }
+    public static void sendErrMsg  (CreditOrderInfo order, Integer userid) {
+   	 
+		 //新增公告内容
+       NoticeModel model = new NoticeModel();
+       //公告子表添加
+       NoticeLogModel logModel = new NoticeLogModel();
+       model.set("notice_title", "报告发送失败提醒");
+       model.set("notice_content", "您查档的" + order.get("right_company_name_en") + "公司报告发送失败");
 
+       String now = DateUtils.getNow(com.hailian.util.DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
+       model.set("create_by", userid);
+       model.set("create_date", now);
+       model.save();
+
+       //向质检员发起
+       logModel.set("user_id", order.get("IQC"));
+       logModel.set("notice_id", model.get("id"));
+       logModel.set("read_unread", "1");
+       logModel.save();
+	 
+  
+}
     /**
      * 判断订单是否走翻译
      * @param info

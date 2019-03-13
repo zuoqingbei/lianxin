@@ -40,7 +40,7 @@ public class Roc102 extends BaseWord{
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
     public static final int serverPort = Config.getToInt("searver_port");
-
+    
     public static void main(String []args){
         try {
             /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
@@ -114,8 +114,12 @@ public class Roc102 extends BaseWord{
 
         //订单公司名称和报告公司名称相同，则显示“與註冊記錄同”
         if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
-            String translatedName = 
-            		Db.query("select name from credit_company_info where order_id=? and sys_language=613 and del_flag=0 ",orderId).get(0)+""; 
+           List<Object> tempList =
+            		Db.query("select name from credit_company_info where order_id=? and sys_language=613 and del_flag=0 ",orderId);
+           String translatedName = "";
+           if(tempList!=null&&tempList.size()>0) {
+        	     translatedName = tempList.get(0)+"";
+           }
             String reportCompanyName = order.getStr("company_by_report");
             if(!StrUtils.isEmpty(translatedName)) {
             if(translatedName.equals(reportCompanyName)){

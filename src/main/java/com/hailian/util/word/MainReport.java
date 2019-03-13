@@ -1,9 +1,11 @@
 package com.hailian.util.word;
 
+import org.apache.log4j.Logger;
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.notice.model.NoticeLogModel;
 import com.hailian.modules.credit.notice.model.NoticeModel;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.util.DateUtils;
 
 /**
@@ -11,8 +13,10 @@ import com.hailian.util.DateUtils;
  */
 public class MainReport {
 
+	public static Logger log = Logger.getLogger(MainReport.class);
+	
     //生成报告入口
-    public void build(int orderId, Integer userid) {
+    public void build(int orderId, Integer userid) throws Exception {
     	String speedLanguage = "s1.detail_name";
         String meataSql = "select report_type,report_language from credit_order_info  where id = ?";
         CreditOrderInfo metaOrder = CreditOrderInfo.dao.findFirst(meataSql, orderId);
@@ -24,7 +28,6 @@ public class MainReport {
         //业务sql
         String sql = "select t.*,"+speedLanguage+" as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
         CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, orderId);
-        try {
             if (ReportTypeCons.ROC_HY.equals(reportType) || ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                 //中文繁体+英文
                 if ("217".equals(report_language)) {
@@ -56,31 +59,9 @@ public class MainReport {
                     }
                 }
             }
-        } catch (Exception e) {
-        	e.printStackTrace();
-            System.out.println("报告生成异常");
-            sendErrMsg(order, userid);
-        }
+        
     }
-
-    public void sendErrMsg(CreditOrderInfo order, Integer userid) {
-        //新增公告内容
-        NoticeModel model = new NoticeModel();
-        //公告子表添加
-        NoticeLogModel logModel = new NoticeLogModel();
-        model.set("notice_title", "报告发送失败提醒");
-        model.set("notice_content", "您查档的" + order.get("right_company_name_en") + "公司报告发送失败");
-
-        String now = DateUtils.getNow(com.hailian.util.DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
-        model.set("create_by", userid);
-        model.set("create_date", now);
-        model.save();
-
-        //向质检员发起
-        logModel.set("user_id", order.get("IQC"));
-        logModel.set("notice_id", model.get("id"));
-        logModel.set("read_unread", "1");
-        logModel.save();
-    }
+    
+    
 
 }
