@@ -527,13 +527,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             }
             model.update();
             
-            boolean isSuccess = true;
             //如果报告状态是311 发送邮件，报告
             if (status.equals("311")) {
             	try {
             		new MainReport().build(Integer.parseInt(orderId), getSessionUser().getUserid());
 				} catch (Exception e) {
-					isSuccess = false;
 					//日志输出
 					e.printStackTrace();
 					outPutErroLog(log, e);
@@ -543,23 +541,18 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 					tempModel.set("id", orderId).set("status", 999).update();
 					
 					//增加跟踪记录
-					CreditOrderFlow.addOneEntry(this, tempModel._setAttrs(model).set("status", 999));
+					model.set("status", 999);
 					
-					//操作日志记录
-					CreditOperationLog.dao.addOneEntry(userId, null, "订单管理/", "/credit/front/orderProcess/statusSave");
-					renderJson(new ResultType(0, "报告生成或者发送失败!请联系管理员!"));
-					
-					
+					record.set("statusCode", 0);
+					record.set("message", "报告生成或者发送失败!请联系管理员!");
 				}
                 
             }
             
-            if(isSuccess) {
             	//增加跟踪记录
                 CreditOrderFlow.addOneEntry(this, model);
                 CreditOperationLog.dao.addOneEntry(userId, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
                 renderJson(record.set("submit", submit));
-            }
             
         }
 
