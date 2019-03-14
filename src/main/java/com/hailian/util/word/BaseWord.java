@@ -25,6 +25,8 @@ import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
+import com.sun.star.uno.RuntimeException;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -749,7 +751,9 @@ public class BaseWord {
                     try {
                         DecimalFormat df = new DecimalFormat("###,###.##");
                         NumberFormat nf = NumberFormat.getInstance();
-                        value = df.format(nf.parse(value));
+                        if(!StrUtils.isEmpty(value)) {
+                        	 value = df.format(nf.parse(value));
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

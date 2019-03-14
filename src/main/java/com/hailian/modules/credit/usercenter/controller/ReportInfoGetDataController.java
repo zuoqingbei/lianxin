@@ -157,7 +157,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		getBootStrapTables(isCompanyMainTable(),null);
 	}
 
-
+	 
 	@SuppressWarnings("unchecked")
 	public void getBootStrapTable(boolean isCompanyMainTable,String companyId) {
 		Record record = new Record();
@@ -527,6 +527,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             }
             model.update();
             
+            CreditOrderInfo order = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", orderId);
+            String errorMessage = "";
             //如果报告状态是311 发送邮件，报告
             if (status.equals("311")) {
             	try {
@@ -534,51 +536,62 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 				} catch (Exception e) {
 					//日志输出
 					e.printStackTrace();
-					outPutErroLog(log, e);
+					errorMessage = outPutErroLog(log, e);
+					 
+						//报告发送失败,改变状态
+						CreditOrderInfo tempModel = new CreditOrderInfo();
+						int statusCode = 308;
+						tempModel.set("id", orderId).set("status", statusCode).update();
+						
+						//增加跟踪记录
+						model.set("status", statusCode);
+						
+						record.set("statusCode", 0);
+						record.set("message", "报告生成或者发送失败!请联系管理员!");
+						sendErrMsg(order, getSessionUser().getUserid(),  "报告生成或者发送失败!请联系管理员!");
 					
-					//报告发送失败,改变状态
-					CreditOrderInfo tempModel = new CreditOrderInfo();
-					tempModel.set("id", orderId).set("status", 999).update();
-					
-					//增加跟踪记录
-					model.set("status", 999);
-					
-					record.set("statusCode", 0);
-					record.set("message", "报告生成或者发送失败!请联系管理员!");
 				}
                 
             }
             
             	//增加跟踪记录
-                CreditOrderFlow.addOneEntry(this, model);
-                CreditOperationLog.dao.addOneEntry(userId, null, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
+                CreditOrderFlow.addOneEntry(this, model,errorMessage);
+                CreditOperationLog.dao.addOneEntry(userId, model, "订单管理/", "/credit/front/orderProcess/statusSave");//操作日志记录
                 renderJson(record.set("submit", submit));
             
         }
 
     }
-    public static void sendErrMsg  (CreditOrderInfo order, Integer userid) {
+    
+    public static void sendErrMsg  (CreditOrderInfo order, Integer userid,String errorMessage) {
    	 
-		 //新增公告内容
-       NoticeModel model = new NoticeModel();
-       //公告子表添加
-       NoticeLogModel logModel = new NoticeLogModel();
-       model.set("notice_title", "报告发送失败提醒");
-       model.set("notice_content", "您查档的" + order.get("right_company_name_en") + "公司报告发送失败");
+	try {
+		//新增公告内容
+	       NoticeModel model = new NoticeModel();
+	       //公告子表添加
+	       NoticeLogModel logModel = new NoticeLogModel();
+	       model.set("notice_title", "报告异常提醒!");
+	       model.set("notice_content", "您查档的" + order.get("right_company_name_en") + ","+errorMessage);
 
-       String now = DateUtils.getNow(com.hailian.util.DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
-       model.set("create_by", userid);
-       model.set("create_date", now);
-       model.save();
+	       String now = DateUtils.getNow(com.hailian.util.DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
+	       model.set("create_by", userid);
+	       model.set("create_date", now);
+	       model.save();
 
-       //向质检员发起
-       logModel.set("user_id", order.get("IQC"));
-       logModel.set("notice_id", model.get("id"));
-       logModel.set("read_unread", "1");
-       logModel.save();
-	 
+	       //向质检员发起
+	       logModel.set("user_id", order.get("IQC"));
+	       logModel.set("notice_id", model.get("id"));
+	       logModel.set("read_unread", "1");
+	       logModel.save();
+		 
+	} catch (Exception e) {
+		e.printStackTrace();
+		outPutErroLog(log, e);
+	}
   
 }
+    
+  
     /**
      * 判断订单是否走翻译
      * @param info

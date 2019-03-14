@@ -64,7 +64,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	abstract void getFinanceExcelExport( );
 	
 	
-	public static void outPutErroLog(Logger log,Exception e) {
+	public static String outPutErroLog(Logger log,Exception e) {
 		 String sOut = "";
 	        sOut += e.getMessage() + "\r\n";
 	        StackTraceElement[] trace = e.getStackTrace();
@@ -72,6 +72,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	            sOut += "\tat " + s + "\r\n";
 	        }
 	        log.error("PLUS-ERRO-INPUT==================\n"+sOut);
+			return sOut;
 	}
 	
 	void deleteOneEntry(String className,String id) throws ClassNotFoundException, InstantiationException, IllegalAccessException{

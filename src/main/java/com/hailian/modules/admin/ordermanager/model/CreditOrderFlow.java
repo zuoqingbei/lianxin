@@ -8,6 +8,7 @@ import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.BaseController;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.hailian.modules.credit.usercenter.controller.OrderProcessController;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.util.DateUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
@@ -63,6 +64,26 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
 		//记录生成时间
 		cof.set("create_date", c.getNow());
+		cof.save();
+	}
+	
+	public static void addOneEntry(BaseController c, CreditOrderInfo model,
+			String errorMessage) {
+		//获取订单记录对象
+		CreditOrderFlow cof = new CreditOrderFlow();
+		//订单号
+		model = model.findById(Arrays.asList(new String[] {model.get("id")+""}).toArray());
+		cof.set("order_num", model.get("num"));
+		//订单状态
+		cof.set("order_state", model.get("status"));
+		//操作人
+		cof.set("create_oper", c.getSessionUser()==null?444:c.getSessionUser().getUserid());
+		//操作时间
+		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
+		//记录生成时间
+		cof.set("create_date", c.getNow());
+		//错误原因
+		cof.set("error_message", errorMessage);
 		cof.save();
 	}
 }
