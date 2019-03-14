@@ -2,11 +2,12 @@ let OrderDetail = {
     init: function () {
         this.row = JSON.parse(localStorage.getItem("row"));
         console.log('~~row：', this.row);
-        this.isQuality = !!this.row.quality_type;
-        this.quality_deal = '';
+        this.isQuality = !!this.row.quality_type;//是否质检页面
+        this.quality_deal = ''; //订单处理阶段 0-完成，1-退回/修改
         this.qualityOpinionId = '';
         this.selectInfo = '';
         this.cwModules = [];
+        //财务模块专用
         [this.type9MulText, this.type9BigData, this.type9TableHead, this.type9TableHeadBigData, this.type10Items, type10BigData] = [{}, {}, [], [], {}, {}];
         this.BASE_PATH = BASE_PATH + 'credit/front/';
         /**
@@ -63,6 +64,8 @@ let OrderDetail = {
         this.english = [7, 9, 11].includes(this.row.report_type - 0);
         this.creditLevel = this.english ? creditLevel_en : creditLevel_cn;
         this.initContent();
+
+        // 返回按钮
         let tis = this;
         $('.return_back').on('click', function () {
             if (tis.isQuality) {
@@ -120,15 +123,15 @@ let OrderDetail = {
         let selectInfoObj = {};
         this.data.modules.forEach((item, index) => {
             if ([0, 1, 11].includes(item.smallModileType - 0)) {
-                item.contents.forEach(content=> {
+                item.contents.forEach(content => {
                     if (content.get_source && ['select', 'select2'].includes(content.field_type)) {
-                        let key =content.get_source.replace(new RegExp(/&/g), "$");
-                        selectInfoObj[key]=content.column_name
+                        let key = content.get_source.replace(new RegExp(/&/g), "$");
+                        selectInfoObj[key] = content.column_name
                     }
                 });
             }
         });
-        this.selectInfo = '['+JSON.stringify(selectInfoObj)+']';
+        this.selectInfo = '[' + JSON.stringify(selectInfoObj) + ']';
         // console.log('~~this.selectInfo:', this.selectInfo);
 
         // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
@@ -312,7 +315,7 @@ let OrderDetail = {
                 case '9':
 
                     if (item.title.sort === 1) { //财务
-                        if (item.title.get_source.includes('type=1')) {
+                        if (item.title.get_source.includes('type=1') || item.title.get_source.includes('type=2')) {
                             _this.type9MulText = item;
                         } else {
                             _this.type9BigData = item;
@@ -323,7 +326,7 @@ let OrderDetail = {
 
                             if (item.title.float_parent === item0.title.id) {
                                 if (item0.smallModileType === '10') {//财务表头
-                                    if (item0.title.get_source.includes('type=1')) {
+                                    if (item0.title.get_source.includes('type=1') || item0.title.get_source.includes('type=2')) {
                                         _this.type9TableHead.push(item)
                                     } else {
                                         _this.type9TableHeadBigData.push(item)
@@ -349,7 +352,7 @@ let OrderDetail = {
                 // 10-财务模块表格数据
                 case '10':
                     $wrap.append(`<div class="module-content type10-content"></div>`);
-                    if (item.title.get_source.includes('type=1')) {
+                    if (item.title.get_source.includes('type=1') || item.title.get_source.includes('type=2')) {
                         _this.type10Items = item;
                     } else {
                         _this.type10BigData = item;
@@ -431,7 +434,23 @@ let OrderDetail = {
                                 grade: $wrap.find("#grade").val()
                             }) + (param === 'update' ? '&update=true' : '')
                             + (param2 === 'submit' ? '&submit=true' : ''),
-                            (data) => {
+                            data => {
+                                if (!data.rows || data.rows.length === 0) {
+                                    return
+                                }
+                                // 保存或提交后如果出错则报错再跳转，实际上业务只有提交可能报错
+                                // data.message = "报告生成或者发送失败！请联系管理员！";
+                                // data.statusCode = 0;
+                                if (param === 'update'||param2 === 'submit') {
+                                    if (data.statusCode === 0) {
+                                        Public.message('error', data.message)
+                                    } else {
+                                        Public.message('success', '保存成功！')
+                                    }
+                                    setTimeout(function () {
+                                        $('#reportbusiness').click();//触发报告质检菜单跳转到列表
+                                    }, 1500);
+                                }
                                 // console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val());
                                 this.qualityOpinionId = data.rows.length > 0 && data.rows[0].id ? data.rows[0].id : '';
                                 let quality_type = this.row.quality_type;
@@ -440,6 +459,7 @@ let OrderDetail = {
                                 if (this.quality_deal === '3') {
                                     $('.select2-container').addClass('disable');
                                 }
+                                //不同的质检类型禁用页面相关组件
                                 switch (quality_type) {
                                     case 'entering_quality':
                                         if ($('.select2-container'.length === 0)) {
@@ -481,10 +501,7 @@ let OrderDetail = {
                     $("#save").click(function (e, param) {
                         _this.getQualitySelectData('update'); //质检结果
                         dealQualityData('update', param); //质检意见、分数等
-                        setTimeout(function () {
-                            $('#reportbusiness').click();
-                        }, 1500);
-                        Public.message('success', '保存成功！')
+
                     });
                     $("#submit").click(function () {
                         $("#save").trigger('click', 'submit');

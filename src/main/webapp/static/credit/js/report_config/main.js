@@ -304,7 +304,6 @@ let ReportConfig = {
     	ids.forEach((item,index)=>{
     		let modalBody = ''
 			let myIndex = index;
-    		console.log(contents[index])
     		contents[index].forEach((ele,index)=>{
     			if(ele.temp_name === '操作') {
     				return;

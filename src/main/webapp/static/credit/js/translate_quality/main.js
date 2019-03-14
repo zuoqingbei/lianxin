@@ -21,146 +21,150 @@ let ReportConfig = {
         return JSON.stringify(newObj).replace(/\"/g, "").replace("{", "").replace("}", "").replace(/,/g, ";")
     },
     initTable() {
-    	/**
-    	 * 表格初始化
-    	 */
+        /**
+         * 表格初始化
+         */
         let _this = this
         this.tableDataArr = []
         this.tableDataArrEn = []
-        this.idArr.forEach((item,index)=>{
-        	const $table = $("#table"+item);
-        	const $tableEn = $("#table"+item+"En");
-        	let contents = this.contentsArr[index]
-        	let contentsEn = this.contentsArrEn[index]
-        	let titles = this.title
-        	let urlTemp = titles[index].get_source;
-        	let conf_id = titles[index].id;
-        	if(!urlTemp){return}
-        	let urlCH = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-        	let urlEN = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-        	if(urlTemp.split("*")[1]){
-        		let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
-        		tempParam.forEach((item,index)=>{
-        			if(item === 'company_id') {
-        				let val = this.rows["company_id_en"]
-        				urlEN += `&${item}=${val}`
-        			}else {
-        				urlEN += `&${item}=${this.rows[item]}`
-        			}
-        			urlCH += `&${item}=${this.rows[item]}`
-        		})
-        	}
-        	let selectInfo = []
-        	selectInfo.push(_this.selectInfoObj)
-        	
-        	let tempRows = []
-        	$table.bootstrapTable({
-        		height:300,
-        		columns: _this.tableColumns(contents,'ch'),
-    			url:urlCH, // 请求后台的URL（*）
-			    method : 'post', // 请求方式（*）post/get
-			    queryParams:function(param){
-			    	param.selectInfo = JSON.stringify(selectInfo)
-			    	return param
-			    },
-			    sidePagination: 'server',
-			    contentType:'application/x-www-form-urlencoded;charset=UTF-8',
-    			pagination: false, //分页
-    			smartDisplay:true,
-    			locales:'zh-CN',
-    			onLoadSuccess:(data)=>{
-    				_this.tableDataArr[index]=data
-    				let rows = data.rows
-    				rows.forEach((item,index)=>{
-    					//增加一列序号
-    					item["order_num"] = index+1
-    					if(item.brand_url) {
-    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
-							item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
-    					}
-    				})
-    				$table.bootstrapTable("load",rows)
-    				$(".monyCol").each((index,item)=>{
-    					if(!$(item).attr("data-field")){
-    						//不是表头
-    						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
-    					}
-    				})
-    				
-    				setTimeout(() => {
-	    				if(rows.length < 1) {
-	    					$table.parents(".fixed-table-container").css("height","80px!important")
-	    					console.log($table.parents(".fixed-table-container"))
-	    				}else if(rows.length < 4) {
-	    					$table.parents(".fixed-table-container").css("height","180px")
-	    				}
-    				 }, 200);
-    			}
-        	});
-        	if(!contentsEn){return}
-        	$tableEn.bootstrapTable({
-        		height:300,
-        		columns: _this.tableColumns(contentsEn,'en',index,_this.idArrEn[index]),
-        		url:urlEN, // 请求后台的URL（*）
-        		method : 'post', // 请求方式（*）post/get
-        		queryParams:function(param){
-        			param.selectInfo = JSON.stringify(selectInfo)
-        			return param
-        		},
-        		sidePagination: 'server',
-        		contentType:'application/x-www-form-urlencoded;charset=UTF-8',
-        		pagination: false, //分页
-        		smartDisplay:true,
-        		locales:'zh-CN',
-        		onLoadSuccess:(data)=>{
+        this.idArr.forEach((item, index) => {
+            const $table = $("#table" + item);
+            const $tableEn = $("#table" + item + "En");
+            let contents = this.contentsArr[index]
+            let contentsEn = this.contentsArrEn[index]
+            let titles = this.title
+            let urlTemp = titles[index].get_source;
+            let conf_id = titles[index].id;
+            if (!urlTemp) {
+                return
+            }
+            let urlCH = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+            let urlEN = BASE_PATH + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+            if (urlTemp.split("*")[1]) {
+                let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+                tempParam.forEach((item, index) => {
+                    if (item === 'company_id') {
+                        let val = this.rows["company_id_en"]
+                        urlEN += `&${item}=${val}`
+                    } else {
+                        urlEN += `&${item}=${this.rows[item]}`
+                    }
+                    urlCH += `&${item}=${this.rows[item]}`
+                })
+            }
+            let selectInfo = []
+            selectInfo.push(_this.selectInfoObj)
+
+            let tempRows = []
+            $table.bootstrapTable({
+                height: 300,
+                columns: _this.tableColumns(contents, 'ch'),
+                url: urlCH, // 请求后台的URL（*）
+                method: 'post', // 请求方式（*）post/get
+                queryParams: function (param) {
+                    param.selectInfo = JSON.stringify(selectInfo)
+                    return param
+                },
+                sidePagination: 'server',
+                contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                pagination: false, //分页
+                smartDisplay: true,
+                locales: 'zh-CN',
+                onLoadSuccess: (data) => {
+                    _this.tableDataArr[index] = data
+                    let rows = data.rows
+                    rows.forEach((item, index) => {
+                        //增加一列序号
+                        item["order_num"] = index + 1
+                        if (item.brand_url) {
+                            let url = item.brand_url.includes("http") ? item.brand_url : `http://${item["brand_url"]}`
+                            item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
+                        }
+                    })
+                    $table.bootstrapTable("load", rows)
+                    $(".monyCol").each((index, item) => {
+                        if (!$(item).attr("data-field")) {
+                            //不是表头
+                            $(item).text(Number($(item).text().replace(/,/g, "")).toLocaleString('en-US'))
+                        }
+                    })
+
+                    setTimeout(() => {
+                        if (rows.length < 1) {
+                            $table.parents(".fixed-table-container").css("height", "80px!important")
+                            console.log($table.parents(".fixed-table-container"))
+                        } else if (rows.length < 4) {
+                            $table.parents(".fixed-table-container").css("height", "180px")
+                        }
+                    }, 200);
+                }
+            });
+            if (!contentsEn) {
+                return
+            }
+            $tableEn.bootstrapTable({
+                height: 300,
+                columns: _this.tableColumns(contentsEn, 'en', index, _this.idArrEn[index]),
+                url: urlEN, // 请求后台的URL（*）
+                method: 'post', // 请求方式（*）post/get
+                queryParams: function (param) {
+                    param.selectInfo = JSON.stringify(selectInfo)
+                    return param
+                },
+                sidePagination: 'server',
+                contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                pagination: false, //分页
+                smartDisplay: true,
+                locales: 'zh-CN',
+                onLoadSuccess: (data) => {
 //        			console.log(data)
 //        			console.log(index,data)
-        			_this.tableDataArrEn[index]=data
-        			let rows = data.rows
-        			rows.forEach((item,index)=>{
-        				//增加一列序号
-    					item["order_num"] = index+1
-    					if(item.brand_url) {
-    						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
-    						item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
-    					}
-    				})
-    				$tableEn.bootstrapTable("load",rows)
-    				setTimeout(() => {
-	    				if(rows.length < 1) {
-	    					$table.parents(".fixed-table-container").css("height","80px!important")
-	    					console.log($table.parents(".fixed-table-container"))
-	    				}else if(rows.length < 4) {
-	    					$table.parents(".fixed-table-container").css("height","180px")
-	    				}
-    				 }, 200);
-        		}
-        	});
-        	
-        	
+                    _this.tableDataArrEn[index] = data
+                    let rows = data.rows
+                    rows.forEach((item, index) => {
+                        //增加一列序号
+                        item["order_num"] = index + 1
+                        if (item.brand_url) {
+                            let url = item.brand_url.includes("http") ? item.brand_url : `http://${item["brand_url"]}`
+                            item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+                        }
+                    })
+                    $tableEn.bootstrapTable("load", rows)
+                    setTimeout(() => {
+                        if (rows.length < 1) {
+                            $table.parents(".fixed-table-container").css("height", "80px!important")
+                            console.log($table.parents(".fixed-table-container"))
+                        } else if (rows.length < 4) {
+                            $table.parents(".fixed-table-container").css("height", "180px")
+                        }
+                    }, 200);
+                }
+            });
+
+
         })
-      
+
     },
     tableColumns(a, lang, tempI, tempId) {
         let _this = this
         let arr = []
-        a.unshift({temp_name: "序号",column_name:"order_num"})
+        a.unshift({temp_name: "序号", column_name: "order_num"})
         a.forEach((ele, index) => {
             if (ele.temp_name !== '操作' && ele.temp_name !== 'Operation') {
-            	if(ele.field_type === 'money') {
-					arr.push({
-    					title:ele.temp_name,
-    					field: ele.column_name,
-    					class:'monyCol',
-    					width:(1/a.length)*100+'%'
-    				})
-				}else {
-					arr.push({
-						title:ele.temp_name,
-						field: ele.column_name,
-						width:(1/a.length)*100+'%'
-					})
-				}
+                if (ele.field_type === 'money') {
+                    arr.push({
+                        title: ele.temp_name,
+                        field: ele.column_name,
+                        class: 'monyCol',
+                        width: (1 / a.length) * 100 + '%'
+                    })
+                } else {
+                    arr.push({
+                        title: ele.temp_name,
+                        field: ele.column_name,
+                        width: (1 / a.length) * 100 + '%'
+                    })
+                }
 
             }
             //翻译质检页面不能编辑表格
@@ -259,26 +263,28 @@ let ReportConfig = {
                             }
                         })
                         break;
-                	case 'select2':
-    					if(!ele.get_source) {return}
-    					let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
-    					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
-    					_this.selectInfoObj[ele.get_source] = ele.column_name
-    					$.ajax({
-    						type:'get',
-    						url:url1,
-    						async:false,
-    						dataType:'json',
-    						success:(data)=>{
-    							modalBody += ` <div class="form-inline justify-content-center my-3">
+                    case 'select2':
+                        if (!ele.get_source) {
+                            return
+                        }
+                        let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
+                        ele.get_source = ele.get_source.replace(new RegExp(/&/g), "$")
+                        _this.selectInfoObj[ele.get_source] = ele.column_name
+                        $.ajax({
+                            type: 'get',
+                            url: url1,
+                            async: false,
+                            dataType: 'json',
+                            success: (data) => {
+                                modalBody += ` <div class="form-inline justify-content-center my-3">
     								<label for="" class="control-label" >${ele.temp_name}：</label>
     								<select  class="form-control select2" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
     									${data.selectStr}
     								</select>
     								</div>`
-    						}
-    					})
-    					break;
+                            }
+                        })
+                        break;
                     case 'file':
                         modalBody += ` <div class="form-inline justify-content-center my-3">
 						                    <label for="" class="control-label">${ele.temp_name}：</label>
@@ -351,6 +357,9 @@ let ReportConfig = {
                 data: paramObj,
                 success: (data) => {
                     temp = data
+                    if (!data.rows) {
+                        return
+                    }
                     _this.formDataArr.push(data.rows[0])
                     let arr = Array.from($("#title" + item))
                     if (temp.rows === null) {
@@ -365,9 +374,9 @@ let ReportConfig = {
                             let obid = temp.rows[0].id;
                             $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid", obid)
                             let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-							 let val =  temp.rows[0][name];
-							 
-							 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
+                            let val = temp.rows[0][name];
+
+                            $("input:radio[name=" + name + "][value=" + val + "]").attr("checked", true);
                             return
                         }
                         if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydj' && temp.rows[0]) {
@@ -415,14 +424,14 @@ let ReportConfig = {
                                 //如果是select
                                 $("#" + id).find("option[value='" + obj[anotherId] + "']").attr("selected", true);
                             } else {
-                            	if($("#"+id).hasClass("money-checked")){
-									 //如果是金融
-									 if(obj[anotherId]){
-										 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
-									 }
-								 }else {
-									 $("#"+id).val(obj[anotherId])
-								 }
+                                if ($("#" + id).hasClass("money-checked")) {
+                                    //如果是金融
+                                    if (obj[anotherId]) {
+                                        $("#" + id).val(Number(obj[anotherId].replace(/,/g, '')).toLocaleString('en-US'))
+                                    }
+                                } else {
+                                    $("#" + id).val(obj[anotherId])
+                                }
                             }
                         })
                     })
@@ -443,9 +452,9 @@ let ReportConfig = {
                 if ($(item).siblings(".radio-con").length !== 0) {
                     //radio类型绑数
                     let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-    				 let rightName = name.replace("En",'')
-					 let val =  tempData[rightName];
-					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);    
+                    let rightName = name.replace("En", '')
+                    let val = tempData[rightName];
+                    $("input:radio[name=" + name + "][value=" + val + "]").attr("checked", true);
                     return
                 }
                 if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
@@ -481,130 +490,132 @@ let ReportConfig = {
                         //如果是select
                         $("#" + id).find("option[value='" + obj[anotherId] + "']").attr("selected", true);
                     } else {
-                    	if($("#"+id).hasClass("money-checked")){
-							 //如果是金融
-							 if(obj[anotherId]){
-								 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
-							 }
-						 }else {
-							 $("#"+id).val(obj[anotherId])
-						 }
+                        if ($("#" + id).hasClass("money-checked")) {
+                            //如果是金融
+                            if (obj[anotherId]) {
+                                $("#" + id).val(Number(obj[anotherId].replace(/,/g, '')).toLocaleString('en-US'))
+                            }
+                        } else {
+                            $("#" + id).val(obj[anotherId])
+                        }
                     }
                 })
             })
             return;
-        }else if(!i){
+        } else if (!i) {
 
 
-        formIndexEn.forEach((item, index) => {
-            let conf_id = titlesEn[index].id;
-            let getFormUrl = titlesEn[index].get_source;
-            if (getFormUrl === null || getFormUrl === '') {
-                return
-            }
-            let url = BASE_PATH + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0]
-            let paramObj = {}
-            if (getFormUrl.split("*")[1]) {
-                let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
-                tempParam.forEach((item, index) => {
-                    if (item === 'company_id') {
-                        paramObj[item] = this.rows[item + '_en']
-                    } else {
-                        paramObj[item] = this.rows[item]
-                    }
-                })
-            }
-            if (!paramObj["company_id"]) {
-                return
-            }
-            paramObj["conf_id"] = conf_id
-            let temp;
-            $.ajax({
-                url,
-                type: 'post',
-                async: false,
-                data: paramObj,
-                success: (data) => {
-                    temp = data
-                }
-
-            })
-            let arr = Array.from($("#titleEn" + item))
-            if (temp.rows === null || temp.rows.length === 0) {
-                return
-            }
-            arr.forEach((item, index) => {
-                if ($(item).siblings(".radio-con").length !== 0) {
-                    //radio类型绑数
-                	if(temp.rows.length === 0){return}
-    				let obid = temp.rows[0].id;
-    				$(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid",obid)
-    				let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
-    				let rightName = name.replace("En","")
-					 let val =  temp.rows[0][rightName];
-					 
-					 $("input:radio[name="+name+"][value="+val+"]").attr("checked",true);  
+            formIndexEn.forEach((item, index) => {
+                let conf_id = titlesEn[index].id;
+                let getFormUrl = titlesEn[index].get_source;
+                if (getFormUrl === null || getFormUrl === '') {
                     return
                 }
-                if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
-                    //信用等级
-                    let name = $(item).next().find("input").attr("name")
-                    $(item).next().find("input").val(temp.rows[0][name])
-                    return;
+                let url = BASE_PATH + 'credit/front/ReportGetData/' + getFormUrl.split("*")[0]
+                let paramObj = {}
+                if (getFormUrl.split("*")[1]) {
+                    let tempParam = getFormUrl.split("*")[1].split("$");//必要参数数组
+                    tempParam.forEach((item, index) => {
+                        if (item === 'company_id') {
+                            paramObj[item] = this.rows[item + '_en']
+                        } else {
+                            paramObj[item] = this.rows[item]
+                        }
+                    })
                 }
-                if ($(item).next().hasClass("textarea-module")) {
-                    //无标题多行文本输入框
+                if (!paramObj["company_id"]) {
+                    return
+                }
+                paramObj["conf_id"] = conf_id
+                let temp;
+                $.ajax({
+                    url,
+                    type: 'post',
+                    async: false,
+                    data: paramObj,
+                    success: (data) => {
+                        temp = data
+                    }
+
+                })
+                let arr = Array.from($("#titleEn" + item))
+                if (temp.rows === null || temp.rows.length === 0) {
+                    return
+                }
+                arr.forEach((item, index) => {
+                    if ($(item).siblings(".radio-con").length !== 0) {
+                        //radio类型绑数
+                        if (temp.rows.length === 0) {
+                            return
+                        }
+                        let obid = temp.rows[0].id;
+                        $(item).siblings(".radio-con").find(".radio-box").find("input").attr("entityid", obid)
+                        let name = $(item).siblings(".radio-con").find(".radio-box").find("input").attr("name")
+                        let rightName = name.replace("En", "")
+                        let val = temp.rows[0][rightName];
+
+                        $("input:radio[name=" + name + "][value=" + val + "]").attr("checked", true);
+                        return
+                    }
+                    if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
+                        //信用等级
+                        let name = $(item).next().find("input").attr("name")
+                        $(item).next().find("input").val(temp.rows[0][name])
+                        return;
+                    }
+                    if ($(item).next().hasClass("textarea-module")) {
+                        //无标题多行文本输入框
+                        if (temp.rows.length === 0) {
+                            return
+                        }
+                        let obid = temp.rows[0].id;
+                        $(item).next().find("textarea").attr("entityid", obid)
+                        let name = $(item).next().find("textarea").attr("name")
+                        $(item).next().find("textarea").val(temp.rows[0][name])
+                        return;
+                    }
+                    if (($(item).next().find("input").hasClass("float-date"))) {
+                        //浮动非财务
+                        if (temp.rows.length === 0) {
+                            return
+                        }
+                        let obid = temp.rows[0].id;
+                        $(item).next().find("input").attr("entityid", obid)
+                        let name = $(item).next().find("input").attr("name")
+                        $(item).next().find("input").val(temp.rows[0][name])
+                        return;
+                    }
+                    let formArr = Array.from($(item).siblings().find(".form-control"))
                     if (temp.rows.length === 0) {
                         return
                     }
+                    //实体id
                     let obid = temp.rows[0].id;
-                    $(item).next().find("textarea").attr("entityid", obid)
-                    let name = $(item).next().find("textarea").attr("name")
-                    $(item).next().find("textarea").val(temp.rows[0][name])
-                    return;
-                }
-                if (($(item).next().find("input").hasClass("float-date"))) {
-                    //浮动非财务
-                    if (temp.rows.length === 0) {
-                        return
-                    }
-                    let obid = temp.rows[0].id;
-                    $(item).next().find("input").attr("entityid", obid)
-                    let name = $(item).next().find("input").attr("name")
-                    $(item).next().find("input").val(temp.rows[0][name])
-                    return;
-                }
-                let formArr = Array.from($(item).siblings().find(".form-control"))
-                if (temp.rows.length === 0) {
-                    return
-                }
-                //实体id
-                let obid = temp.rows[0].id;
-                formArr.forEach((item, index) => {
-                    let obj = temp.rows[0];
-                    let id = $(item).attr("id");
-                    let anotherIdArr = id.split("_")
-                    anotherIdArr.pop();
-                    anotherIdArr.pop();
-                    let anotherId = anotherIdArr.join('_')
-                    $("#" + id).attr("entryid", obid)
-                    if ($(item).is('select')) {
-                        //如果是select
-                        $("#" + id).find("option[value='" + obj[anotherId] + "']").attr("selected", true);
-                    } else {
-                    	if($("#"+id).hasClass("money-checked")){
-							 //如果是金融
-							 if(obj[anotherId]){
-								 $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
-							 }
-						 }else {
-							 $("#"+id).val(obj[anotherId])
-						 }
-                    }
+                    formArr.forEach((item, index) => {
+                        let obj = temp.rows[0];
+                        let id = $(item).attr("id");
+                        let anotherIdArr = id.split("_")
+                        anotherIdArr.pop();
+                        anotherIdArr.pop();
+                        let anotherId = anotherIdArr.join('_')
+                        $("#" + id).attr("entryid", obid)
+                        if ($(item).is('select')) {
+                            //如果是select
+                            $("#" + id).find("option[value='" + obj[anotherId] + "']").attr("selected", true);
+                        } else {
+                            if ($("#" + id).hasClass("money-checked")) {
+                                //如果是金融
+                                if (obj[anotherId]) {
+                                    $("#" + id).val(Number(obj[anotherId].replace(/,/g, '')).toLocaleString('en-US'))
+                                }
+                            } else {
+                                $("#" + id).val(obj[anotherId])
+                            }
+                        }
+                    })
                 })
-            })
 
-        })
+            })
         }
     },
     tabChange() {
@@ -628,11 +639,11 @@ let ReportConfig = {
             return
         }
         let cw_title = []
-    	let cw_contents = []
-    	let ds_cw_title = []
-    	let ds_cw_contents = []
-    	let cw_dom;
-    	let ds_dom;
+        let cw_contents = []
+        let ds_cw_title = []
+        let ds_cw_contents = []
+        let cw_dom;
+        let ds_dom;
         _this.tableTitle = []
         floatIndex.forEach((item, index) => {
             let floatParentId = this.floatTitle[index]['float_parent'];//浮动的父节点id
@@ -646,52 +657,52 @@ let ReportConfig = {
                         this.formIndex.push(i)
                         this.formTitle.push(this.floatTitle[index])
                     } else {
-                    	if(_this.entityTitle[i]["get_source"].includes("type=3")){
-    						//大数财务模块浮动
-    						ds_cw_title.push(this.floatTitle[index])
-    						ds_cw_contents.push(this.floatContents[index])
-    						ds_dom = $("#titleDs"+i)
-    					}else {
-    						//财务模块浮动
-    						cw_title.push(this.floatTitle[index])
-    						cw_contents.push(this.floatContents[index])
-    						cw_dom = $("#titleCw"+i)
-    					}
+                        if (_this.entityTitle[i]["get_source"].includes("type=3")) {
+                            //大数财务模块浮动
+                            ds_cw_title.push(this.floatTitle[index])
+                            ds_cw_contents.push(this.floatContents[index])
+                            ds_dom = $("#titleDs" + i)
+                        } else {
+                            //财务模块浮动
+                            cw_title.push(this.floatTitle[index])
+                            cw_contents.push(this.floatContents[index])
+                            cw_dom = $("#titleCw" + i)
+                        }
                     }
 
                 }
             })
         })
 //    	console.log(cw_title,cw_contents)
-    	//大数财务逻辑
-    	let ds_top_html = ''
-		let ds_table_html = ''
-		if(ds_cw_title.length!==0){
-			ds_cw_title.forEach((item,index)=>{
-				//初始化大数财务模块
-				let this_content = ds_cw_contents[index];
-	    		let moneySource = ds_cw_contents[0][0].get_source;
-	    		let moneyStr = ''
-				let unitSource = ds_cw_contents[0][1].get_source;
-	    		let unitStr = ''
-				$.ajax({
-					url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
-					async:false,
-					type:'post',
-					success:(data)=>{
-						moneyStr = data.selectStr
-					}
-				})
-				$.ajax({
-					url:BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
-					async:false,
-					type:'post',
-					success:(data)=>{
-						unitStr = data.selectStr
-					}
-				})
-				if(item.sort === 1) {
-					ds_top_html += `<div class="top-html mx-4">
+        //大数财务逻辑
+        let ds_top_html = ''
+        let ds_table_html = ''
+        if (ds_cw_title.length !== 0) {
+            ds_cw_title.forEach((item, index) => {
+                //初始化大数财务模块
+                let this_content = ds_cw_contents[index];
+                let moneySource = ds_cw_contents[0][0].get_source;
+                let moneyStr = ''
+                let unitSource = ds_cw_contents[0][1].get_source;
+                let unitStr = ''
+                $.ajax({
+                    url: BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
+                    async: false,
+                    type: 'post',
+                    success: (data) => {
+                        moneyStr = data.selectStr
+                    }
+                })
+                $.ajax({
+                    url: BASE_PATH + 'credit/front/ReportGetData/' + unitSource,
+                    async: false,
+                    type: 'post',
+                    success: (data) => {
+                        unitStr = data.selectStr
+                    }
+                })
+                if (item.sort === 1) {
+                    ds_top_html += `<div class="top-html mx-4">
 						<div class="d-flex justify-content-between align-items-center mt-4">
 							<!-- 单位 -->
 							<div class="ds-unit" style="width:100%">
@@ -709,30 +720,32 @@ let ReportConfig = {
 								<input class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
 							</div>
 						</div>`
-				}else {
-					ds_table_html += `<div class="table-content1 ds-table" style="background:#fff">
+                } else {
+                    ds_table_html += `<div class="table-content1 ds-table" style="background:#fff">
 										<table id="tableDs"
 											data-toggle="table"
 											style="position: relative"
 										>
 										</table>
 									</div>`
-				}
-			})
-			if(ds_dom){
-				ds_dom.after(ds_table_html)
-				ds_dom.after(ds_top_html)
-			}
-	    	setTimeout(()=>{
-	    		if(ds_cw_title[0]){
-	    			InitObjTransQua.bindDsConfig(ds_cw_title[0]['get_source'],_this.rows)
-	    			InitObjTransQua.initDsTable(ds_cw_contents[1],_this.dsGetSource,_this.dsAlterSource,_this.rows)
-	    		}
-	    	},0)
-		}
-    	
-    	//财务逻辑
-    	if(cw_title.length === 0){return}
+                }
+            })
+            if (ds_dom) {
+                ds_dom.after(ds_table_html)
+                ds_dom.after(ds_top_html)
+            }
+            setTimeout(() => {
+                if (ds_cw_title[0]) {
+                    InitObjTransQua.bindDsConfig(ds_cw_title[0]['get_source'], _this.rows)
+                    InitObjTransQua.initDsTable(ds_cw_contents[1], _this.dsGetSource, _this.dsAlterSource, _this.rows)
+                }
+            }, 0)
+        }
+
+        //财务逻辑
+        if (cw_title.length === 0) {
+            return
+        }
         this.cwConfigAlterSource = cw_title[0]['alter_source'];
         this.cwConfigGetSource = cw_title[0]['get_source'];
         let cw_top_html = ''
@@ -960,8 +973,8 @@ let ReportConfig = {
         this.cwGetSource = '' //存放获取财务url
         this.cwAlterSource = '' //存放修改财务url
         this.cwDeleteSource = '' //删除财务url
-    	this.dsGetSource = '' //存放大数获取财务url
-		this.dsAlterSource = '' //存放大数修改财务url
+        this.dsGetSource = '' //存放大数获取财务url
+        this.dsAlterSource = '' //存放大数修改财务url
         this.saveStatusUrl = ''
         this.submitStatusUrl = ''
         let row = localStorage.getItem("row");
@@ -969,11 +982,11 @@ let ReportConfig = {
         let id = JSON.parse(row).id;
         let reportType = JSON.parse(row).report_type
         let istranslate = true;
-        let type=1;
+        let type = 1;
         $.ajax({
             type: "get",
             url: BASE_PATH + "credit/front/getmodule/list",
-            data: {id, reportType, istranslate,type},
+            data: {id, reportType, istranslate, type},
             success: (data) => {
                 setTimeout(() => {
                     _this.initmodal();
@@ -1055,46 +1068,46 @@ let ReportConfig = {
                     _this.entityTitle.push(item.title)
                     _this.entityModalType.push(item.smallModileType)
                     let smallModileType = item.smallModileType
-                    if(item.title.is_merger_next === '0'){
-                		if(item.title.temp_name === '行业分析' || item.title.temp_name === 'industry_analysis'){
-                				return
-                		}
-                		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent ) {
-                			if(item.title.word_key !== 'hangyexinxi'){
-                				contentHtml +=  `<div class="bg-f mb-3"><a   style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                			}else {
-                				contentHtml +=  `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                			}
-                		}else if(smallModileType === '10'){
-                			//财务模块
-                			if(item["title"]["get_source"].includes("type=3")){
-                				//大数
-                				_this.dsGetSource = item.title.get_source;
-                				_this.dsAlterSource = item.title.alter_source;
-                				contentHtml +=  `<div class="bg-f pb-4 mb-3 gjds"><a class="l-title dsModal" name="anchor${item.title.id}" id="titleDs${index}">${item.title.temp_name}</a>`
-                			}else {
-                				_this.cwGetSource = item.title.get_source;
-                				_this.cwAlterSource = item.title.alter_source;
-                				_this.cwDeleteSource = item.title.remove_source;
-                				contentHtml +=  `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
-                			}
-                		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
-                			contentHtml +=  `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                		}
-                		
-                	}else {
-                		if(item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent || item.title.temp_name === '行业分析') {
-                			contentHtml +=  `<div class="bg-f pb-4" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                		}else if(smallModileType === '10'){
-                			//财务模块
-                			_this.cwGetSource = item.title.get_source;
-                			_this.cwAlterSource = item.title.alter_source;
-                			_this.cwDeleteSource = item.title.remove_source;
-                			contentHtml +=  `<div class="bg-f pb-4gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
-                		}else if(smallModileType !== '-2' && smallModileType !== '5' ) {
-                			contentHtml +=  `<div class="bg-f pb-4 "><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
-                		}
-                	}
+                    if (item.title.is_merger_next === '0') {
+                        if (item.title.temp_name === '行业分析' || item.title.temp_name === 'industry_analysis') {
+                            return
+                        }
+                        if (item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent) {
+                            if (item.title.word_key !== 'hangyexinxi') {
+                                contentHtml += `<div class="bg-f mb-3"><a   style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                            } else {
+                                contentHtml += `<div class="bg-f pb-4 mb-3" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                            }
+                        } else if (smallModileType === '10') {
+                            //财务模块
+                            if (item["title"]["get_source"].includes("type=3")) {
+                                //大数
+                                _this.dsGetSource = item.title.get_source;
+                                _this.dsAlterSource = item.title.alter_source;
+                                contentHtml += `<div class="bg-f pb-4 mb-3 gjds"><a class="l-title dsModal" name="anchor${item.title.id}" id="titleDs${index}">${item.title.temp_name}</a>`
+                            } else {
+                                _this.cwGetSource = item.title.get_source;
+                                _this.cwAlterSource = item.title.alter_source;
+                                _this.cwDeleteSource = item.title.remove_source;
+                                contentHtml += `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                            }
+                        } else if (smallModileType !== '-2' && smallModileType !== '5') {
+                            contentHtml += `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                        }
+
+                    } else {
+                        if (item.title.temp_name === null || item.title.temp_name === "" || item.title.float_parent || item.title.temp_name === '行业分析') {
+                            contentHtml += `<div class="bg-f pb-4" ><a style="display:none" class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                        } else if (smallModileType === '10') {
+                            //财务模块
+                            _this.cwGetSource = item.title.get_source;
+                            _this.cwAlterSource = item.title.alter_source;
+                            _this.cwDeleteSource = item.title.remove_source;
+                            contentHtml += `<div class="bg-f pb-4gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+                        } else if (smallModileType !== '-2' && smallModileType !== '5') {
+                            contentHtml += `<div class="bg-f pb-4 "><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
+                        }
+                    }
                     let btnText = item.title.place_hold;
                     let formArr = item.contents;
                     //模块的类型
@@ -1136,13 +1149,13 @@ let ReportConfig = {
 
                                             break;
                                         case 'money':
-                        					formGroup += `<div class="form-group">
+                                            formGroup += `<div class="form-group">
                         						<label for="" class="mb-2">${item.temp_name}</label>
                         						<input disabled="disabled" type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
                         						<p class="errorInfo">${item.error_msg}</p>
                         						</div>`
-                        						
-                        						break;
+
+                                            break;
                                         case 'date':
                                             formGroup += `<div class="form-group date-form">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
@@ -1185,26 +1198,28 @@ let ReportConfig = {
 
                                             break;
                                         case 'select3':
-    				            			if(item.get_source === null){return}
-    				            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
-    				            			$.ajax({
-    				            				type:'get',
-    				            				url:urls,
-    				            				async:false,
-    				            				dataType:'json',
-    				            				success:(data)=>{
-    				            					let a = data.selectStr.replace(/value/g,'a')
-    				            					formGroup += `<div class="form-group">
+                                            if (item.get_source === null) {
+                                                return
+                                            }
+                                            let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
+                                            $.ajax({
+                                                type: 'get',
+                                                url: urls,
+                                                async: false,
+                                                dataType: 'json',
+                                                success: (data) => {
+                                                    let a = data.selectStr.replace(/value/g, 'a')
+                                                    formGroup += `<div class="form-group">
     				            						<label for="" class="mb-2">${item.temp_name}</label>
     				            						<input  disabled="disabled"  name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
     				            						<datalist id="cars">
     				            							${a}
     				            						</datalist>
     				            						</div>`
-    				            				}
-    				            			})
-    				            			
-    				            			break;
+                                                }
+                                            })
+
+                                            break;
                                         case 'textarea':
                                             formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
@@ -1385,11 +1400,11 @@ let ReportConfig = {
 
 
                     let item_en = modulesToEn[index]
-                    if (!item_en || item_en.title.temp_name.includes('质检意见')) {
+                    if (!item_en || !item_en.title.temp_name || item_en.title.temp_name.includes('质检意见')) {
                         return
                     }
                     let smallModileTypeEn = item_en.smallModileType
-                    if (item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent ) {
+                    if (item_en.title.temp_name === null || item_en.title.temp_name === "" || item_en.title.float_parent) {
                         contentHtml += `<div data-qualityId="${item.title.id}" class="bg-f pb-4 mb-3" style="display:none"><a class="l-title" name="anchor${item_en.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
                     } else if (smallModileTypeEn === '10') {
                         //财务模块
@@ -1436,14 +1451,14 @@ let ReportConfig = {
 	                        							</div>`
 
                                             break;
-                                    	case 'money':
-                        					formGroup += `<div class="form-group">
+                                        case 'money':
+                                            formGroup += `<div class="form-group">
                         						<label for="" class="mb-2">${item_en.temp_name}</label>
                         						<input disabled="disabled" type="text" class="form-control money-checked" id="${item_en.column_name}_${ind}_En" placeholder="" name=${item_en.column_name} reg=${item_en.reg_validation}>
                         						<p class="errorInfo">${item_en.error_msg}</p>
                         						</div>`
-                        						
-                        						break;
+
+                                            break;
                                         case 'date':
                                             formGroup += `<div class="form-group date-form">
 									            		<label for="" class="mb-2">${item_en.temp_name}</label>
@@ -1483,27 +1498,29 @@ let ReportConfig = {
                                             })
 
                                             break;
-                                    	case 'select3':
-    				            			if(item_en.get_source === null){return}
-    				            			let urls = BASE_PATH + 'credit/front/ReportGetData/' + item_en.get_source
-    				            			$.ajax({
-    				            				type:'get',
-    				            				url:urls,
-    				            				async:false,
-    				            				dataType:'json',
-    				            				success:(data)=>{
-    				            					let a = data.selectStr.replace(/value/g,'a')
-    				            					formGroup += `<div class="form-group">
+                                        case 'select3':
+                                            if (item_en.get_source === null) {
+                                                return
+                                            }
+                                            let urls = BASE_PATH + 'credit/front/ReportGetData/' + item_en.get_source
+                                            $.ajax({
+                                                type: 'get',
+                                                url: urls,
+                                                async: false,
+                                                dataType: 'json',
+                                                success: (data) => {
+                                                    let a = data.selectStr.replace(/value/g, 'a')
+                                                    formGroup += `<div class="form-group">
     				            						<label for="" class="mb-2">${item_en.temp_name}</label>
     				            						<input  disabled="disabled"  name=${item_en.column_name} id="${item_en.column_name}_${ind}" class="form-control" list="cars1">
     				            						<datalist id="cars1">
     				            							${a}
     				            						</datalist>
     				            						</div>`
-    				            				}
-    				            			})
-    				            			
-    				            			break;
+                                                }
+                                            })
+
+                                            break;
                                         case 'textarea':
                                             formGroup += `  <div class="form-group"  style="width: 100%">
 						                                    <label  class="mb-2">${item_en.temp_name}</label>
@@ -1651,6 +1668,9 @@ let ReportConfig = {
                             _this.formIndexEn.push(index)
 
                             let str = item.contents[0].get_source;
+                            if (!str) {
+                                return
+                            }
                             let this_item = item
                             let strItem = str.split("&")
                             contentHtml += `<div class="table-content1 form-group radio-con" style="background:#fff">
@@ -1688,7 +1708,7 @@ let ReportConfig = {
                     contentHtml += `</div>`
                 })
 
-                 $(".position-fixed").html(bottomBtn)
+                $(".position-fixed").html(bottomBtn)
                 $(".main-content").html(contentHtml).append(`<div class="module-wrap bg-f company-info mb-4">
                     <div class="l-title">质检评分</div>${type23_html}</div></div`);
                 $('.type23-content').find('.my-1').css('white-space', 'nowrap');
@@ -1706,8 +1726,24 @@ let ReportConfig = {
                         report_type: _this.rows.report_type,
                         grade: $("#grade").val() || 0
                     }, (data) => {
+                        if (!data.rows || data.rows.length === 0) {
+                            return
+                        }
+                        // 保存或提交后如果出错则报错再跳转，实际上业务只有提交可能报错
+                        // data.message = "报告生成或者发送失败！请联系管理员！";
+                        // data.statusCode = 0;
+                        if (param === 'update' || param2 === 'submit') {
+                            if (data.statusCode === 0) {
+                                Public.message('error', data.message)
+                            } else {
+                                Public.message('success', '保存成功！')
+                            }
+                            setTimeout(function () {
+                                $('#reportbusiness').click();//触发报告质检菜单跳转到列表
+                            }, 1500);
+                        }
                         this.quality_deal = data.rows[0].quality_deal;
-                        if(this.quality_deal === '3'){
+                        if (this.quality_deal === '3') {
                             $('.select2-container').addClass('disable');
                         }
                         if (data.rows && data.rows.length > 0) {
@@ -1725,17 +1761,13 @@ let ReportConfig = {
                     console.log(param);
                     _this.getQualitySelectData('update'); //质检结果
                     dealQualityData('update', param); //质检意见、分数等
-                    setTimeout(function () {
-                        $('#reportbusiness').click();
-                    },1500);
-                    Public.message('success', '保存成功！')
                 });
                 $("#commit").click(function () {
                     $("#save").trigger('click', 'submit');
                 });
 
                 // 质检结果下拉列表
-                    this.setQualitySelect();
+                this.setQualitySelect();
             }
         })
     },
@@ -1975,14 +2007,14 @@ let ReportConfig = {
         let detailname = this.english ? 'detail_name_en' : 'detail_name';
         $(".l-title").each(function (index, item) {
             if (!['基本信息', '流程进度', '质检评分', '附件'].includes($(this).text())) {
-                if(_this.quality_deal==='3'){
+                if (_this.quality_deal === '3') {
                     $('.select2-container').addClass('disable');
                 }
             }
         });
         // 添加并获取质检结果下拉框选项的内容
         $.get(BASE_PATH + 'credit/front/ReportGetData/selectQuality?type=' + this.rows.quality_type + "&disPalyCol=" + detailname, function (data) {
-            console.log('BASE_PATH2',BASE_PATH)
+            console.log('BASE_PATH2', BASE_PATH)
             // 设置option内容
             $("[id^=titleEn]").parent().append(qualitySelectHtml);
             let detailName = this.english ? 'detail_name_en' : 'detail_name';
@@ -1995,7 +2027,7 @@ let ReportConfig = {
                 .find('option').each(function (index, option) { //初始化唯一的value值
                 $(option).attr("value", $(option).parents(".select2Box").parent().data("qualityid") + "_" + $(option).data("detail_id"))
             });
-            console.log('$(".select2Box select")[0]',$(".select2Box select")[0]) ;
+            console.log('$(".select2Box select")[0]', $(".select2Box select")[0]);
             // select2初始化并计算分数
             $('.js-example-basic-multiple').select2({placeholder: "请选择评分项"}).on('change', function () {
                 let grade = 0;
@@ -2013,14 +2045,14 @@ let ReportConfig = {
 };
 
 ReportConfig.init();
-$('.return_back').on('click',function () {
+$('.return_back').on('click', function () {
     layer.confirm('是否保存已录入信息？', {
-        btn: ['保存','取消'] //按钮
-    }, function(){
+        btn: ['保存', '取消'] //按钮
+    }, function () {
         $('#save').trigger('click')
 
         location.reload();
-    }, function(){
+    }, function () {
         location.reload();
     });
 

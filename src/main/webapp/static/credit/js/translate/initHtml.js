@@ -58,7 +58,6 @@ let InitObjTrans = {
 				type:'post',
 				data:{dataJson:JSON.stringify(dataJson),"report_type":rows["report_type"]},
 				success:(data)=>{
-					console.log(data)
 				}
 			})
 		})
@@ -75,7 +74,6 @@ let InitObjTrans = {
 			let tempParam = dsConfigGetSource.split("*")[1].split("$");//必要参数数组
 			tempParam.forEach((item,index)=>{
 				paramObj[item] = rows[item]
-				console.log(paramObj[item],rows[item])
 			})
 		}
 		$.ajax({
@@ -84,7 +82,6 @@ let InitObjTrans = {
 			async:false,
 			data:paramObj,
 			success:(data)=>{
-				console.log(data)
 				$(".gjds").attr("dsConfigid",data["rows"][0]["id"])
 				data.rows.forEach((item,index)=>{
 					$(".ds-date").each((index,ele)=>{
@@ -116,7 +113,6 @@ let InitObjTrans = {
 			let tempParam = cwConfigGetSource.split("*")[1].split("$");//必要参数数组
 			tempParam.forEach((item,index)=>{
 				paramObj[item] = rows[item]
-				console.log(paramObj[item],rows[item])
 			})
 		}
 		let radioVal = ''
@@ -126,7 +122,6 @@ let InitObjTrans = {
 			async:false,
 			data:paramObj,
 			success:(data)=>{
-				console.log(data)
 				data = data.rows
 				_this.cwType = data[0]["type"]
 				if(data.length === 0){return}
@@ -188,7 +183,6 @@ let InitObjTrans = {
 				})
 			}
 		})
-		console.log(tableTitles)
 		let tables = Array.from($(".table-title"))
 		tables.forEach((item,i)=>{
 			$(tables[i]).html(radioVal==="1"?tableTitles[i][1]:tableTitles[i][0])
@@ -394,6 +388,7 @@ let InitObjTrans = {
 		})
 	},
 	initDsTable(contents,getSource,alterSource,rows){
+
 		//大数财务模块表格初始化
 		/**
 		 * contents :表格的表头信息
@@ -412,13 +407,14 @@ let InitObjTrans = {
 				returnData = data
 			}
 		})
+		if(!returnData){return}
 		let tempRows =  []
+		if(!returnData){return}
 		returnData['rows'].forEach((item,index)=>{ 
 			item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 			item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			tempRows.push(item)
 		})
-		console.log(tempRows)
 		const $table = $('#tableDs');
 		$table.bootstrapTable({
     		columns: columns(),
@@ -498,6 +494,7 @@ let InitObjTrans = {
 		})
 		let tempRows =  []
 		let tempArr = [];
+		if(!returnData['rows']){return}
 		returnData['rows'].sort((a,b)=>{
 			return a["son_sector"]-b["son_sector"]
 		});
@@ -574,7 +571,6 @@ let InitObjTrans = {
 	    					align:'center',
 	    					events: {
 	        					"click .delete":(e,value,row,index)=>{
-//	        						console.log(value,row)
 	        						let entityId = row.id
 	        						$("#popEnter").unbind().on('click', function(){
             							//确定删除
@@ -611,7 +607,6 @@ let InitObjTrans = {
 			//初始化完表格之后自动计算
 			//自动计算合计
 			const $table_a = $('#'+tableCwIds[1]);
-//			console.log($table_a.find("input")[0])
 			$($table_a.find("input")[0]).trigger("blur")
 			$(".bg-gray").parent("td").parent("tr").css("background","#fafafa")
 			
@@ -644,7 +639,6 @@ let InitObjTrans = {
 					},
 					success:(data)=>{
 						///新增一行成功
-						console.log(data)
 						if(data.statusCode === 1) {
 							_this.refreshCwModal(tableCwIds,getSource,id,rows)
 						}else {
@@ -774,7 +768,6 @@ let InitObjTrans = {
 		 * 刷新表格数据
 		 * id:财务模板id
 		 */
-//		console.log(tableCwIds)
 		let returnData;
 		let symbol =  getSource.includes("?")?'&':'?'
 		$.ajax({
