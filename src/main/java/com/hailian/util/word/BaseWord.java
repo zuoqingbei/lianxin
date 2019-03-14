@@ -10,6 +10,7 @@ import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
@@ -1056,6 +1057,8 @@ public class BaseWord {
                     }catch (Exception e){
                         e.printStackTrace();
                         ReportInfoGetData.outPutErroLog(log, e);
+                        CreditOrderInfo order = CreditOrderInfo.dao.findById(orderId);
+                        ReportInfoGetDataController.sendErrMsg(order, userid, "预览文件生成异常,将影响预览功能,请注意!");
                     }
                 }
                 //commonFiles.add(fl);
