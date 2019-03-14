@@ -354,7 +354,6 @@ let Public = {
     fileConfig(item, row) {
         let _this = this
         _this.row = row
-        console.log(item)
         let content = ''
         if(item.title.temp_name === '订单附件'){
         	content += ` <div class="orderFile order-detail mb-4 order-content d-flex flex-wrap mx-4 justify-content-start">

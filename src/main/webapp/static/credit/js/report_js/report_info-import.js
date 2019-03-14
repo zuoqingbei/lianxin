@@ -251,14 +251,14 @@ let Verify = {
                       };  
                     }, 
                     onLoadSuccess:function(data){
-                    	console.log(data)
+                    	// console.log(data)
                     	let rows = data.rows;
                     	rows.forEach((item,index)=>{
                     		//录入名称
                     		if(!item.country || item.country.trim() !== '中国大陆' || !(item.status === '293'|| item.status === '291'|| item.status === '295' || item.status === '296' || item.status === '694' || item.status === '816')){
                     			$(Array.from($(".recordName"))[index]).addClass("disable");
                     		}else {
-                    			console.log($(Array.from($(".recordName"))[index]))
+                    			// console.log($(Array.from($(".recordName"))[index]))
                     			$(Array.from($(".recordName"))[index]).removeClass("disable")
                     		}
                     		//分析
@@ -297,8 +297,8 @@ let Verify = {
                             $('#table tbody tr').each(function (index,item) {
                                 // $(item).height($fixedTableBodyColumns.find('tbody tr').eq(index).height()+1);
                                 $fixedTableBodyColumns.find('tr').eq(index).css('height',$(item).height());
-                                console.log('表头行高:'+$fixedTableBodyColumns.find('tr').eq(index).height(),
-                                    '正常行高:'+$(item).height())
+                                // console.log('表头行高:'+$fixedTableBodyColumns.find('tr').eq(index).height(),
+                                //     '正常行高:'+$(item).height())
                             });
                         },500)
                     }

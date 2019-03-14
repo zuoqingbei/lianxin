@@ -43,7 +43,7 @@ let InitObj = {
 				type:'post',
 				data:{dataJson:JSON.stringify(dataJson),"report_type":rows["report_type"]},
 				success:(data)=>{
-					console.log(data)
+					// console.log(data)
 				}
 			})
 		})
@@ -102,7 +102,7 @@ let InitObj = {
 				type:'post',
 				data:{dataJson:JSON.stringify(dataJson),"report_type":rows["report_type"]},
 				success:(data)=>{
-					console.log(data)
+					// console.log(data)
 				}
 			})
 		})
@@ -450,7 +450,7 @@ let InitObj = {
 		let id = $(".gjds").attr("dsconfigid")
 		let _this = this
 		let symbol =  getSource.includes("?")?'&':'?'
-			console.log(getSource,'11',id)
+			// console.log(getSource,'11',id)
 		$.ajax({
 			url:BASE_PATH + 'credit/front/ReportGetData/' + getSource + symbol + 'ficConf_id='+id+'&report_type='+rows["report_type"],
 			type:'post',
