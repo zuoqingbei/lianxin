@@ -540,7 +540,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 					 
 						//报告发送失败,改变状态
 						CreditOrderInfo tempModel = new CreditOrderInfo();
-						int statusCode = 308;
+						int statusCode = 999;
 						tempModel.set("id", orderId).set("status", statusCode).update();
 						
 						//增加跟踪记录

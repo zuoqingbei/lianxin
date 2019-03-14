@@ -145,9 +145,7 @@ public class ReportTranslateController extends BaseProjectController {
 	}
 	 
 	private  String doCheck(String fromCustom,String fromBaidu,List<TranslateModel> translateDict) {
-		if("北京冰峰谷科技有限公司".equals(fromCustom)) {
-			System.out.println("到了");
-		}
+		 
 		if(StrUtils.isEmpty(fromCustom,fromBaidu)) {
 			return fromBaidu;
 		}
