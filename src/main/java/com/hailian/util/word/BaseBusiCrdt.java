@@ -427,23 +427,23 @@ public class BaseBusiCrdt extends BaseWord{
         List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
         if(finanConfList!=null && finanConfList.size()>0) {
         	for (CreditCompanyFinancialStatementsConf financialConf : finanConfList) {
-                   String begin = financialConf.get("date1");
-                   String end = financialConf.get("date2");
-                   String finanId = financialConf.getInt("id") + "";
-                   int realFinanceTypes = financialConf.getInt("type") ;
-                   //取到对应的财务类型
-                   /*Integer  financeType = -1;
-                   for (Integer tempType :  FinanceService.FINANCIAL_TYPE) {
-                   	financeType =  getFinancialType(companyId);
-                   	if(financeType!=-1) {break;}
-       			}*/
-                  //word里财务模块生成
-                  financial(realFinanceTypes, finanId, begin, end, map,reportType);
-                 //生成财务报告EXCEL
-                  String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
-                  excelPath.add(expath);
-                  //财务-评价
-                  map.put("financial_eval", financialEval(financialConf,reportType,sysLanguage));
+                String begin = financialConf.get("date1");
+                String end = financialConf.get("date2");
+                String finanId = financialConf.getInt("id") + "";
+                int realFinanceTypes = financialConf.getInt("type") ;
+                //取到对应的财务类型
+                /*Integer  financeType = -1;
+                for (Integer tempType :  FinanceService.FINANCIAL_TYPE) {
+                	financeType =  getFinancialType(companyId);
+                	if(financeType!=-1) {break;}
+    			}*/
+               //word里财务模块生成
+               financial(realFinanceTypes, finanId, begin, end, map,reportType);
+              //生成财务报告EXCEL
+               String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
+               excelPath.add(expath);
+               //财务-评价
+               map.put("financial_eval", financialEval(financialConf,reportType,sysLanguage));
 			}
         	
          

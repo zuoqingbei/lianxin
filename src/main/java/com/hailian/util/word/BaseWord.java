@@ -1058,7 +1058,7 @@ public class BaseWord {
                         e.printStackTrace();
                         ReportInfoGetData.outPutErroLog(log, e);
                         CreditOrderInfo order = CreditOrderInfo.dao.findById(orderId);
-                        ReportInfoGetDataController.sendErrMsg(order, userid, "预览文件生成异常,将影响预览功能,请注意!");
+                        ReportInfoGetDataController.sendErrMsg(order, userid, originalFile+",预览文件生成异常,将影响预览功能,请注意!");
                     }
                 }
                 //commonFiles.add(fl);
