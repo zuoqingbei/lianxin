@@ -1011,7 +1011,7 @@ let OrderDetail = {
                                 aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
                             }
                             let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=${aHref} alt="商标"></a>` : row[columnName];
-                            $tr.append(`<td>${Public.textFilter(row[columnName], 'null', '-')}</td>`);// 没数据的显示 “-”
+                            $tr.append(`<td>${Public.textFilter(tdData, 'null', '-')}</td>`);// 没数据的显示 “-”
                         });
                         $wrap.find('tbody').append($tr);
                     });
