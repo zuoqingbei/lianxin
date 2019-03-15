@@ -582,10 +582,10 @@ let ReportConfig = {
     	let cw_dom;
     	let ds_dom;
     	_this.tableTitle = []
-    	floatIndex.forEach((item,index)=>{
+    	floatIndex.forEach((item,index)=>{//遍历类型为9的小模块
     		let floatParentId = this.floatTitle[index]['float_parent'];//浮动的父节点id
     		let titleId;
-    		this.entityTitle.forEach((item,i)=>{
+    		this.entityTitle.forEach((item,i)=>{//遍历所有的小模块
     			if(item.id === floatParentId ) {
     				if(_this.entityModalType[i] !== '10') {
     					//非财务模块浮动
@@ -619,9 +619,9 @@ let ReportConfig = {
 			ds_cw_title.forEach((item,index)=>{
 				//初始化大数财务模块
 				let this_content = ds_cw_contents[index];
-	    		let moneySource = ds_cw_contents[0][0].get_source;
+	    		let moneySource = ds_cw_contents[0][1].get_source;
 	    		let moneyStr = ''
-				let unitSource = ds_cw_contents[0][1].get_source;
+				let unitSource = ds_cw_contents[0][2].get_source;
 	    		let unitStr = ''
 				$.ajax({
 					url:BASE_PATH + 'credit/front/ReportGetData/' + moneySource,
@@ -642,20 +642,24 @@ let ReportConfig = {
 				if(item.sort === 1) {
 					ds_top_html += `<div class="top-html mx-4">
 						<div class="d-flex justify-content-between align-items-center mt-4">
-							<!-- 单位 -->
+							<!-- 企业名称和单位 -->
 							<div class="ds-unit" style="width:100%">
+								<div class="firm-name form-inline">
+									<label class="mr-3" style="font-weight:600">${this_content[0].temp_name}</label>
+									<input type="text" style="width:14rem" class="form-control" id="${this_content[0].column_name}ds" placeholder=${this_content[0].place_hold} name=${this_content[0].column_name}>
+								</div>
 								<div class="form-inline my-3" >
-									<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[0].temp_name}</label>
-									<select class="form-control mr-3" id="${this_content[0].column_name}ds" style="width:10rem" name=${this_content[0].column_name}>${moneyStr}</select>
-									<select class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${unitStr}</select>
+									<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[1].temp_name}</label>
+									<select class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${moneyStr}</select>
+									<select class="form-control mr-3" id="${this_content[2].column_name}ds" style="width:10rem" name=${this_content[2].column_name}>${unitStr}</select>
 								</div>
 							</div>
 						</div>
 						<div class="d-flex justify-content-between align-items-center mt-4">
 							<!-- 日期 -->
 							<div class="ds-date form-inline" style="width:100%">
-								<input class="form-control  my-3" id="${this_content[2].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[2].column_name}  placeholder=${this_content[2].place_hold} />
-								<input class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
+								<input class="form-control  my-3" id="${this_content[3].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
+								<input class="form-control"  id="${this_content[4].column_name}ds" type="text" name=${this_content[4].column_name}  placeholder=${this_content[4].place_hold} />
 							</div>
 						</div>`
 				}else {
@@ -1584,7 +1588,6 @@ let ReportConfig = {
 						 if(data.statusCode === 1) {
 							 Public.message("success",data.message)
 							 Public.goToInfoImportPage();
-							 
 						 }else if(data.statusCode !== 1){
 							 Public.message("error",data.message)
 						 }
@@ -1652,6 +1655,7 @@ let ReportConfig = {
     					  dataJsonObj["id"] = id
     					  dataJsonObj[name] = val
     				 }else {
+    				 	//财务
     					 let formArr = Array.from($(item).siblings().find(".form-control"))
     					 formArr.forEach((item,index)=>{
     						 let id = $(item).attr("id");

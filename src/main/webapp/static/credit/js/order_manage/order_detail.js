@@ -307,23 +307,20 @@ let OrderDetail = {
                                 .parents('ul').siblings('.multiText:eq(0)').text(data.rows[0][item.contents[1].column_name])
                                 .siblings('.multiText').text(data.rows[0][item.contents[2].column_name]);
                         } else {
-                            console.warn(item.title.temp_name + '-总体评价-没有返回数据！', `${this.getUrl(item)}&order_num=${this.row.num}`)
+                            console.warn(item.title.temp_name + '-总体评价-没有返回数据！')
                         }
                     });
                     break;
                 // 9-财务模块结构和多行文本框数据
-                case '9':
-
+                /*case '9':
                     if (item.title.sort === 1) { //财务
                         if (item.title.get_source.includes('type=1') || item.title.get_source.includes('type=2')) {
                             _this.type9MulText = item;
                         } else {
                             _this.type9BigData = item;
                         }
-
                     } else {
                         items.forEach((item0, index0) => {
-
                             if (item.title.float_parent === item0.title.id) {
                                 if (item0.smallModileType === '10') {//财务表头
                                     if (item0.title.get_source.includes('type=1') || item0.title.get_source.includes('type=2')) {
@@ -348,6 +345,38 @@ let OrderDetail = {
                             }
                         })
                     }
+                    break;*/
+                case '9':
+                    items.forEach((item0, index0) => {
+                        if (item.title.float_parent === item0.title.id) {
+                            if (item0.smallModileType === '10') {//财务浮动
+                                if (item.title.sort === 1) { //财务表头
+                                    if (item.title.get_source.includes('type=1') || item.title.get_source.includes('type=2')) {
+                                        _this.type9MulText = item;
+                                    } else {
+                                        _this.type9BigData = item;
+                                    }
+                                } else { //内部各表
+                                    if (item0.title.get_source.includes('type=1') || item0.title.get_source.includes('type=2')) {
+                                        _this.type9TableHead.push(item)
+                                    } else {
+                                        _this.type9TableHeadBigData.push(item)
+                                    }
+                                }
+                            } else {
+                                //非财务的浮动——表格上面的时间
+                                // 12-102中文；14-102English；下面给这两种的出资情况加时间
+                                if ((['12', '14'].includes(_this.row.report_type) && item0.title.temp_name === '出资情况') ||
+                                    (['15'].includes(_this.row.report_type) && item0.title.temp_name === '股东信息')) {
+                                    $.get(this.getUrl(item), (data) => {
+                                        let date = data.rows && data.rows.length > 0 ? data.rows[0].date : '';
+                                        $("#" + item0.title.id + " .module-content").prepend(`<h4>截止日期：${date}</h4>`);
+                                    })
+                                }
+                            }
+                        }
+                    });
+
                     break;
                 // 10-财务模块表格数据
                 case '10':
@@ -441,7 +470,7 @@ let OrderDetail = {
                                 // 保存或提交后如果出错则报错再跳转，实际上业务只有提交可能报错
                                 // data.message = "报告生成或者发送失败！请联系管理员！";
                                 // data.statusCode = 0;
-                                if (param === 'update'||param2 === 'submit') {
+                                if (param === 'update' || param2 === 'submit') {
                                     if (data.statusCode === 0) {
                                         Public.message('error', data.message)
                                     } else {
@@ -647,6 +676,10 @@ let OrderDetail = {
                                 </div>`);
                     $(".main .table-content").append($wrap);
                     $.get(this.getUrl(item), data => {
+                        if (data.rows.length === 0) {
+                            console.warn(item.title.temp_name + ' 没有返回数据！');
+                            return;
+                        }
                         let chartData = {xAxisData: [], y1Data: [], y2Data: []};
                         let [title, remark] = ['', ''];
                         item.contents.forEach((content, i) => {//5个数据分别是标题，备注，图表的x轴、y1轴、y2轴
@@ -718,7 +751,8 @@ let OrderDetail = {
         /*
         * type9MulText：包含单位、多行文本框部分的标签，其data_source可获取对应的值、表格头部的日期；
         *               其中的contents的[4,5]是单位的标签，其中的data_source可获取下拉框来将数值转换为对应文本，
-        *               contents的[10]开始往后是多行文本框的标签
+        *               contents的[10]开始往后是多行文本框的标签。
+        *               这个数组并不安全，后台可能从前面插入元素，所以发现后要平移下标。
         * type9TableHead：表格4个部分的标题
         * type10Items：其data_source可获取表格数据内容，其中parent_sector、son_sector和表格顺序对应
         * */
@@ -733,11 +767,12 @@ let OrderDetail = {
         if (!type9MulText.contents) {
             return
         }
+        console.log('~~type9MulText.contents',type9MulText.contents);
         type9MulText.contents.forEach(function (content, index) {// 多行文本框
-            if (index < 9) {
+            if (index < 10) {
                 return
             }
-            if (index % 2 === 0) { //固定顺序，从第10个开始，一个名字一个内容
+            if (index % 2 === 0) { //固定顺序，从[10]开始，一个名字一个内容
                 $mulTextBox.append(`<div class="item">
                                         <h4>${content.temp_name}: <span id="${content.column_name}"></span></h4>
                                         <div class="border multiText mt-2 m-3 p-2"></div><div class="pt-1"></div>
@@ -778,14 +813,14 @@ let OrderDetail = {
                         [dateStart, dateEnd] = [type9MulTextData.rows[0].date3, type9MulTextData.rows[0].date4];
                     }
                     $(this).find('table:eq(0)').prepend(`<thead>
-                    <tr><th></th><th></th><th>${type9MulText.contents[(bigData ? 0 : 4)].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
+                    <tr><th></th><th></th><th>${type9MulText.contents[(bigData ? 1 : 4)].temp_name}：<span class="currency" ></span>（<span class="currency_ubit" ></span>）</th></tr>
                     <tr><th></th><th>开始日期：${dateStart || '&emsp;'}</th><th>结束日期：${dateEnd || '&emsp;'}</th></tr>
                 </thead>`);
                 });
                 // 通过企业父title的某个内容获取下拉框来转换单位
                 $.when(
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData ? 0 : 4)].get_source}`),
-                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData ? 1 : 5)].get_source}`)
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData ? 1 : 4)].get_source}`),
+                    $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.contents[(bigData ? 2 : 5)].get_source}`)
                 ).done(function (unitData, currencyUbitData) {
                     let [currency, currency_ubit] = [type9MulTextData.rows[0].currency, type9MulTextData.rows[0].currency_ubit]
                     let $select1 = $(`<select id="currencyUnitTrans">${unitData[0].selectStr}</select>`);
