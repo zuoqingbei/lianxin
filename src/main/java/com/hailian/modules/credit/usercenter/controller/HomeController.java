@@ -649,7 +649,7 @@ public class HomeController extends BaseProjectController {
 		company.set("create_date", getNow());
 		company.set("create_by", userid);
 		company.set("update_by",userid);
-		company.set("name_en", model.get("right_company_name_en"));
+		//company.set("name_en", model.get("right_company_name_en"));
 		int companInfoId = -1;//填报语言对应的公司表id
 		/** 报告语言
 		 	213		中文简体
