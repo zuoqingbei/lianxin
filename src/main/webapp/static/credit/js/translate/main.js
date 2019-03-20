@@ -36,6 +36,7 @@ let ReportConfig = {
             const $tableEn = $("#table"+item+"En");
             let contents = this.contentsArr[index]
             let contentsEn = this.contentsArrEn[index]
+            console.log(contents,contentsEn)
             let titles = this.title
             let urlTemp = titles[index].get_source;
             let conf_id = titles[index].id;
@@ -55,6 +56,7 @@ let ReportConfig = {
                 })
             }
             let selectInfo = []
+            console.log(_this.selectInfoObj,titles[index])
             if(+_this.selectInfoObj["parent_temp"] === titles[index]["id"]) {
                 //哪个表格有select，就传
                 delete _this.selectInfoObj["parent_temp"]
@@ -380,6 +382,7 @@ let ReportConfig = {
     						</div>`
                         break;
                     case 'select':
+                        console.log(ele)
                         if(!ele.get_source) {return}
                         let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
                         ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
@@ -817,6 +820,7 @@ let ReportConfig = {
         floatIndexEn.forEach((item,index)=>{
             let floatParentIdEn = this.floatTitleEn[index]['float_parent'];//浮动的父节点id
             this.entityTitleEn.forEach((item,i)=>{
+                console.log(item.id ,floatParentIdEn)
                 if(item.id === floatParentIdEn ) {
                     if(floatParentIdEn !== 4648) {
                         //非财务模块浮动
@@ -845,7 +849,7 @@ let ReportConfig = {
                         this.formTitle.push(this.floatTitle[index])
                     }else {
                         console.log(_this.entityTitle[i]["get_source"])
-                        if(_this.entityTitle[i]["get_source"].includes("type=3")||_this.entityTitle[i]["get_source"].includes("type=4")){
+                        if(_this.entityTitle[i]["get_source"].includes("type=3")){
                             //大数财务模块浮动
                             ds_cw_title.push(this.floatTitle[index])
                             ds_cw_contents.push(this.floatContents[index])
@@ -1162,8 +1166,6 @@ let ReportConfig = {
             url:BASE_PATH + "credit/front/getmodule/list",
             data:{id,reportType,istranslate,type},
             success:(data)=>{
-                data.modules.shift();
-                console.log('~~data:',data);
                 setTimeout(()=>{
                     _this.initmodal();
                     InitObjTrans.addressInit();
@@ -1257,7 +1259,7 @@ let ReportConfig = {
                         contentHtml +=  `<div class="bg-f mb-3"  ><a style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                     }else if(smallModileType === '10'){
                         //财务模块
-                        if (_this.entityTitle[i]["get_source"].includes("type=3")||_this.entityTitle[i]["get_source"].includes("type=4")) {
+                        if(item["title"]["get_source"].includes("type=3")){
                             //大数
                             _this.dsGetSource = item.title.get_source;
                             _this.dsAlterSource = item.title.alter_source;
@@ -1596,12 +1598,10 @@ let ReportConfig = {
                         contentHtml += `</div>`
                     }
 
+                    console.log(modulesToEn.length,index)
                     let item_en = modulesToEn[index]
                     if(!item_en){return}
                     let smallModileTypeEn = item_en.smallModileType
-                    if(item_en.title.temp_name===null){
-                        console.log('~~item,index',item,index)
-                    }
                     if(item_en.title.temp_name === 'Key Fiancial Items' || item_en.title.temp_name === 'industry_analysis' || item_en.title.temp_name.includes('质检意见')){
                         return
                     }
@@ -2069,6 +2069,8 @@ let ReportConfig = {
         this.numCop = 0   //计数器
         let allTableData = [] //存放翻译过所有表格数据
         tableTitlesEn.forEach((item,index)=>{
+            let tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
+//    		console.log(tableTitleSourceClassName)
             //循环表格表头
             let alterSource = item["alter_source"];
             let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
@@ -2091,7 +2093,7 @@ let ReportConfig = {
                     let url = BASE_PATH + `credit/ordertranslate/translate`;
                     if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
                         //102报告类型需要传参
-                        url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
+                        url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${tableTitleSourceClassName}`
                     }
                     $.ajax({
                         url,
@@ -2262,6 +2264,8 @@ let ReportConfig = {
             //_this.formDataArr
             formIndexEn.forEach((item,index)=>{
                 let alterSource = formTitlesEn[index]["alter_source"];
+//    		console.log(alterSource)
+                let formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
                 if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){ return}
                 let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
                 let dataJson = []
@@ -2289,7 +2293,7 @@ let ReportConfig = {
                     let url = BASE_PATH + `credit/ordertranslate/translate`;
                     if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
                         //102报告类型需要传参
-                        url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}`
+                        url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}`
                     }
                     //console.log(_this.formDataArr,index)
                     $.ajax({
