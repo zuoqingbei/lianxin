@@ -148,12 +148,18 @@ public class CompanyService {
 				}
 				companyinfoModel.set("register_code_type", "632");
 				companyinfoModel.set("register_codes", CreditCode);
-				if(EconKind.contains("合伙企业")){
-					companyinfoModel.set("managing_partner", OperName);
-				}else{
-					companyinfoModel.set("legal", OperName);
+				companyinfoModel.set("legal", OperName);
+				//法人代表类型或者说叫负责人类型
+				//638	法人代表
+				//639	执行事务合伙人
+				//640	负责人
+				Integer principalType = 638; //默认法人代表
+				if(EconKind.contains("个体户企业")||EconKind.contains("个人独资企业")||EconKind.contains("代表处")||EconKind.contains("外商办事处")||EconKind.contains("分公司")){
+					principalType = 640;
+				}else if(EconKind.contains("有限合伙企业")){
+					principalType = 639;
 				}
-				
+				companyinfoModel.set("principal_type", principalType);
 				companyinfoModel.set("registered_capital", RegistCapi);
 				if(RegistCapi.indexOf("万元人民币") !=-1){
 					String replace = RegistCapi.replace("万元人民币", "");
@@ -208,7 +214,7 @@ public class CompanyService {
 				companyinfoModel.set("operation_scope", Scope);
 				//业务范围
 				try {
-					JSONObject bus = json.getJSONObject("Result").getJSONObject("Industry");
+					JSONObject bus = json.getJSONObject("Result").getJSONObject("Industry");//业务范围
 					String Industry = bus.getString("Industry"); 
 					companyinfoModel.set("business_scope", Industry);
 				} catch (Exception e1) {
@@ -720,10 +726,11 @@ public class CompanyService {
 	}
 
 	public static void main(String[] args) {
-		String s="a;b;c;";
-		if(s.lastIndexOf(";") != -1) {
-			s=s.substring(0, s.lastIndexOf(";"));
-		}
-		System.out.println(s);
+		try {
+			HttpTest.getYjapi("成都泛美印象软件开发中心（有限合伙）".trim());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}//获取api企业信息数据
 	}
 }

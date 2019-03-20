@@ -10,43 +10,40 @@ import java.util.UUID;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import com.hailian.api.constant.ReportTypeCons;
-import com.hailian.api.constant.RoleCons;
-import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
-import com.hailian.system.dict.DictCache;
-import com.hailian.system.dict.SysDictDetail;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.hailian.api.constant.ReportTypeCons;
+import com.hailian.api.constant.RoleCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyGdp;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
 import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintion;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityOpintionHistory;
 import com.hailian.modules.admin.ordermanager.model.CreditQualityResult;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
+import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
 import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
 import com.hailian.modules.credit.notice.model.NoticeLogModel;
 import com.hailian.modules.credit.notice.model.NoticeModel;
-import com.hailian.modules.credit.reportmanager.model.CreditReportDetailConf;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.finance.ExcelModule;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.front.template.TemplateDictService;
+import com.hailian.system.dict.DictCache;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
-import com.hailian.util.word.BaseWord;
 import com.hailian.util.word.MainReport;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
@@ -271,25 +268,25 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             //使用ehcache缓存数据
             //System.out.println(tableName + sqlSuf);
             //rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
-            if (StringUtils.isNotBlank(companyId)) {
-                //关联设置企业类型注释
-                CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);
-                if (StringUtils.isBlank(info.get("type_of_enterprise_remark"))) {
-                    //企业类型注释是空，设置进去
-                    SysDictDetail detail = SysDictDetail.dao.findById(info.getStr("company_type"));
-                    if(detail!=null) {
-                        CreditCompanyInfo cmodel = new CreditCompanyInfo();
-                        cmodel.set("id", companyId);
-                        if (ReportTypeCons.ROC_ZH.equals(type)) {//102Chinese
-                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));//中文企业注释
-                        } else if (ReportTypeCons.ROC_EN.equals(type)) {//102English
-                            cmodel.set("type_of_enterprise_remark", detail.getStr("detail_content"));//英文企业注释
-                        }else {//其它类型
-                        	 cmodel.set("type_of_enterprise_remark", detail.getStr("detail_remark"));//中文企业注释
-                        }
-                        cmodel.update();
-                    }
-                }
+            //因为此处不知道前端协议是什么样子的,暂时写成这样满足需求,后期需要和前端沟通进行改动(这样效率低下)
+            if(StringUtils.isNotBlank(type)&&StringUtils.isNotBlank(companyId)) {
+                     //关联设置企业类型注释
+                     CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);
+                     if (StringUtils.isBlank(info.get("type_of_enterprise_remark"))) {//企业类型注释是空，设置进去
+                    	 SysDictDetail detailDict= SysDictDetail.dao.findById(info.getStr("company_type"));
+                    	 if(detailDict!=null) {
+                    		 CreditCompanyInfo cmodel = new CreditCompanyInfo();
+                             cmodel.set("id", companyId);
+                             
+                    		 if("ZH".equals(ReportTypeCons.whichLanguage(type))) {
+                    			 cmodel.set("type_of_enterprise_remark", detailDict.getStr("detail_remark"));//中文企业注释
+                    		 }else {
+                    			 cmodel.set("type_of_enterprise_remark", detailDict.getStr("detail_content"));//英文企业注释
+                    		 }
+                         
+                    		 cmodel.update();
+                    	 }
+                     }
             }
             if (!("".equals(selectInfo) || selectInfo == null)) {
                 // 解析前端传入的字符串

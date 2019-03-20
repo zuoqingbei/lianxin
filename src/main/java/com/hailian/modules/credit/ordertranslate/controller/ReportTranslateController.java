@@ -143,7 +143,7 @@ public class ReportTranslateController extends BaseProjectController {
 			
 		
 	}
-	 
+	 //分词翻译
 	private  String doCheck(String fromCustom,String fromBaidu,List<TranslateModel> translateDict) {
 		 
 		if(StrUtils.isEmpty(fromCustom,fromBaidu)) {
