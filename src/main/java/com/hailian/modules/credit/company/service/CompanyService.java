@@ -100,6 +100,9 @@ public class CompanyService {
 				flag=true;
 				JSONObject jsonResulet = json.getJSONObject("Result");
 				
+				for (Object object : jsonResulet.keySet()) {
+					System.err.println(object+":"+jsonResulet.get(object));
+				}
 				//企业基本信息
 				String No = jsonResulet.getString("No"); //注册号
 				String CreditCode = jsonResulet.getString("CreditCode").replace("null", ""); //统一信用社信用代码
@@ -116,8 +119,10 @@ public class CompanyService {
 				String Province = jsonResulet.getString("Province"); //所在省
 				String Scope = jsonResulet.getString("Scope").replace("null", ""); //经营范围
 				String Status = jsonResulet.getString("Status"); //登记状态
+				//String englishName = jsonResulet.getString("englishname"); //英文名称
 				CreditCompanyInfo companyinfoModel=new CreditCompanyInfo();
 				companyinfoModel.set("registration_num", No);
+				//companyinfoModel.set("naem_en", englishName);
 				String typeFlagStr = "";
 				if(ReportTypeCons.isRoc102(reporttype)) {
 					typeFlagStr = "companyType102";
