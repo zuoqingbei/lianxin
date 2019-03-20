@@ -572,8 +572,12 @@ public class BaseBusiCrdt extends BaseWord{
      * @return
      */
     public static List<RowRenderData> financial(int financeType,String financialConfId,String begin,String end,HashMap<String, Object> map,String reportType) {
-    	
-    	
+    	List<RowRenderData> rowList = new ArrayList<RowRenderData>();
+    	if(StringUtils.isEmpty(financialConfId)) {
+    		return rowList;
+    	}
+    	CreditCompanyFinancialStatementsConf config = CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
+    	//String companyName = config.get("company_name")+"";//公司名称
     	try {
     		if(!StrUtils.isEmpty(begin))
     		begin = detailDate(sdf.parse(begin),reportType);
@@ -584,7 +588,7 @@ public class BaseBusiCrdt extends BaseWord{
 			e.printStackTrace();
 		}
     	
-        List<RowRenderData> rowList = new ArrayList<RowRenderData>();
+        
         //(financeType==3){
             //todo 大数渲染
        // }else{
