@@ -438,7 +438,7 @@ public class BaseBusiCrdt extends BaseWord{
                     if(financeType!=-1) {break;}
                 }*/
                //word里财务模块生成
-               financial(realFinanceTypes, finanId, begin, end, map,reportType);
+               financial(financialConf, map,reportType);
               //生成财务报告EXCEL
                String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
                excelPath.add(expath);
@@ -564,19 +564,40 @@ public class BaseBusiCrdt extends BaseWord{
 
     /**
      * 财务模板生成
-     * @param financeType
-     * @param financialConfId
-     * @param begin
-     * @param end
+     * @param financialConf
      * @param map
+     * @param reportType
      * @return
      */
-    public static List<RowRenderData> financial(int financeType,String financialConfId,String begin,String end,HashMap<String, Object> map,String reportType) {
+    public static List<RowRenderData> financial(CreditCompanyFinancialStatementsConf financialConf,HashMap<String, Object> map,String reportType) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
-        if(StringUtils.isEmpty(financialConfId)) {
+        if(financialConf==null) {
             return rowList;
         }
-        CreditCompanyFinancialStatementsConf config = CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
+        String begin = financialConf.get("date1");
+        String end = financialConf.get("date2");
+        String financialConfId = financialConf.getInt("id") + "";
+        int financeType = financialConf.getInt("type") ;
+        String companyName = financialConf.get("company_name")+"";//公司名称
+        //判断语言类型
+        String language = "612";
+        String currencyStr = "单位";
+        if("EN".equals(ReportTypeCons.whichLanguage(reportType))){
+            language = "613";
+            currencyStr = "Unit";
+        }
+        String currencyId = financialConf.get("currency")+"";//币种id
+        String currency = ReportInfoGetDataController.dictIdToString(currencyId,reportType,language);
+        String currencyUnitId = financialConf.get("currency_ubit")+"";//币种单位id
+        String currencyUnit = ReportInfoGetDataController.dictIdToString(currencyUnitId,reportType,language);
+        map.put("financialCompanyName",companyName);
+        map.put("financialCurrency",currency);
+
+        String currencyUnit396 = ReportInfoGetDataController.dictIdToStringSpecified(currencyUnitId,"detail_content");
+        map.put("financialUnit",currencyUnit);
+
+
+        //CreditCompanyFinancialStatementsConf config = CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
         //String companyName = config.get("company_name")+"";//公司名称
         try {
             if(!StrUtils.isEmpty(begin))
@@ -670,7 +691,7 @@ public class BaseBusiCrdt extends BaseWord{
                     rowList.add(RowRenderData.build(
                             new TextRenderData(""),
                             new TextRenderData(""),
-                            new TextRenderData("单位：人民币（千元）", header)));
+                            new TextRenderData(currencyStr+"："+currency+"（"+currencyUnit+"）", header)));
                 }
                 String itemName = ccf.getStr("item_name");
                 Integer beginValue = ccf.getInt("begin_date_value");
