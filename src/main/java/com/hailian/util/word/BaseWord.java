@@ -26,7 +26,6 @@ import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
-import com.sun.star.uno.RuntimeException;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -171,7 +170,8 @@ public class BaseWord {
             uc.connect();
             iputstream = uc.getInputStream();
             //调用模板生成word
-            template = XWPFTemplate.compile(iputstream).render(dataMap);
+            template = XWPFTemplate.compile(iputstream);
+            template.render(dataMap);
             out = new FileOutputStream(targetDoc);
             template.write(out);
             out.flush();
@@ -180,6 +180,10 @@ public class BaseWord {
             iputstream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            if(e.getMessage().contains("No valid entries or contents found, this is not a valid OOXML (Office Open XML) file")){
+                throw new RuntimeException(e.getMessage());
+            }
+
         } finally {
             if (out != null) {
                 try {
@@ -209,7 +213,6 @@ public class BaseWord {
 
     /**
      * 生成表格 - 竖表
-     * @param reportType2 
      * @param child
      * @param rows
      * @return
@@ -1115,4 +1118,19 @@ public class BaseWord {
         //list.add(map);
           new SendMailUtil("15269274025@163.com", "", "你好", "mycontent", fileList).sendEmail();
     }
+
+    public static Map<String,Object> dealDataMapByreportType(String reportType,Map<String,Object> mapData){
+        Map<String,Object> newMapData = new HashMap<>();
+
+        if(ReportTypeCons.OTHER_396.equals(reportType)){
+            for (String key : mapData.keySet()) {
+                if("financialCompanyName".equals(key)||"396CredibilityCode".equals(key)||"financialCurrency".equals(key)||"financialUnit".equals(key)||"bigFinancial".equals(key)){
+                    newMapData.put(key,mapData.get(key));
+                }
+            }
+            mapData = newMapData;
+        }
+       return mapData;
+    }
+
 }

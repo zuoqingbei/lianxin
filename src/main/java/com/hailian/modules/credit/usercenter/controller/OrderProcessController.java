@@ -913,7 +913,6 @@ public class OrderProcessController extends BaseProjectController{
     /**
      * 获取前台文件上传到文件服务器并将文件信息记录到文件实体表
      * return resultJson
-     * @param orderId status
      */
     public static ResultType uploadFile(String businessId, String businessType,List<UploadFile> upFileList,int userid,String randomCode){
         List<File> commonFiles = new ArrayList<File>();
@@ -1024,7 +1023,6 @@ public class OrderProcessController extends BaseProjectController{
     /**
         * 获取绩效
      * lzg
-     * @param qualityScore 质检分数
      */
     public void getKpi( CreditOrderInfo model ) {
     	String  orderId = model.get("id")+"";
@@ -1169,8 +1167,11 @@ class CrawlerThreed implements Runnable {
         @Override
         public void run() {
             try {
+                //查询填报语言
+                String infoLanguage = Db.query("select info_language from credit_report_type where id=?",reportType).get(0)+"";
+
                 //调用企查查接口
-                new CompanyService().enterpriseGrab(companyId, company, "612",reportType);
+                new CompanyService().enterpriseGrab(companyId, company, infoLanguage,reportType);
             } catch (Exception e) {
                 e.printStackTrace();
             }

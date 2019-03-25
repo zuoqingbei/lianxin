@@ -1035,6 +1035,24 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return "";
     }
 
+
+    /**
+     * 将id转化为字典表中指定列的字符串
+     * @param id specifiedStr
+     */
+    public static String dictIdToStringSpecified(String id,String specifiedStr) {
+        //判断id必须是数字
+        if (id.matches("-?[0-9]+.*[0-9]*")){
+            Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
+            SysDictDetail sysDict = cache.get(Integer.parseInt(id));
+            if (sysDict != null) {
+                return sysDict.get(specifiedStr) + "";
+            }
+        } else {
+            System.out.println("此信息输出不影响程序往下运行，异常id=" + id);
+        }
+        return "";
+    }
     /**
      * 将id转化为字典表中对应的字符串
      * @param id

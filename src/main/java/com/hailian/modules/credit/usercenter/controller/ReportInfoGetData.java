@@ -51,11 +51,9 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * 保存或修改form的数据
 	 */
 	abstract void alterForm();
+
 	/**
-	 * 从字典表里获取下拉选
-	 * @param type
-	 * @param selectedId
-	 * @param disPalyCol
+	 从字典表里获取下拉选
 	 */
 	abstract void getSelete();
 	/**
@@ -89,11 +87,15 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 		model.set("del_flag", 1);
 		model.update();
 	 };
+
 	/**
-	 * 把 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]的json数组分解放进model里并保存
+	 *  把 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]的json数组分解放进model里并保存
 	 * @param jsonStr
-	 * @param entryTypeParam
-	 * @param flag
+	 * @param className
+	 * @param sysLanguage
+	 * @param isMainTable
+	 * @param reportType
+	 * @param <T>
 	 * @return
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
@@ -210,11 +212,12 @@ public abstract class ReportInfoGetData extends BaseProjectController {
         }
         return list;
 	}
+
 	/**
 	 * 识别传入的参数从而将字典id转化为自然语言
-	 * @param selectSource
 	 * @param rows
-	 * @param columnName
+	 * @param selectInfoMap
+	 * @param className
 	 */
 	public static void dictIdToString(List<BaseProjectModel> rows,List<Map<Object,Object>>  selectInfoMap,String className){
 		for (Map<Object, Object> entry : selectInfoMap) {

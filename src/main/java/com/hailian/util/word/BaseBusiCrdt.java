@@ -215,6 +215,7 @@ public class BaseBusiCrdt extends BaseWord{
             for (CreditReportModuleConf conf : child) {
                 String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
+                String columnName = conf.getStr("column_name");
                 if (s == null || "".equals(s)) {
                     continue;
                 }
@@ -228,12 +229,22 @@ public class BaseBusiCrdt extends BaseWord{
                 //主表
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
+                    if("396CredibilityCode".equals(word_key)){
+                        System.out.println("dddddd");
+                    }
+                    System.out.println("word_key===="+word_key);
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         List rs = report.getTableData(true,  companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
-                            String v = model.get(word_key) + "";
-                            map.put(word_key, v);
+                            for (Object key23 : model.getAttrs().keySet()) {
+                                System.out.println(key23+"================="+model.get(key23+""));
+                                if(key23.equals(columnName)){
+                                    map.put(word_key, model.get(key23+""));
+                                    continue;
+                                }
+                            }
+
                         }
                     }
                 } else {
@@ -244,8 +255,14 @@ public class BaseBusiCrdt extends BaseWord{
                         List rs = report.getTableData(false, companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
-                            String v = model.get(word_key) + "";
-                            map.put(word_key, v);
+                            for (Object key23 : model.getAttrs().keySet()) {
+                                System.out.println(key23+"================="+model.get(key23+""));
+                                if(key23.equals(columnName)){
+                                    map.put(word_key, model.get(key23+""));
+                                    continue;
+                                }
+                            }
+
                         }
                     }
                 }
@@ -452,7 +469,7 @@ public class BaseBusiCrdt extends BaseWord{
             map.put("financial", new MiniTableRenderData(null));
             map.put("bigFinancial", new MiniTableRenderData(null));
         }
-
+        map = (HashMap<String, Object>) dealDataMapByreportType(reportType,map);
         //生成word
         BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
         //重新添加图片并生成word
@@ -590,11 +607,13 @@ public class BaseBusiCrdt extends BaseWord{
         String currency = ReportInfoGetDataController.dictIdToString(currencyId,reportType,language);
         String currencyUnitId = financialConf.get("currency_ubit")+"";//币种单位id
         String currencyUnit = ReportInfoGetDataController.dictIdToString(currencyUnitId,reportType,language);
-        map.put("financialCompanyName",companyName);
-        map.put("financialCurrency",currency);
+        if("21".equals(reportType)){
+            map.put("financialCompanyName",companyName);
+            map.put("financialCurrency",currency);
+            String currencyUnit396 = ReportInfoGetDataController.dictIdToStringSpecified(currencyUnitId,"detail_content");
+            map.put("financialUnit",currencyUnit396);
+        }
 
-        String currencyUnit396 = ReportInfoGetDataController.dictIdToStringSpecified(currencyUnitId,"detail_content");
-        map.put("financialUnit",currencyUnit);
 
 
         //CreditCompanyFinancialStatementsConf config = CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
