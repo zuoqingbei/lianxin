@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="creditReport:war">
-    <output-path>$PROJECT_DIR$/classes/artifacts/creditReport_war</output-path>
-    <root id="archive" name="creditReport_war.war">
-      <element id="artifact" artifact-name="creditReport:war exploded" />
-    </root>
-  </artifact>
-</component>

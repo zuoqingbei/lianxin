@@ -1,4 +1,4 @@
-﻿{
+{
     "ALLOWED_FILE_TYPE": "Μόνο τα ακόλουθα αρχεία επιτρέπονται : ", 
     "AUTHORIZATION_REQUIRED": "Δεν έχετε δικαίωμα χρήσης του filemanager.", 
 	"DIRECTORY_ALREADY_EXISTS": "Ο φάκελος '%s' υπάρχει ήδη.",

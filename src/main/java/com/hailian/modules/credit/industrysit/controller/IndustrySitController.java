@@ -4,8 +4,9 @@ import java.util.List;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
-import com.hailian.modules.credit.industrysituation.model.IndustrySitModel;
-import com.hailian.modules.credit.industrysituation.model.IndustrySitTitleModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyIndustrySituationDict;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyIndustrySituationTitleDict;
+
 import com.hailian.modules.credit.industrysituation.service.IndustrySitService;
 import com.hailian.modules.credit.industrysituation.service.IndustrySitTitleService;
 import com.jfinal.plugin.activerecord.Page;
@@ -22,11 +23,11 @@ public class IndustrySitController extends BaseProjectController {
 	* @TODO
 	 */
 	public void list() {
-		IndustrySitModel attr = getModelByAttr(IndustrySitModel.class);
+		CreditCompanyIndustrySituationDict attr = getModelByAttr(CreditCompanyIndustrySituationDict.class);
 		String keyword = getPara("keyword");
 		String orderBy = getBaseForm().getOrderBy();
-		Page<IndustrySitModel> page = IndustrySitService.service.getPage(getPaginator(),orderBy,attr,this);
-		List<IndustrySitTitleModel> allIndustryTitle = IndustrySitTitleService.service.getAllIndustrySit();	
+		Page<CreditCompanyIndustrySituationDict> page = IndustrySitService.service.getPage(getPaginator(),orderBy,attr,this);
+		List<CreditCompanyIndustrySituationTitleDict> allIndustryTitle = IndustrySitTitleService.service.getAllIndustrySit();	
 		setAttr("allIndustryTitle",allIndustryTitle);
 		setAttr("page",page);
 		render(path+"list.html");
@@ -38,7 +39,7 @@ public class IndustrySitController extends BaseProjectController {
 	* @TODO
 	 */
 	public void view() {
-		IndustrySitModel item=IndustrySitService.service.getIndustrySit(getParaToInt());
+		CreditCompanyIndustrySituationDict item=IndustrySitService.service.getIndustrySit(getParaToInt());
 		setAttr("item", item);
 		render(path + "view.html");
 	}
@@ -50,7 +51,7 @@ public class IndustrySitController extends BaseProjectController {
 	 */
 	public void add() {
 		// 获取页面信息,设置目录传入
-		IndustrySitModel attr = getModel(IndustrySitModel.class);
+		CreditCompanyIndustrySituationDict attr = getModel(CreditCompanyIndustrySituationDict.class);
 		setAttr("model", attr);
 		render(path + "add.html");
 	}
@@ -62,8 +63,8 @@ public class IndustrySitController extends BaseProjectController {
 	 */
 	public void edit() {
 		Integer paraToInt = getParaToInt();
-		IndustrySitModel model = IndustrySitModel.dao.findById(paraToInt);
-		List<IndustrySitTitleModel> allIndustryTitle = IndustrySitTitleService.service.getAllIndustrySit();	
+		CreditCompanyIndustrySituationDict model = CreditCompanyIndustrySituationDict.dao.findById(paraToInt);
+		List<CreditCompanyIndustrySituationTitleDict> allIndustryTitle = IndustrySitTitleService.service.getAllIndustrySit();	
 		setAttr("allIndustryTitle",allIndustryTitle);
 		setAttr("model", model);
 		// 查询下拉框
@@ -91,7 +92,7 @@ public class IndustrySitController extends BaseProjectController {
 	public void save() {
 		Integer pid = getParaToInt();
 		// 日志添加
-		IndustrySitModel model = getModel(IndustrySitModel.class);
+		CreditCompanyIndustrySituationDict model = getModel(CreditCompanyIndustrySituationDict.class);
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);

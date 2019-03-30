@@ -820,7 +820,7 @@ let ReportConfig = {
         floatIndexEn.forEach((item,index)=>{
             let floatParentIdEn = this.floatTitleEn[index]['float_parent'];//浮动的父节点id
             this.entityTitleEn.forEach((item,i)=>{
-                console.log(item.id ,floatParentIdEn)
+                // console.log(item.id ,floatParentIdEn)
                 if(item.id === floatParentIdEn ) {
                     if(floatParentIdEn !== 4648) {
                         //非财务模块浮动
@@ -840,7 +840,7 @@ let ReportConfig = {
             this.entityTitle.forEach((item,i)=>{
 //    			console.log(item.id,floatParentId)
                 if(item.id === floatParentId ) {
-                    console.log(_this.entityModalType,i)
+                    // console.log(_this.entityModalType,i)
                     if(_this.entityModalType[i] !== '10') {
                         //非财务模块浮动
                         let html = this.notMoneyFloatHtml[i+1]
@@ -848,10 +848,11 @@ let ReportConfig = {
                         this.formIndex.push(i)
                         this.formTitle.push(this.floatTitle[index])
                     }else {
-                        console.log(_this.entityTitle[i]["get_source"])
-                        if(_this.entityTitle[i]["get_source"].includes("type=3")){
+                        // console.log(_this.entityTitle[i]["get_source"])
+                        if(_this.entityTitle[i]["get_source"].includes("type=3")||_this.entityTitle[i]["get_source"].includes("type=4")){
                             //大数财务模块浮动
                             ds_cw_title.push(this.floatTitle[index])
+                            console.assert(!(ds_cw_contents.length===0 && !this.floatContents[0].get_source),this.floatContents)
                             ds_cw_contents.push(this.floatContents[index])
                             ds_dom = $("#titleDs"+i)
                         }else {
@@ -873,6 +874,7 @@ let ReportConfig = {
                 //初始化大数财务模块
                 let this_content = ds_cw_contents[index];
                 let moneySource = ds_cw_contents[0][0].get_source;
+                console.assert(moneySource,ds_cw_contents)
                 let moneyStr = ''
                 let unitSource = ds_cw_contents[0][1].get_source;
                 let unitStr = ''
@@ -1166,6 +1168,7 @@ let ReportConfig = {
             url:BASE_PATH + "credit/front/getmodule/list",
             data:{id,reportType,istranslate,type},
             success:(data)=>{
+                console.log("~~data:",data);
                 setTimeout(()=>{
                     _this.initmodal();
                     InitObjTrans.addressInit();
@@ -1259,7 +1262,7 @@ let ReportConfig = {
                         contentHtml +=  `<div class="bg-f mb-3"  ><a style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                     }else if(smallModileType === '10'){
                         //财务模块
-                        if(item["title"]["get_source"].includes("type=3")){
+                        if(item["title"]["get_source"].includes("type=3")||item["title"]["get_source"].includes("type=3")){
                             //大数
                             _this.dsGetSource = item.title.get_source;
                             _this.dsAlterSource = item.title.alter_source;
@@ -2069,8 +2072,14 @@ let ReportConfig = {
         this.numCop = 0   //计数器
         let allTableData = [] //存放翻译过所有表格数据
         tableTitlesEn.forEach((item,index)=>{
-            let tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
+            console.assert(item.alter_source.split('?')[1],item)
+            if(item.alter_source.split('?')[1]){
+                let tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
+            }
 //    		console.log(tableTitleSourceClassName)
+
+
+
             //循环表格表头
             let alterSource = item["alter_source"];
             let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
@@ -2265,7 +2274,10 @@ let ReportConfig = {
             formIndexEn.forEach((item,index)=>{
                 let alterSource = formTitlesEn[index]["alter_source"];
 //    		console.log(alterSource)
-                let formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
+                if(alterSource.split('?')[1]){
+                    let formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
+
+                }
                 if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){ return}
                 let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
                 let dataJson = []

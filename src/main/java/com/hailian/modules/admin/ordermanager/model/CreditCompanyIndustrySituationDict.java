@@ -1,11 +1,10 @@
-package com.hailian.modules.credit.industrysituation.model;
+package com.hailian.modules.admin.ordermanager.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.feizhou.swagger.utils.StringUtil;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
@@ -21,9 +20,9 @@ import com.jfinal.plugin.activerecord.Page;
 * @TODO
  */
 @ModelBind(table = "credit_company_industry_situation_dict")
-public class IndustrySitModel extends BaseProjectModel<IndustrySitModel> {
+public class CreditCompanyIndustrySituationDict extends BaseProjectModel<CreditCompanyIndustrySituationDict> {
 	private static final long serialVersionUID = 1L;
-	public static final IndustrySitModel dao = new IndustrySitModel();
+	public static final CreditCompanyIndustrySituationDict dao = new CreditCompanyIndustrySituationDict();
 	
 	/**
 	 * 分页
@@ -31,7 +30,7 @@ public class IndustrySitModel extends BaseProjectModel<IndustrySitModel> {
 	 * @date: 2019年2月25日下午3:53:15
 	 * @Description:
 	 */
-	public Page<IndustrySitModel> getPage(Paginator paginator,String orderBy, IndustrySitModel attr, BaseProjectController c) {
+	public Page<CreditCompanyIndustrySituationDict> getPage(Paginator paginator,String orderBy, CreditCompanyIndustrySituationDict attr, BaseProjectController c) {
 		// TODO Auto-generated method stub
 		List<Object> params=new ArrayList<Object>();
 		StringBuffer sql=new StringBuffer(" from credit_company_industry_situation_dict t left join credit_company_industry_situation_title_dict t2 on t2.id=t.title ");
@@ -51,7 +50,7 @@ public class IndustrySitModel extends BaseProjectModel<IndustrySitModel> {
 		} else {
 			sql.append(" order by ").append(orderBy);
 		}
-		Page<IndustrySitModel> page = IndustrySitModel.dao
+		Page<CreditCompanyIndustrySituationDict> page = CreditCompanyIndustrySituationDict.dao
 				.paginate(paginator, "select t.*,t2.title as titlename", sql.toString(),params.toArray());
 		System.out.println(sql);
 		return page;
@@ -72,14 +71,14 @@ public class IndustrySitModel extends BaseProjectModel<IndustrySitModel> {
 		Db.update(sql,params.toArray());
 		
 	}
-	public IndustrySitModel getIndustrySit(Integer id){
+	public CreditCompanyIndustrySituationDict getIndustrySit(Integer id){
 		StringBuffer sql=new StringBuffer("select * from credit_company_industry_situation_dict where del_flag=0");
 		List<Object> params=new ArrayList<Object>();
 		if(id !=null){
 			sql.append(" and id=?");
 			params.add(id);
 		}
-		IndustrySitModel find = IndustrySitModel.dao.findFirst(sql.toString(),params.toArray());
+		CreditCompanyIndustrySituationDict find = CreditCompanyIndustrySituationDict.dao.findFirst(sql.toString(),params.toArray());
 		return find;
 	}
 

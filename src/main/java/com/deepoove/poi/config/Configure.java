@@ -91,7 +91,6 @@ public class Configure {
 	 *            策略
 	 */
 	public void customPolicy(String tagName, RenderPolicy policy) {
-		customPolicys.put(tagName, policy);
 	}
 
 	/**

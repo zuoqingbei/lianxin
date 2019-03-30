@@ -38,7 +38,7 @@ import java.util.*;
  * Created by Thinkpad on 2018/11/17.
  */
 public class BaseBusiCrdt extends BaseWord{
-	 public static Logger log = Logger.getLogger(BaseBusiCrdt.class);
+     public static Logger log = Logger.getLogger(BaseBusiCrdt.class);
     //ftp文件服务器 ip
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
@@ -72,24 +72,24 @@ public class BaseBusiCrdt extends BaseWord{
      * @param reportType 报告类型
      * @param sysLanguage 报告内容语言
      * @param userid 当前登录人
-     * @throws Exception 
+     * @throws Exception
      */
     public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) throws Exception {
-    	HashMap<String, Object> map = new HashMap<String, Object>();
-    	//报告名称
-    	String reportNameCh = Db.query("select name from credit_report_type where del_flag=0 and id=?",reportType)+"";
-    	String reportNameEn = Db.query("select name_en from credit_report_type where del_flag=0 and id=?",reportType)+"";
-    	if("612".equals(reportNameCh)) {
-    		 map.put("reportName",reportNameCh);
-    	}else if("613".equals(reportNameCh)) {
-    		 map.put("reportName",reportNameEn);
-    	}
-    	
-    	
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        //报告名称
+        String reportNameCh = Db.query("select name from credit_report_type where del_flag=0 and id=?",reportType)+"";
+        String reportNameEn = Db.query("select name_en from credit_report_type where del_flag=0 and id=?",reportType)+"";
+        if("612".equals(reportNameCh)) {
+             map.put("reportName",reportNameCh);
+        }else if("613".equals(reportNameCh)) {
+             map.put("reportName",reportNameEn);
+        }
+
+
         //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        
+
         //获取报告信息
         ReportTypeModel reportTypeModel = ReportTypeModel.dao.findById(reportType);
         //报告文件路劲
@@ -124,7 +124,7 @@ public class BaseBusiCrdt extends BaseWord{
         map.put("order_code",orderCode);
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
         map.put("currentTime",sdf2.format(new Date()));
-        
+
         //报告名称
         //String reportName = reportTypeModel.getStr("name");
         String reportName = referenceNum;
@@ -192,7 +192,7 @@ public class BaseBusiCrdt extends BaseWord{
             }
             System.out.print(key);
             if("partner".equals(key)) {
-            	 System.out.print("开始解析股东信息!");
+                 System.out.print("开始解析股东信息!");
             }
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
@@ -215,6 +215,7 @@ public class BaseBusiCrdt extends BaseWord{
             for (CreditReportModuleConf conf : child) {
                 String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
+                String columnName = conf.getStr("column_name");
                 if (s == null || "".equals(s)) {
                     continue;
                 }
@@ -228,12 +229,22 @@ public class BaseBusiCrdt extends BaseWord{
                 //主表
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
+                    if("396CredibilityCode".equals(word_key)){
+                        System.out.println("dddddd");
+                    }
+                    System.out.println("word_key===="+word_key);
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         List rs = report.getTableData(true,  companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
-                            String v = model.get(word_key) + "";
-                            map.put(word_key, v);
+                            for (Object key23 : model.getAttrs().keySet()) {
+                                System.out.println(key23+"================="+model.get(key23+""));
+                                if(key23.equals(columnName)){
+                                    map.put(word_key, model.get(key23+""));
+                                    continue;
+                                }
+                            }
+
                         }
                     }
                 } else {
@@ -241,11 +252,17 @@ public class BaseBusiCrdt extends BaseWord{
                     String word_key = conf.get("word_key") + "";
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         //取数据
-                        List rs = report.getTableData(true, companyId, t, cn, ci, "",reportType);
+                        List rs = report.getTableData(false, companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
-                            String v = model.get(word_key) + "";
-                            map.put(word_key, v);
+                            for (Object key23 : model.getAttrs().keySet()) {
+                                System.out.println(key23+"================="+model.get(key23+""));
+                                if(key23.equals(columnName)){
+                                    map.put(word_key, model.get(key23+""));
+                                    continue;
+                                }
+                            }
+
                         }
                     }
                 }
@@ -426,7 +443,7 @@ public class BaseBusiCrdt extends BaseWord{
         List<String> excelPath = new ArrayList<>();
         List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
         if(finanConfList!=null && finanConfList.size()>0) {
-        	for (CreditCompanyFinancialStatementsConf financialConf : finanConfList) {
+            for (CreditCompanyFinancialStatementsConf financialConf : finanConfList) {
                 String begin = financialConf.get("date1");
                 String end = financialConf.get("date2");
                 String finanId = financialConf.getInt("id") + "";
@@ -434,25 +451,25 @@ public class BaseBusiCrdt extends BaseWord{
                 //取到对应的财务类型
                 /*Integer  financeType = -1;
                 for (Integer tempType :  FinanceService.FINANCIAL_TYPE) {
-                	financeType =  getFinancialType(companyId);
-                	if(financeType!=-1) {break;}
-    			}*/
+                    financeType =  getFinancialType(companyId);
+                    if(financeType!=-1) {break;}
+                }*/
                //word里财务模块生成
-               financial(realFinanceTypes, finanId, begin, end, map,reportType);
+               financial(financialConf, map,reportType);
               //生成财务报告EXCEL
                String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
                excelPath.add(expath);
                //财务-评价
                map.put("financial_eval", financialEval(financialConf,reportType,sysLanguage));
-			}
-        	
-         
+            }
+
+
         }else {
-        	map.put("financial_eval", "");
+            map.put("financial_eval", "");
             map.put("financial", new MiniTableRenderData(null));
             map.put("bigFinancial", new MiniTableRenderData(null));
         }
-
+        map = (HashMap<String, Object>) dealDataMapByreportType(reportType,map);
         //生成word
         BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
         //重新添加图片并生成word
@@ -504,7 +521,7 @@ public class BaseBusiCrdt extends BaseWord{
      * 发送带附件邮件
      * @param customerId
      * @param fileList
-     * @throws Exception 
+     * @throws Exception
      */
     public static void sendMail(String reportName,String customerId,List<Map<String, String>> fileList) throws Exception{
         //发送邮件
@@ -564,27 +581,54 @@ public class BaseBusiCrdt extends BaseWord{
 
     /**
      * 财务模板生成
-     * @param financeType
-     * @param financialConfId
-     * @param begin
-     * @param end
+     * @param financialConf
      * @param map
+     * @param reportType
      * @return
      */
-    public static List<RowRenderData> financial(int financeType,String financialConfId,String begin,String end,HashMap<String, Object> map,String reportType) {
-    	
-    	
-    	try {
-    		if(!StrUtils.isEmpty(begin))
-    		begin = detailDate(sdf.parse(begin),reportType);
-    		if(!StrUtils.isEmpty(end))
-			end = detailDate(sdf.parse(end),reportType);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
+    public static List<RowRenderData> financial(CreditCompanyFinancialStatementsConf financialConf,HashMap<String, Object> map,String reportType) {
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
+        if(financialConf==null) {
+            return rowList;
+        }
+        String begin = financialConf.get("date1");
+        String end = financialConf.get("date2");
+        String financialConfId = financialConf.getInt("id") + "";
+        int financeType = financialConf.getInt("type") ;
+        String companyName = financialConf.get("company_name")+"";//公司名称
+        //判断语言类型
+        String language = "612";
+        String currencyStr = "单位";
+        if("EN".equals(ReportTypeCons.whichLanguage(reportType))){
+            language = "613";
+            currencyStr = "Unit";
+        }
+        String currencyId = financialConf.get("currency")+"";//币种id
+        String currency = ReportInfoGetDataController.dictIdToString(currencyId,reportType,language);
+        String currencyUnitId = financialConf.get("currency_ubit")+"";//币种单位id
+        String currencyUnit = ReportInfoGetDataController.dictIdToString(currencyUnitId,reportType,language);
+        if("21".equals(reportType)){
+            map.put("financialCompanyName",companyName);
+            map.put("financialCurrency",currency);
+            String currencyUnit396 = ReportInfoGetDataController.dictIdToStringSpecified(currencyUnitId,"detail_content");
+            map.put("financialUnit",currencyUnit396);
+        }
+
+
+
+        //CreditCompanyFinancialStatementsConf config = CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
+        //String companyName = config.get("company_name")+"";//公司名称
+        try {
+            if(!StrUtils.isEmpty(begin))
+            begin = detailDate(sdf.parse(begin),reportType);
+            if(!StrUtils.isEmpty(end))
+            end = detailDate(sdf.parse(end),reportType);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+
         //(financeType==3){
             //todo 大数渲染
        // }else{
@@ -645,12 +689,12 @@ public class BaseBusiCrdt extends BaseWord{
                             break;
                     }
                     if(financeType==1||financeType==2) {
-                    	rowList.add(RowRenderData.build(
+                        rowList.add(RowRenderData.build(
                                 new TextRenderData(""),
                                 new TextRenderData(""),
                                 new TextRenderData("")));
                     }
-                    
+
 
                     //大标题
                     Style titileStyle = new Style();
@@ -666,7 +710,7 @@ public class BaseBusiCrdt extends BaseWord{
                     rowList.add(RowRenderData.build(
                             new TextRenderData(""),
                             new TextRenderData(""),
-                            new TextRenderData("单位：人民币（千元）", header)));
+                            new TextRenderData(currencyStr+"："+currency+"（"+currencyUnit+"）", header)));
                 }
                 String itemName = ccf.getStr("item_name");
                 Integer beginValue = ccf.getInt("begin_date_value");
@@ -681,9 +725,9 @@ public class BaseBusiCrdt extends BaseWord{
             }
             //财务-表格
             if(financeType==3||financeType==4) {
-            	 map.put("bigFinancial", new MiniTableRenderData(rowList));
+                 map.put("bigFinancial", new MiniTableRenderData(rowList));
             }else {
-            	 map.put("financial", new MiniTableRenderData(rowList));
+                 map.put("financial", new MiniTableRenderData(rowList));
             }
         //}
         return rowList;
@@ -778,12 +822,12 @@ public class BaseBusiCrdt extends BaseWord{
      * @return  当前公司关联下的,内容不为空的所有财务类型
      */
     public static  List<Integer> getFinancialType (String companyId) {
-    	
-    	List<Integer> list = new ArrayList<>();
-    	
-		try {
-			// 查询公司id下的财务配置
-			List<CreditCompanyFinancialStatementsConf> flagList = CreditCompanyFinancialStatementsConf.dao.find(
+
+        List<Integer> list = new ArrayList<>();
+
+        try {
+            // 查询公司id下的财务配置
+            List<CreditCompanyFinancialStatementsConf> flagList = CreditCompanyFinancialStatementsConf.dao.find(
                     "select * from credit_company_financial_statements_conf where del_flag=0 and company_id=?  ",
                     Arrays.asList(new String[]{companyId   }).toArray());
             if(flagList==null||flagList.size()==0){
@@ -791,37 +835,37 @@ public class BaseBusiCrdt extends BaseWord{
             }
             String type = null;
             for (CreditCompanyFinancialStatementsConf entity : flagList) {
-    			String confId = entity.get("id")+"";//财务配置id
-    			  type = entity.get("type")+"";//财务类型
-    			if (StrUtils.isEmpty(confId, type+"")) { return null; }
-    			
-    			List<CreditCompanyFinancialEntry> targetValueList =  CreditCompanyFinancialEntry.dao.find(
-    					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=? and type=? ",
-    					Arrays.asList(new String[] { confId ,type+""}).toArray());
-    			
-    			if(targetValueList!=null) {
-    				for (CreditCompanyFinancialEntry entity1 : targetValueList) {
-    					Integer value1 = entity1.getInt("begin_date_value");
-    					Integer value2 = entity1.getInt("end_date_value");
-    					System.out.println(value1);
-    					System.out.println(value2);
-    					 if((value1!=null&&value1!=0)||(value2!=null&&value2!=0)) {list.add(Integer.parseInt(type));break;} 
-					}
-    					 
-    			}
-    			
-    			
-			}
-            
-			
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}
-		return list;
-	}
-    
-    
-    
+                String confId = entity.get("id")+"";//财务配置id
+                  type = entity.get("type")+"";//财务类型
+                if (StrUtils.isEmpty(confId, type+"")) { return null; }
+
+                List<CreditCompanyFinancialEntry> targetValueList =  CreditCompanyFinancialEntry.dao.find(
+                        "select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=? and type=? ",
+                        Arrays.asList(new String[] { confId ,type+""}).toArray());
+
+                if(targetValueList!=null) {
+                    for (CreditCompanyFinancialEntry entity1 : targetValueList) {
+                        Integer value1 = entity1.getInt("begin_date_value");
+                        Integer value2 = entity1.getInt("end_date_value");
+                        System.out.println(value1);
+                        System.out.println(value2);
+                         if((value1!=null&&value1!=0)||(value2!=null&&value2!=0)) {list.add(Integer.parseInt(type));break;}
+                    }
+
+                }
+
+
+            }
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return list;
+    }
+
+
+
 }
