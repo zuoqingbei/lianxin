@@ -79,8 +79,8 @@ let Login = {
                 	contentType:"application/x-www-form-urlencoded",// (可以)
                 	dataType:"json",
                 	success:function(data){
-                		console.log(data+"1313");
                 		console.log(data);
+                		//获取登录信息用作后面判断当前用户的权限
 //                		alert(JSON.stringify(data.roleIds));
                 		/*
                 		 * 1  管理员
@@ -109,6 +109,7 @@ let Login = {
                         		sessionStorage.setItem('isResetPw',1);
                         	}
                         	sessionStorage.setItem('roleIds',JSON.stringify(data.roleIds));
+                        	sessionStorage.setItem('loginInfo',JSON.stringify(data));
                         }
                 	}
                 });
