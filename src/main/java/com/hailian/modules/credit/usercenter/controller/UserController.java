@@ -64,7 +64,7 @@ public class UserController  extends BaseProjectController{
 				if(30<datediff){
 					isExpired=true;
 				}
-				renderJson(new Record().set("statusCode", 1).set("message", "登录成功").set("roleIds", roleIds).set("isExpired", isExpired));
+				renderJson(new Record().set("statusCode", 1).set("message", "登录成功").set("roleIds", roleIds).set("isExpired", isExpired).set("userId",userId));
 				//redirect("/credit/front/home/menu");
 			}else{
 				renderJson(new ResultType(0, "账号或者密码错误!"));
