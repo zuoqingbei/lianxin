@@ -6,36 +6,44 @@ import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
+import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.util.word.*;
 import com.jfinal.plugin.activerecord.Record;
+import org.apache.log4j.Logger;
 
 /**
  * @className UserLoginController.java
  * @time   2018年9月10日 上午9:30:00
  * @author lzg
- * @todo   用户登录控制
+ * @todo   根据订单号发送报告
  */
-@Api( tag = "用户登录控制", description = "用户登录控制" )
-@ControllerBind(controllerKey = "/report/test")
+@Api( tag = "根据订单号发送报告", description = "根据订单号发送报告" )
+@ControllerBind(controllerKey = "/report/resend")
 public class CreditReportController extends BaseProjectController{
-
-    //登录
-    public void report() {
-        String id = getPara("id");
+    public static Logger log = Logger.getLogger(CreditReportController.class);
+    String errorMessage = "";
+    public void run() {
+        String orderId = getPara("id");
         Integer userid = getSessionUser().getUserid();
-        String speedLanguage = "s1.detail_name";
-        String meataSql = "select report_type,report_language from credit_order_info  where num = ?";
-        CreditOrderInfo metaOrder = CreditOrderInfo.dao.findFirst(meataSql, id);
-        String reportType = metaOrder.getStr("report_type");
-        String report_language = metaOrder.getStr("report_language");
-        if("EN".equals(ReportTypeCons.whichLanguage(reportType))) {
-        	speedLanguage += "_en";
-        }
-        //业务sql
-        String sql = "select t.*,"+speedLanguage+" as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.num = ?";
-        CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, id);
-        try {
+        Record record = new Record();
+        record.set("statusCode", 1);
+        record.set("message", "发送成功!");
+        CreditOrderInfo model = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", orderId);
+
+        try{
+            String speedLanguage = "s1.detail_name";
+            String meataSql = "select report_type,report_language from credit_order_info  where id = ?";
+            CreditOrderInfo metaOrder = CreditOrderInfo.dao.findFirst(meataSql, orderId);
+            String reportType = metaOrder.getStr("report_type");
+            String report_language = metaOrder.getStr("report_language");
+            if("EN".equals(ReportTypeCons.whichLanguage(reportType))) {
+                speedLanguage += "_en";
+            }
+            //业务sql
+            String sql = "select t.*,"+speedLanguage+" as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
+            CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, orderId);
             if (ReportTypeCons.ROC_HY.equals(reportType) || ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                 //中文繁体+英文
                 if ("217".equals(report_language)) {
@@ -67,10 +75,24 @@ public class CreditReportController extends BaseProjectController{
                     }
                 }
             }
-        }catch (Exception e){
-        	e.printStackTrace();
-            System.out.println("报告生成异常");
+
+        }catch(Exception e){
+                //日志输出
+                e.printStackTrace();
+                errorMessage = ReportInfoGetData.outPutErroLog(log, e);
+                //报告发送失败,改变状态
+                CreditOrderInfo tempModel = new CreditOrderInfo();
+                int statusCode = 999;
+                tempModel.set("id", orderId).set("status", statusCode).update();
+                model.set("status", statusCode);
+                record.clear().set("statusCode", 0).set("message", "重新发送报告时失败!请联系管理员!");
+                //增加站内信
+                ReportInfoGetData.sendErrMsg(model, userid,  "报告生成或者发送失败!请联系管理员!",log);
         }
+        //增加跟踪记录
+        CreditOrderFlow.addOneEntry(this, model,errorMessage,true);
+        CreditOperationLog.dao.addOneEntry(userid, model, "重新发送/", "/report/resend/run");//操作日志记录
+        renderJson(record);
     }
 
     public void getData(){

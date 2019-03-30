@@ -285,24 +285,28 @@ public class CompanyService {
 			
 						
 						CreditCompanyManagement managementModel = new CreditCompanyManagement();
-						
-						List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job.trim(),"position");
-						if(dictDetailBy2 !=null && CollectionUtils.isNotEmpty(dictDetailBy2)){
-							managementModel.set("position", dictDetailBy2.get(0).get("detail_id"));
-						}else{
-							SysDictDetail detailmodel=new SysDictDetail();
-							detailmodel.set("dict_type", "position");
-							detailmodel.set("detail_name", job.trim());
-							String value_en = TransApi.Trans(job.trim(),"en");
-							detailmodel.set("detail_name_en", value_en);
-							detailmodel.set("isprimitive", "1");
-							detailmodel.save();
-							managementModel.set("position", detailmodel.get("detail_id"));
+
+						if(!StrUtils.isEmpty(job)){//判断如果job为空或者null则不添加职务信息
+							List<SysDictDetail> dictDetailBy2 = SysDictDetail.dao.getDictDetailBy(job.trim(),"position");
+							if(dictDetailBy2 !=null && CollectionUtils.isNotEmpty(dictDetailBy2)){
+								managementModel.set("position", dictDetailBy2.get(0).get("detail_id"));
+							}else{
+								SysDictDetail detailmodel=new SysDictDetail();
+								detailmodel.set("dict_type", "position");
+								detailmodel.set("detail_name", job.trim());
+								String value_en = TransApi.Trans(job.trim(),"en");
+								detailmodel.set("detail_name_en", value_en);
+								detailmodel.set("isprimitive", "1");
+								detailmodel.save();
+								managementModel.set("position", detailmodel.get("detail_id"));
+							}
 						}
 						managementModel.set("name", name);
 						managementModel.set("company_id", companyId);
 						managementModel.set("sys_language", sys_language);
 						managementlist.add(managementModel);
+
+
 					}
 					Db.batchSave(managementlist, managementlist.size());
 				}

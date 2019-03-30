@@ -51,24 +51,21 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 	}
 	
 	public static void addOneEntry(BaseController c,CreditOrderInfo model) {
-		//获取订单记录对象
-		CreditOrderFlow cof = new CreditOrderFlow();
-		//订单号
-		model = model.findById(Arrays.asList(new String[] {model.get("id")+""}).toArray());
-		cof.set("order_num", model.get("num"));
-		//订单状态
-		cof.set("order_state", model.get("status"));
-		//操作人
-		cof.set("create_oper", c.getSessionUser()==null?444:c.getSessionUser().getUserid());
-		//操作时间
-		cof.set("create_time",DateUtils.getNow(DateUtils.DEFAULT_REGEX_YYYYMMDD));			
-		//记录生成时间
-		cof.set("create_date", c.getNow());
-		cof.save();
+		addOneEntry(  c, model,"",false);
 	}
-	
-	public static void addOneEntry(BaseController c, CreditOrderInfo model,
-			String errorMessage) {
+
+	public static void addOneEntry(BaseController c, CreditOrderInfo model, String errorMessage){
+		addOneEntry(  c, model,errorMessage,false);
+	}
+
+	/**
+	 * 增加日志跟踪
+	 * @param c
+	 * @param model
+	 * @param errorMessage
+	 * @param isResend
+	 */
+	public static void addOneEntry(BaseController c, CreditOrderInfo model, String errorMessage,boolean isResend) {
 		//获取订单记录对象
 		CreditOrderFlow cof = new CreditOrderFlow();
 		//订单号
@@ -84,6 +81,9 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 		cof.set("create_date", c.getNow());
 		//错误原因
 		cof.set("error_message", errorMessage);
+		if(isResend){
+			cof.set("is_resend", 1);
+		}
 		cof.save();
 	}
 }

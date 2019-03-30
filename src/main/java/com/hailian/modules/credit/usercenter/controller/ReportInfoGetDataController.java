@@ -545,7 +545,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 						
 						record.set("statusCode", 0);
 						record.set("message", "报告生成或者发送失败!请联系管理员!");
-						sendErrMsg(order, getSessionUser().getUserid(),  "报告生成或者发送失败!请联系管理员!");
+						sendErrMsg(order, getSessionUser().getUserid(),  "报告生成或者发送失败!请联系管理员!",log);
 					
 				}
                 
@@ -560,33 +560,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 
     }
     
-    public static void sendErrMsg  (CreditOrderInfo order, Integer userid,String errorMessage) {
-   	 
-	try {
-		//新增公告内容
-	       NoticeModel model = new NoticeModel();
-	       //公告子表添加
-	       NoticeLogModel logModel = new NoticeLogModel();
-	       model.set("notice_title", "报告异常提醒!");
-	       model.set("notice_content", "您查档的" + order.get("right_company_name_en") + ","+errorMessage);
 
-	       String now = DateUtils.getNow(com.hailian.util.DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
-	       model.set("create_by", userid);
-	       model.set("create_date", now);
-	       model.save();
-
-	       //向质检员发起
-	       logModel.set("user_id", order.get("IQC"));
-	       logModel.set("notice_id", model.get("id"));
-	       logModel.set("read_unread", "1");
-	       logModel.save();
-		 
-	} catch (Exception e) {
-		e.printStackTrace();
-		outPutErroLog(log, e);
-	}
-  
-}
     
   
     /**
