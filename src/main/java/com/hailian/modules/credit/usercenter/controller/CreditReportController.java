@@ -15,27 +15,27 @@ import org.apache.log4j.Logger;
 
 /**
  * @className UserLoginController.java
- * @time   2018年9月10日 上午9:30:00
+ * @time   2019年3月30日 上午9:30:00
  * @author lzg
  * @todo   根据订单号发送报告
  */
 @Api( tag = "根据订单号发送报告", description = "根据订单号发送报告" )
-@ControllerBind(controllerKey = "/report/resend")
+@ControllerBind(controllerKey = "/credit/front/resend")
 public class CreditReportController extends BaseProjectController{
     public static Logger log = Logger.getLogger(CreditReportController.class);
     String errorMessage = "";
     public void run() {
-        String orderId = getPara("id");
+        String orderNum = getPara("orderNum");
         Integer userid = getSessionUser().getUserid();
         Record record = new Record();
         record.set("statusCode", 1);
         record.set("message", "发送成功!");
-        CreditOrderInfo model = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", orderId);
-
+        CreditOrderInfo model = CreditOrderInfo.dao.findFirst("select * from credit_order_info where num=?", orderNum);
+        String orderId = model.get("id")+"";
         try{
             String speedLanguage = "s1.detail_name";
-            String meataSql = "select report_type,report_language from credit_order_info  where id = ?";
-            CreditOrderInfo metaOrder = CreditOrderInfo.dao.findFirst(meataSql, orderId);
+            String meataSql = "select report_type,report_language from credit_order_info  where num = ?";
+            CreditOrderInfo metaOrder = CreditOrderInfo.dao.findFirst(meataSql, orderNum);
             String reportType = metaOrder.getStr("report_type");
             String report_language = metaOrder.getStr("report_language");
             if("EN".equals(ReportTypeCons.whichLanguage(reportType))) {
@@ -85,9 +85,9 @@ public class CreditReportController extends BaseProjectController{
                 int statusCode = 999;
                 tempModel.set("id", orderId).set("status", statusCode).update();
                 model.set("status", statusCode);
-                record.clear().set("statusCode", 0).set("message", "重新发送报告时失败!请联系管理员!");
+                record.clear().set("statusCode", 0).set("message", "重新发送报告时失败!请联系管理员或者再次发送!");
                 //增加站内信
-                ReportInfoGetData.sendErrMsg(model, userid,  "报告生成或者发送失败!请联系管理员!",log);
+                ReportInfoGetData.sendErrMsg(model, userid,  "重新发送报告时失败!请联系管理员或者再次发送!",log);
         }
         //增加跟踪记录
         CreditOrderFlow.addOneEntry(this, model,errorMessage,true);
