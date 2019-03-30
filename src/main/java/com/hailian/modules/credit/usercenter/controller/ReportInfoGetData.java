@@ -86,17 +86,23 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			model.set("create_date", now);
 			model.save();
 
-			//向质检员发起
-			logModel.set("user_id", order.get("IQC"));
+			//向单子创建人发起(客服或者管理员角色)
+			logModel.set("user_id", order.get("create_by"));
 			logModel.set("notice_id", model.get("id"));
 			logModel.set("read_unread", "1");
 			logModel.save();
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			if(log!=null)
 			outPutErroLog(log, e);
 		}
 	}
+
+	public static void sendErrMsg  (CreditOrderInfo order, Integer userid, String errorMessage )  {
+		sendErrMsg ( order,  userid,  errorMessage ,null);
+	}
+
 
 	public static String outPutErroLog(Logger log,Exception e) {
 		 String sOut = "";
