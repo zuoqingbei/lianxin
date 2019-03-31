@@ -1025,6 +1025,7 @@ let ReportConfig = {
                 let modules = data.modules;    
                 let contentHtml = '' 
                 let bottomBtn = ''
+				console.log("~~data:",data);
                 modules.forEach((item,index)=>{
                 	/**
                 	 * 循环模块
@@ -1077,7 +1078,9 @@ let ReportConfig = {
                 	let btnText = item.title.place_hold;
                 	let formArr = item.contents; 
                 	//模块的类型
-                	
+
+					let outItem = item;
+					console.assert(outItem.title.is_disable!=='1',outItem)
                 	switch(smallModileType) {
                 		case '0':
                 			//表单类型
@@ -1086,14 +1089,14 @@ let ReportConfig = {
                 			let ind = index
                 			let rowNum = 0;//代表独占一行的input数量
 		                	formArr.forEach((item,index)=>{
-		                		
+		                		console.assert(item.is_disable!=='1',item)
 		                				let formGroup = ''
 		                        		//判断input的类型
 		                        		let field_type = item.field_type
 		                        		if(!field_type) {
 		                        			formGroup += `<div class="form-group">
 		        						            		<label for="" class="mb-2">${item.temp_name}</label>
-		        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		        						            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		        						            		<p class="errorInfo">${item.error_msg}</p>
 		        					            		</div>`
 		                        		}else {
@@ -1102,14 +1105,14 @@ let ReportConfig = {
 		                        				case 'text':
 		                        					formGroup += `<div class="form-group">
 	        						            		<label for="" class="mb-2">${item.temp_name}</label>
-	        						            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+	        						            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 	        						            		<p class="errorInfo">${item.error_msg}</p>
 	        					            		</div>`
 	                        						break;
 		                        				case 'number':
 			                    						formGroup += `<div class="form-group">
 					                        							<label for="" class="mb-2">${item.temp_name}</label>
-					                        							<input type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+					                        							<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''+''} type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 					                        							<p class="errorInfo">${item.error_msg}</p>
 				                        							</div>`
 		                        					
@@ -1117,7 +1120,7 @@ let ReportConfig = {
 		                        				case 'money':
 		                        					formGroup += `<div class="form-group">
 		                        						<label for="" class="mb-2">${item.temp_name}</label>
-		                        						<input type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		                        						<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		                        						<p class="errorInfo">${item.error_msg}</p>
 		                        						</div>`
 		                        						
@@ -1126,7 +1129,7 @@ let ReportConfig = {
 		                        					formGroup += `<div class="form-group date-form" style="position: relative">
                                                                     <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 1rem;top: 2.4rem;width: 1rem;height: 1.125rem;">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
-												            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+												            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
@@ -1134,14 +1137,14 @@ let ReportConfig = {
 		                        					formGroup += `<div class="form-group date-scope-form" style="position: relative;">
                                                         <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 1rem;top: 2.4rem;width: 1rem;height: 1.125rem;">
 									            		<label for="" class="mb-2">${item.temp_name}</label>
-									            		<input type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+									            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 									            		<p class="errorInfo">${item.error_msg}</p>
 								            		</div>`
 		                        					break;
 							            		case 'address':
 							            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <input type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
+									                                    <input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
 									                                </div>`
 							            			break;
 							            		case 'select':
@@ -1155,7 +1158,7 @@ let ReportConfig = {
 							            				success:(data)=>{
 							            				formGroup += `<div class="form-group">
 										            					<label for="" class="mb-2">${item.temp_name}</label>
-										            					<select name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
+										            					<select ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
@@ -1175,7 +1178,7 @@ let ReportConfig = {
 							            					let a = data.selectStr.replace(/value/g,'a')
 							            					formGroup += `<div class="form-group">
 							            						<label for="" class="mb-2">${item.temp_name}</label>
-							            						<input name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
+							            						<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
 							            						<datalist id="cars">
 							            							${a}
 							            						</datalist>
@@ -1187,7 +1190,7 @@ let ReportConfig = {
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <textarea class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
+									                                    <textarea ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
 									                                </div>`
 									                break;
 		        							    default :
@@ -1211,7 +1214,9 @@ let ReportConfig = {
 		                	contentHtml += `</div>`   
 		                	break;
                 		case '1':
-                			//table类型
+							console.assert(item.is_disable!=='1',item);
+
+							//table类型
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(item.contents)
                 			_this.title.push(item.title)
@@ -1232,7 +1237,7 @@ let ReportConfig = {
                 					style="position: relative"
                 					>
                 					</table>
-                					<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
+                					<button class="btn btn-lg btn-block mb-3 mt-4 ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''}" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 					</div>`
                 			}else {
                 				contentHtml += `<div class="table-content1" style="background:#fff">
@@ -1241,12 +1246,13 @@ let ReportConfig = {
                 					style="position: relative;table-layout: fixed;"
                 					>
                 					</table>
-                					<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
+                					<button class="btn btn-lg btn-block mb-3 mt-4 ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''}" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 					</div>`
                 			}
                 		
                 			break;
                 		case '11':
+							console.assert(item.is_disable!=='1',item);
                 			//table类型
                 			_this.idArr.push(index)
                 			_this.contentsArr.push(item.contents)
@@ -1257,7 +1263,7 @@ let ReportConfig = {
 				                				style="position: relative;table-layout: fixed;"
 				                				>
 				                				</table>
-				                				<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
+				                				<button class="btn btn-lg btn-block mb-3 mt-4 ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''}" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
                 				</div>`
                 		
                 			break;
@@ -1285,7 +1291,7 @@ let ReportConfig = {
 	            				success:(data)=>{
 	            					contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 	            						<label >${inputObj.temp_name}</label>
-	            						<select type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
+	            						<select ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
 	            							 ${data["selectStr"]}
 	            						</select>
 	            						<span id="helpId" class="text-muted">${inputObj.suffix}</span>
@@ -1344,12 +1350,12 @@ let ReportConfig = {
 	                				if(ot_item.title.temp_name === '' || ot_item.title.temp_name === null) {
 	                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff;margin-top:-2rem">
 	                						<label for="" class="thead-label">${item.temp_name}</label>
-	                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+	                						<textarea ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
 	            						</div>`
 	                				}else{
 	                					contentHtml += ` <div class="textarea-module form-group mb-3 p-4" style="background:#fff">
 		                						<label for="" class="thead-label">${item.temp_name}</label>
-		                						<textarea name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
+		                						<textarea ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} name=${item.column_name} id=${item.column_name} rows="2" class="form-control" placeholder=""></textarea>
 	                						</div>`
 	                				}
 	                			})
@@ -1811,4 +1817,9 @@ $('.return_back').on('click',function () {
         location.reload();
     });
 
-})
+});
+
+// 19-03-30 新增禁用功能, by lijianlong
+// 如果模块或字段中有属性is_disable: "1"，
+	// 如果是表单输入类型则禁用此模块下所有输入或对应字段输入，方法是增加属性disabled，
+	// 如果模块是表格则禁用新增按钮，方法是增加样式 disabled。

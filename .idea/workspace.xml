@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="creditReport:war exploded" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="bf04940d-c03f-4a03-bf32-8eabdcc9e38a" name="Default Changelist" comment="获取数据主表参数的修改 true-&gt;false">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.rebel.xml.bak" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/artifacts/creditReport_war.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/artifacts/creditReport_war_exploded.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" beforeDir="false" />
@@ -15,6 +20,14 @@
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/deepoove/poi/config/Configure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/deepoove/poi/config/Configure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/company/service/CompanyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/company/service/CompanyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysit/controller/IndustrySitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysit/controller/IndustrySitController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysit/controller/IndustrySitTitleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysit/controller/IndustrySitTitleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysituation/model/IndustrySitModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/admin/ordermanager/model/CreditCompanyIndustrySituationDict.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysituation/model/IndustrySitTitleModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/admin/ordermanager/model/CreditCompanyIndustrySituationTitleDict.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysituation/service/IndustrySitService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysituation/service/IndustrySitService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysituation/service/IndustrySitTitleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/industrysituation/service/IndustrySitTitleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/ordertranslate/controller/ReportTranslateController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/ordertranslate/controller/ReportTranslateController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/OrderProcessController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/OrderProcessController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java" afterDir="false" />
@@ -29,6 +42,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/credit/orderallocationrule/orderrule_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/credit/orderallocationrule/orderrule_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/credit/pricemanager/price_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/credit/pricemanager/price_list.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/credit/reportmanager/reporttemp_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/credit/reportmanager/reporttemp_list.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/report_pages/report_config.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/report_pages/report_config.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/error/trans.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/error/trans.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/error/trans_no_auth.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/error/trans_no_auth.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/static/component/filemanager/scripts/custom-scrollbar-plugin/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/component/filemanager/scripts/custom-scrollbar-plugin/LICENSE.txt" afterDir="false" />
@@ -46,6 +60,9 @@
       <change beforePath="$PROJECT_DIR$/src/main/webapp/static/component/ymPrompt/skin/simple_gray/ymPrompt.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/component/ymPrompt/skin/simple_gray/ymPrompt.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/static/component/ymPrompt/ymPrompt.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/component/ymPrompt/ymPrompt.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/static/credit/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/credit/css/common.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/credit/js/report_config/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/credit/js/report_config/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/credit/js/translate/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/credit/js/translate/main.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <ignored path="G:\proJect\lianxin\.idea\shelf/" />
@@ -64,99 +81,75 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/company/service/CompanyService.java">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/report_config/main.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="110">
-              <caret line="63" column="7" lean-forward="true" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/FtpUploadFileUtils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="192" column="42" selection-start-line="192" selection-start-column="26" selection-end-line="192" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="535" selection-start-line="535" selection-end-line="535" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/system/dict/DictCache.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="81" selection-start-line="81" selection-end-line="81" />
+            <state relative-caret-position="367">
+              <caret line="1823" column="16" lean-forward="true" selection-start-line="1823" selection-start-column="16" selection-end-line="1823" selection-end-column="16" />
               <folding>
-                <element signature="e#3201#3202#0" expanded="true" />
-                <element signature="e#3231#3232#0" expanded="true" />
+                <element signature="n#style#0;n#img#0;n#a#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#img#0;n#a#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="e#42998#44948#0" />
+                <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="e#46228#54497#0" />
+                <element signature="n#div#0;n#!!top" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#input#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="e#57479#58351#0" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="e#57186#57316#0" />
+                <element signature="e#57335#57787#0" />
+                <element signature="e#57806#60662#0" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="e#60681#61950#0" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/report_pages/report_config.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="41" column="12" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="12" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseWord.java">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="303">
-              <caret line="246" column="45" lean-forward="true" selection-start-line="246" selection-end-line="247" />
+            <state relative-caret-position="261">
+              <caret line="165" column="10" lean-forward="true" selection-start-line="165" selection-start-column="10" selection-end-line="165" selection-end-column="10" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#8234#8249#0" expanded="true" />
-                <element signature="e#8314#8329#0" expanded="true" />
+                <element signature="e#80#87#1" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+                <element signature="e#5#11#0" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#span#2;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/deepoove/poi/config/Configure.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="190">
-              <caret line="33" column="3" lean-forward="true" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="3" />
-              <folding>
-                <element signature="e#1793#1794#0" expanded="true" />
-                <element signature="e#1827#1828#0" expanded="true" />
-                <element signature="e#1895#1896#0" expanded="true" />
-                <element signature="e#1931#1932#0" expanded="true" />
-                <element signature="e#3882#3883#0" expanded="true" />
-                <element signature="e#3904#3905#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/MainReport.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="589">
-              <caret line="40" column="52" lean-forward="true" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/OrderProcessController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8550">
-              <caret line="538" selection-start-line="538" selection-end-line="538" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4807">
-              <caret line="265" column="33" selection-start-line="265" selection-start-column="28" selection-end-line="265" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -165,11 +158,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>mark</find>
-      <find>主</find>
-      <find>main</find>
-      <find>table</find>
-      <find>true</find>
       <find>getTableData</find>
       <find>填报</find>
       <find>sys_language</find>
@@ -186,9 +174,24 @@
       <find>396</find>
       <find>ddd</find>
       <find>financial</find>
+      <find>jd</find>
+      <find>jodc</find>
+      <find>翻译</find>
+      <find>translateBtn</find>
+      <find>this.titleEn</find>
+      <find>type=3</find>
+      <find>ds_cw_contents</find>
+      <find>forEach</find>
+      <find>循环</find>
+      <find>disabled=&quot;${outItem.title.is_disable==='1'||item.is_disable==='1'}&quot;</find>
+      <find>~~</find>
+      <find>&lt;a href=&quot;javacript:;&quot; class=&quot;order-cancel&quot; style=&quot;margin-right:.5rem&quot; data-toggle=&quot;modal&quot; data-target=&quot;#exampleModalCenter1&quot;&gt;订单撤销&lt;/a&gt;</find>
+      <find>assert</find>
+      <find>exampleModalCenter3</find>
     </findStrings>
     <replaceStrings>
       <replace>credit/front</replace>
+      <replace>${outItem.title.is_disable==='1'||item.is_disable==='1'?&quot;disabled&quot;:''}</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -205,15 +208,28 @@
         <option value="$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseWord.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/deepoove/poi/config/Configure.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/deepoove/poi/XWPFTemplate.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/credit/js/translate/main.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/report_pages/report_config.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/credit/js/report_config/main.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/.gitignore" />
       </list>
     </option>
   </component>
+  <component name="JsFlowSettings">
+    <service-enabled>true</service-enabled>
+    <exe-path />
+    <other-services-enabled>true</other-services-enabled>
+    <auto-save>true</auto-save>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
   <component name="MavenImportPreferences">
-    <option name="generalSettings">
-      <MavenGeneralSettings>
-        <option name="mavenHome" value="G:/tts9/apache-maven-3.3.9" />
-      </MavenGeneralSettings>
-    </option>
     <option name="importingSettings">
       <MavenImportingSettings>
         <option name="importAutomatically" value="true" />
@@ -253,6 +269,111 @@
               <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
               <item name="lianxin" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+              <item name="usercenter" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+              <item name="usercenter" type="462c0819:PsiDirectoryNode" />
+              <item name="report_pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="report_config" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="jfinal_cms" type="b2602c69:ProjectViewProjectNode" />
+              <item name="lianxin" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="credit" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="translate" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -265,13 +386,16 @@
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="creditreport" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553478722222" />
+    <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553930168267" />
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp" />
-    <property name="project.structure.last.edited" value="SDKs" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.5712644" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -285,10 +409,10 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Jetty Runner.联信8080">
-    <configuration name="联信8080" type="JettyRunner-By-GuiKeller" factoryName="Jetty Runner" editBeforeRun="true" singleton="false">
+  <component name="RunManager" selected="Tomcat Server.tomcat-8.5.37">
+    <configuration default="true" type="JettyRunner-By-GuiKeller" factoryName="Jetty Runner" editBeforeRun="true" singleton="false">
       <option name="JettyRunnerV130-SelectedModuleName" value="creditReport" />
-      <option name="JettyRunnerV130-WebAppPath" value="/" />
+      <option name="JettyRunnerV130-WebAppPath" value="/creditReport" />
       <option name="JettyRunnerV130-WebAppFolder" value="G:\proJect\lianxin\src\main\webapp" />
       <option name="JettyRunnerV130-ClassesDirectory" value="G:\proJect\lianxin\target\classes" />
       <option name="JettyRunnerV130-RunOnPort" value="8080" />
@@ -299,15 +423,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JettyRunner-By-GuiKeller" factoryName="Jetty Runner" editBeforeRun="true" singleton="false">
-      <option name="JettyRunnerV130-SelectedModuleName" value="creditReport" />
-      <option name="JettyRunnerV130-WebAppPath" value="/creditReport" />
-      <option name="JettyRunnerV130-WebAppFolder" value="G:\proJect\lianxin\src\main\webapp" />
-      <option name="JettyRunnerV130-ClassesDirectory" value="G:\proJect\lianxin\target\classes" />
-      <option name="JettyRunnerV130-RunOnPort" value="8080" />
-      <option name="JettyRunnerV130-JettyXML" value="" />
-      <option name="JettyRunnerV130-VmArgs" value="" />
-      <option name="JettyRunnerV130-PassParentEnvVars" value="true" />
+    <configuration default="true" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY" editBeforeRun="true">
+      <option name="DOC_BASE" value="G:\proJect\lianxin\.externalToolBuilders" />
+      <option name="CONTEXT_PATH" value="/" />
+      <option name="TOMCAT_PORT" value="8090" />
+      <option name="AJP_PORT" value="8009" />
+      <option name="ADMIN_PORT" value="8005" />
+      <option name="VM_OPTIONS" value="" />
+      <option name="PASS_PARENT_ENV_OPTIONS" value="true" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -368,34 +491,155 @@
       <option name="AUTO_RESTART" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="联信-tomcat-8090" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY" editBeforeRun="true" singleton="false">
-      <option name="DOC_BASE" value="G:\proJect\lianxin\src\main\webapp" />
-      <option name="CONTEXT_PATH" value="/" />
-      <option name="TOMCAT_PORT" value="8090" />
-      <option name="AJP_PORT" value="8009" />
-      <option name="ADMIN_PORT" value="8005" />
-      <option name="VM_OPTIONS" value="" />
-      <option name="PASS_PARENT_ENV_OPTIONS" value="true" />
+    <configuration default="true" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="tomcat-8.5.37" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <deployment>
+        <artifact name="creditReport:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="_jfinal_cms" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="63455" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
       <method v="2">
-        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="creditReport:war exploded" />
+          <artifact name="creditReport:war" />
+        </option>
       </method>
     </configuration>
-    <configuration default="true" type="com.poratu.idea.plugins.tomcat" factoryName="SMART_TOMCAT_FACTORY" editBeforeRun="true">
-      <option name="DOC_BASE" value="G:\proJect\lianxin\.externalToolBuilders" />
-      <option name="CONTEXT_PATH" value="/" />
-      <option name="TOMCAT_PORT" value="8090" />
-      <option name="AJP_PORT" value="8009" />
-      <option name="ADMIN_PORT" value="8005" />
-      <option name="VM_OPTIONS" value="" />
-      <option name="PASS_PARENT_ENV_OPTIONS" value="true" />
+    <configuration name="tomcat-8.5.37" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="tomcat-8.5.37" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <deployment>
+        <artifact name="creditReport:war exploded">
+          <settings>
+            <option name="CONTEXT_PATH" value="/" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="tomcat-8_5_37_jfinal_cms" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="63455" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
       <method v="2">
-        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="creditReport:war exploded" />
+          <artifact name="creditReport:war" />
+        </option>
       </method>
     </configuration>
     <list>
-      <item itemvalue="Jetty Runner.联信8080" />
       <item itemvalue="Maven.creditReport []" />
-      <item itemvalue="Smart Tomcat.联信-tomcat-8090" />
+      <item itemvalue="Tomcat Server.tomcat-8.5.37" />
     </list>
   </component>
   <component name="SvnConfiguration">
@@ -408,6 +652,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1553222026517</updated>
+      <workItem from="1553912001589" duration="12732000" />
     </task>
     <task id="LOCAL-00001" summary="获取数据主表参数的修改 true-&gt;false">
       <created>1553311966352</created>
@@ -426,6 +671,9 @@
     <option name="localTasksCounter" value="3" />
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="12732000" />
+  </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
       <is-autoscroll-to-source value="true" />
@@ -437,36 +685,78 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="753" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48552337" visible="true" weight="0.18684895" />
+      <window_info id="Web" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.48552337" visible="true" weight="0.21482602" />
       <window_info id="Structure" order="1" sideWeight="0.51552796" side_tool="true" weight="0.18684895" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
       <window_info id="UI Designer" order="4" />
       <window_info id="Capture Tool" order="5" />
-      <window_info id="Favorites" order="6" sideWeight="0.5144766" side_tool="true" visible="true" weight="0.18684895" />
+      <window_info id="Favorites" order="6" sideWeight="0.5144766" side_tool="true" weight="0.18684895" />
+      <window_info anchor="bottom" id="Application Servers" weight="0.32956383" />
+      <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Java Enterprise" />
+      <window_info anchor="bottom" id="Database Changes" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.35630497" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.5088853" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" sideWeight="0.49932975" weight="0.31392047" />
       <window_info anchor="bottom" id="Terminal" order="6" sideWeight="0.4986979" weight="0.32258064" />
       <window_info anchor="bottom" id="Version Control" order="7" sideWeight="0.49674478" weight="0.29765397" />
-      <window_info active="true" anchor="bottom" x="396" y="225" width="744" height="374" id="Debug" order="8" sideWeight="0.4953083" visible="true" weight="0.3622159" />
-      <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.4986979" weight="0.45454547" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50469166" side_tool="true" weight="0.2888563" />
+      <window_info anchor="bottom" x="396" y="225" width="744" height="374" id="Debug" order="8" sideWeight="0.4953083" weight="0.3622159" />
+      <window_info anchor="bottom" id="Messages" order="9" sideWeight="0.4986979" weight="0.453958" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50469166" side_tool="true" weight="0.28756058" />
+      <window_info anchor="right" id="Database" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Palette" order="3" />
-      <window_info anchor="right" id="Maven" order="4" weight="0.3294271" />
+      <window_info anchor="right" id="Maven" order="4" weight="0.16111952" />
       <window_info anchor="right" id="Theme Preview" order="5" />
       <window_info anchor="right" id="Capture Analysis" order="6" />
       <window_info anchor="right" id="Palette&#9;" order="7" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Web" order="0" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" sideWeight="0.48552337" visible="true" weight="0.21482602" />
+      <window_info id="Structure" order="2" sideWeight="0.51552796" side_tool="true" weight="0.18684895" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Designer" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Favorites" order="7" sideWeight="0.5144766" side_tool="true" weight="0.18684895" />
+      <window_info anchor="bottom" id="Application Servers" order="0" weight="0.32956383" />
+      <window_info anchor="bottom" id="Docker" order="1" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Java Enterprise" order="2" />
+      <window_info anchor="bottom" id="Database Changes" order="3" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" />
+      <window_info anchor="bottom" id="Run" order="6" weight="0.5088853" />
+      <window_info anchor="bottom" id="Cvs" order="7" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="8" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="9" sideWeight="0.49932975" weight="0.31392047" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4986979" weight="0.32258064" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49674478" weight="0.29765397" />
+      <window_info anchor="bottom" x="396" y="225" width="744" height="374" id="Debug" order="12" sideWeight="0.4953083" weight="0.3622159" />
+      <window_info anchor="bottom" id="Messages" order="13" sideWeight="0.4986979" weight="0.453958" />
+      <window_info anchor="bottom" id="Event Log" order="14" sideWeight="0.50469166" side_tool="true" weight="0.2888563" />
+      <window_info anchor="right" id="Database" order="0" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="1" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="2" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="3" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="4" />
+      <window_info anchor="right" id="Maven" order="5" weight="0.16111952" />
+      <window_info anchor="right" id="Theme Preview" order="6" />
+      <window_info anchor="right" id="Capture Analysis" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -537,16 +827,7 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/.project">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="75" column="20" lean-forward="true" selection-start-line="75" selection-start-column="20" selection-end-line="75" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/.project" />
     <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/admin/filemanager/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-228" />
@@ -587,9 +868,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/translate/main.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/interceptor/CreditFrontUserInterceptor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="95">
@@ -604,13 +882,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://G:/newDepvelop/jdk1.8.0_151/jre/lib/rt.jar!/java/lang/Runnable.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://G:/newDepvelop/jdk1.8.0_151/jre/lib/rt.jar!/java/lang/Runnable.class" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/company/controller/CompanyController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="70">
@@ -625,23 +897,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://G:/.m2/repository/com/jfinal/jfinal/3.0/jfinal-3.0-sources.jar!/com/jfinal/core/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="118" selection-start-line="118" selection-end-line="118" />
-          <folding>
-            <element signature="e#3833#3834#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://G:/.m2/repository/com/jfinal/jfinal/3.0/jfinal-3.0-sources.jar!/com/jfinal/aop/Invocation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="72" selection-start-line="72" selection-end-line="72" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="jar://G:/.m2/repository/com/jfinal/jfinal/3.0/jfinal-3.0-sources.jar!/com/jfinal/core/Controller.java" />
+    <entry file="jar://G:/.m2/repository/com/jfinal/jfinal/3.0/jfinal-3.0-sources.jar!/com/jfinal/aop/Invocation.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseBusiCrdt.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="467">
@@ -663,30 +920,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/OrderProcessController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/company/service/CompanyService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8550">
-          <caret line="538" selection-start-line="538" selection-end-line="538" />
+        <state relative-caret-position="580">
+          <caret line="63" column="7" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetData.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/FtpUploadFileUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4807">
-          <caret line="265" column="33" selection-start-line="265" selection-start-column="28" selection-end-line="265" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="535" selection-start-line="535" selection-end-line="535" />
+        <state relative-caret-position="3640">
+          <caret line="192" column="42" selection-start-line="192" selection-start-column="26" selection-end-line="192" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/system/dict/DictCache.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
+        <state relative-caret-position="1340">
           <caret line="81" selection-start-line="81" selection-end-line="81" />
           <folding>
             <element signature="e#3201#3202#0" expanded="true" />
@@ -697,8 +947,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/deepoove/poi/config/Configure.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="33" column="3" lean-forward="true" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="3" />
+        <state relative-caret-position="200">
+          <caret line="33" column="3" selection-start-line="33" selection-start-column="3" selection-end-line="33" selection-end-column="3" />
           <folding>
             <element signature="e#1793#1794#0" expanded="true" />
             <element signature="e#1827#1828#0" expanded="true" />
@@ -712,33 +962,142 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/MainReport.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="40" column="52" lean-forward="true" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
+        <state relative-caret-position="680">
+          <caret line="40" column="52" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/FtpUploadFileUtils.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/OrderProcessController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="192" column="42" selection-start-line="192" selection-start-column="26" selection-end-line="192" selection-end-column="42" />
+        <state relative-caret-position="9000">
+          <caret line="538" selection-start-line="538" selection-end-line="538" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/company/service/CompanyService.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetData.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="63" column="7" lean-forward="true" selection-start-line="63" selection-start-column="7" selection-end-line="63" selection-end-column="7" />
+        <state relative-caret-position="5060">
+          <caret line="265" column="33" selection-start-line="265" selection-start-column="28" selection-end-line="265" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6833">
+          <caret line="34" column="25" lean-forward="true" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/util/word/BaseWord.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="303">
-          <caret line="246" column="45" lean-forward="true" selection-start-line="246" selection-end-line="247" />
+        <state relative-caret-position="983">
+          <caret line="286" column="5" selection-start-line="286" selection-start-column="5" selection-end-line="286" selection-end-column="5" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#8234#8249#0" expanded="true" />
             <element signature="e#8314#8329#0" expanded="true" />
+            <element signature="e#14289#14304#0" expanded="true" />
+            <element signature="e#14400#14428#0" expanded="true" />
+            <element signature="e#14514#14545#0" expanded="true" />
+            <element signature="e#14629#14645#0" expanded="true" />
+            <element signature="e#15781#15797#0" expanded="true" />
+            <element signature="e#28517#28532#0" expanded="true" />
+            <element signature="e#35557#35588#0" expanded="true" />
+            <element signature="e#35786#35802#0" expanded="true" />
+            <element signature="e#36388#36404#0" expanded="true" />
+            <element signature="e#36952#36967#0" expanded="true" />
+            <element signature="e#43651#43657#0" expanded="true" />
+            <element signature="e#43704#43710#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hailian/modules/credit/usercenter/controller/ReportInfoGetDataController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="535" selection-start-line="535" selection-end-line="535" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/pages/credit/usercenter/report_pages/report_config.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="41" column="12" selection-start-line="41" selection-start-column="12" selection-end-line="41" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/translate/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="1426" column="44" lean-forward="true" selection-start-line="1426" selection-start-column="44" selection-end-line="1426" selection-end-column="44" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/report_config/main.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="1823" column="16" lean-forward="true" selection-start-line="1823" selection-start-column="16" selection-end-line="1823" selection-end-column="16" />
+          <folding>
+            <element signature="n#style#0;n#img#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#42998#44948#0" />
+            <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#46228#54497#0" />
+            <element signature="n#div#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#57479#58351#0" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#57186#57316#0" />
+            <element signature="e#57335#57787#0" />
+            <element signature="e#57806#60662#0" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="e#60681#61950#0" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/credit/js/all_orders.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="165" column="10" lean-forward="true" selection-start-line="165" selection-start-column="10" selection-end-line="165" selection-end-column="10" />
+          <folding>
+            <element signature="e#80#87#1" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="e#5#11#0" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#1;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -749,11 +1108,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>creditReport</last-edited>
+          <last-edited>creditReport:war exploded</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.5712644" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -761,7 +1121,7 @@
       </state>
       <state key="FacetStructureConfigurable.UI">
         <settings>
-          <last-edited>No facets are configured</last-edited>
+          <last-edited>Web</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -776,7 +1136,7 @@
           <splitter-proportions>
             <option name="proportions">
               <list>
-                <option value="0.2" />
+                <option value="0.5712644" />
               </list>
             </option>
           </splitter-proportions>
