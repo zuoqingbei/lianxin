@@ -275,7 +275,7 @@ public class BaseWord {
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
                 //二合一的特殊处理
                 if(merger(value,column,reportType,mergeList,rowList,style)) {
-                	 rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
+                    rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
                 }
                
             }
@@ -1061,7 +1061,7 @@ public class BaseWord {
                         e.printStackTrace();
                         ReportInfoGetData.outPutErroLog(log, e);
                         CreditOrderInfo order = CreditOrderInfo.dao.findById(orderId);
-                        ReportInfoGetDataController.sendErrMsg(order, userid, originalFile+",预览文件生成异常,将影响预览功能,请注意!");
+                        ReportInfoGetData.sendErrMsg(order, userid, originalFile+",预览文件生成异常,将影响预览功能,请注意!",log);
                     }
                 }
                 //commonFiles.add(fl);

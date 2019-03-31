@@ -510,9 +510,9 @@ public class OrderProcessController extends BaseProjectController{
             	CreditOrderInfo model = getModel(CreditOrderInfo.class);
                 int orderId = model.get("id");
                 //计算绩效
-                if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
+                /*if(!StrUtils.isEmpty(orderId+"")&&"314".equals(code)) {
                 	 getKpi(model);
-                }
+                }*/
                 //报告填报完成
                 if("294".equals(code)){
                     //todo 报告填报完成后需要分配质检员
@@ -1024,14 +1024,13 @@ public class OrderProcessController extends BaseProjectController{
         * 获取绩效
      * lzg
      */
-    public void getKpi( CreditOrderInfo model ) {
+    public void getKpi( CreditOrderInfo model,Integer userId ) {
     	String  orderId = model.get("id")+"";
     	if(model==null||StrUtils.isEmpty(orderId)) {
     		throw new RuntimeException("实体和实体id不能为空!");
     	}
     	 
     	 String now = getNow();
-    	 Integer userId =  getSessionUser()==null?444:getSessionUser().getUserid();
     	 model = model.findById(orderId);
     	 String reportUser = model.get("report_user");
     	 String IQC = model.get("IQC");

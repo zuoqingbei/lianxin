@@ -60,9 +60,6 @@ public class KpiService {
 	/**
 	 * 计算方式2的计算规则 根据财务年限计算
 	 * @param companyId
-	 * @param tableName
-	 * @param column1
-	 * @param column2
 	 * @param price
 	 * @param sourceYeal
 	 * @return
@@ -195,7 +192,7 @@ public class KpiService {
 	/**
 	 * 获取某个订单当前角色的绩效
 	 * @param roleId
-	 * @param orderId
+	 * @param order
 	 * @return
 	 */
 	public BigDecimal getKpi(String roleId,CreditOrderInfo order) {

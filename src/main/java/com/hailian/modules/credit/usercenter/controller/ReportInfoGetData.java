@@ -112,7 +112,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	            sOut += "\tat " + s + "\r\n";
 	        }
 	        log.error("PLUS-ERRO-INPUT==================\n"+sOut);
-			return sOut;
+			return sOut.substring(0,sOut.length()>=1000?1000:sOut.length());
 	}
 	
 	void deleteOneEntry(String className,String id) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
