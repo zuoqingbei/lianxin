@@ -525,11 +525,6 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.report_type  =?");
 			params.add(report_type);
 		}
-
-
-
-
-
 		if (StringUtils.isNotBlank(company_by_report)) {
 			sql.append(" and t.company_by_report like concat('%',?,'%')");
 			params.add(company_by_report.trim());
