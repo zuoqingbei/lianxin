@@ -194,7 +194,7 @@ let Index = {
                   valign: 'middle',
                 }, {
                   title: '国家',
-                  field: 'countryName',
+                  field: 'country',
                   align: 'center',
                   valign: 'middle',
                 }, 
@@ -357,5 +357,3 @@ function loadtable(){
     			 }
     		});
 }
-
-

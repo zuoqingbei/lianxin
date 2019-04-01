@@ -607,22 +607,18 @@ public class HomeController extends BaseProjectController {
 			}
 		}
 		try {
-			
-			if(!isNeedAgent){
-				ResultType resultType=new ResultType(1,"操作成功");
-				renderJson(resultType);
-			}else{
-				if(!isagent){
-					ResultType resultType=new ResultType(3,"提交成功，但该订单没有找到合适的代理，请注意!");
-					renderJson(resultType);
-				}else{	//发送邮件
-							//MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
-				}
+			ResultType resultType = new ResultType(1,"操作成功");
+			if(!isagent){
+				resultType = new ResultType(3,"提交成功，但该订单没有找到合适的代理，请注意!");
+			}else{	//发送邮件
+				MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
+				//MailService.service.toSendMail("1", model.get("id")+"",555+"",userid,this);//代理分配发送邮件
+				resultType = new ResultType(1,"订单创建成功,代理邮件发送成功");
 			}
-			
+			renderJson(resultType);
 		} catch (Exception e) {
 			e.printStackTrace();
-			ResultType resultType=new ResultType(0,"订单保存失败,请重新提交");
+			ResultType resultType=new ResultType(0,"订单创建成功, 但是代理邮件发送失败,请注意!");
 			renderJson(resultType);
 			return;
 		}

@@ -27,8 +27,7 @@ public class MailService {
 	/**
 	 * 列表展示
 	* @author doushuihai  
-	 * @param report_id2 
-	* @date 2018年9月3日下午2:31:12  
+	* @date 2018年9月3日下午2:31:12
 	* @TODO
 	 */
 	public Page<MailModel> getPage(Paginator paginator,  String orderBy,String keyword,BaseProjectController c){
@@ -65,18 +64,27 @@ public class MailService {
             List<AgentModel> findByAgentid = AgentModel.dao.findByAgentid(agentId);
             String mailaddr=findByAgentid.get(0).get("memo");
             if(StringUtils.isNotBlank(mailaddr)){
+				String reportSpeed = order.get("reportSpeed")==null?"":order.get("reportSpeed");
+				String reference_num = order.get("reference_num")==null?"":order.get("reference_num");
+				String right_company_name_en = order.get("right_company_name_en")==null?"":order.get("right_company_name_en");
+				String address = order.get("address")==null?"":order.get("address");
+				String countryname  = order.get("countryname")==null?"":order.get("countryname");
+				String telphone  = order.get("telphone")==null?"":order.get("telphone");
+				String fax  = order.get("fax")==null?"":order.get("fax");
+				String email  = order.get("email")==null?"":order.get("email");
+				String remarks  = order.get("remarks")==null?"":order.get("remarks")+"<br> ";
                 String title="New Order<br>";
                 String content="Dear Sir/Madam,Good day!<br>"
                         +"We would like to place an order for a complete credit report on the following company:<br>"
-                        +"Speed:" +order.get("reportSpeed")+" <br>"
-                        +"Ref No.:"+order.get("reference_num")+" <br>"
-                        +"Company name:"+order.get("right_company_name_en")+"<br> "
-                        +"Address:"+order.get("address")+"<br> "
-                        +"Country:"+order.get("countryname")+"<br> "
-                        +"Tel:"+order.get("telphone")+"<br> "
-                        +"Fax:"+order.get("fax")+"<br> "
-                        +"E-mail:"+order.get("email")+"<br> "
-                        +"Special Note:"+order.get("remarks")+"<br> "
+                        +"Speed:" +reportSpeed+" <br>"
+                        +"Ref No.:"+reference_num+" <br>"
+                        +"Company name:"+right_company_name_en+"<br> "
+                        +"Address:"+address+"<br> "
+                        +"Country:"+countryname+"<br> "
+                        +"Tel:"+telphone+"<br> "
+                        +"Fax:"+fax+"<br> "
+                        +"E-mail:"+email+"<br> "
+                        +"Special Note:"+remarks+"<br> "
                         +"Please confirm receiving this order.<br>"
                         +"Thank you.<br>";
                 //获取创建该订单时的附件

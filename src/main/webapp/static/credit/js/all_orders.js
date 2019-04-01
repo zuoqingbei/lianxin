@@ -359,7 +359,7 @@ let Index = {
                     class: "wrap"
                 }, {
                     title: '国家',
-                    field: 'countryName',
+                    field: 'country',
                     align: 'center',
                     valign: 'middle',
                 },
@@ -486,12 +486,12 @@ let Index = {
                                 }
                             })
                         },
+                        //19-03-30 重新发送邮件，add by lijianlong
+                        //如果报告状态是（311或者999）,且是当前账户或者管理员(user.roleIds:1)创建的订单时，可以发送邮件
                         "click .order-resentEmail": (e, value, row, index) => {
-                            //19-03-30 重新发送邮件，add by lijianlong
-                            //如果报告状态是（311或者999）,且是当前账户或者管理员(user.roleIds:1)创建的订单时，可以发送邮件
-                            console.log('~~row:', row)
+                            // console.log('~~row:', row)
                             let user = JSON.parse(sessionStorage.loginInfo);
-                            if ((['311', '399'].includes(row.status) && (row.create_by === user.userId)) || user.roleIds.includes(1)) {
+                            if (['311', '399'].includes(row.status) && ((row.create_by === user.userId+'') || user.roleIds.includes(1))) {
                                 $.get('/credit/front/resend/run?orderNum=' + row.num, function (data) {
                                     if (data.statusCode === 1) {
                                         Public.message("success", data.message)
@@ -606,8 +606,9 @@ let Index = {
         //19-03-30 重新发送邮件，add by lijianlong
         //如果报告状态是（311或者999）,且是当前账户或者管理员(user.roleIds:1)创建的订单时，可以发送邮件
         let user = JSON.parse(sessionStorage.loginInfo);
-        console.log('user:',user);
-        let enable = ['311', '399'].includes(row.status) && (row.create_by === user.userId+'') || user.roleIds.includes(1)
+        // console.log('user:',user);
+        // console.log('~row:',row);
+        let enable = ['311', '399'].includes(row.status) && ((row.create_by === user.userId+'') || user.roleIds.includes(1));
         return '<a href="javacript:;" class="ask" style="margin-right:.5rem">催问</a>' +
             '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
             '<a href="javacript:;" class="order-cancel" style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' +
@@ -662,4 +663,3 @@ $("table").on('click', '.detail3', function () {
     let rows = $(this).attr('data-row');
     let row = JSON.parse(decodeURIComponent(rows));//解码
     Public.goToOrderDetail(row.id, row)
-})
