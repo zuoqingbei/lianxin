@@ -663,3 +663,4 @@ $("table").on('click', '.detail3', function () {
     let rows = $(this).attr('data-row');
     let row = JSON.parse(decodeURIComponent(rows));//解码
     Public.goToOrderDetail(row.id, row)
+})
