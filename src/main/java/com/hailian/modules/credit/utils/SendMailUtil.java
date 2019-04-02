@@ -53,7 +53,7 @@ public class SendMailUtil {
 
 //    //发件人账户密码
 //    public static String SenderPassword = "typwolfiqocrecaf";
-    public static String SenderPassword = "Chris777";
+    public static String SenderPassword = "Y1A1N2N9I#";//"Chris777";
 	
     //收件人地址
     public static  String recipientAddress;
