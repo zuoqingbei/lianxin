@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;

@@ -3,10 +3,6 @@ package com.hailian.modules.credit.agentmanager.controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.jsoup.helper.StringUtil;
-
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;

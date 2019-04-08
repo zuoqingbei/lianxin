@@ -3,7 +3,7 @@ package com.hailian.modules.credit.agentmanager.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.math.NumberUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.feizhou.swagger.utils.StringUtil;

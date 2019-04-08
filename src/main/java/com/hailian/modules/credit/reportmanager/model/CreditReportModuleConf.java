@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import com.hailian.util.StrUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;

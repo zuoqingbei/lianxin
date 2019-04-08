@@ -1055,7 +1055,7 @@ public class OrderProcessController extends BaseProjectController{
 		           	boolean isHasKpi_translateUser  = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+6).size()==0?false:true;
 		           	boolean isHasKpi_analyzeUser  = Db.query("select id from credit_kpi_result where order_id="+orderId+" and role_id="+5).size()==0?false:true;
 		           	if(!(!isHasKpi_reportUser&&!isHasKpi_IQC&&!isHasKpi_translateUser&&!isHasKpi_analyzeUser)) {
-		           		return false;
+		           		//return false;
 		           	}
 		           	//报告员计算逻辑
 		           	if(!StrUtils.isEmpty(reportUser)) {
@@ -1092,7 +1092,7 @@ public class OrderProcessController extends BaseProjectController{
 			}
 		 });
     	
-        if(!isSucceed) {
+         if(!isSucceed) {
         	throw new  RuntimeException("该订单已经计算过绩效,请勿重复计算!");
         }
          

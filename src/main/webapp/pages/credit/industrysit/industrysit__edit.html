@@ -60,17 +60,6 @@ var bodyContent = {
 	<input type="hidden" name="model.id" value="${model.id}" /> 
 	
 	<table class="table">
-		<%  // 列表头部%>
-				<tr>
-					<td>标题</td>
-					<td>
-						<select name="model.title" class="form-control" >
-						<option value="">--选择行业标题--</option>
-					 <% for(item in allIndustryTitle){ %>
-					 	<option  m-type="${item.id}" value="${item.id}">${item.title}</option>
-					</td>
-					 <% } %>
-				</tr>
 				<tr>
 					<td>年份</td>
 					<td>
@@ -82,15 +71,11 @@ var bodyContent = {
 					<td>
 					<input class="form-control" type="text" name="model.gdp" value="${model.gdp}" />
 					</td>
-					<td>增长率(%)</td>
-					<td>
-					<input class="form-control" type="text" name="model.growth_rate" value="${model.growth_rate}" />
-					</td>
 				</tr>
 				<tr>
-					<td>备注</td>
-					<td colspan="3">
-					<textarea class="form-control" rows="2" cols="20" name="model.remarks">${model.remarks}</textarea>
+					<td>增长率(%)</td>
+					<td>
+						<input class="form-control" type="text" name="model.growth_rate" value="${model.growth_rate}" />
 					</td>
 				</tr>
 	</table>

@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.hailian.api.constant.RoleCons;
 import com.hailian.system.userrole.SysUserRole;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import ch.qos.logback.core.status.Status;
 

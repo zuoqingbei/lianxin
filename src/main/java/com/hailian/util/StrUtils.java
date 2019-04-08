@@ -38,7 +38,7 @@ public class StrUtils {
 	 * @return
 	 */
 	public static boolean isEmpty(String str) {
-		return str == null || "".equals(str);
+		return str == null || "".equals(str.trim());
 	}
 	/**
 	 * 2018/11/20

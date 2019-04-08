@@ -11,10 +11,6 @@ var bodyContent = {
 	<table class="table">
 		<%  // 列表头部 %>
 			<tr>
-				<td>标题</td>
-				<td>${item.title}</td>
-			</tr>
-			<tr>
 				<td>年份</td>
 				<td>${item.year}</td>
 			</tr>
@@ -27,14 +23,6 @@ var bodyContent = {
 				<td>${item.growth_rate}</td>
 			</tr>
 			
-				<td>备注</td>
-				<td title="${item.remarks}" colspan="3">
-				<% if (strutil.length(item.remarks) > 25) { %>
-					${strutil.subStringTo(item.remarks, 0, 25)}...
-				<% 	} else { %>
-					${item.remarks}
-				<%  } %>
-			</td> 
 	</table>
 	
 	<div style="height: 50px;clear: both;">&nbsp;</div>
