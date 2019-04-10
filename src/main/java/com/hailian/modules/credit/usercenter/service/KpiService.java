@@ -2,10 +2,8 @@ package com.hailian.modules.credit.usercenter.service;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+
 import com.hailian.modules.admin.ordermanager.model.CreditKpiPrice;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -84,52 +82,49 @@ public class KpiService {
 	/**
 	 * 计算方式2的计算规则 根据财务年限计算
 	 * @param companyId
-	 * @param price
-	 * @param sourceYeal
+	 * @param speed
+	 * @param kpiEntities
 	 * @return
 	 */
-	public BigDecimal doFor2(String companyId, BigDecimal price, int sourceYeal) {
+	public BigDecimal doFor2(String companyId, int speed, List<CreditKpiPrice> kpiEntities) {
 		try {
 			if (StrUtils.isEmpty(companyId )) { return new BigDecimal(0); }
 			// 查询公司id下的财务配置
 			List<Object[]> flagStr = Db.query(
-					"select date1,date2,id from credit_company_financial_statements_conf "
+					"select  id from credit_company_financial_statements_conf "
 					+ "where del_flag=0 and company_id=?  and type in (1,2) order by create_date desc",
 					Arrays.asList(new String[] { companyId   }).toArray());
 			if(flagStr==null||flagStr.size()==0){
 				return new BigDecimal(0);
 			}
 			Object[] queryResult =  flagStr.get(0);
-			/*String dateStr1 = queryResult[0]+"";
-			String dateStr2 = queryResult[1]+"";
-			if (StrUtils.isEmpty(dateStr1, dateStr2)) { return new BigDecimal(0); }
-
-            Integer dateType1 = getDateType(dateStr1);
-            Integer dateType2 = getDateType(dateStr2);
-            if(dateType1==null||dateType2==null){return new BigDecimal(0);}
-
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
-			String targetDateStr1 = formatDate(sdf,dateStr1,dateType1);
-            String targetDateStr2 = formatDate(sdf,dateStr2,dateType2);
-            if(StrUtils.isEmpty(targetDateStr1,targetDateStr2)){return new BigDecimal(0); }
-
-            int beginYear = Integer.parseInt(targetDateStr1.split("年")[0]);
-            int endYear = Integer.parseInt(targetDateStr2.split("年")[0]);
-			int targetCountYeal = endYear - beginYear;
-
-			if (targetCountYeal != sourceYeal) { return new BigDecimal(0); }*/
+			if(queryResult==null||queryResult.length==0){
+				return new BigDecimal(0);
+			}
 			//查询配置下的财务信息
-			String confId = queryResult[2]+"";
+			String confId = queryResult[0]+"";
+
 			List<Object[]> targetValueList =  Db.query(
 					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=?  ",
 					Arrays.asList(new String[] { confId }).toArray());
-			
+			 int countYear = 0;
 			if(targetValueList!=null) {
 				for (Object[] value : targetValueList) {
-					if(value!=null) {  if((value[0]!=null&&!"0".equals(value[0]+""))||(value[1]!=null&&!"0".equals(value[1]+""))) { return price; } }
+					if(value!=null) {  if((value[0]!=null&&!"0".equals(value[0]+""))) {countYear++; break;  }
+					}
+				}
+				for (Object[] value : targetValueList) {
+					if(value!=null) {  if((value[1]!=null&&!"0".equals(value[1]+""))) {countYear++; break;  }
+					}
 				}
 			}
-			
+
+			for (CreditKpiPrice kpiEntity : kpiEntities) {
+				if(kpiEntity!=null&&kpiEntity.getInt("count_finance_year")==countYear){
+					return   getPriceBySpeed(speed,kpiEntity);
+				}
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new BigDecimal(0);
@@ -150,7 +145,7 @@ public class KpiService {
 		}
 		//根据公司id找对应财务大数配置信息
 		List<Integer> confIds = Db.query("select id from credit_company_financial_statements_conf where del_flag=0 and company_id=?   and type in (3,4) order by create_date desc",
-				Arrays.asList(new String[] { companyId  }));
+				Arrays.asList(new String[] { companyId  }).toArray());
 		if(confIds==null||confIds.size()==0){return new BigDecimal(0);}
 		//根据大数配置信息查找对应实体,如果实体值的字段有不为空则返回价格
 		String strIds = "";
@@ -161,18 +156,21 @@ public class KpiService {
 				strIds += confIds.get(i);
 			}
 		}
-	    List<String> flagStrList = Db.query("select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0 and conf_id in ("+strIds+")");
-		 for (String string : flagStrList) {
-			if(!StrUtils.isEmpty(string)) {
-				return price;
+	    List<Object[]> flagStrList = Db.query("select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0 and conf_id in ("+strIds+")");
+		for (Object[] objects : flagStrList) {
+			if(objects!=null){
+				Integer a = (Integer) objects[0];  Integer b = (Integer) objects[1] ;
+				if(a!=null&&a!=0||b!=null&&b!=0){//若有值且值不为0
+					return price;
+				}
 			}
-		} 
+		}
 		return new BigDecimal(0);
 	}
 	
 	
 	
-	public BigDecimal doFor6(String companyId, BigDecimal price, int sourceYeal) { return   doFor2(companyId, price, sourceYeal); }
+	public BigDecimal doFor6(String companyId, int speed, List<CreditKpiPrice> kpiEntities) { return   doFor2(companyId, speed, kpiEntities); }
 
 	private BigDecimal doFor7(String companyId, BigDecimal price) {return doFor3(companyId, price);}
 
@@ -306,10 +304,9 @@ public class KpiService {
 				// 计算方式是2时 财务的开始结束时间有值且财务任一字段不为0即算钱
 				BigDecimal totalFor2 = new BigDecimal(0);
 				if(kpiDict2!=null) {
-				for (CreditKpiPrice entry : kpiDict2) {
-					BigDecimal temp = doFor2(companyId,  getPriceBySpeed(speed, entry), entry.get("count_finance_year"));
+					BigDecimal temp = doFor2(companyId,  speed, kpiDict2);
                     kpi = kpi.add(temp);  totalFor2 = totalFor1.add(temp);
-				}}
+				 }
 
 				// 计算方式是3 
 				BigDecimal totalFor3 = new BigDecimal(0);
@@ -350,10 +347,7 @@ public class KpiService {
                         kpi = kpi.subtract(totalFor2);
 						//累加计算方式6的
 						if(kpiDict6!=null) {
-							for (CreditKpiPrice entry : kpiDict6) { 
-								BigDecimal temp = doFor6(companyId,  getPriceBySpeed(speed, entry), entry.get("count_finance_year"));
-                                kpi = kpi.add(temp);
-							}
+							BigDecimal temp = doFor6(companyId,  speed, kpiDict6); kpi = kpi.add(temp);
 						}
 					} 
 					//如果大数信息是查档得来

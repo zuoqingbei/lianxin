@@ -87,6 +87,7 @@ var bodyContent = {
 					<th>序号</th>
 					<%  // 列表头部 %>
 					<th name="t.title" class="sorting">标题</th> 
+					<th name="t.remarks" class="sorting">备注</th>
  					<th width="300px" style="text-align: center;">操作</th>
 				</tr>
 			</thead>
@@ -96,6 +97,11 @@ var bodyContent = {
 				<td>${itemLP.index }</td>
 					<%  // 列表内容 %>
 					<td>${item.title}</td> 
+					<td>
+					<% if (strutil.length(item.remarks) >
+					15) { %> ${strutil.subStringTo(item.remarks, 0, 15)}... <% } else { %>
+					${item.remarks} <% } %>
+					</td>
 				<td>
 				<a href="javascript:void(0);" class="btn btn-sm btn-success" onclick="oper.view(${item.id});">查看</a> 
 				<a href="javascript:void(0);" class="btn btn-sm btn-primary" onclick="oper.edit(${item.id});">修改</a> 
