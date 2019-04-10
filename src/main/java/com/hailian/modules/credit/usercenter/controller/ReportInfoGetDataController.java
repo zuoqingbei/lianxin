@@ -365,7 +365,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
   * @version V1.0
   * @return
    */
-    public void getOrsaveOpintion() {//质检意见新增
+    public void getOrsaveOpintion() {
+        try {
+        //质检意见新增
         Record record = new Record();
         Integer userId = getSessionUser().getUserid();
         String now = getNow();
@@ -557,7 +559,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 renderJson(record.set("submit", submit));
             
         }
-
+        }catch(Exception e){
+            renderJson(new Record().set("rows", "").set("statusCode", 0).set("message", e+":导致异常!请联系管理员!").set("submit", ""));
+        }
     }
     
 
