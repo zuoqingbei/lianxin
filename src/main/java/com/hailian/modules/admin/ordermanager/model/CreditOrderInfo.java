@@ -570,12 +570,12 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		}
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
-		sql.append(" left join credit_custom_info u on u.id=t.custom_id ");
-		sql.append(" left join credit_company_info c2 on c2.id=t.company_id");
-		sql.append(" left join sys_user s8 on s8.userid=t.report_user ");
-		sql.append(" left join credit_kpi_result s9 on s9.user_id=t.report_user and s9.order_id=t.id");
-		sql.append(" left join credit_quality_opintion s10 on s10.order_id=t.id");
-		sql.append(" where 1 = 1 and t.del_flag='0' ");
+		sql.append("  LEFT JOIN credit_custom_info u ON u.id = t.custom_id ");
+		sql.append(" LEFT JOIN credit_company_info c2 ON c2.id = t.company_id ");
+		sql.append(" LEFT JOIN sys_user s8 ON (s8.userid = t.report_user or s8.userid = t.IQC or s8.userid = t.translate_user or s8.userid= t.analyze_user) ");
+		sql.append(" JOIN credit_kpi_result s9 ON s9.order_id = t.id ");
+		sql.append(" LEFT JOIN credit_quality_opintion s10 ON s10.order_id = t.id ");
+		sql.append(" where 1 = 1 and t.del_flag=0   and s9.del_flag = 0 ");
 		if (StringUtils.isNotBlank(end_date1)) {
 			sql.append(" and t.end_date<=?");
 			params.add(end_date1);
@@ -594,12 +594,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.report_user=?");
 			params.add(user.getUserid());
 		}
-		List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy("订单完成","orderstate");
-		int status=dictDetailBy.get(0).get("detail_id");
-		if (StringUtils.isNotBlank(status+"")) {
-			sql.append(" and t.status = ?");
-			params.add(status);
-		}
+
 		if (StringUtils.isNotBlank(sortname)) {
 			sql.append(" order by t." ).append("create_date").append("  "+sortorder);
 		} 

@@ -250,8 +250,7 @@ public class TemplateDictService extends BaseService {
 		
 		//listDetail.add(getDefaultDictDetail(type));
 		listDetail.addAll(DictCache.getSysDictDetailByType(type));
-        //注册资本类型 默认选择第一项
-        if(!("capital_type".equals(type)||"principal_type".equals(type))){
+		 if(!("capital_type".equals(type)&&!"principal_type".equals(type))&&!"profitablity_sumup".equals(type)){
             sb.append("<option value='-1'>请选择  </option>");
         }
 		for(SysDictDetail detail:listDetail){
@@ -260,7 +259,7 @@ public class TemplateDictService extends BaseService {
 			}
 			  
 			 if(selectedId!=null&& selectedId.toString().equals(detail.get(flagStr)+"")){
-				sb.append("<option  m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-remark='"+detail.get("detail_remark")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"' selected>"+detail.get(disPalyCol)+"</option>");
+				sb.append("<option  m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-remark='"+detail.get("detail_remark")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"' selected=\"selected\" >"+detail.get(disPalyCol)+"</option>");
 			}else{
 				
 			    sb.append("<option m-detail-name='"+detail.get("detail_name")+"' m-detail-content='"+detail.get("detail_content")+"' m-detail-remark='"+detail.get("detail_remark")+"' m-detail-code='"+detail.get("detail_code")+"'  m-english='"+detail.get("detail_name_en")+"' value='"+detail.get(flagStr)+"'>"+detail.get(disPalyCol)+"</option>");

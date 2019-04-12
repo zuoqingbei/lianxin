@@ -90,23 +90,21 @@ public class KpiService {
 		try {
 			if (StrUtils.isEmpty(companyId )) { return new BigDecimal(0); }
 			// 查询公司id下的财务配置
-			List<Object[]> flagStr = Db.query(
+			List<Integer> flagStr = Db.query(
 					"select  id from credit_company_financial_statements_conf "
 					+ "where del_flag=0 and company_id=?  and type in (1,2) order by create_date desc",
 					Arrays.asList(new String[] { companyId   }).toArray());
 			if(flagStr==null||flagStr.size()==0){
 				return new BigDecimal(0);
 			}
-			Object[] queryResult =  flagStr.get(0);
-			if(queryResult==null||queryResult.length==0){
+			//查询配置下的财务信息
+			Integer confId =   flagStr.get(0);
+			if(confId==null){
 				return new BigDecimal(0);
 			}
-			//查询配置下的财务信息
-			String confId = queryResult[0]+"";
-
 			List<Object[]> targetValueList =  Db.query(
 					"select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0  and conf_id=?  ",
-					Arrays.asList(new String[] { confId }).toArray());
+					Arrays.asList(new String[] { confId+"" }).toArray());
 			 int countYear = 0;
 			if(targetValueList!=null) {
 				for (Object[] value : targetValueList) {
@@ -254,11 +252,11 @@ public class KpiService {
 		String reportType = order.get("order_type");
 		//获取订单号
 		String orderNum = order.get("num");
-
+        if(StrUtils.isEmpty(orderNum)){  return new BigDecimal(0); }
 		//获取报告员填写的中文名称
 		String companyByReport = order.get("company_by_report");
 		//在历史记录表中查询其爬取操作
-		CreditOrderFlow orderFlow  = CreditOrderFlow.dao.findFirst("select * from credit_order_flow where num = ? and del_flag=0 and order_state=294 ",orderNum);
+		CreditOrderFlow orderFlow  = CreditOrderFlow.dao.findFirst("select * from credit_order_flow where order_num = ? and del_flag=0 and order_state=294 ",orderNum.trim());
 		boolean isPa = !StringUtils.isEmpty(companyByReport)&&orderFlow!=null;
 
 		//获取报告速度
