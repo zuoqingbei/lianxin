@@ -322,10 +322,10 @@ public class OrderManagerService {
 	/*
 	 * 
 	 */
-	public Page<CreditOrderInfo> getAchievementsOrders(Paginator pageinator, CreditOrderInfo model,String reportername,String time,
-			SysUser user,boolean isadmin,String sortname,String sortorder) throws ParseException {
+	public Page<CreditOrderInfo> getAchievementsOrders(Paginator pageinator, CreditOrderInfo model, String reportername, String time,
+													   SysUser user, boolean isadmin, String sortname, String sortorder, String tempId) throws ParseException {
 		// TODO Auto-generated method stub
-		return CreditOrderInfo.dao.getAchievementsOrders(pageinator, model,reportername,time,user,isadmin,sortname,sortorder);
+		return CreditOrderInfo.dao.getAchievementsOrders(pageinator, model,reportername,time,user,isadmin,sortname,sortorder,  tempId);
 	}
 	
 	/**

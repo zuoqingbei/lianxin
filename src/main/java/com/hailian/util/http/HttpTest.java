@@ -7,16 +7,15 @@ import java.security.KeyManagementException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import com.alibaba.fastjson.JSON;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
+import com.jfinal.plugin.activerecord.Db;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -64,23 +63,7 @@ import com.hailian.util.Config;
 public class HttpTest {
 	public static final String qichacha_key = Config.getStr("qichacha_key");//百度翻译appid
 	public static final String qichacha_secretkey = Config.getStr("qichacha_secretkey");//百度翻译秘钥
-	public static void main(String[] args) throws Exception {
-		
-		//getCustomsUrl();//爬取企业信息基本情况
-		//getSourceUrl();//爬取商务部业务系统网站
-		
-		//CookieStore cookieStore = getIcrisCookie();//获取香港查册网站cookie信息
-		//getIcrisUrl(cookieStore);//爬取香港查册网站
-		
-		//getCourtUrl();//爬取全国法院被执行人信息查询网站
-		//getYjapi();
-		getYjapi("大连万达集团股份有限公司");
-//		getBrandandpatent("青岛海联软件科技有限公司", "");
-//		getJudgmentDoc("青岛海联软件科技有限公司", "");
 
-        //test
-		
-    }
 	//企业基本信息
 	public static JSONObject getYjapi(String conpanyName) throws Exception{
 //		HttpGet get = new HttpGet("http://api.qichacha.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
@@ -252,8 +235,55 @@ public class HttpTest {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+
 		return json;
 	}
+	public static void main(String[] args) throws Exception {
+		String companyName = " ";
+		int count = 0;
+		JSONObject brandandpatent = HttpTest.getBrandandpatent(companyName,"");//企业图标
+		String brandandpatentstatus = brandandpatent.getString("Status");
+		if(brandandpatentstatus.equals("200")){
+			JSONObject Paging = brandandpatent.getJSONObject("Paging");
+			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
+			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
+			int totalpage=1;
+			if(TotalRecords%PageSize==0){
+				totalpage=TotalRecords/PageSize;
+
+			}else{
+				totalpage=TotalRecords/PageSize+1;
+			}
+			count += PageSize;
+			for(int i=1;i<=totalpage;i++){
+				JSONObject brandandpatentjson = HttpTest.getBrandandpatent(companyName,i+"");//
+				String brandandpatentstatus2 = brandandpatent.getString("Status");
+				if(!brandandpatentstatus2.equals("200")){
+					continue;
+				}
+				count += PageSize;
+			}
+			System.err.println(count);
+		}
+
+
+		//getBrandandpatent();
+		//getCustomsUrl();//爬取企业信息基本情况
+		//getSourceUrl();//爬取商务部业务系统网站
+
+		//CookieStore cookieStore = getIcrisCookie();//获取香港查册网站cookie信息
+		//getIcrisUrl(cookieStore);//爬取香港查册网站
+
+		//getCourtUrl();//爬取全国法院被执行人信息查询网站
+		//getYjapi();
+		//getYjapi("大连万达集团股份有限公司");
+//		getBrandandpatent("青岛海联软件科技有限公司", "");
+//		getJudgmentDoc("青岛海联软件科技有限公司", "");
+
+		//test
+
+	}
+
 	public static void getSaicUrl(){
 		HttpGet get = new HttpGet("http://wsjs.saic.gov.cn/");
 		get.setHeader("User-Agent","Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36");

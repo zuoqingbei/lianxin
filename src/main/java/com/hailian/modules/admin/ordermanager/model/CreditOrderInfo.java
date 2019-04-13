@@ -538,9 +538,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			params.add(status);
 		}
 		if (StringUtils.isNotBlank(sortname)) {
-			if("desc".equals(sortorder)||"asc".equals(sortorder))
-			sql.append(" order by t." ).append("create_date").append(" "+sortorder+" " );
-			 
+			if("desc".equals(sortorder)||"asc".equals(sortorder)) {
+				sql.append(" order by t.").append("create_date").append(" " + sortorder + " ");
+			}
 		} 
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
@@ -556,8 +556,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	/*
 	 * 获取绩效订单页面
 	 */
-	public Page<CreditOrderInfo> getAchievementsOrders(Paginator pageinator, CreditOrderInfo model,String reportername,String time,
-			SysUser user,boolean isadmin,String sortname,String sortorder) throws ParseException {
+	public Page<CreditOrderInfo> getAchievementsOrders(Paginator pageinator, CreditOrderInfo model, String reportername, String time,
+													   SysUser user, boolean isadmin, String sortname, String sortorder, String tempId) throws ParseException {
 		StringBuffer sql = new StringBuffer();
 		String receiver_date1="";
 		String end_date1="";
@@ -571,20 +571,25 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		List<Object> params = new ArrayList<Object>();
 		sql.append(" from credit_order_info t ");
 		sql.append("  LEFT JOIN credit_custom_info u ON u.id = t.custom_id ");
-		sql.append(" LEFT JOIN credit_company_info c2 ON c2.id = t.company_id ");
-		sql.append(" LEFT JOIN sys_user s8 ON (s8.userid = t.report_user or s8.userid = t.IQC or s8.userid = t.translate_user or s8.userid= t.analyze_user) ");
-		sql.append(" JOIN credit_kpi_result s9 ON s9.order_id = t.id ");
+		sql.append(" JOIN ( SELECT a.*, b.realname,b.userid as tempId FROM credit_kpi_result a LEFT JOIN sys_user b ON a.user_id = b.userid ) s9 ON s9.order_id = t.id ");
 		sql.append(" LEFT JOIN credit_quality_opintion s10 ON s10.order_id = t.id ");
 		sql.append(" where 1 = 1 and t.del_flag=0   and s9.del_flag = 0 ");
 		if (StringUtils.isNotBlank(end_date1)) {
-			sql.append(" and t.end_date<=?");
+			sql.append(" and (t.end_date<=? or t.receiver_date<=?) ");
+			params.add(end_date1);
 			params.add(end_date1);
 		}
 		if (StringUtils.isNotBlank(receiver_date1)) {
-			sql.append(" and t.receiver_date>=?");
+			sql.append(" and (t.receiver_date>=? or t.end_date>=? )  ");
+			params.add(receiver_date1);
 			params.add(receiver_date1);
 		}
-		if(isadmin){
+
+		if(!StrUtils.isEmpty(tempId)){
+			sql.append(" and s9.tempId=? ");
+			params.add(tempId);
+		}
+		/*if(isadmin){
 			if(StringUtils.isNotBlank(reportername)){
 				sql.append(" and t.report_user=? ");
 				params.add(reportername);
@@ -593,7 +598,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		if(!isadmin){
 			sql.append(" and t.report_user=?");
 			params.add(user.getUserid());
-		}
+		}*/
 
 		if (StringUtils.isNotBlank(sortname)) {
 			sql.append(" order by t." ).append("create_date").append("  "+sortorder);
@@ -601,8 +606,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
-						"select t.*,u.name as customName,s8.realname as reportName,s9.money,s10.grade,"
-								+ "c2.name as companyName,c2.name_en as englishName",
+						"SELECT t.*, u.NAME AS customName, s9.realname, s9.money,s9.tempId, s10.grade ",
 						sql.toString(), params.toArray());
 
 		return page;

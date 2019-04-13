@@ -30,12 +30,15 @@ public class AchievementsController extends BaseProjectController{
 	public void index() {
 		render(path+"report_credit_analysis.html");
 	}
-	public void list() throws ParseException{
-		CreditOrderInfo model = new CreditOrderInfo();
+	public void list() {
+		try{
+
+		CreditOrderInfo model =  getModel(CreditOrderInfo.class);
 		
 		String time = getPara("end_date");
+		String tempId = getPara("reportername");
 		String sortname=getPara("sortName");
-		String reportername=getPara("reportername");
+		String reportername= "待用字段";
 		if(!StringUtils.isNotBlank(sortname)) {
 			sortname="create_date";
 		}
@@ -50,12 +53,16 @@ public class AchievementsController extends BaseProjectController{
 		boolean isadmin=isAdmin(user);
 		
 		Paginator pageinator=getPaginator();
-		Page<CreditOrderInfo> page=OrderManagerService.service.getAchievementsOrders(pageinator,model,reportername,time,user,isadmin,sortname,sortorder);
-		int total= page.getTotalRow();
-		List<CreditOrderInfo> rows=page.getList();
-		ResultType resultType=new ResultType(total,rows);
+		Page<CreditOrderInfo> page = OrderManagerService.service.getAchievementsOrders(pageinator,model,reportername,time,user,isadmin,sortname,sortorder,tempId);
+		int total = page.getTotalRow();
+		List<CreditOrderInfo> rows = page.getList();
+		ResultType resultType = new ResultType(1,"查询成功!",total,rows);
 		renderJson(resultType);
+		}catch (Exception e){
+			renderJson(new ResultType(0,"出现异常!"+e));
+		}
 	}
+
 	public void getUserSelect(){
 		/*
 		 * 获取系统用户
@@ -68,6 +75,8 @@ public class AchievementsController extends BaseProjectController{
 		}
 		List<SysUser> listDetail = SysUser.dao.getSysUser(userid);
 		renderJson(listDetail);
+
+
 	}
 	private SimpleDateFormat sdf=new SimpleDateFormat("yyyy.MM.dd");
 	/**
@@ -78,20 +87,30 @@ public class AchievementsController extends BaseProjectController{
 	public void AchievementsExport() {
 		String fileName="订单绩效-"+sdf.format(new Date())+".xlsx";
 		String time = getPara("time");
-		String reportername=getPara("reportername");
+		String tempId=getPara("reportername");
+		String reportername= "待用字段";
 		SysUser user= (SysUser) getSessionUser();
 		boolean isadmin=isAdmin(user);
 		String userid = getSessionUser().getUserid()+"";
 		if(isadmin){
 			userid="";
 		}
-	    List<CreditOrderInfo> infos  = OrderManagerService.service.exportAchievements(reportername,time,userid,this);
-	    com.hailian.util.AchievementsExport AchievementsExport=new com.hailian.util.AchievementsExport(infos);
-		 try {
+		ResultType resultType = new ResultType();
+		try {
+		Page<CreditOrderInfo> page = OrderManagerService.service.getAchievementsOrders(getPaginator(),null,reportername,time,user,isadmin,"t.receiver_date","desc",tempId);
+			if (page==null){
+				renderJson(new ResultType(0,"导出失败!")); return;
+			}
+	    List<CreditOrderInfo> infos  = page.getList();
+			if (infos==null){
+				renderJson(new ResultType(0,"导出失败!")); return;
+			}
+	    com.hailian.util.AchievementsExport achievementsExport = new com.hailian.util.AchievementsExport(infos);
+
 			 fileName=new String(fileName.getBytes("GBK"), "ISO-8859-1");
-			 AchievementsExport.doExport(getResponse(), fileName);
+			 achievementsExport.doExport(getResponse(), fileName);
 		renderJson("导出成功");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			renderJson("导出失败");

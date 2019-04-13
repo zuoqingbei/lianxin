@@ -637,6 +637,10 @@ public class CompanyService {
 			CreditCompanyBrandandpatent.dao.deleteBycomIdAndLanguage(companyId, sys_language);//
 			for(int i=1;i<=totalpage;i++){
 				JSONObject brandandpatentjson = HttpTest.getBrandandpatent(companyName,i+"");//
+				String brandandpatentstatus2 = brandandpatent.getString("Status");
+				if(!brandandpatentstatus2.equals("200")){
+					continue;
+				}
 				JSONArray jsonArray = brandandpatentjson.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
 					List<CreditCompanyBrandandpatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyBrandandpatent.class);
@@ -699,7 +703,7 @@ public class CompanyService {
 		 
 			}
 		Db.batchSave(creditcompanyhisList, creditcompanyhisList.size());
-		if("8".equals(reporttype) || "10".equals(reporttype)){
+		if("8".equals(reporttype) || "10".equals(reporttype) || "9".equals(reporttype)|| "11".equals(reporttype)){
 			//裁判文书，法院公告，开庭公告信息,商标数据并保存
 			List<CreditCompanyJudgmentdoc> judgmentdocList = CreditCompanyJudgmentdoc.dao.getBycomIdAndLanguage(companyId, sys_language);
 			for(int i=0;i<judgmentdocList.size();i++){

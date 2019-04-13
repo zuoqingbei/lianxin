@@ -57,7 +57,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	/**
 	 * 获取form类型的数据 2018/11/12 10:13 lzg
 	 */
-	public void getForm() {
+	@Override
+    public void getForm() {
 		getBootStrapTable();
 	}
 	/**
@@ -75,7 +76,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	/**
 	 * 根据参数获取下拉选
 	 */
-	public void getSelete() {
+	@Override
+    public void getSelete() {
 		String selectStr = "";
 		String type = getPara("type");
 		String disPalyCol =  getPara("disPalyCol");

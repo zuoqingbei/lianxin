@@ -77,8 +77,10 @@ let creditAnalysis = {
 	 searchEvent(){
 		let that=this;
         $("#btn_query").click(function(){
+            //alert($("#time").val())
         	/**发起ajax请求  获取表格数据*/
            $("#table").bootstrapTable("refresh",{
+
 				query:{
 				  pageNo: that.paramsObj.pageNumber,//页码
                   recordsperpage:  that.paramsObj.pageSize,//每页多少条
@@ -116,8 +118,11 @@ let creditAnalysis = {
                           visible: true,                  //是否显示复选框
                           width: '18rem',
                       }, {
-                          title: '名称',
-                          field: 'reportName',
+                         title: '订单号',
+                         field: 'num',
+                      },{
+                          title: '姓名',
+                          field: 'realname',
                       }, {
                           field: 'receiver_date',
                           title: '订单日期',
@@ -131,14 +136,11 @@ let creditAnalysis = {
                           field: 'custom_id',
                       }, {
                           title: '订单公司名称',
-                          field: 'englishName',
+                          field: 'right_company_name_en',
                       }, {
                           title: '公司中文名称',
-                          field: 'companyName',
-                      }, {
-                          title: '扣分情况',
-                          field: 'grade',
-                      }, {
+                          field: 'company_by_report',
+                      },   {
                           title: '提成',
                           field: 'money',
                       }
@@ -158,8 +160,8 @@ let creditAnalysis = {
             pagination: true, //分页
             sidePagination: 'server',
             pageNumber: 1,
-            pageSize: 5,
-            pageList: [20, 30],
+            pageSize: 10,
+            pageList: [10,20, 30],
             smartDisplay: false,
             iconsPrefix: 'fa',
             locales: 'zh-CN',
