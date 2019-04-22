@@ -14,7 +14,7 @@ import java.util.List;
 
 import com.hailian.api.constant.RoleCons;
 import com.hailian.system.userrole.SysUserRole;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import ch.qos.logback.core.status.Status;
 
@@ -572,7 +572,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" from credit_order_info t ");
 		sql.append("  LEFT JOIN credit_custom_info u ON u.id = t.custom_id ");
 		sql.append(" JOIN ( SELECT a.*, b.realname,b.userid as tempId FROM credit_kpi_result a LEFT JOIN sys_user b ON a.user_id = b.userid ) s9 ON s9.order_id = t.id ");
-		sql.append(" LEFT JOIN credit_quality_opintion s10 ON s10.order_id = t.id ");
+		//sql.append(" LEFT JOIN credit_quality_opintion s10 ON s10.order_id = t.id ");
 		sql.append(" where 1 = 1 and t.del_flag=0   and s9.del_flag = 0 ");
 		if (StringUtils.isNotBlank(end_date1)) {
 			sql.append(" and (t.end_date<=? or t.receiver_date<=?) ");
@@ -606,7 +606,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
-						"SELECT t.*, u.NAME AS customName, s9.realname, s9.money,s9.tempId, s10.grade ",
+						"SELECT t.*, u.NAME AS customName, s9.realname, s9.money,s9.tempId ",///*, s10.grade*/
 						sql.toString(), params.toArray());
 
 		return page;

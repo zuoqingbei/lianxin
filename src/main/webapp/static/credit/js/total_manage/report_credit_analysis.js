@@ -140,7 +140,7 @@ let creditAnalysis = {
                       }, {
                           title: '公司中文名称',
                           field: 'company_by_report',
-                      },   {
+                      }, {
                           title: '提成',
                           field: 'money',
                       }

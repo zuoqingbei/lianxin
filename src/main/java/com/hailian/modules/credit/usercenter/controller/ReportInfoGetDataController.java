@@ -552,7 +552,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 						sendErrMsg(order, getSessionUser().getUserid(),  "报告生成或者发送失败!请联系管理员!",log);
 					
 				}
-                
+                //计算绩效
+                OrderProcessController op = new OrderProcessController();
+            	op.getKpi(model,userId);
             }
             
             	//增加跟踪记录

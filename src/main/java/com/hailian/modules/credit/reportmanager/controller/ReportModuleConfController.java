@@ -3,7 +3,7 @@ package com.hailian.modules.credit.reportmanager.controller;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.component.base.BaseProjectController;

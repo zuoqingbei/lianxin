@@ -1,6 +1,6 @@
 package com.hailian.modules.credit.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.SessionUser;

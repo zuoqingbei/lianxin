@@ -75,7 +75,9 @@ public class CreditReportController extends BaseProjectController{
                     }
                 }
             }
-
+            //计算绩效
+            OrderProcessController op = new OrderProcessController();
+            op.getKpi(model,userid);
         }catch(Exception e){
                 //日志输出
                 e.printStackTrace();

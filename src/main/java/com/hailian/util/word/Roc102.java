@@ -21,7 +21,7 @@ import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Db;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import java.io.*;
