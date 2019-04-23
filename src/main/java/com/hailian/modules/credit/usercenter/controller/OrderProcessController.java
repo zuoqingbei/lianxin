@@ -1018,20 +1018,24 @@ public class OrderProcessController extends BaseProjectController{
         }
     }
 
-    
-    
+
+    public void getKpi( CreditOrderInfo model,Integer userId) {
+        getKpi(model,userId,false);
+    }
     /**
         * 获取绩效
      * lzg
      */
-    public void getKpi( CreditOrderInfo model,Integer userId ) {
+    public void getKpi( CreditOrderInfo model,Integer userId,boolean saveResource) {
     	String  orderId = model.get("id")+"";
     	if(model==null||StrUtils.isEmpty(orderId)) {
     		throw new RuntimeException("实体和实体id不能为空!");
     	}
     	 
     	 String now = getNow();
-    	 model = model.findById(orderId);
+    	if(!saveResource){
+            model = model.findById(orderId);
+        }
     	 String reportUser = model.get("report_user");
     	 String IQC = model.get("IQC");
     	 String  translateUser = model.get("translate_user");

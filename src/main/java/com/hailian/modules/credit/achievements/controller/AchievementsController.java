@@ -97,11 +97,17 @@ public class AchievementsController extends BaseProjectController{
 		}
 		ResultType resultType = new ResultType();
 		try {
-		Page<CreditOrderInfo> page = OrderManagerService.service.getAchievementsOrders(getPaginator(),null,reportername,time,user,isadmin,"t.receiver_date","desc",tempId);
-			if (page==null){
+		Page<CreditOrderInfo> page1 = OrderManagerService.service.getAchievementsOrders(getPaginator(),null,reportername,time,user,isadmin,"t.receiver_date","desc",tempId);
+		int pageSize = page1.getTotalRow();
+		Paginator paginator = new Paginator();
+		paginator.setPageSize(pageSize);
+		paginator.setPageNo(1);
+		Page<CreditOrderInfo> targetPage = OrderManagerService.service.getAchievementsOrders(paginator,null,reportername,time,user,isadmin,"t.receiver_date","desc",tempId);
+			if (targetPage==null){
 				renderJson(new ResultType(0,"导出失败!")); return;
 			}
-	    List<CreditOrderInfo> infos  = page.getList();
+
+	    List<CreditOrderInfo> infos  = targetPage.getList();
 			if (infos==null){
 				renderJson(new ResultType(0,"导出失败!")); return;
 			}

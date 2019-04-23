@@ -172,17 +172,28 @@ public class KpiService {
 
 	private BigDecimal doFor7(String companyId, BigDecimal price) {return doFor3(companyId, price);}
 
-	private BigDecimal doFor5(String reportType, String tableName,BigDecimal price) {
-		if(StrUtils.isEmpty(reportType,tableName)) {new BigDecimal(0);}
+	private BigDecimal doFor5(String reportType, String tableNamesStr,BigDecimal price) {
+		if(StrUtils.isEmpty(reportType,tableNamesStr)) {new BigDecimal(0);}
+
 		List<CreditReportModuleConf> listModuleConf = CreditReportModuleConf.dao.findByReport(reportType);
 		if(listModuleConf!=null)
 		for (CreditReportModuleConf entry : listModuleConf) {
 			if(entry==null) {continue;}
 			String getSource = entry.get("get_source");
 			//如果存在该模块
-			if(getSource!=null&&getSource.contains(tableName)) {
-				return price;
+			String[] tableNames = tableNamesStr.split("@");
+			if(!StrUtils.isEmpty(getSource)){
+				for (int i = 0; i < tableNames.length; i++) {
+					String flagTableName = tableNames[i];
+					if(!StrUtils.isEmpty(flagTableName)){
+						if(getSource.contains(flagTableName.trim())) {
+							return price;
+						}
+					}
+				}
 			}
+
+
 		}
 		return new BigDecimal(0);
 	}
@@ -249,7 +260,7 @@ public class KpiService {
 		//是否是国内
 		boolean isInland = "106".equals(order.get("country"));
 	    //获取报告类型
-		String reportType = order.get("order_type");
+		String reportType = order.get("report_type");
 		//获取订单号
 		String orderNum = order.get("num");
         if(StrUtils.isEmpty(orderNum)){  return new BigDecimal(0); }
