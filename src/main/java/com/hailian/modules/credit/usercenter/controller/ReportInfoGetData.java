@@ -99,6 +99,36 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 		}
 	}
 
+	public static void sendMessageWhenCreate  (String orderNum, Integer userid, String errorMessage) {
+		try {
+			//新增公告内容
+			NoticeModel model = new NoticeModel();
+			//公告子表添加
+			NoticeLogModel logModel = new NoticeLogModel();
+
+			model.set("notice_title", "报告创建时异常提醒!");
+			if(StrUtils.isEmpty(orderNum)){
+				model.set("notice_content", "您刚刚进行创建订单的操作,"+errorMessage+"  (如订单创建失败请忽略此条消息!)");
+			}else{
+				model.set("notice_content", "您刚刚进行创建订单的操作,订单号:"+orderNum+ ","+errorMessage+"  (如订单创建失败请忽略此条消息!)");
+			}
+			String now = DateUtils.getNow(com.hailian.util.DateUtils.DEFAULT_REGEX_YYYY_MM_DD_HH_MIN_SS);
+			model.set("create_by", userid);
+			model.set("create_date", now);
+			model.save();
+			//向单子创建人发起(客服或者管理员角色)
+			logModel.set("user_id", userid);
+			logModel.set("notice_id", model.get("id"));
+			logModel.set("read_unread", "1");
+			logModel.save();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	public static void sendMessageWhenCreate  ( Integer userid, String errorMessage) {
+		sendMessageWhenCreate(null,userid,errorMessage);
+	}
+
 	public static void sendErrMsg  (CreditOrderInfo order, Integer userid, String errorMessage )  {
 		sendErrMsg ( order,  userid,  errorMessage ,null);
 	}

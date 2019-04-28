@@ -26,6 +26,8 @@ import com.jfinal.plugin.activerecord.Page;
 @ControllerBind(controllerKey = "/credit/settle")
 public class SettleController extends BaseController{
 	private static final String path = "/pages/credit/usercenter/total_manage/";
+	//测试阶段用,上线后改为""
+	public static final String SQL_SUF = " AND end_date > '2019-02-28' AND custom_id NOT IN ( 555, 2 ) AND t.report_type in(12,14,15)" ;
 	public void index() throws ParseException {
 		//查询客户id，跟代理id
 	List<CustomInfoModel> customer=	CustomInfoModel.dao.find("select id from credit_custom_info where del_flag=0");
@@ -73,15 +75,31 @@ public class SettleController extends BaseController{
 		String time = getPara("time");
 		String customerId=getPara("customerId");
 		String agentId=getPara("agentId");
-		
-		List<CreditOrderInfo> infos  = OrderManagerService.service.exportSettle(customerId, agentId, time);
-	   com.hailian.util.SettleExport export=new com.hailian.util.SettleExport(infos);
+		Paginator paginator = new Paginator();
+		paginator.setPageSize(1);
+		paginator.setPageNo(1);
+		Page<CreditOrderInfo> page1  = new Page<>();
+		try {
+			page1 = OrderManagerService.service.getSettleOrders(paginator,customerId,agentId,time,"receiver_date","desc");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		int pageSize = page1.getTotalRow();
+		paginator.setPageSize(pageSize);
+		paginator.setPageNo(1);
+		Page<CreditOrderInfo> targetPage = new Page<>();
+		try {
+			targetPage =  OrderManagerService.service.getSettleOrders(paginator,customerId,agentId,time,"receiver_date","desc");
+		} catch (ParseException e) {
+			e.printStackTrace();
+			renderJson("导出失败"); return;
+		}
+		com.hailian.util.SettleExport export=new com.hailian.util.SettleExport(targetPage.getList());
 		 try {
 			 fileName=new String(fileName.getBytes("GBK"), "ISO-8859-1");
 			export.doExport(getResponse(), fileName);
 		renderJson("导出成功");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			renderJson("导出失败");
 		}

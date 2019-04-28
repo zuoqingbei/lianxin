@@ -27,7 +27,7 @@ public class KpiController extends BaseController {
         public void runs() {
                 try{
                         Integer userId = getSessionUser() == null ? 555 : getSessionUser().getUserid();
-                        List<CreditOrderInfo> models = CreditOrderInfo.dao.find(" SELECT * FROM credit_order_info WHERE del_flag = 0  AND status =311  AND end_date > '2019-02-28' AND custom_id NOT IN ( 555, 2 )  ORDER BY end_date DESC");
+                        List<CreditOrderInfo> models = CreditOrderInfo.dao.find(" SELECT * FROM credit_order_info WHERE del_flag = 0  AND status =311  AND end_date > '2019-02-28' AND custom_id NOT IN ( 555, 2 ) AND report_type=8  ORDER BY end_date DESC");
                         OrderProcessController op = new OrderProcessController();
                         for (int i = 0; i < models.size(); i++) {
                                 op.getKpi(models.get(i), userId,true);

@@ -221,7 +221,7 @@ let creditAnalysis = {
     initDateInput() {
         laydate.render({
             elem: '#time'
-            , range: '至'
+            , range: '~'
         })
     }
 };

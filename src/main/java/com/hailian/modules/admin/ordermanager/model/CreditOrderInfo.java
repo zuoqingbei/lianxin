@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.hailian.api.constant.RoleCons;
+import com.hailian.modules.credit.settle.SettleController;
 import com.hailian.system.userrole.SysUserRole;
 import org.apache.commons.lang.StringUtils;
 
@@ -564,7 +565,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		String end_date1="";
 		//开始时间
 		if(StringUtils.isNotBlank(time)){
-			String[]  strs=time.split("至");
+			String[]  strs=time.split("~");
 			receiver_date1=strs[0].toString();
 			end_date1=strs[1].toString().replace(" ", "");
 			
@@ -576,13 +577,11 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		//sql.append(" LEFT JOIN credit_quality_opintion s10 ON s10.order_id = t.id ");
 		sql.append(" where 1 = 1 and t.del_flag=0   and s9.del_flag = 0 ");
 		if (StringUtils.isNotBlank(end_date1)) {
-			sql.append(" and (t.end_date<=? or t.receiver_date<=?) ");
-			params.add(end_date1);
+			sql.append(" and (t.receiver_date<=?) ");
 			params.add(end_date1);
 		}
 		if (StringUtils.isNotBlank(receiver_date1)) {
-			sql.append(" and (t.receiver_date>=? or t.end_date>=? )  ");
-			params.add(receiver_date1);
+			sql.append(" and (t.receiver_date>=? )  ");
 			params.add(receiver_date1);
 		}
 
@@ -638,19 +637,20 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN credit_company_info c on t.company_id=c.id ");
 		sql.append(" LEFT JOIN credit_agent_price a on t.agent_priceId=a.id ");
 		sql.append(" LEFT JOIN sys_dict_detail d on d.detail_id=a.currency");
-		sql.append(" LEFT JOIN credit_rate r on r.currency_a=a.currency and r.currency_b='274' ");
+		sql.append(" LEFT JOIN credit_rate r on r.currency_a=a.currency and r.currency_b='274' and r.del_flag=0");
 		sql.append(" left join credit_report_price p on p.id=t.price_id ");
 		sql.append(" LEFT JOIN sys_dict_detail de on de.detail_id=p.currency");
-		sql.append(" LEFT JOIN credit_rate rr on rr.currency_a=p.currency and rr.currency_b='274' ");
-		sql.append(" where 1 = 1 and t.status ='314' and t.del_flag='0' ");
+		sql.append(" LEFT JOIN credit_rate rr on rr.currency_a=p.currency and rr.currency_b='274' and rr.del_flag=0");
+		sql.append(" where 1 = 1 and t.status ='311' and t.del_flag='0' ");
 		if (StringUtils.isNotBlank(end_date1)) {
-			sql.append(" and t.end_date<=?");
+			sql.append(" and t.receiver_date<=?");
 			params.add(end_date1);
 		}
 		if (StringUtils.isNotBlank(receiver_date1)) {
 			sql.append(" and t.receiver_date>=?");
 			params.add(receiver_date1);
 		}
+
 		if (StringUtils.isNotBlank(customerId)) {
 			sql.append(" and t.custom_id=?");
 			params.add(customerId);
@@ -659,17 +659,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" and t.agent_id=?");
 			params.add(agentId);
 		}
+		sql.append(SettleController.SQL_SUF);
 		if (StringUtils.isNotBlank(sortname)) {
 			sql.append(" order by t." ).append(sortname).append("  "+sortorder);
-		} 
+		}
+
 		Page<CreditOrderInfo> page = CreditOrderInfo.dao
 				.paginate(
 						pageinator,
-						"SELECT t.id,t.num,t.end_date,t.receiver_date,t.custom_id,c.`name` as cname,c.name_en as ordername, "
-						+ "a.price as aprice,d.detail_name_en as acurrency,d.detail_name as acname,ROUND(r.rate,2) as agentrate , case when a.currency='274' then a.price ELSE ROUND(r.rate*a.price,2) end as rmb,"
-						+ "p.price as pprice,de.detail_name_en as pcurrency,de.detail_name as pcname,ROUND(rr.rate,2) as reprate, case when p.currency='274' then p.price ELSE ROUND(rr.rate*p.price,2) end as rmb2 ",
+						"SELECT t.report_type,t.id,t.agent_id,t.num,t.end_date,t.receiver_date,t.custom_id, t.company_by_report AS cname,  t.right_company_name_en AS ordername,  "
+								+ "a.price as aprice,d.detail_name_en as acurrency,d.detail_name as acname,ROUND(r.rate,2) as agentrate , case when a.currency='274' then a.price ELSE ROUND(r.rate*a.price,2) end as rmb,"
+								+ "p.price as pprice,de.detail_name_en as pcurrency,de.detail_name as pcname,ROUND(rr.rate,2) as reprate, case when p.currency='274' then p.price ELSE ROUND(rr.rate*p.price,2) end as rmb2 ",
 						sql.toString(), params.toArray());
-
 		return page;
 	}
 	/**
@@ -682,7 +683,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	 */
 	public List<CreditOrderInfo> exportSettle(String customerId,String agentId,String time) {
 			StringBuffer sql = new StringBuffer();
-			sql.append("SELECT t.num,t.end_date,t.receiver_date,t.custom_id,c.`name` as cname,c.name_en as ordername, "
+			sql.append("SELECT t.num,t.agent_id,t.end_date,t.receiver_date,t.custom_id,c.`name` as cname,c.name_en as ordername, "
 							+ "a.price as aprice,d.detail_name_en as acurrency ,p.price as pprise,de.detail_name_en as pcurrency");
 			String receiver_date1="";
 			String end_date1="";
@@ -701,9 +702,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			sql.append(" left join credit_report_price p on p.id=t.price_id ");
 			sql.append(" LEFT JOIN sys_dict_detail de on de.detail_id=p.currency");
 			sql.append(" LEFT JOIN credit_rate rr on rr.currency_a=p.currency and rr.currency_b='274' ");
-			sql.append(" where 1 = 1 and t.status ='314' and t.del_flag='0' ");
+			sql.append(" where 1 = 1 and t.status ='311' and t.del_flag='0' ");
 			if (StringUtils.isNotBlank(end_date1)) {
-				sql.append(" and t.end_date<='"+end_date1+"'");
+				sql.append(" and t.receiver_date<='"+end_date1+"'");
 			}
 			if (StringUtils.isNotBlank(receiver_date1)) {
 				sql.append(" and t.receiver_date>='"+receiver_date1+"'");

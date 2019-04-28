@@ -82,16 +82,23 @@ let creditAnalysis = {
                    
                 },{
                     field: 'pcurrency',
-                    title: '',
+                    title: '报告价格币种',
                    
+                },{
+                    field: 'rmb2',
+                    title: '报告价格结算(人民币)',
+
                 },{
                     field: 'aprice',
                     title: '代理价格',
                     
                 }, {
                     field: 'acurrency',
-                    title: '',       
-                }, {
+                    title: '代理价格币种',
+                },  {
+                    field: 'rmb',
+                    title: '代理价格结算(人民币)',
+                },{
                     title: '订单日期',
                     field: 'receiver_date',
                     sortable: true,
@@ -103,6 +110,9 @@ let creditAnalysis = {
                     title: '客户代码',
                     field: 'custom_id',
                 }, {
+                    title: '代理ID',
+                    field: 'agent_id',
+                },{
                     title: '订单公司名称',
                     field: 'ordername',
                 }, {
@@ -141,8 +151,8 @@ let creditAnalysis = {
             pagination: true, //分页
             sidePagination: 'server',
             pageNumber: 1,
-            pageSize: 5,
-            pageList: [20, 30],
+            pageSize: 10,
+            pageList: [10,20, 30],
             smartDisplay: false,
             iconsPrefix: 'fa',
             locales: 'zh-CN',

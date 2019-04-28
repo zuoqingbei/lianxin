@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.hailian.modules.admin.ordermanager.model.*;
 import org.apache.commons.lang.StringUtils;
 
 import com.feizhou.swagger.annotation.Api;
@@ -25,13 +26,6 @@ import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderHistory;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfoModel;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.agentmanager.model.AgentPriceModel;
 import com.hailian.modules.credit.agentmanager.service.AgentPriceService;
@@ -452,7 +446,11 @@ public class HomeController extends BaseProjectController {
 			renderJson(new ResultType(0,"缺失 "+"报告速度"+" ,订单创建失败!"));
 			return;
 		}
-		
+		if((String)	model.get("custom_id")==null) {
+			renderJson(new ResultType(0,"缺失 "+"客户id"+" ,订单创建失败!"));
+			return;
+		}
+
 		
 		toString(model,400);
 		String countryId = model.get("country");
@@ -468,7 +466,18 @@ public class HomeController extends BaseProjectController {
 		model.set("month", month);
 		//获取订单公司名称
 		String right_company_name_en=model.get("right_company_name_en");
-		
+		//获取报告价格
+		CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(model.get("continent").toString(), model.get("speed").toString(), model.get("report_type").toString(), model.get("order_type").toString(), model.get("custom_id").toString(), model.get("country").toString());
+																	//getOrderprice(String countryType,String speed,String reporttype,String orderType,String customid,String countryid);
+		if(pricemodel!=null){
+			model.set("price_id", pricemodel.get("id"));
+			//orderReal.set("price_id", "99999");
+		}else{
+			model.set("price_id", "");
+			//errormark+=errornum+".第"+(r+1)+"行，此订单没有获取到报告价格，请联系管理员！;";
+			String orderNum = model.get("num");
+			ReportInfoGetDataController.sendMessageWhenCreate(orderNum,userid,"此订单没有获取到报告价格，请联系管理员!(如创建失败请忽略此条消息!)");
+		}
 	    String is_fastsubmmit=model.get("is_fastsubmmit");
 		CreditOrderInfo theSameOrder=null;
 		//查询到有相同公司报告直接提交
@@ -541,7 +550,7 @@ public class HomeController extends BaseProjectController {
 				order.update();
 			}
 		}
-		
+
 		CreditOperationLog.dao.addOneEntry(userid, model, "","/credit/front/home/saveOrder");//操作日志记录
 		cof.save();
 		CreditUploadFileModel model1= new CreditUploadFileModel();
@@ -614,30 +623,16 @@ public class HomeController extends BaseProjectController {
 			if(!isagent){
 				resultType = new ResultType(3,"提交成功，但该订单没有找到合适的代理，请注意!");
 			}else{	//发送邮件
-				MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
-				//MailService.service.toSendMail("1", model.get("id")+"",555+"",userid,this);//代理分配发送邮件
+				try {
+					MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
+				}catch (Exception e){
+					resultType = new ResultType(0,"订单创建成功, 但是代理邮件发送失败,请注意!");
+				}
 				resultType = new ResultType(1,"订单创建成功,代理邮件发送成功");
 			}
-			/*if(!isNeedAgent){
-				ResultType resultType=new ResultType(1,"操作成功");
-				renderJson(resultType);
-			}else{
-				if(!isagent){
-					ResultType resultType=new ResultType(3,"提交成功，但该订单没有找到合适的代理，请注意!");
-					renderJson(resultType);
-				}else{	//发送邮件
-					//MailService.service.toSendMail("1", model.getStr("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
-				}
-			}*/
-
-
-
 			renderJson(resultType);
 		} catch (Exception e) {
 			e.printStackTrace();
-			ResultType resultType=new ResultType(0,"订单创建成功, 但是代理邮件发送失败,请注意!");
-			renderJson(resultType);
-			return;
 		}
 	}
 	public int crateReportByOrder(Integer userid, CreditOrderInfo model,
@@ -732,7 +727,7 @@ public class HomeController extends BaseProjectController {
 			Thread td = new Thread(new threadEnterGrabTheSameCompany(companyid, reprotType, "612"));
 			td.start();
 		}
-		
+
 		return companInfoId;
 	}
 	class threadEnterGrabTheSameCompany implements Runnable{

@@ -608,7 +608,7 @@ let Index = {
         let user = JSON.parse(sessionStorage.loginInfo);
         // console.log('user:',user);
         // console.log('~row:',row);
-        let enable = ['311', '399'].includes(row.status) && ((row.create_by === user.userId+'') || user.roleIds.includes(1));
+        let enable = ['311', '999'].includes(row.status) && ((row.create_by === user.userId+'') || user.roleIds.includes(1));
         return '<a href="javacript:;" class="ask" style="margin-right:.5rem">催问</a>' +
             '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
             '<a href="javacript:;" class="order-cancel" style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' +

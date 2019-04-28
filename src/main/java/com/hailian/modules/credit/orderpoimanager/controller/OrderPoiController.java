@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -70,6 +71,7 @@ public class OrderPoiController extends BaseProjectController {
 	 */
 	@ApiOperation(url = "/credit/orderpoimanager/importExcel", httpMethod = "POST")
 	public void importExcel() throws IOException {
+		Integer userid = getSessionUser().getUserid();
 		String errormark="";
 		String isTheSameOrder="";
 		int isTheSameOrderNum=0;
@@ -221,7 +223,7 @@ public class OrderPoiController extends BaseProjectController {
 							if(company==null){
 								CompanyModel model = getModel(CompanyModel.class);
 								String now = getNow();
-								Integer userid = getSessionUser().getUserid();
+
 								model.set("create_by", userid);
 								model.set("create_date", now);
 								model.set("name_en", name);
@@ -263,13 +265,13 @@ public class OrderPoiController extends BaseProjectController {
 							isTheSameOrder+=isTheSameOrderNum+".第"+(r+1)+"行，有相同企业报告;";
 						}
 						//获取报告价格
-						if(orderReal.get("type") != null && orderReal.get("speed")!=null && orderReal.get("report_type")!= null  && orderReal.get("order_type")!=null && orderReal.get("custom_id")!=null && orderReal.get("country")!=null){
+						if(orderReal.get("order_type") != null && orderReal.get("speed")!=null && orderReal.get("report_type")!= null  && orderReal.get("order_type")!=null && orderReal.get("custom_id")!=null && orderReal.get("country")!=null){
 							CreditReportPrice pricemodel = OrderManagerService.service.getOrderprice(orderReal.get("type").toString(), orderReal.get("speed").toString(), orderReal.get("report_type").toString(), orderReal.get("order_type").toString(), orderReal.get("custom_id").toString(), orderReal.get("country").toString());
 							if(pricemodel!=null){
 								orderReal.set("price_id", pricemodel.get("id"));
-								orderReal.set("price_id", "99999");
+								//orderReal.set("price_id", "99999");
 							}else{
-								//errormark+=errornum+".第"+(r+1)+"行，此订单没有获取到报告价格，请联系管理员！;";
+								errormark += errornum+".第"+(r+1)+"行，此订单没有获取到报告价格，请联系管理员！;";
 							}
 						}
 						
@@ -332,7 +334,8 @@ public class OrderPoiController extends BaseProjectController {
 		ResultType errorResult=null;
 		ResultType isTheSameOrderResult=null;
 		if(StringUtils.isNotBlank(errormark)){
-			errorResult=new ResultType(2, errormark);
+			ReportInfoGetDataController.sendMessageWhenCreate(userid,errormark);
+			errorResult=new ResultType(2, "批次创建订单时出现异常,详细情况请查看站内信!");
 		}else{
 			errorResult=new ResultType();
 		}
@@ -430,9 +433,13 @@ public class OrderPoiController extends BaseProjectController {
 			
 			 for(CreditOrderInfo model:modellist){
 				 //发送邮件
-				 /*if(model.get("agent_id")!= null){
-					 MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
-				 }*/
+				 try{
+					 if(model.get("agent_id")!= null){
+						 MailService.service.toSendMail("1", model.get("id")+"",model.get("agent_id")+"",userid,this);//代理分配发送邮件
+					 }
+				 }catch (Exception e){
+				 	e.printStackTrace();
+				 }
 					int companInfoId = new HomeController().crateReportByOrder(userid, model,  model.get("id")+"");
 					model.set("company_id",companInfoId);
 					model.update();
@@ -440,9 +447,8 @@ public class OrderPoiController extends BaseProjectController {
 			 CreditOperationLog.dao.addOneEntry(userid, null, "订单管理/批量导入/提交","/credit/orderpoimanager/savedata");//操作日志记录
 					
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			msg="提交失败";
+			msg="发生异常:"+e;
 			flag=false;
 		}
 		if(flag){
@@ -454,7 +460,6 @@ public class OrderPoiController extends BaseProjectController {
 				ResultType resultType = new ResultType(3,msg);
 				renderJson(resultType);
 			}
-			
 		}else{
 			ResultType resultType = new ResultType(2, msg);
 			renderJson(resultType);

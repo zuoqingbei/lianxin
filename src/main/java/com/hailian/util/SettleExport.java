@@ -27,7 +27,7 @@ private List<CreditOrderInfo> list = new ArrayList<CreditOrderInfo>();
 	@Override
 	public String[][] getTitles() {
 		return new String[][] { 
-				{"订单号","报告价格","报告价格单位","代理价格","报告价格单位","订单日期","到期日期","客户代码","订单公司名称","公司中文名称"},
+				{"订单号","报告价格","报告价格币种","报告价格结算(人民币)","代理价格","代理价格币种","代理价格结算(人民币)","订单日期","到期日期","客户代码","代理ID","订单公司名称","公司中文名称"},
 		};
 	}
 
@@ -66,13 +66,16 @@ private List<CreditOrderInfo> list = new ArrayList<CreditOrderInfo>();
 			row1.setHeight((short) 300);
 		CreditOrderInfo searchIndex = list.get(i);
 			createStyledCell(row1, index++, searchIndex.get("num")==null? "":searchIndex.get("num").toString(),bodyRowStyle);
-			createStyledCell(row1, index++, searchIndex.get("pprise")==null? "":searchIndex.get("pprise").toString(),bodyLeftStyle);
+			createStyledCell(row1, index++, searchIndex.get("pprice")==null? "":searchIndex.get("pprice").toString(),bodyLeftStyle);
 			createStyledCell(row1, index++, searchIndex.get("pcurrency")==null? "":searchIndex.get("pcurrency").toString(),bodyLeftStyle);
+			createStyledCell(row1, index++, searchIndex.get("rmb2")==null? "":searchIndex.get("rmb2").toString(),bodyLeftStyle);
 			createStyledCell(row1, index++, searchIndex.get("aprice")==null? "":searchIndex.get("aprice").toString(),bodyRowStyle);
 			createStyledCell(row1, index++, searchIndex.get("acurrency")==null? "":searchIndex.get("acurrency").toString(),bodyRowStyle);
+			createStyledCell(row1, index++, searchIndex.get("rmb")==null? "":searchIndex.get("rmb").toString(),bodyLeftStyle);
 			createStyledCell(row1, index++, searchIndex.get("receiver_date")==null? "":searchIndex.get("receiver_date").toString(),bodyRowStyle);
 			createStyledCell(row1, index++, searchIndex.get("end_date")==null? "":searchIndex.get("end_date").toString(),bodyRowStyle);
 			createStyledCell(row1, index++, searchIndex.get("custom_id")==null? "":searchIndex.get("custom_id").toString(),bodyRowStyle);
+			createStyledCell(row1, index++, searchIndex.get("agent_id")==null? "":searchIndex.get("agent_id").toString(),bodyRowStyle);
 			createStyledCell(row1, index++, searchIndex.get("cname")==null? "":searchIndex.get("cname").toString(),bodyRowStyle);
 			createStyledCell(row1, index++, searchIndex.get("ordername")==null? "":searchIndex.get("ordername").toString(),bodyRowStyle);
 			

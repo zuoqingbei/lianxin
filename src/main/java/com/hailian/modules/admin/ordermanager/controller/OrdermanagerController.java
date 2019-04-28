@@ -443,7 +443,7 @@ public class OrdermanagerController extends BaseProjectController{
 		 * 为防止测试时拦截,上线后删掉
 		 */
 		CreditReportPrice test=new CreditReportPrice();
-		test.set("id", 99999);
+		test.set("id", 8888);
 		renderJson(test);
 		/*
 		 * 正式
