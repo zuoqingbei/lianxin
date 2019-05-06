@@ -721,8 +721,14 @@ public class BaseBusiCrdt extends BaseWord{
                     }
                 }
                 String itemName = ccf.getStr("item_name");
-                Integer beginValue = ccf.getInt("begin_date_value");
-                Integer endValue = ccf.getInt("end_date_value");
+                String beginValue = ccf.getInt("begin_date_value")+"";
+                if("0".equals(beginValue+"")){
+                    beginValue = "--";
+                }
+                String endValue = ccf.get("end_date_value")+"";
+                if("0".equals(endValue+"")){
+                    endValue = "--";
+                }
                 Integer is_sum_option = ccf.getInt("is_sum_option");
                 Style sumStyle = new Style();
                 if (is_sum_option.intValue() == 1) {
@@ -762,6 +768,16 @@ public class BaseBusiCrdt extends BaseWord{
             //财务
             //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
             List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType+"");
+            for(CreditCompanyFinancialEntry entity : finDataRows){
+                String a = entity.get("begin_date_value")+"";
+                String b = entity.get("end_date_value")+"";
+                if("0".equals(a)){
+                    entity.set("begin_date_value","--");
+                }
+                if("0".equals(b)){
+                    entity.set("end_date_value","--");
+                }
+            }
             FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end);
             try {
                 String path = _prePath + ".xls";

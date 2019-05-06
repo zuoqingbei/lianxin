@@ -491,7 +491,7 @@ let Index = {
                         "click .order-resentEmail": (e, value, row, index) => {
                             // console.log('~~row:', row)
                             let user = JSON.parse(sessionStorage.loginInfo);
-                            if (['311', '399'].includes(row.status) && ((row.create_by === user.userId+'') || user.roleIds.includes(1))) {
+                            if (['311', '999'].includes(row.status) && ((row.create_by === user.userId+'') || user.roleIds.includes(1))) {
                                 $.get('/credit/front/resend/run?orderNum=' + row.num, function (data) {
                                     if (data.statusCode === 1) {
                                         Public.message("success", data.message)

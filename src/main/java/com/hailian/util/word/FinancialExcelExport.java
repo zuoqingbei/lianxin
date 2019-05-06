@@ -152,8 +152,8 @@ public class FinancialExcelExport extends SettlrExcelExportTemplate {
 
             }
             String itemName = ccf.getStr("item_name");
-            Integer begin = ccf.getInt("begin_date_value");
-            Integer end = ccf.getInt("end_date_value");
+            String begin = ccf.get("begin_date_value")+"";
+            String end = ccf.get("end_date_value")+"";
             Integer is_sum_option = ccf.getInt("is_sum_option");
             //Style sumStyle = new Style();
             CellStyle sumStyle = workbook.createCellStyle();

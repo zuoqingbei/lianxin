@@ -80,18 +80,20 @@ public class CurrencyRateController extends BaseProjectController {
 			renderMessage("两个币种不能相同，请核对！");
 			return;
 		}
-		CurrencyRateModel rateByA2B = CurrencyRateService.service.getRateByA2B(currency_a, currency_b);
-		if(rateByA2B!=null){
-			renderMessage("该汇率配置已经存在！如有需要可以对该汇率配置进行修改");
-			return;
-		}
+
 		Integer userid = getSessionUser().getUserid();
 		String now = getNow();
 		model.set("update_by", userid);
 		model.set("update_date", now);
 		if (pid != null && pid > 0) { // 更新
 			model.update();
-		} else { // 新增
+		} else {
+			// 新增
+			CurrencyRateModel rateByA2B = CurrencyRateService.service.getRateByA2B(currency_a, currency_b);
+			if(rateByA2B!=null){
+				renderMessage("该汇率配置已经存在！如有需要可以对该汇率配置进行修改");
+				return;
+			}
 			model.remove("id");
 			model.set("create_by", userid);
 			model.set("create_date", now);
