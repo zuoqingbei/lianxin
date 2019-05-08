@@ -144,6 +144,7 @@ let OrderDetail = {
                 $wrap = $moduleWrap.clone().attr('id', itemId)
                     .append($moduleTitle.clone().text(item.title.temp_name));
             }
+            // console.log(index)
             switch (smallModuleType) {
                 // 0-表单
                 case '0':
@@ -668,7 +669,7 @@ let OrderDetail = {
                         ]
                     });
                     break;
-                // 26-文本框+柱线图
+                // 26-文本框+柱线图 (行业情况-xy)
                 case '26':
                     $wrap.append(`<div class='module-content type26-content'>
                                     <div class="border multiText mt-4 p-2"></div>
@@ -1028,7 +1029,7 @@ let OrderDetail = {
                                     value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
                                 });
                                 break;
-                            //柱线组合图
+                            //柱线组合图(行业GDP)
                             case '22':
                                 item.contents.forEach((content, i) => {//5个数据分别是标题，备注，图表的x轴、y1轴、y2轴
                                     chartData[arr[i] + 'Name'] = content.temp_name;
@@ -1079,7 +1080,7 @@ let OrderDetail = {
                     // 设置千分位
                     let index = $wrap.find('table th.moneyCol').index();
                     $wrap.find('table td:nth-child(' + (index + 1) + ')').text(function () {
-                        return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');
+                        return  (Number($(this).text().replace(/,/g, ""))||'-').toLocaleString('en-US');
                     });
                     // 质检意见下面的质检类型全部转换成中文
                     if (item.title.temp_name === '质检意见') {
