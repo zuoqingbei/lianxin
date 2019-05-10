@@ -15,7 +15,7 @@ let OrderDetail = {
          * @param item 本次循环的数据
          * @param otherProperty 如果地址不是放在get_source里面
          * @param paramObj 附加的object用于传参
-         * @param fromContents 地址在 .contents[0].get_source里面 暂时弃用
+         * @param fromContents 地址在 .contents[0].get_source里面，信用等级改成这样了
          * @return {string}
          */
         this.getUrl = (item, otherProperty, paramObj, fromContents) => {
@@ -101,7 +101,7 @@ let OrderDetail = {
         let type = this.row.quality_type ? 3 : 2;// 质检页面type传'',详情页面type传0
         $.get(`${this.BASE_PATH}getmodule/list/`, {id, reportType, type}, (data) => {
             setTimeout(() => {
-                console.log('~~~data：', data);
+                console.log('~~~详情data.modules：', data.modules);
                 if (!data.defaultModule) {
                     console.error(`--本页面接口故障：
                         ${this.BASE_PATH}getmodule/detail/?id=${id}&reportType=${reportType}&type=0`);
@@ -259,7 +259,8 @@ let OrderDetail = {
                 case '6':
                     $wrap.append(`<div class="type6-content module-content">${this.creditLevel}</div>`);
                     //绑数
-                    $.get(this.getUrl(item, 'alter_source'), {selectInfo: `[{"getSelete?type=credit_level$selectedId=767$disPalyCol=detail_name":"credit_level"}]`}, (data) => {
+                    // 190510,取数方式改变，废弃alter_source
+                    $.get(this.getUrl(item, '',{},'fromContents'), {selectInfo: `[{"getSelete?type=credit_level$selectedId=767$disPalyCol=detail_name":"credit_level"}]`}, (data) => {
                         if (data.rows && data.rows.length > 0) {
                             $wrap.find("#creditLevel").text(data.rows[0][item.title.column_name])
                         } else {
@@ -1031,10 +1032,28 @@ let OrderDetail = {
                                 break;
                             //柱线组合图(行业GDP)
                             case '22':
-                                item.contents.forEach((content, i) => {//5个数据分别是标题，备注，图表的x轴、y1轴、y2轴
+                                item.contents.forEach((content, i) => {
                                     chartData[arr[i] + 'Name'] = content.temp_name;
                                     chartData[arr[i] + 'Data'].push(row[content.column_name])
                                 });
+                                //猜测数据结构
+                               /* let contents = [
+                                    {
+                                        temp_name:'x轴',
+                                        column_name:'a',
+                                    },{
+                                        temp_name:'y1轴',
+                                        column_name:'b',
+                                    },{
+                                        temp_name:'y2轴',
+                                        column_name:'c',
+                                    },
+                                ];
+                                let rows =[
+                                    {a:[2013,2014,2015,2016,2017]},
+                                    {b:[4800, 4700, 4800, 5000, 4500]},
+                                    {c:[0.06, 0.062, 0.068, 0.064, 0.062]},
+                                ];*/
                                 // 这里遍历组合图表数据
                                 break;
                         }
