@@ -43,13 +43,13 @@ COMMENT ON COLUMN "LHJX01"."PHM_DEVICE_INFO"."STATUS" IS '健康状态';
 -- ----------------------------
 -- Records of PHM_DEVICE_INFO
 -- ----------------------------
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX001', '盛世美颜迪丽热巴', '39.6', '116.1', 'asserts/video/3theA.mp4', '北京市海淀区高雄1路1号', '良好');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX008', '杭州', '30.1', '120', 'asserts/video/3theA.mp4', '杭州', '严重');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX009', '海南', '20', '110', 'asserts/video/3theA.mp4', '海南', '轻微');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX010', '乌鲁木齐', '43.5', '87.4', 'asserts/video/3theA.mp4', '乌鲁木齐', '一般');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX002', '拉萨', '30.1', '91.1', 'asserts/video/3theA.mp4', '拉萨', '一般');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX003', '武汉', '30.6', '114.3', 'asserts/video/3theA.mp4', '武汉', '严重');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX004', '郑州', '34', '113', 'asserts/video/3theA.mp4', '郑州', '良好');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX005', '青岛', '36', '120', 'asserts/video/3theA.mp4', '青岛', '良好');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX006', '上海', '31.2', '121.48', 'asserts/video/3theA.mp4', '上海', '良好');
-INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX007', '重庆', '30.1', '107.7', 'asserts/video/3theA.mp4', '重庆', '轻微');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX001', '盛世美颜迪丽热巴', '39.6', '116.1', 'assets/video/3theA.mp4', '北京市海淀区高雄1路1号', '良好');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX008', '杭州', '30.1', '120', 'assets/video/3theA.mp4', '杭州', '严重');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX009', '海南', '20', '110', 'assets/video/3theA.mp4', '海南', '轻微');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX010', '乌鲁木齐', '43.5', '87.4', 'assets/video/3theA.mp4', '乌鲁木齐', '一般');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX002', '拉萨', '30.1', '91.1', 'assets/video/3theA.mp4', '拉萨', '一般');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX003', '武汉', '30.6', '114.3', 'assets/video/3theA.mp4', '武汉', '严重');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX004', '郑州', '34', '113', 'assets/video/3theA.mp4', '郑州', '良好');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX005', '青岛', '36', '120', 'assets/video/3theA.mp4', '青岛', '良好');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX006', '上海', '31.2', '121.48', 'assets/video/3theA.mp4', '上海', '良好');
+INSERT INTO "LHJX01"."PHM_DEVICE_INFO" VALUES ('20171026BX007', '重庆', '30.1', '107.7', 'assets/video/3theA.mp4', '重庆', '轻微');

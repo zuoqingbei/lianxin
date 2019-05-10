@@ -324,7 +324,7 @@ function createClickFuntion(item) {
         // htmls += " onclick=loadLabUnitInfoAjaxZhbr('" + item.id + "') ";
     } else if (dataSource == "json") {
         //新西兰 日本读取json文件 国外曲线
-        htmls += " onclick= window.parent.loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "') ";
+        htmls += " onclick= loadLabUnitInfoCenterTabAjaxWorld('" + item.id + "') ";
     }
     return htmls;
 }

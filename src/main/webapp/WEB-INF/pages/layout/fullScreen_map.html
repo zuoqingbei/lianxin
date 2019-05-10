@@ -70,20 +70,11 @@
                 <div class="sphere-right-top">
                     <div class="chartBorder">
                         <h3>实验室数量</h3>
-                        <h4 class="noBG" style="float: left;margin-left: 43%">总数：
-                            <strong id="lab_all_count"
-                                    class="lab_all_count">
-                                0
-                            </strong>
+                        <h4 class="noBG" style="float: left;margin-left: 30%">总数：<strong id="lab_all_count" class="lab_all_count">0</strong>
                         </h4>
-                        <h4 class="noBG noHL" style="float: right;margin-right: 8%">互联数：
-                            <strong
-                                class="lab_all_count_link">0
-                            </strong>
+                        <h4 class="noBG noHL" style="float: right;margin-right: 8%">互联数：<strong id="lab_all_count_link" class="lab_all_count_link">0</strong>
                         </h4>
-                        <ul id="pro_line" class="pro_line full_pro_line">
-                        </ul>
-
+                        <ul id="pro_line" class="pro_line full_pro_line"></ul>
                     </div>
 
                 </div>
@@ -220,18 +211,18 @@
 
     $(function () {
         var $fullPage = $("#l.fullScreen_map");
-        //右上角的图表——
+        //覆盖专业能力
         myChartFlatRT_full = echarts.init($fullPage.find(".flat-right-top .myChart")[0]);
-        //平面左上的环形图
+        //实验室主要功能分类
         myChartFlatLT_full = echarts.init($fullPage.find(".flat-left-top .myChart")[0]);
-        //左下角的图表
+        //产品生命周期全流程测试
         myChartFlatLB_full = echarts.init($fullPage.find(".flat-left-bottom .myChart")[0]);
         myCharts = [myChartFlatLT_full, myChartFlatRT_full, myChartFlatLB_full];
         //左侧平面地图及其他左侧数据
         reloadLeftData();
-       /* setTimeout(function () {
-            $(".flat-btnTip").next().click()
-        }, 2000)
-*/
+        /* setTimeout(function () {
+             $(".flat-btnTip").next().click()
+         }, 2000)
+ */
     });
 </script>

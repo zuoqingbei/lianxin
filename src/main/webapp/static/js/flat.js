@@ -40,7 +40,7 @@ $(function () {
 
         if ($(".fullScreen_map", top.document).length > 0) {//如果是从地图全屏的提示框进入，则需跳转并在url上挂参。
             console.log("大屏", url);
-            var url = location.href.slice(0, location.href.lastIndexOf("/")) + "/full?toLabData&centerId=" + centerId;
+            var url = location.href.slice(0, location.href.lastIndexOf("/")) + "/index?toLabData&centerId=" + centerId;
             parent.parent.location.href = url;
         } else {
             $(".toLabData", top.document).click();

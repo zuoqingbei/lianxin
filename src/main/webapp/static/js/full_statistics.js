@@ -6,9 +6,9 @@ var field="field";
 var labType="",productCode="";
 reloadLeftData2();
 function reloadLeftData(){
-	 //实验室数量统计
+	 //实验室数量统计，数据需要写死
     // labNumStatis();
-    //实验室总数及分布
+    //实验室总数及分布，数据需要写死
     // proLineStatis();
     //实验室区域数量统计：大洲 国家
     // labAreaSpread();
@@ -96,6 +96,9 @@ function proLineStatis(){
 		});
 		sphereRTnumberShow(nums);
 		sphereRTHlnumberShow(linkNum);
+		// 顺便设置上面的总数和互联数
+        $("#lab_all_count").text(allNum.reduce((pre,cur)=>pre+cur));
+        $("#lab_all_count_link").text(linkNum.reduce((pre,cur)=>pre+cur));
 	})
 }
 function standardSeriesDataForLeft(data,name){

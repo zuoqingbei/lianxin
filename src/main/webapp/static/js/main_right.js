@@ -4467,7 +4467,7 @@ function refreshRight() {
             option.series[1].data = [{value: 0}];
             option.series[2].data = [{value: 0}];
         }
-        console.log(myChart)
+        // console.log(myChart)
         myChart.setOption(option);
         if ($(myChart._dom).attr("id") == "myChart1") {
             dealyShow(myChart, option, v1, v2, v3);

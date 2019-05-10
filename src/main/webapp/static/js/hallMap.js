@@ -70,7 +70,7 @@ function showLabLine() {
 // 在7x3大屏上隱藏footer
 function styleIn7x3() {
     let fromBigScreen7x3 = location.href.indexOf("bigScreen7x3") > -1;
-    console.log(fromBigScreen7x3);
+    // console.log(fromBigScreen7x3);
     if (fromBigScreen7x3) {
         $("body").addClass("styleIn7x3");
         $("#myContainer>footer p").hide();

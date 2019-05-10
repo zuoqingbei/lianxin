@@ -853,4 +853,24 @@ function importJSCSS(name){
 		}
 	}
 }
+//从平面地图的提示框打开实验室
+function toCenterLab(centerId) {
+    var $centerList = $('.lab .lab_content_l .switchBox>ul>li.noChildren,.lab .lab_content_l .switchBox>ul>li>ul>li', $('#r iframe')[0].contentWindow.document);
+    console.log('$centerList',$centerList);
+    $centerList.each(function (index, elem) {
+        if ($(elem).data("centerid") === centerId) {
+            var $headerBtn = $(elem).parents(".switchBox").prev().find("ul>li");
+            if ($(elem).parents(".inland").length > 0) {
+                $headerBtn.eq(0).click();
+            } else {
+                $headerBtn.eq(1).click();
+            }
+            setTimeout(function () {//如果不延迟则不能完全实现模拟的点击效果，原因不明
+                $(elem).click();
+            },600);
+
+            return false;
+        }
+    });
+}
 

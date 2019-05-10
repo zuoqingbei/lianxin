@@ -22,9 +22,6 @@ $(function () {
         $navHeadLi.removeClass("active");
         $(this).addClass("active");
         $(".labMainNav>.switchBox>ul:eq(" + $(this).index() + ")").show().siblings().hide();
-        // setTimeout(function () {
-        //     $(".labSubNav>ul>li").hide().eq(1).click();
-        // },100)
         $(".labSubNav>ul>li").hide().eq(1).addClass("active").siblings().removeClass("active");
 
         if ($(this).index() === 0) { //国内
