@@ -242,9 +242,15 @@ public class BaseWord {
             for (String column : cols.keySet()) {
                 String[] strs = cols.get(column).split("\\|");
                 String fieldType = strs.length == 2 ? strs[1] : "";
-                String tempName  = strs[0];
-                
-                int tempNameLength = tempName.length();
+             /*   String tempName = "";
+                try{
+                     tempName  = strs[0];
+                }catch ( Exception e){
+                    e.printStackTrace();
+                }*/
+
+
+                //int tempNameLength = tempName.length();
                 String value = "";
                 
                 //特殊处理

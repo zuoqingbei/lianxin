@@ -409,7 +409,10 @@ public class BaseBusiCrdt extends BaseWord{
             if("10392".equals(tableId)){
                 //取行业情况
                 CreditCompanyIndustryInfo industryInfo = CreditCompanyIndustryInfo.dao.findFirst("select * from credit_company_industry_info t where t.sys_language=? and t.company_id=? and t.del_flag=0",sysLanguage,companyId);
-                String title = industryInfo.getStr("chart_title");
+                String title = "";
+                if(industryInfo!=null){
+                     title = industryInfo.getStr("chart_title");
+                }
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
                 List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
                 //准备图形数据
