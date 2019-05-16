@@ -1,321 +1,214 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>订单弹出页面</title>
-    <link rel="stylesheet" href="${contextPath!}/static/css/orderPopup.css">
-    <script src="${contextPath!}/static/assets/js/jquery-2.2.4.js"></script>
-</head>
-<body>
-    <script>
-        // let bodyScale = parent.bodyScale;
-        // $("body").css("font-size", parent.bodyFontSize);
-    </script>
-<div id="container">
-    <nav class="left-nav">
-        <ul>
-            <!--<li>-->
-                <!--<a href="#">样品管理</a>-->
-            <!--</li>-->
-            <li class="show">
-                <a href="">订单管理</a>
-                <ul>
-                    <!--<li><a href="">整机订单汇总</a></li>-->
-                    <li class="active"><a href="">订单视图查看</a></li>
-                    <!--<li><a href="">整机订单要求修改</a></li>-->
-                    <!--<li><a href="">整机订单查看</a></li>-->
-                </ul>
-            </li>
-        </ul>
-    </nav>
-    <div class="main">
-        <div class="list">
-            <div class="list-header">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>订单弹出页面</title>
+        <link rel="stylesheet" href="${contextPath!}/static/css/orderPopup.css">
+        <script src="${contextPath!}/static/assets/js/jquery-2.2.4.js"></script>
+    </head>
+    <body>
+        <script>
+            let bodyScale = parent.bodyScale;
+            $("body").css("font-size", parent.bodyFontSize);
+        </script>
+        <div id="container">
+            <nav class="left-nav">
                 <ul>
                     <li>
-                        <h4>订单总量</h4>
-                        <div class="number">255</div>
+                        <a href="#">样品管理</a>
                     </li>
-                    <li>
-                        <h4>待测试</h4>
-                        <div class="number">1</div>
-                    </li>
-                    <li>
-                        <h4>待分配</h4>
-                        <div class="number">1</div>
-                    </li>
-                    <li>
-                        <h4>测试中</h4>
-                        <div class="number">15</div>
-                    </li>
-                    <li>
-                        <h4>已完成</h4>
-                        <div class="number">208</div>
-                    </li>
-                    <li>
-                        <h4>完成率</h4>
-                        <div class="number">92.4%</div>
+                    <li class="show">
+                        <a href="">订单管理</a>
+                        <ul>
+                            <li>
+                                <a href="">整机订单汇总</a>
+                            </li>
+                            <li class="active">
+                                <a href="">订单视图查看</a>
+                            </li>
+                            <li>
+                                <a href="">整机订单要求修改</a>
+                            </li>
+                            <li>
+                                <a href="">整机订单查看</a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-            </div>
-            <div class="list-body">
-                <!-- 1 -->
-                <div class="item">
-                    <button class="evaluation">评价</button>
-                    <header>
-                        <h4>试验编号：</h4>
-                        <div class="serialNumber">HR20180703101A11001</div>
-                        <h4>下单时间：</h4>
-                        <div class="time"><time>2018-7-3  17:09</time></div>
-                    </header>
+            </nav>
+            <div class="main">
+                <div class="list">
+                    <div class="list-header">
+                        <ul v-if="orderList.header">
+                            <li>
+                                <h4>订单总量</h4>
+                                <div class="number">{{orderList.header.totalNum}}</div>
+                            </li>
+                            <li>
+                                <h4>待测试</h4>
+                                <div class="number">{{orderList.header.underTest}}</div>
+                            </li>
+                            <li>
+                                <h4>待分配</h4>
+                                <div class="number">{{orderList.header.toBeDistributed}}</div>
+                            </li>
+                            <li>
+                                <h4>测试中</h4>
+                                <div class="number">{{orderList.header.testing}}</div>
+                            </li>
+                            <li>
+                                <h4>已完成</h4>
+                                <div class="number">{{orderList.header.completed}}</div>
+                            </li>
+                            <li>
+                                <h4>完成率</h4>
+                                <div class="number">{{orderList.header.completion}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="list-body">
+                        <!-- 1 -->
+                        <div v-if="orderList.itemList" v-for="(item,index) in orderList.itemList" class="item ">
 
-                    <ul>
-                        <li class="pass">
-                            <h4>委托下单</h4>
-                            <div class="name">吴贤栋</div>
-                            <div class="tel">13210250532</div>
-                        </li>
-                        <li class="active ">
-                            <h4>样品接收</h4>
-                            <div class="name">李娜</div>
-                            <div class="tel">0532-88934887</div>
-                        </li>
-                        <li class="">
-                            <h4>任务分配</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li class="">
-                            <h4>测试执行</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li>
-                            <h4>报告审核</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li>
-                            <h4>批准报告</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li>
-                            <h4>结果评价</h4>
-                            <div class="name">吴贤栋</div>
-                            <div class="tel">13210250532</div>
-                        </li>
-                    </ul>
+                            <button class="evaluation">评价</button>
+                            <header>
+                                <h4>试验编号：</h4>
+                                <div class="serialNumber">{{item.testNumber}}</div>
+                                <h4>下单时间：</h4>
+                                <div class="time">
+                                    <time>{{item.creationTime}}</time>
+                                </div>
+                            </header>
+                            <ul>
+                                <li v-for="(name,i) in ['委托下单','样品接收','任务分配','测试执行','报告审核','批准报告','结果评价']"
+                                    :class='[item.step-1===i?"active":(item.step-1>i?"pass":""),index===2&&i===3?"toCurve":""]'
+                                    @click='index===2&&i===3?toCurve():""'>
+                                    <h4>{{name}}</h4>
+                                    <div class="name">{{item['step'+(i+1)]?item['step'+(i+1)].name:''}}</div>
+                                    <div class="tel">{{item['step'+(i+1)]?item['step'+(i+1)].tel:''}}</div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="pageBtn text-center">
+                            <button>上一页</button>
+                            <span>1/6</span>
+                            <button>下一页</button>
+                        </div>
+                    </div>
                 </div>
-                <!-- 2 -->
-                <div class="item">
-                    <button class="evaluation">评价</button>
+                <div class="curve" style="display: none">
                     <header>
-                        <h4>试验编号：</h4>
-                        <div class="serialNumber">HR20180702101A11001</div>
-                        <h4>下单时间：</h4>
-                        <div class="time"><time>2018-7-2  15:13</time></div>
+                        <div class="close" @click="closeCurve">×</div>
+                        <ul class="title">
+                            <li>型号：HT10TG31SW</li>
+                            <li>实验项目：耗电量</li>
+                        </ul>
+                        <ul class="btnGroup">
+                            <li :class="index===0?'active':''"
+                                v-for="(item,index) in ['S20180629003-01','S20180629003-02','S20180629003-03',]">
+                                <button @click="loadCurve">{{item}}</button>
+                            </li>
+                        </ul>
                     </header>
+                    <div class="curveBox">
+                        <!--<div class="loadingAnimation">数据接入中</div>-->
+                        <div class="curveBox-l">
+                            <div id="main1_world"></div>
+                            <div id="main2_world"></div>
+                        </div>
+                        <div class="curveBox-r">
+                            <ul id="legend_ul_world">
+                            </ul>
+                        </div>
+                    </div>
 
-                    <ul>
-                        <li class="pass">
-                            <h4>委托下单</h4>
-                            <div class="name">鲍业浩</div>
-                            <div class="tel">18562827528</div>
-                        </li>
-                        <li class="pass">
-                            <h4>样品接收</h4>
-                            <div class="name">李娜</div>
-                            <div class="tel">0532-88934887</div>
-                        </li>
-                        <li class="active">
-                            <h4>任务分配</h4>
-                            <div class="name">李娜</div>
-                            <div class="tel">0532-88934887</div>
-                        </li>
-                        <li class="">
-                            <h4>测试执行</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li>
-                            <h4>报告审核</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li>
-                            <h4>批准报告</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li>
-                            <h4>结果评价</h4>
-                            <div class="name">鲍业浩</div>
-                            <div class="tel">18562827528</div>
-                        </li>
-                    </ul>
-                </div>
-                <!-- 3 -->
-                <div class="item">
-                    <button class="evaluation">评价</button>
-                    <header>
-                        <h4>试验编号：</h4>
-                        <div class="serialNumber">HR20180629101A11001</div>
-                        <h4>下单时间：</h4>
-                        <div class="time"><time>2018-6-29  15:13</time></div>
-                    </header>
 
-                    <ul>
-                        <li class="pass">
-                            <h4>委托下单</h4>
-                            <div class="name">曹东强</div>
-                            <div class="tel">13606345375</div>
-                        </li>
-                        <li class="pass">
-                            <h4>样品接收</h4>
-                            <div class="name">李娜</div>
-                            <div class="tel">0532-88934887</div>
-                        </li>
-                        <li class="pass">
-                            <h4>任务分配</h4>
-                            <div class="name">李娜</div>
-                            <div class="tel">0532-88934887</div>
-                        </li>
-                        <li class="active toCurve">
-                            <h4>测试执行</h4>
-                            <div class="name">董现娟</div>
-                            <div class="tel">0532-88934871</div>
-                        </li>
-                        <li>
-                            <h4>报告审核</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li>
-                            <h4>批准报告</h4>
-                            <div class="name"></div>
-                            <div class="tel"></div>
-                        </li>
-                        <li>
-                            <h4>结果评价</h4>
-                            <div class="name">曹东强</div>
-                            <div class="tel">13606345375</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="pageBtn text-center">
-                    <button>上一页</button>
-                    <span>1/6</span>
-                    <button>下一页</button>
                 </div>
             </div>
         </div>
-        <div class="curve" style="display: none">
-            <header>
-                <div class="close">×</div>
-                <ul class="title">
-                    <!--<li>型号：C3FE837CMJ<span id="center_cpxh_id_world"></span></li>-->
-                    <li>型号：HT10TG31SW<span></span></li>
-                    <!--<li>实验项目：耗电量<span id="center_sybh_id_world"></span></li>-->
-                    <li>实验项目：耗电量<span></span></li>
-                </ul>
-                <ul class="btnGroup">
-                    <li class="active">
-                        <button>S20180629003-01</button>
-                    </li>
-                    <li>
-                        <button>S20180629003-02</button>
-                    </li>
-                    <li>
-                        <button>S20180629003-03</button>
-                    </li>
-                </ul>
-            </header>
-            <div class="curveBox">
-                <!--<div class="loadingAnimation">数据接入中</div>-->
-                <div class="curveBox-l">
-                    <div id="main1_world"></div>
-                    <div id="main2_world"></div>
-                </div>
-                <div class="curveBox-r">
-                    <ul id="legend_ul_world">
-                    </ul>
-                </div>
-            </div>
-
-
+        <div class="placeholder">
+            <div id="echart_one"></div>
+            <div id="echart_two"></div>
+            <div id="echart_three"></div>
+            <div id="echart_four"></div>
+            <div id="echart_five"></div>
+            <div id="echart_six"></div>
         </div>
-    </div>
-</div>
-<div class="placeholder">
-    <div id="echart_one"></div>
-    <div id="echart_two"></div>
-    <div id="echart_three"></div>
-    <div id="echart_four"></div>
-    <div id="echart_five"></div>
-    <div id="echart_six"></div>
-</div>
-<script>
-    var contextPath = '${contextPath!}';
-    bodyScale = parent.parent.bodyScale*.7;
-    function getCurrentMonth() {
-        var date = new Date;
-        var year = date.getFullYear();
-        var month = date.getMonth() + 1;
-        month = (month < 10 ? "0" + month : month);
-        return month.toString();
-    }
-    function getBarEcharts() {}
-    function getLineEcharts() {}
-</script>
-<script>
-    function leftNavAction() {
-        $(".left-nav>ul>li").click(function () {
-            $(this).toggleClass("show");
-            return false;
-        });
-        $(".left-nav>ul>li>ul>li").click(function () {
-            $(".left-nav>ul>li>ul>li").removeClass("active");
-            $(this).addClass("active");
-            return false;
-        });
-    }
+        <script>
+            var contextPath = '${contextPath!}';
+            bodyScale = parent.parent.bodyScale * .7;
 
-    $(function () {
-        $("html").css("font-size",bodyScale*16+"px");
-        leftNavAction();
-    })
-</script>
-<script src="${contextPath!}/static/assets/echarts3.0/echarts.js"></script>
-<script src="${contextPath!}/static/js/manyEcharts.js"></script>
-<script src="${contextPath!}/static/js/labData.js"></script>
-<script src="${contextPath!}/static/js/labAction.js"></script>
-<script src="${contextPath!}/static/js/centerLab.js"></script>
-<script src="${contextPath!}/static/js/centerLabWorld_3rd.js"></script>
-<script>
-    $(function () {
-        $(".curve .close").click(function () {
-            $(".curve").hide().siblings().show();
-        });
-        $(".toCurve").click(function () {
-            $(".list").hide().siblings().show();
-            $(".curve .btnGroup>li>button:eq(0)").click()
-        });
+            function getCurrentMonth() {
+                var date = new Date;
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                month = (month < 10 ? "0" + month : month);
+                return month.toString();
+            }
 
-        $(".curve .btnGroup>li>button").click(function () {
-            $(this).parent().addClass("active").siblings().removeClass("active");
-            var index = $(this).parent().index();
-                findSensorByLabCenetrTabAjaxWorld("USLABBX", "P"+(index+1), "USLAB-B"+(index+1)+".json");
-        });
+            function leftNavAction() {
+                $(".left-nav>ul>li").click(function () {
+                    $(this).toggleClass("show");
+                    return false;
+                });
+                $(".left-nav>ul>li>ul>li").click(function () {
+                    $(".left-nav>ul>li>ul>li").removeClass("active");
+                    $(this).addClass("active");
+                    return false;
+                });
+            }
 
+            $(function () {
+                $("html").css("font-size", bodyScale * 16 + "px");
+                leftNavAction();
+            })
+        </script>
+        <script src="${contextPath!}/static/assets/echarts3.0/echarts.js"></script>
+        <script src="${contextPath!}/static/assets/js/vue-2.6.10.min.js"></script>
+        <script src="${contextPath!}/static/js/manyEcharts.js"></script>
+        <script src="${contextPath!}/static/js/labData.js"></script>
+        <script src="${contextPath!}/static/js/labAction.js"></script>
+        <script src="${contextPath!}/static/js/centerLab.js"></script>
+        <script src="${contextPath!}/static/js/centerLabWorld_3rd.js"></script>
+        <script>
+            let orderList = new Vue({
+                el: '#container',
+                data: {
+                    orderList: {
+                        header: {},
+                        itemList: []
+                    }
+                },
+                beforeMount() {
+                    this.getOrderList()
+                },
+                methods: {
+                    getOrderList() {
+                        $.get(contextPath + "/static/data/orderList.json", data => {
+                            this.orderList = data;
+                        })
+                    },
+                    toCurve() {
+                        $(".list").hide().siblings().show();
+                        $(".curve .btnGroup>li>button:eq(0)").click()
+                    },
+                    closeCurve() {
+                        $(".curve").hide().siblings().show();
+                    },
+                    loadCurve() {
+                        $(".curve .btnGroup>li>button").click(function () {
+                            $(this).parent().addClass("active").siblings().removeClass("active");
+                            var index = $(this).parent().index();
+                            findSensorByLabCenetrTabAjaxWorld("USLABBX", "P" + (index + 1), "USLAB-B" + (index + 1) + ".json");
+                        });
+                    }
+                }
+            });
 
+        </script>
 
-
-    });
-
-</script>
-
-</body>
+    </body>
+    <body>hello</body>
 </html>

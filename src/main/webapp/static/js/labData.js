@@ -158,6 +158,7 @@ function setCenterLabHtmlDB(dataCenter) {
 //获取数据中心的视频列表
 function loadVideosByDataCenterAjax(dataCenterId) {
     $.post(contextPath + "/lab/loadVideosByDataCenterAjax/?dataCenterId=" + dataCenterId, function (data) {
+        console.log('获取视频的data',data);
         var centerDataVideoArray = [];
         var html = "";
         // console.log("获取数据中心的视频列表", data);
@@ -182,7 +183,7 @@ function loadVideosByDataCenterAjax(dataCenterId) {
             for (var i = 0; i < data.length; i++) {
                 // console.log(data[i].videl_url);
                 http://10.130.96.65:10800/play.html?channel=8
-                    var localVideo = data[i].videl_url.replace("10.130.96.65", "127.0.0.1");
+                    var localVideo = data[i].videl_url.replace("10.130.96.65:10800", "10.130.96.113:10801");
                 html += "<li data-videourl=" + localVideo + " >" + data[i].show_title + "</li>"
             }
             // console.log(html)

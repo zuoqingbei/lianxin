@@ -3,10 +3,12 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="renderer" content="webkit">
 <meta charset="UTF-8" name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+
 <title> ${title!'U-lab全球互联数据中心'}</title>
 <script> var contextPath = '${contextPath!}';</script>
 <script src="${contextPath!}/static/assets/js/jquery-2.2.4.js"></script>
 <script>
+
     /*屏幕描述
      一共 7x3 个屏幕，每一块屏幕是1360x768，
      总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
@@ -55,22 +57,17 @@
 
     //点击鼠标的声音
     $(function () {
-        $("div,a,img").click(function (e) {
-            //这里可能产生点击冒泡，但不能直接阻止，因为会造成某些点击事件的失效。
-//		console.log($("#clickSounds")[0]);
-//		$("#clickSounds")[0].play();
-//        e.stopPropagation();//阻止冒泡
-        });
+        // 开启flash
+        let runFlash = !!navigator.plugins['Shockwave Flash'];
+        if(!runFlash){
+            $("#runFlashBtn").show();
+        }
 
-        //这里是为了方便测试的模拟事件代码，正式使用时请蔽掉
+        //直接跳到实验室
         setTimeout(function () {
             $("#l").find(".toLabData").click()
         },1000)
 
-       // $("#r .tab>ul>li:eq(2)").click();
-//        resetSizeRight();
-
-        // $("#cover").show().siblings("#r,#lab").hide();
     })
 
 </script>

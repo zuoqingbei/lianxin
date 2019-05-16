@@ -212,12 +212,12 @@ $(function () {
     //获取小视频地址的ajax
     function videoUrlAjax(labCode, toUrl) {
         $.post(contextPath + "/lab/loadTopVideoByLabCodeAjax?labCode=" + labCode, function (data) {
-            var videoUrl = data.videl_url.replace("10.130.96.65", "127.0.0.1");
+            var videoUrl = data.videl_url.replace("10.130.96.65:10800", "10.130.96.113:10801");
             // console.log("---labCode", labCode, "videoUrl:", videoUrl);
             if (videoUrl) {
                 $(".smallVideoBox").show();
                 $(".sheshi_tab:eq(0)").removeClass("disabled");
-                var forceVideoJSplayingHtml = "<iframe class=\"forceVideoJSplaying\" src=\"http://127.0.0.1:10800/play.html?channel=128\" style=\"position: absolute; width: 550px; height: 300px; opacity: 0.1; z-index: -1;\" ></iframe>\n"
+                var forceVideoJSplayingHtml = "<iframe class=\"forceVideoJSplaying\" src=\"http://10.130.96.113:10801/play.html?channel=128\" style=\"position: absolute; width: 550px; height: 300px; opacity: 0.1; z-index: -1;\" ></iframe>\n"
                 var $smallVideo = "";
                 if (toUrl) {
                     $smallVideo = $("#smallVideoWeb");
