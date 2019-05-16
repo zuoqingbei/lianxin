@@ -2,7 +2,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding-bottom: 2rem;
+    padding-bottom: 2em;
 }
 .lab > div:nth-of-type(1),
 .lab > div > div > div {
@@ -284,10 +284,8 @@ li:not(.hasChildren).active {
 
     .lab_content_r > .switchBox > div.item.labHome .labMain_cbl_one {
         flex: 1;
-        margin: 0.1% 1em 0.5% 1em;
         display: flex;
-        flex-direction: row;
-        height: 98%;
+        height: 47em;
     }
 
     .lab_content_r > .switchBox > .item.moduleMakers > iframe {

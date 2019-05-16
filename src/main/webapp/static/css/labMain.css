@@ -35,7 +35,6 @@
 
 .labMain_cbl_one {
     flex: 1;
-    margin: 0.1% 1em 0.5% 1em;
     display: flex;
     flex-direction: row;
     height: 98%;
@@ -49,6 +48,7 @@
 
 }
 
+/*
 .labMain_cbl_two {
     flex: 1;
     margin: 2% 1em 0.5% 1em;
@@ -59,13 +59,14 @@
 }
 
 .zhbr_lab .labMain_cbl_two {
-    /*width: 50%;
+    !*width: 50%;
     height: 100%;
     display: flex;
     float: left;
-    flex-direction: column;*/
+    flex-direction: column;*!
 
 }
+*/
 
 .labMain_cblt_top {
     flex: 1;
@@ -75,24 +76,25 @@
 }
 
 .labMain_cblt_tone {
-    flex:3;
-    /*width: 30%;*/
-    margin: 0.5%;
+    flex: 0 0 28%;
+    margin: 0.5em;
     font-size: 1.3em;
 
 }
 
+/*
 .labMain_cblt_tone h3, .labMain_cblt_ttwo h3 {
     font-size: 1.3em;
     height: 2em;
     line-height: 2em;
     width: 13em;
-    /*background: url(../img/labMain/gznx-bg.png) 0 0 no-repeat;*/
+    !*background: url(../img/labMain/gznx-bg.png) 0 0 no-repeat;*!
     background-size: 100% 100%;
     margin: 3% 1%;
     color: #fff;
     padding-left: 22%;
 }
+*/
 
 .labMain_cblt_tone p, .labMain_cblt_ttwo p {
     margin: 1em;
@@ -113,16 +115,20 @@
 
 }
 .labMain_cblt_ttwo.labMain_cblt_ttwo_world{
-    flex: 7;
-    height: 48em;
+    flex: 0 0 72%;
 }
 
 
 .labMain_cblt_ttwo img {
-    width: 70em;
-    max-height: 44em;
-    margin-left: 1.5em;
-    margin-top: -.2em;
+    width: 72em;
+    height: 44em;
+    margin-left: .5em;
+}
+@media screen and (min-width: 5000px){
+    .labMain_cblt_ttwo img {
+        height: 45em;
+        margin-left: 0;
+    }
 }
 
 .labMain_cblt_bottom {
