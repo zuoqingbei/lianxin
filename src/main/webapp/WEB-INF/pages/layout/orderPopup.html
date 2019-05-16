@@ -10,66 +10,45 @@
     </head>
     <body>
         <script>
-            let bodyScale = parent.bodyScale;
-            $("body").css("font-size", parent.bodyFontSize);
+            bodyScale= parent.parent.bodyScale * .7;
+            $("html").css("font-size", bodyScale * 16 + "px");
         </script>
         <div id="container">
             <nav class="left-nav">
                 <ul>
                     <li>
-                        <a href="#">样品管理</a>
+                        <!--<a href="#">样品管理</a>-->
                     </li>
                     <li class="show">
                         <a href="">订单管理</a>
                         <ul>
                             <li>
-                                <a href="">整机订单汇总</a>
+                                <!--<a href="">整机订单汇总</a>-->
                             </li>
                             <li class="active">
                                 <a href="">订单视图查看</a>
                             </li>
                             <li>
-                                <a href="">整机订单要求修改</a>
+                                <!--<a href="">整机订单要求修改</a>-->
                             </li>
                             <li>
-                                <a href="">整机订单查看</a>
+                                <!--<a href="">整机订单查看</a>-->
                             </li>
                         </ul>
                     </li>
                 </ul>
             </nav>
             <div class="main">
-                <div class="list">
+                <div class="list" v-cloak>
                     <div class="list-header">
                         <ul v-if="orderList.header">
-                            <li>
-                                <h4>订单总量</h4>
-                                <div class="number">{{orderList.header.totalNum}}</div>
-                            </li>
-                            <li>
-                                <h4>待测试</h4>
-                                <div class="number">{{orderList.header.underTest}}</div>
-                            </li>
-                            <li>
-                                <h4>待分配</h4>
-                                <div class="number">{{orderList.header.toBeDistributed}}</div>
-                            </li>
-                            <li>
-                                <h4>测试中</h4>
-                                <div class="number">{{orderList.header.testing}}</div>
-                            </li>
-                            <li>
-                                <h4>已完成</h4>
-                                <div class="number">{{orderList.header.completed}}</div>
-                            </li>
-                            <li>
-                                <h4>完成率</h4>
-                                <div class="number">{{orderList.header.completion}}</div>
+                            <li v-for="(item,index) in ['订单总量','待测试','待分配','测试中','已完成','完成率']">
+                                <h4>{{item}}</h4>
+                                <div class="number">{{orderList.header[orderListHeader[index]]}}</div>
                             </li>
                         </ul>
                     </div>
                     <div class="list-body">
-                        <!-- 1 -->
                         <div v-if="orderList.itemList" v-for="(item,index) in orderList.itemList" class="item ">
 
                             <button class="evaluation">评价</button>
@@ -92,9 +71,9 @@
                             </ul>
                         </div>
                         <div class="pageBtn text-center">
-                            <button>上一页</button>
-                            <span>1/6</span>
-                            <button>下一页</button>
+                            <button @click="changePage()">上一页</button>
+                            <span>{{pageCur}}/{{pageTotal}}</span>
+                            <button @click="changePage('next')">下一页</button>
                         </div>
                     </div>
                 </div>
@@ -107,7 +86,7 @@
                         </ul>
                         <ul class="btnGroup">
                             <li :class="index===0?'active':''"
-                                v-for="(item,index) in ['S20180629003-01','S20180629003-02','S20180629003-03',]">
+                                v-for="(item,index) in ['S20180629003-01','S20180629003-02','S20180629003-03']">
                                 <button @click="loadCurve">{{item}}</button>
                             </li>
                         </ul>
@@ -136,35 +115,6 @@
             <div id="echart_five"></div>
             <div id="echart_six"></div>
         </div>
-        <script>
-            var contextPath = '${contextPath!}';
-            bodyScale = parent.parent.bodyScale * .7;
-
-            function getCurrentMonth() {
-                var date = new Date;
-                var year = date.getFullYear();
-                var month = date.getMonth() + 1;
-                month = (month < 10 ? "0" + month : month);
-                return month.toString();
-            }
-
-            function leftNavAction() {
-                $(".left-nav>ul>li").click(function () {
-                    $(this).toggleClass("show");
-                    return false;
-                });
-                $(".left-nav>ul>li>ul>li").click(function () {
-                    $(".left-nav>ul>li>ul>li").removeClass("active");
-                    $(this).addClass("active");
-                    return false;
-                });
-            }
-
-            $(function () {
-                $("html").css("font-size", bodyScale * 16 + "px");
-                leftNavAction();
-            })
-        </script>
         <script src="${contextPath!}/static/assets/echarts3.0/echarts.js"></script>
         <script src="${contextPath!}/static/assets/js/vue-2.6.10.min.js"></script>
         <script src="${contextPath!}/static/js/manyEcharts.js"></script>
@@ -173,21 +123,34 @@
         <script src="${contextPath!}/static/js/centerLab.js"></script>
         <script src="${contextPath!}/static/js/centerLabWorld_3rd.js"></script>
         <script>
-            let orderList = new Vue({
+            let contextPath = '${contextPath!}';
+            new Vue({
                 el: '#container',
                 data: {
                     orderList: {
                         header: {},
-                        itemList: []
-                    }
+                        itemList: [],
+                    },
+                    orderListHeader:['totalNum','underTest','toBeDistributed','testing','completed','completion'],
+                    allItemList: [],
+                    pageCur: 1,
+                    itemPerPage: 3,
+                    pageTotal: 0,
                 },
                 beforeMount() {
-                    this.getOrderList()
+                    this.getOrderList();
+                },
+                mounted(){
+                    this.leftNavAction();
                 },
                 methods: {
                     getOrderList() {
                         $.get(contextPath + "/static/data/orderList.json", data => {
                             this.orderList = data;
+                            this.allItemList = data.itemList;
+                            this.pageTotal = (this.allItemList.length / this.itemPerPage | 0) + 1;
+                            this.pagination();
+
                         })
                     },
                     toCurve() {
@@ -200,15 +163,38 @@
                     loadCurve() {
                         $(".curve .btnGroup>li>button").click(function () {
                             $(this).parent().addClass("active").siblings().removeClass("active");
-                            var index = $(this).parent().index();
+                            let index = $(this).parent().index();
                             findSensorByLabCenetrTabAjaxWorld("USLABBX", "P" + (index + 1), "USLAB-B" + (index + 1) + ".json");
+                        });
+                    },
+                    pagination() {
+                        // let itemList = this.allItemList.itemList;
+                        this.orderList.itemList = this.allItemList.slice((this.pageCur - 1) * this.itemPerPage, (this.pageCur) * this.itemPerPage)
+                    },
+                    changePage(next) {
+                        console.log(next)
+                        if (next) {
+                            if (this.pageCur === this.pageTotal) return false;
+                            this.pageCur++
+                        } else {
+                            if (this.pageCur === 1) return false;
+                            this.pageCur--
+                        }
+                        this.pagination()
+                    },
+                    leftNavAction(){
+                        $(".left-nav>ul>li").click(function () {
+                            $(this).toggleClass("show");
+                            return false;
+                        });
+                        $(".left-nav>ul>li>ul>li").click(function () {
+                            $(".left-nav>ul>li>ul>li").removeClass("active");
+                            $(this).addClass("active");
+                            return false;
                         });
                     }
                 }
             });
-
         </script>
-
     </body>
-    <body>hello</body>
 </html>
