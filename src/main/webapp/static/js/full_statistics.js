@@ -66,7 +66,7 @@ function labNumStatis(){
 	$.post(contextPath+'/lab/labNumStatisAjax',{},function(data){
 		/*$("#lab_all_count_1").html(data);
 		$(".lab_all_count").html(data);*/
-		$(".lab_all_count").html(data);
+		// $(".lab_all_count").html(data);
 	})
 }
 

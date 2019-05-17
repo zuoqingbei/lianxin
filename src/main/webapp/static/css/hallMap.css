@@ -93,6 +93,7 @@ strong{
 /*header*/
 @media all{
     header {
+        z-index: 10;
         position: relative;
         height: 6.5rem;
         font-size: .875rem;

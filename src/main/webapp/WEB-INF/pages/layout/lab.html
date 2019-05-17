@@ -1,351 +1,648 @@
 <!doctype html>
 <html lang="zh-CN">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>海尔全球实验室</title>
-    <link rel="stylesheet" href="${contextPath!}/static/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/css/common.css">
-    <link rel="stylesheet" href="../static/css/lab.css">
-    <link rel="stylesheet" href="../static/css/labMain.css">
-    <link rel="stylesheet" href="../static/css/labAnalysis.css">
-    <link rel="stylesheet" href="../static/css/labOprateState.css">
-    <link rel="stylesheet" href="../static/css/labCurve.css">
-    <link rel="stylesheet" href="../static/css/centerLab.css">
-    <script src="${contextPath!}/static/assets/js/jquery-2.2.4.js"></script>
-</head>
-<body>
-<script>
-    let bodyScale = parent.bodyScale;
-    let contextPath = parent.contextPath;
-    $("body").css("font-size", parent.bodyFontSize);
-</script>
-    <div class="lab">
-        <!--頂部標題-->
-        <div class="lab_head">
-            <h2 id="labName_world">检测中心</h2>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>海尔全球实验室</title>
+        <link rel="stylesheet" href="${contextPath!}/static/assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../static/css/common.css">
+        <link rel="stylesheet" href="../static/css/lab.css">
+        <link rel="stylesheet" href="../static/css/labMain.css">
+        <link rel="stylesheet" href="../static/css/labAnalysis.css">
+        <link rel="stylesheet" href="../static/css/labOprateState.css">
+        <link rel="stylesheet" href="../static/css/labCurve.css">
+        <link rel="stylesheet" href="../static/css/centerLab.css">
+        <script src="${contextPath!}/static/assets/js/jquery-2.2.4.js"></script>
+    </head>
+    <body>
+        <script>
+            let bodyScale = parent.bodyScale;
+            let contextPath = parent.contextPath;
+            $("body").css("font-size", parent.bodyFontSize);
+        </script>
+        <div class="lab">
+            <!--頂部標題-->
+            <div class="lab_head">
+                <h2 id="labName_world">检测中心</h2>
 
-            <div class="btn-totalStatus">
-                <div class="icon"></div>
-                <span>返回总状态</span>
+                <div class="btn-totalStatus">
+                    <div class="icon"></div>
+                    <span>返回总状态</span>
+                </div>
             </div>
-        </div>
-        <div class="lab_content">
-            <div class="lab_content_l">
-                <nav class="labMainNav">
-                    <header>
+            <div class="lab_content">
+                <div class="lab_content_l">
+                    <nav class="labMainNav">
+                        <header>
+                            <ul>
+                                <li class="active">国内</li>
+                                <li>国外</li>
+                            </ul>
+                        </header>
+                        <div class="switchBox">
+                            <ul class="item inland"></ul>
+                            <ul class="item abroad" style="display: none"></ul>
+                        </div>
+                    </nav>
+                </div>
+                <div class="lab_content_r">
+                    <nav class="labSubNav">
                         <ul>
-                            <li class="active">国内</li>
-                            <li>国外</li>
+                            <li class="labHome">中心介绍</li>
+                            <li class="status active">运营状态</li>
+                            <li class="analysis">数据分析</li>
+                            <li class="curves">实时监测</li>
+                            <li class="moduleMakers" style="display: none">实时数据</li>
                         </ul>
-                    </header>
+                    </nav>
                     <div class="switchBox">
-                        <ul class="item inland"></ul>
-                        <ul class="item abroad" style="display: none"></ul>
-                    </div>
-                </nav>
-            </div>
-            <div class="lab_content_r">
-                <nav class="labSubNav">
-                    <ul>
-                        <li class="labHome">中心介绍</li>
-                        <li class="status active">运营状态</li>
-                        <li class="analysis">数据分析</li>
-                        <li class="curves">实时监测</li>
-                        <li class="moduleMakers" style="display: none">实时数据</li>
-                    </ul>
-                </nav>
-                <div class="switchBox">
-                    <!--中海博睿实验室-->
-                    <div class="item labHome">
-                        <div class="labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show">
-                            <div class="labMain_cbl_one">
-                                <div class="labMain_cblt_tone labMain_cblt_tone_world">
-                                </div>
-                                <div class="labMain_cblt_ttwo labMain_cblt_ttwo_world"><img
-                                        src=""/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--运营状态-->
-                    <div class="item status">
-                        <div class="labMain_cb_left">
-                            <div class="pageBtn">
-                                <span class="icon pre"></span>
-                                <span class="icon next"></span>
-                            </div>
-
-                            <div class="orderPopup" hidden>
-                                <div class="close"></div>
-                                <iframe src="${contextPath!}/layout/orderPopup"></iframe>
-                            </div>
-                            <div class="leftContent">
-                                <!--第一行-->
-                                <div class="l-top">
-                                    <div class="l-top-title">
-                                        <h3>实验室状态</h3>
+                        <!--中海博睿实验室-->
+                        <div class="item labHome">
+                            <div class="labMain_cb_left labMain_cb_left_column zhbr_lab labMain_cb_left_show">
+                                <div class="labMain_cbl_one">
+                                    <div class="labMain_cblt_tone labMain_cblt_tone_world">
                                     </div>
-                                    <div class="l-top-header">
-                                    </div>
-
-                                    <div class="l-top-body" id="center_lab_top_div">
-                                    </div>
-                                </div>
-                                <!--第二行-->
-                                <div class="l-mid">
-                                    <div class="l-mid-title">
-                                        <h3>设备状态</h3>
-                                    </div>
-                                    <div class="l-mid-header">
-                                    </div>
-                                    <div class="l-mid-body" id="center_lab_center_div">
-                                    </div>
-                                </div>
-                                <!--第三行-->
-                                <div class="l-bottom">
-                                    <div class="l-bottom-title">
-                                        <h3>订单状态</h3>
-                                    </div>
-                                    <div class="l-bottom-header">
-                                    </div>
-                                    <div class="l-bottom-body" id="center_lab_bottom_div">
+                                    <div class="labMain_cblt_ttwo labMain_cblt_ttwo_world">
+                                        <img
+                                            src=""/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!--数据分析-->
-                    <div class="item result">
-                        <div class="labMain_cb_left  zhbr_analysis">
-                            <div class="lab_main">
-                                <div class="la_top">
-                                    <div class="la_data_left">
-                                        <h3>一次合格率</h3>
+                        <!--运营状态-->
+                        <!--<div class="item status">
+                            <div class="labMain_cb_left">
+                                <div class="pageBtn">
+                                    <span class="icon pre"></span>
+                                    <span class="icon next"></span>
+                                </div>
 
-                                        <div class="la_datal_content clearfloat">
-                                            <div class="la_datal_legend">
-                                                <ul>
-                                                    <li id="hg_rate_center_lab_pj"></li>
-                                                    <li id="hg_rate_center_lab_height"></li>
-                                                    <li id="hg_rate_center_lab_low"></li>
-                                                </ul>
+                                <div class="orderPopup" hidden>
+                                    <div class="close"></div>
+                                    <iframe src="${contextPath!}/layout/orderPopup"></iframe>
+                                </div>
+                                <div class="leftContent">
+                                    &lt;!&ndash;第一行&ndash;&gt;
+                                    <div class="l-top">
+                                        <div class="l-top-title">
+                                            <h3>实验室状态</h3>
+                                        </div>
+                                        <div class="l-top-header">
+                                        </div>
+                                        <div class="l-top-body" id="center_lab_top_div">
+                                        </div>
+                                    </div>
+                                    &lt;!&ndash;第二行&ndash;&gt;
+                                    <div class="l-mid">
+                                        <div class="l-mid-title">
+                                            <h3>设备状态</h3>
+                                        </div>
+                                        <div class="l-mid-header">
+                                        </div>
+                                        <div class="l-mid-body" id="center_lab_center_div">
+                                        </div>
+                                    </div>
+                                    &lt;!&ndash;第三行&ndash;&gt;
+                                    <div class="l-bottom">
+                                        <div class="l-bottom-title">
+                                            <h3>订单状态</h3>
+                                        </div>
+                                        <div class="l-bottom-header">
+                                        </div>
+                                        <div class="l-bottom-body" id="center_lab_bottom_div">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+
+                        <div class="item status" id="runStatus" v-cloak>
+                            <div class="labMain_cb_left">
+                                <div class="pageBtn">
+                                    <span class="icon pre" @click="changePage()"></span>
+                                    <span class="icon next" @click="changePage('next')"></span>
+                                </div>
+
+                                <div class="orderPopup" hidden>
+                                    <div class="close"></div>
+                                    <iframe src="${contextPath!}/layout/orderPopup"></iframe>
+                                </div>
+                                <div class="leftContent">
+                                    <!--第一行-->
+                                    <div class="l-top">
+                                        <div class="l-top-title">
+                                            <h3>实验室状态</h3>
+                                        </div>
+                                        <div class="l-top-header">
+                                            <div class="item">
+                                                <h5>实验室总数：</h5>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.labTotalNum}}</strong>
+                                                </span>
                                             </div>
-                                            <div class="la_data_left_data">
-                                                <div class="la_data_echart" id="echart_one">
+                                            <div class="item">
+                                                <h5>负荷率最低：</h5>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         :style="{width: runStatusData.header.LoadRateL}"></div>
+                                                </div>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.LoadRateL}}</strong>
+                                                </span>
+                                            </div>
+                                            <div class="item">
+                                                <h5>负荷率最高：</h5>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         :style="{width: runStatusData.header.LoadRateH}"></div>
+                                                </div>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.LoadRateH}}</strong>
+                                                </span>
+                                            </div>
+                                            <div class="item">
+                                                <h5>平均负荷率：</h5>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         :style="{width: runStatusData.header.LoadRateA}"></div>
+                                                </div>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.LoadRateA}}</strong>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="l-top-body" id="center_lab_top_div">
+                                            <div v-for="(item,index) in curItemList">
+                                                <h4>{{item.name}}</h4>
+                                                <div v-if="item" class="item">
+                                                    <h5>实验室数量：</h5>
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             :style="{width: item.labNum*100/runStatusData.header.labTotalNum+'%'}"></div>
+                                                    </div>
+                                                    <span class="data">
+                                                        <strong>{{item.labNum}}</strong>
+                                                    </span>
+                                                </div>
+                                                <div v-if="item" class="item">
+                                                    <h5>在线台位：</h5>
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             :style="{width: item.onlineDevice&&item.onlineDevice.split('/')[0]*100/item.onlineDevice.split('/')[1]+'%'}"></div>
+                                                    </div>
+                                                    <span class="data">
+                                                        <strong>{{item.onlineDevice}}</strong>
+                                                    </span>
+                                                </div>
+                                                <div v-if="item" class="item">
+                                                    <h5>月负荷率：</h5>
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             :style="{width: item.LoadRateMon}"></div>
+                                                    </div>
+                                                    <span class="data">
+                                                        <strong>{{item.LoadRateMon}}</strong>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="la_data_right">
-                                        <p>月度一次合格率趋势图</p>
-
-                                        <div class="right_echart" id="echart_two"></div>
-                                    </div>
-                                </div>
-                                <!--center-->
-                                <div class="la_center">
-                                    <div class="la_data_left">
-                                        <h3>订单及时率</h3>
-
-                                        <div class="la_datal_content clearfloat">
-                                            <div class="la_datal_legend">
-                                                <ul>
-                                                    <li id="order_rate_center_lab_pj"></li>
-                                                    <li id="order_rate_center_lab_height"></li>
-                                                    <li id="order_rate_center_lab_low"></li>
-                                                </ul>
+                                    <!--第二行-->
+                                    <div class="l-mid">
+                                        <div class="l-mid-title">
+                                            <h3>设备状态</h3>
+                                        </div>
+                                        <div class="l-mid-header">
+                                            <div class="item">
+                                                <h5>设备总数：</h5>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.deviceTotalNum}}</strong>
+                                                </span>
                                             </div>
-                                            <div class="la_data_left_data">
-                                                <div class="la_data_echart" id="echart_three">
+                                            <div class="item">
+                                                <h5>当年故障数：</h5>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.yearFailureNum}}</strong>
+                                                </span>
+                                            </div>
+                                            <div class="item">
+                                                <h5>当前完好数：</h5>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.curNormalNum}}</strong>
+                                                </span>
+                                            </div>
+                                            <div class="item">
+                                                <h5>当前完好率：</h5>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         :style="{width: runStatusData.header.curNormalRate}"></div>
+                                                </div>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.curNormalRate}}</strong>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="l-mid-body" id="center_lab_center_div">
+                                            <div v-for="(item,index) in curItemList">
+                                                <h4>{{item.name}}</h4>
+                                                <div v-if="item" class="item">
+                                                    <h5>设备总数：</h5>
+                                                    <span class="data">
+                                                        <strong>{{item.deviceTotalNum}}</strong>
+                                                    </span>
+                                                </div>
+                                                <div v-if="item" class="item">
+                                                    <h5>当年故障数：</h5>
+                                                    <span class="data">
+                                                        <strong>{{item.yearFailureNum}}</strong>
+                                                    </span>
+                                                </div>
+                                                <div v-if="item" class="item">
+                                                    <h5>当前完好数：</h5>
+                                                    <span class="data">
+                                                        <strong>{{item.curNormalNum}}</strong>
+                                                    </span>
+                                                </div>
+                                                <div v-if="item" class="item">
+                                                    <h5>当前完好率：</h5>
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             :style="{width: item.curNormalRate}"></div>
+                                                    </div>
+                                                    <span class="data">
+                                                        <strong>{{item.curNormalRate}}</strong>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="la_data_right">
-                                        <p>月度订单及时率趋势图</p>
-
-                                        <div class="right_echart" id="echart_four"></div>
-                                    </div>
-                                </div>
-                                <!--center-->
-                                <div class="la_bottom">
-
-                                    <div class="la_data_left">
-                                        <h3>用户满意度</h3>
-
-                                        <div class="la_datal_content clearfloat">
-                                            <div class="la_datal_legend">
-                                                <ul>
-                                                    <li id="satisfaction_rate_center_lab_pj"></li>
-                                                    <li id="satisfaction_rate_center_lab_height"></li>
-                                                    <li id="satisfaction_rate_center_lab_low"></li>
-                                                </ul>
+                                    <!--第三行-->
+                                    <div class="l-bottom">
+                                        <div class="l-bottom-title">
+                                            <h3>订单状态</h3>
+                                        </div>
+                                        <div class="l-bottom-header">
+                                            <div class="item">
+                                                <h5>已测订单数：</h5>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.testedOrderNum}}</strong>
+                                                </span>
                                             </div>
-                                            <div class="la_data_left_data">
-                                                <div class="la_data_echart" id="echart_five">
+                                            <div class="item">
+                                                <h5>在测订单数：</h5>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.testingOrderNum}}</strong>
+                                                </span>
+                                            </div>
+                                            <div class="item">
+                                                <h5>待测订单数：</h5>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.noTestOrderNum}}</strong>
+                                                </span>
+                                            </div>
+                                            <div class="item">
+                                                <h5>及时率：</h5>
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar"
+                                                         :style="{width: runStatusData.header.TimelyRate}"></div>
+                                                </div>
+                                                <span class="data">
+                                                    <strong>{{runStatusData.header.TimelyRate}}</strong>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="l-bottom-body" id="center_lab_bottom_div">
+                                            <div v-for="(item,index) in curItemList">
+                                                <h4>{{item.name}}</h4>
+                                                <div v-if="item" class="item">
+                                                    <h5>已测订单数：</h5>
+                                                    <span class="data">
+                                                        <strong>{{item.testedOrderNum}}</strong>
+                                                    </span>
+                                                </div>
+                                                <div v-if="item" class="item">
+                                                    <h5>在测订单数：</h5>
+                                                    <span class="data">
+                                                        <strong>{{item.testingOrderNum}}</strong>
+                                                    </span>
+                                                </div>
+                                                <div v-if="item" class="item">
+                                                    <h5>待测订单数：</h5>
+                                                    <span class="data">
+                                                        <strong>{{item.noTestOrderNum}}</strong>
+                                                    </span>
+                                                </div>
+                                                <div v-if="item" :class="['item',index===0?' toOrderPopup':'']">
+                                                    <h5>及时率：</h5>
+                                                    <div class="progress">
+                                                        <div class="progress-bar" role="progressbar"
+                                                             :style="{width: item.TimelyRate}"></div>
+                                                    </div>
+                                                    <span class="data">
+                                                        <strong>{{item.TimelyRate}}</strong>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="la_data_right">
-                                        <p>月度用户满意度趋势图</p>
-
-                                        <div class="right_echart" id="echart_six"></div>
-                                    </div>
                                 </div>
-                                <!--la_bottom-->
                             </div>
                         </div>
-                    </div>
+                        <!--数据分析-->
+                        <div class="item result">
+                            <div class="labMain_cb_left  zhbr_analysis">
+                                <div class="lab_main">
+                                    <div class="la_top">
+                                        <div class="la_data_left">
+                                            <h3>一次合格率</h3>
 
-                    <!--合并后的视频监控和曲线-->
-                    <div class="item monitoring world">
-                        <div class="labMain_cb_left">
-                            <div class="shishi_left">
-                                <div class="sheshi_tab centerVideo">视频监控</div>
-                                <div class="centerVideoList" style="display: none">
-                                    <ul></ul>
-                                </div>
-                                <div class="sheshi_tab sheshi_tab_active sheshi_tab_lines">实时数据</div>
-                                <div class="sheshi_tab_list">
-                                    <ul id="lab_unit_selected_center_world">
-                                    </ul>
+                                            <div class="la_datal_content clearfloat">
+                                                <div class="la_datal_legend">
+                                                    <ul>
+                                                        <li id="hg_rate_center_lab_pj"></li>
+                                                        <li id="hg_rate_center_lab_height"></li>
+                                                        <li id="hg_rate_center_lab_low"></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="la_data_left_data">
+                                                    <div class="la_data_echart" id="echart_one">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="la_data_right">
+                                            <p>月度一次合格率趋势图</p>
+
+                                            <div class="right_echart" id="echart_two"></div>
+                                        </div>
+                                    </div>
+                                    <!--center-->
+                                    <div class="la_center">
+                                        <div class="la_data_left">
+                                            <h3>订单及时率</h3>
+
+                                            <div class="la_datal_content clearfloat">
+                                                <div class="la_datal_legend">
+                                                    <ul>
+                                                        <li id="order_rate_center_lab_pj"></li>
+                                                        <li id="order_rate_center_lab_height"></li>
+                                                        <li id="order_rate_center_lab_low"></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="la_data_left_data">
+                                                    <div class="la_data_echart" id="echart_three">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="la_data_right">
+                                            <p>月度订单及时率趋势图</p>
+
+                                            <div class="right_echart" id="echart_four"></div>
+                                        </div>
+                                    </div>
+                                    <!--center-->
+                                    <div class="la_bottom">
+
+                                        <div class="la_data_left">
+                                            <h3>用户满意度</h3>
+
+                                            <div class="la_datal_content clearfloat">
+                                                <div class="la_datal_legend">
+                                                    <ul>
+                                                        <li id="satisfaction_rate_center_lab_pj"></li>
+                                                        <li id="satisfaction_rate_center_lab_height"></li>
+                                                        <li id="satisfaction_rate_center_lab_low"></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="la_data_left_data">
+                                                    <div class="la_data_echart" id="echart_five">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="la_data_right">
+                                            <p>月度用户满意度趋势图</p>
+
+                                            <div class="right_echart" id="echart_six"></div>
+                                        </div>
+                                    </div>
+                                    <!--la_bottom-->
                                 </div>
                             </div>
-                            <div class="shishi_right shishi_right_show">
-                                <div class="item video" hidden>
-                                    <div class="bigVideoBox">
-                                        <!--<div id="bigVideo" style="display: none"></div>-->
-                                        <div id="bigVideo">
-                                            <iframe src=""></iframe>
-                                        </div>
-                                        <div class="loadingAnimation">视频接入中</div>
+                        </div>
+
+                        <!--合并后的视频监控和曲线-->
+                        <div class="item monitoring world">
+                            <div class="labMain_cb_left">
+                                <div class="shishi_left">
+                                    <div class="sheshi_tab centerVideo">视频监控</div>
+                                    <div class="centerVideoList" style="display: none">
+                                        <ul></ul>
                                     </div>
-                                </div>
-                                <div class="item curve">
-                                    <div class='sheshi_right_top'>
-                                        <ul>
-                                            <li>Report No.：<span id="center_sybh_id_world"></span></li>
-                                            <li>Sample code：<span id="center_ypbm_id_world"></span></li>
-                                            <li>Model No.：<span id="center_cpxh_id_world"></span></li>
-                                            <li>Test Item：<span id="center_testPro_id_world"></span></li>
+                                    <div class="sheshi_tab sheshi_tab_active sheshi_tab_lines">实时数据</div>
+                                    <div class="sheshi_tab_list">
+                                        <ul id="lab_unit_selected_center_world">
                                         </ul>
                                     </div>
-                                    <div class="sheshi_right_left">
-                                        <div class="loadingAnimation">数据接入中</div>
-                                        <div id="main1_world"></div>
-                                        <div id="main2_world"></div>
-                                        <div class="message_box">
-                                            <div>该台位未开测</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="sheshi_right_right">
-                                        <ul id="legend_ul_world">
-                                        </ul>
-                                    </div>
-                                    <div class="smallVideoBox">
-                                        <div class="hideShow"><span class="text">点击隐藏</span><span class="icon"></span>
-                                        </div>
-                                        <!--<div id="smallVideo"></div>-->
-                                        <div id="smallVideo">
-                                            <iframe src=""></iframe>
-                                            <!--<a style="position: absolute" href="http://www.adobe.com/go/getflashplayer" rel="nofollow" target="_blank" title="升级Flash插件">启用flash</a>-->
-
-                                        </div>
-                                        <div class="loadingAnimation">视频接入中</div>
-                                        <iframe class="forceVideoJSplaying" src=""
-                                                style="position: absolute; width: 550px; height: 300px; opacity: 0; z-index: -1;"></iframe>
-                                    </div>
-
                                 </div>
-                                <!--链接型实验室-->
-                                <div class="item iframe" style="display: none">
-                                    <div class="smallVideoBox">
-                                        <div class="hideShow"><span class="text">点击隐藏</span><span class="icon"></span>
+                                <div class="shishi_right shishi_right_show">
+                                    <div class="item video" hidden>
+                                        <div class="bigVideoBox">
+                                            <!--<div id="bigVideo" style="display: none"></div>-->
+                                            <div id="bigVideo">
+                                                <iframe src=""></iframe>
+                                            </div>
+                                            <div class="loadingAnimation">视频接入中</div>
                                         </div>
-                                        <div id="smallVideoWeb">
-                                            <iframe src=""></iframe>
-                                        </div>
-                                        <div class="loadingAnimation">视频接入中</div>
-                                        <iframe class="forceVideoJSplaying" src=""
-                                                style="position: absolute; width: 550px; height: 300px; opacity: 0; z-index: 1;"></iframe>
                                     </div>
-                                    <iframe id="lab_iframe_video" src=""></iframe>
+                                    <div class="item curve">
+                                        <div class='sheshi_right_top'>
+                                            <ul>
+                                                <li>Report No.：
+                                                    <span id="center_sybh_id_world"></span>
+                                                </li>
+                                                <li>Sample code：
+                                                    <span id="center_ypbm_id_world"></span>
+                                                </li>
+                                                <li>Model No.：
+                                                    <span id="center_cpxh_id_world"></span>
+                                                </li>
+                                                <li>Test Item：
+                                                    <span id="center_testPro_id_world"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="sheshi_right_left">
+                                            <div class="loadingAnimation">数据接入中</div>
+                                            <div id="main1_world"></div>
+                                            <div id="main2_world"></div>
+                                            <div class="message_box">
+                                                <div>该台位未开测</div>
+                                            </div>
+                                        </div>
+
+                                        <div class="sheshi_right_right">
+                                            <ul id="legend_ul_world">
+                                            </ul>
+                                        </div>
+                                        <div class="smallVideoBox">
+                                            <div class="hideShow">
+                                                <span class="text">点击隐藏</span>
+                                                <span class="icon"></span>
+                                            </div>
+                                            <!--<div id="smallVideo"></div>-->
+                                            <div id="smallVideo">
+                                                <iframe src=""></iframe>
+                                                <!--<a style="position: absolute" href="http://www.adobe.com/go/getflashplayer" rel="nofollow" target="_blank" title="升级Flash插件">启用flash</a>-->
+
+                                            </div>
+                                            <div class="loadingAnimation">视频接入中</div>
+                                            <iframe class="forceVideoJSplaying" src=""
+                                                    style="position: absolute; width: 550px; height: 300px; opacity: 0; z-index: -1;"></iframe>
+                                        </div>
+
+                                    </div>
+                                    <!--链接型实验室-->
+                                    <div class="item iframe" style="display: none">
+                                        <div class="smallVideoBox">
+                                            <div class="hideShow">
+                                                <span class="text">点击隐藏</span>
+                                                <span class="icon"></span>
+                                            </div>
+                                            <div id="smallVideoWeb">
+                                                <iframe src=""></iframe>
+                                            </div>
+                                            <div class="loadingAnimation">视频接入中</div>
+                                            <iframe class="forceVideoJSplaying" src=""
+                                                    style="position: absolute; width: 550px; height: 300px; opacity: 0; z-index: 1;"></iframe>
+                                        </div>
+                                        <iframe id="lab_iframe_video" src=""></iframe>
+                                    </div>
                                 </div>
+
                             </div>
-
                         </div>
-                    </div>
-                    <!--嵌入模块商互联界面-->
-                    <div class="item moduleMakers">
-                        <iframe src="" frameborder="0"></iframe>
+                        <!--嵌入模块商互联界面-->
+                        <div class="item moduleMakers">
+                            <iframe src="" frameborder="0"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="${contextPath!}/static/assets/echarts/echarts-3.5.2.js"></script>
-    <script src="${contextPath!}/static/js/manyEcharts.js"></script>
-    <script src="${contextPath!}/static/js/common.js"></script>
-    <!--Error:Internal error: (java.io.FileNotFoundException) 请求的操作无法在使用用户映射区域打开的文件上执行。)-->
+        <script src="${contextPath!}/static/assets/echarts/echarts-3.5.2.js"></script>
+        <script src="${contextPath!}/static/js/manyEcharts.js"></script>
+        <script src="${contextPath!}/static/assets/js/vue-2.6.10.min.js"></script>
+        <script src="${contextPath!}/static/js/common.js"></script>
 
-    <script>
-    $(document).ready(function (e) {
-        resetDataCenterLabWorld();
-        $(".labMain_cbr_tab").click(function () {
-//            $(this).addClass("active_right").siblings().removeClass("active_right");
-            // 3. 获取到当前菜单的索引号
-            var index = $(this).index() + 1;
-            // 4. 通过索引号对应关系 让这个索引号对应的内容展示出来
-            //.selected display:flex
-            $(".labMain_content_country .labMain_cb_left:eq(" + index + ")").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
-            labCurveResize();
-        });
-    });
+        <script>
+            let labRunStatus = new Vue({
+                el: '#runStatus',
+                data: {
+                    curItemList: [],
+                    pageCur: 1,
+                    itemPerPage: 5,
+                    pageTotal: 0,
+                    runStatusData: {
+                        header: {},
+                        itemList: []
+                    },
+                },
+                beforeMount() {
+                    this.getRunStatusData()
+                },
+                updated(){
+                    // 为了达到两端对齐的效果而添加空标签<span>
+                    $("[class^=item]>h5").append("<span></span>");
+                    //实验室状态页面关闭订单弹窗
+                    $(".orderPopup>.close").click(function () {
+                        $(this).parent().removeClass("show")
+                    });
+                    // 订单弹出页
+                    $(".item.status .leftContent .l-bottom-body>div").eq(0).children().eq(4).addClass("toOrderPopup");
+                    $(".item.status").on("click",".toOrderPopup",function () {
+                        $(".orderPopup").addClass("show")
+                    });
+                },
+                methods: {
+                    getRunStatusData() {
+                        $.get(contextPath + "/static/data/labRunStatus.json", data => {
+                            this.runStatusData = data;
+                            let isInt = this.runStatusData.itemList.length % this.itemPerPage === 0;
+                            this.pageTotal = (this.runStatusData.itemList.length / this.itemPerPage + (isInt ? 0 : 1)) | 0;
+                            this.pagination();
+                        })
+                    },
+                    pagination() {
+                        this.curItemList = this.runStatusData.itemList.slice((this.pageCur - 1) * this.itemPerPage, this.pageCur * this.itemPerPage)
+                        if (this.curItemList.length < 5) {
+                            this.curItemList = this.curItemList.concat(new Array(5 - this.curItemList.length).fill(0))
+                        }
+                    },
+                    changePage(next) {
+                        if (next) {
+                            if (this.pageCur === this.pageTotal) return false;
+                            this.pageCur++
+                        } else {
+                            if (this.pageCur === 1) return false;
+                            this.pageCur--
+                        }
+                        this.pagination()
+                    },
+                }
+            });
 
-    function labCurveResize() {
-        myChartWorld1.resize();
-        myChartWorld2.resize();
-        myChart1.resize();
-        myChart2.resize();
-    }
-</script>
-<script src="../static/js/centerLab.js"></script>
-<script src="../static/js/centerLabWorld_3rd.js"></script>
-<script src="../static/js/labData.js"></script>
-<script src="../static/js/labAction.js"></script>
-<!--<script src="../static/assets/video/swfobject.js?time=New Date()"></script>-->
-<!--来自centerlabWorld,待整理-->
+            $(document).ready(function (e) {
+                resetDataCenterLabWorld();
+                $(".labMain_cbr_tab").click(function () {
+                    var index = $(this).index() + 1;
+                    $(".labMain_content_country .labMain_cb_left:eq(" + index + ")").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
+                    labCurveResize();
+                });
+            });
 
-<script>
-    $(function () {
+            function labCurveResize() {
+                myChartWorld1.resize();
+                myChartWorld2.resize();
+                myChart1.resize();
+                myChart2.resize();
+            }
+        </script>
+        <script src="../static/js/centerLab.js"></script>
+        <script src="../static/js/centerLabWorld_3rd.js"></script>
+        <script src="../static/js/labData.js"></script>
+        <script src="../static/js/labAction.js"></script>
+        <!--<script src="../static/assets/video/swfobject.js?time=New Date()"></script>-->
+        <!--来自centerlabWorld,待整理-->
 
-        //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
-        var $labMain_ct_btn = $(".labMain_content_country .labMain_ct_btn");
-        $labMain_ct_btn.eq(0).hover(function () {
-            $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus_active.png)")
-        }, function () {
-            $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
-        }).click(function () {
-            $(".labMain_content_country").hide();
-            $("#r").show();
-            var $li = $(".left3x3").find(".flat-footer .legend ul.legend-bottom li");
-            $li.removeClass("active").each(function () {
-                bgImgOff($(this))
+        <script>
+            $(function () {
+
+                //中心实验室顶上的“返回总状态”和“中海博睿实验室”两个按钮
+                var $labMain_ct_btn = $(".labMain_content_country .labMain_ct_btn");
+                $labMain_ct_btn.eq(0).hover(function () {
+                    $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus_active.png)")
+                }, function () {
+                    $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/labMain_toTotalStatus.png)")
+                }).click(function () {
+                    $(".labMain_content_country").hide();
+                    $("#r").show();
+                    var $li = $(".left3x3").find(".flat-footer .legend ul.legend-bottom li");
+                    $li.removeClass("active").each(function () {
+                        bgImgOff($(this))
+                    })
+                });
+                $labMain_ct_btn.eq(1).hover(function () {
+                    $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home_active.png)")
+                }, function () {
+                    $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home.png)")
+                }).click(function () {
+                    $(".zhbr_lab").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
+                })
             })
-        });
-        $labMain_ct_btn.eq(1).hover(function () {
-            $(this).css("color", "#069").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home_active.png)")
-        }, function () {
-            $(this).css("color", "#64ccff").find(".icon").css("background-image", "url(${contextPath!}/static/img/labMain/home.png)")
-        }).click(function () {
-            $(".zhbr_lab").addClass("labMain_cb_left_show").siblings().removeClass("labMain_cb_left_show");
-        })
-    })
-</script>
+        </script>
 
-</body>
+    </body>
 </html>

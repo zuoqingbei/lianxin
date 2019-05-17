@@ -90,7 +90,7 @@ function createDataCenterHtml(data, dataType) {
                 }
                 // console.log("item",item)
                 dataCenterMap.put(item.id, item);
-                console.log(item.id)
+                // console.log(item.id)
                 if (!haschildren) {
                     htmls += '<li data-centerid="' + item.id + '" ';
                     if (cuNum == 0) {

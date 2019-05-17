@@ -189,7 +189,9 @@ video {
     background: rgba(14, 19, 39, 0.81);
 }
 
-
+[v-cloak]{
+    display: none!important;
+}
 
 
 

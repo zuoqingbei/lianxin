@@ -1,3 +1,7 @@
+//实验室状态数据加载
+runStatus();
+
+
 // 数据分析
 //左
 var chartone = echarts.init(document
@@ -1727,6 +1731,362 @@ function dealSatisfactionCenterLab(data) {
     result.push(minData);
     return result;
 }
+
+var labAllInfoData;
+var currentPageNum = 1;
+var totalPage = 0;
+//获取实验室基本信息
+function labAllForCenterLabAjax() {
+    $.post(contextPath + "/lab/labAllForCenterLabAjax", {}, function (data) {
+        labAllInfoData = data;
+       /* // $("#lab_center_id_left_0").html(data.labCount);
+        $("#lab_center_id_left_0").html(45);
+        setProgressValue("lab_center_id_left_1", data.lowMonthRate);
+        setProgressValue("lab_center_id_left_2", data.highMonthRate);
+        setProgressValue("lab_center_id_left_3", data.aveMonthRate);
+        //第二行
+        //设备总数
+        $("#lab_center_id_left_4").html("250");
+        //当前完好设备数
+        $("#lab_center_id_left_5").html("248");
+        //平均停机次数
+        $("#lab_center_id_left_6").html("14台次");
+        //当前完好率
+        setProgressValue("lab_center_id_left_7", "99.2");
+        //第三行
+        //已测订单数
+        $("#lab_center_id_left_8").html(data.finishOrderCount);
+        $("#lab_center_id_left_9").html(data.testingOrderCount);
+        $("#lab_center_id_left_10").html(0);
+        //拼接实验室详情数据
+        joinLabDetailHtmls();*/
+    });
+}
+
+function joinLabDetailHtmls() {
+    var top = "", center = "", bottom = "";
+    $.each(labAllInfoData.labSingleDataList, function (index, item) {
+        if (index >= (parseInt(currentPageNum) - 1) * 5 && index < parseInt(currentPageNum) * 5) {
+            top += joinTopHtmls(index, item);
+            center += joinCenterHtmls(index, item);
+            bottom += joinBottomHtmls(index, item);
+        }
+    });
+    if (parseInt(currentPageNum) * 5 > labAllInfoData.labSingleDataList.length) {
+        //如果数量不足 拼接空div
+        for (var x = labAllInfoData.labSingleDataList.length; x < parseInt(currentPageNum) * 5; x++) {
+            var bodyIndex = x % 5 + 1;
+            top += "<div class='l-top-body-" + bodyIndex + "'></div>";
+            center += "<div class='l-mid-body-" + bodyIndex + "'></div>";
+            bottom += "<div class='l-bottom-body-" + bodyIndex + "'></div>";
+        }
+    }
+
+    var allCount = labAllInfoData.labSingleDataList.length;
+    if (parseInt(allCount) % 5 > 0) {
+        totalPage = parseInt(parseInt(allCount) / 5) + 1;
+    } else {
+        totalPage = parseInt(parseInt(allCount) / 5);
+    }
+    ;
+    $("#center_lab_top_div").html(top);
+    $("#center_lab_center_div").html(center);
+    $("#center_lab_bottom_div").html(bottom);
+}
+
+function prePage() {
+    currentPageNum = parseInt(currentPageNum) - 1;
+    if (currentPageNum <= 0) {
+        currentPageNum = 1;
+    }
+    joinLabDetailHtmls();
+}
+
+function nextPage() {
+    currentPageNum = parseInt(currentPageNum) + 1;
+    if (currentPageNum > parseInt(totalPage)) {
+        currentPageNum = totalPage;
+    }
+    ;
+    joinLabDetailHtmls();
+}
+
+function joinBottomHtmls(index, item) {
+    var bodyIndex = index % 5 + 1;
+    var htmls = "";
+    htmls += "<div onclick=labDetailInfo('" + item.labCode + "','" + item.url + "') class='l-bottom-body-" + bodyIndex + "'>";
+    htmls += '<h4>' + item.labName + '</h4>';
+    htmls += '<div class="item1"><h5>已测订单数：<span></span></h5> <span class="data"><strong>' + item.finishOrderCount + '</strong></span></div>';
+    htmls += '<div class="item1"><h5>在测订单数：<span></span></h5><span class="data"><strong>' + item.testingOrderCount + '</strong></span></div>';
+    htmls += '<div class="item1"><h5>待测订单数：<span></span></h5><span class="data"><strong>0</strong></span>';
+    htmls += '</div></div>';
+    return htmls;
+}
+
+var arr1 = ["1", "1", "1", "3", "4", "1", "1", "2", "3", "4"];
+var arr2 = ["15", "10", "17", "68", "89", "11", "16", "22", "35", "104"];
+var arr3 = ["100", "100", "100", "98.9", "98.6", "100", "100", "100", "97.2", "98.1"];
+var arr4 = ["15", "10", "17", "69", "90", "11", "16", "22", "34", "102"];
+
+function joinCenterHtmls(index, item) {
+    //console.log(item)
+    var bodyIndex = index % 5 + 1;
+    var htmls = "";
+    htmls += "<div onclick=labDetailInfo('" + item.labCode + "','" + item.url + "') class='l-mid-body-" + bodyIndex + "'>";
+    htmls += '<h4>' + item.labName + '</h4>';
+    //htmls+='<div class="item4"><h5>设备数：<span></span></h5><span class="data">'+item.equipmentCount+'</span></div>';
+    htmls += '<div class="item4"><h5>设备数：<span></span></h5><span class="data">' + arr4[index] + '</span></div>';
+    htmls += '<div class="item1"><h5>当年故障数：<span></span></h5> <span class="data">' + arr1[index] + '台次</span></div>';
+    htmls += '<div class="item2"><h5>当前完好数：<span></span></h5>';
+    //htmls+='<span class="data">'+parseInt(parseInt(item.equipmentCount)*arr3[index]/100)+'</span></div>';
+    htmls += '<span class="data">' + arr2[index] + '</span></div>';
+    htmls += '<div class="item3"> <h5>当前完好率：<span></span></h5><div class="progress">';
+    htmls += '<div class="progress-bar" role="progressbar" aria-valuenow="' + arr3[index] + '" aria-valuemin="0"';
+    htmls += '  aria-valuemax="100" style="width: ' + arr3[index] + '%;height: 100%"></div> </div>';
+    htmls += ' <span class="data">' + arr3[index] + '%</span></div></div>';
+    return htmls;
+}
+
+function joinTopHtmls(index, item) {
+    var bodyIndex = index % 5 + 1;
+    var htmls = "";
+    htmls += "<div onclick=labDetailInfo('" + item.labCode + "','" + item.url + "') class='l-top-body-" + bodyIndex + "'>";
+    htmls += '<h4>' + item.labName + '</h4>';
+    htmls += '<div class="item1"><h5>实验室状态：<span></span></h5>';
+    htmls += '<span class="data">' + item.labStatus + '</span></div>';
+    htmls += '<div class="item2"><h5>台位负荷：<span></span></h5>';
+    htmls += '<div class="progress">';
+    var testUnitStatus = "";
+    if (item.testUnitStatus == null) {
+        testUnitStatus = "0/1";
+    } else {
+        testUnitStatus = item.testUnitStatus;
+    }
+    var fh = testUnitStatus.split("/");
+    var rate = (parseInt(fh[0]) / parseInt(fh[1]) * 100).toFixed(1);
+    htmls += ' <div class="progress-bar" role="progressbar" aria-valuenow="' + rate + '" aria-valuemin="0"';
+    htmls += '  aria-valuemax="100" style="width: ' + rate + '%;height: 100%"></div>';
+    htmls += ' </div> <span class="data">' + (item.testUnitStatus == null ? "" : item.testUnitStatus) + '</span></div>';
+    htmls += '<div class="item3"><h5>月负荷率：<span></span></h5>';
+    htmls += '<div class="progress">';
+    var monthRate = item.monthRate;
+    if (item.monthRate != null) {
+        monthRate = monthRate.replace("%", "");
+    } else {
+        monthRate = "0";
+    }
+    htmls += '<div class="progress-bar" role="progressbar" aria-valuenow="' + monthRate + '" aria-valuemin="0"';
+    htmls += ' aria-valuemax="100" style="width: ' + monthRate + '%;height: 100%"></div> </div>';
+    monthRate = parseFloat(monthRate).toFixed(1);
+    htmls += '<span class="data">' + monthRate + '%</span></div></div>';
+    return htmls;
+}
+
+function labDetailInfo(labCode, url) {
+    // console.log(labCode + "---" + url);
+}
+
+function setProgressValue(ids, value) {
+    if (value == null) {
+        value = 0;
+    }
+    value = parseFloat(value).toFixed(1);
+    $("#" + ids).find(".progress-bar").attr("aria-valuenow", value);
+    $("#" + ids).find(".progress-bar").css("width", value + "%");
+    $("#" + ids).find(".data").html(value + "%");
+}
+
+// 实验室状态
+// 中心总数据
+function runStatus() {
+    let centerName = `
+        实验室总数
+        负荷率最低
+        负荷率最高
+        平均负荷率
+        设备总数
+        当年故障数
+        当前完好数
+        当前完好率
+        已测订单数
+        在测订单数
+        待测订单数
+        及时率
+    `.split("\n").slice(1, -1);
+    let centerVal = `
+        57
+        72%
+        100%
+        92.70%
+        611
+        30
+        596
+        97.5%
+        18575
+        722
+        369
+        98.1%
+    `.split("\n").slice(1, -1);
+    let barHtml = `<div class="progress">
+                       <div class="progress-bar" role="progressbar"></div>
+                   </div>`;
+    let barShows = [1, 2, 3, 7, 11];
+    let headerHtml = "";
+    centerName.forEach(function (item, index) {
+        let barHtmlTmp = !(barShows.includes(index)) ? '' : barHtml;
+        // console.log(index,(barShows.includes(index)))
+        headerHtml += `
+                <div class="item">
+                    <h5>${item.trim()}：</h5>
+                    ${barHtmlTmp}
+                    <span class="data">${centerVal[index].trim()}</span>
+                </div> `;
+        if (index === 3) {
+            $(".l-top-header").html(headerHtml);
+            headerHtml = "";
+        } else if (index === 7) {
+            $(".l-mid-header").html(headerHtml);
+            headerHtml = "";
+        } else if (index === 11) {
+            $(".l-bottom-header").html(headerHtml);
+        }
+    });
+
+    //下面是各实验室数据
+    let labDataName = centerName.concat().slice(1);
+    labDataName.splice(0, 3, '实验室数量', '在线台位', '月负荷率');
+    //下面的字符串矩阵中，横向共14个数代表14个实验室，纵向11个对应11种数据
+    let labValStr = `
+        制冷器具性能室	用水电器性能室	暖通电器实验室	安规检测室	EMC实验室	噪声实验室	运输实验室	冰箱可靠性室	洗涤可靠性室	空调可靠性室	智能家电实验室	电气测试（T座）	系统测试（P座）	理化测试（S座）
+        5	2	2	4	3	2	3	8	2	5	1	10	5	5
+        29/30	6/9	3/3	12/12	11/11	2/2	11/11	142/150	28/32	82/100	6/10	156/165	73/82	65/65
+        97%	72%	100%	98%	100%	100%	100%	94.7%	87.5%	82.0%	97%	95%	96.30%	97%
+        85	140	3	12	16	2	11	8	3	5	10	165	82	69
+        6	2	0	1	0	0	9	0	0	0	0	5	3	4
+        83	138	3	12	16	2	11	8	3	5	10	160	80	65
+        97.6%	98.6%	100.0%	100.0%	100.0%	100.0%	100.0%	100.0%	100.0%	100.0%	100.0%	97.0%	97.6%	94.2%
+        208	47	130	577	677	363	61	76	148	55	15	1799	9869	4550
+        15	2	6	76	22	6	67	19	15	28	4	104	212	146
+        1	9	2	19	65	14	19	4	1	1	8	76	83	67
+        100.0%	98.2%	96.9%	98.50%	99.7%	100%	92.4%	97.9%	96.4%	95.5%	100%	99.1%	98.3%	99.0%
+    `.split("\n").slice(1, -1);
+
+    let labVal = [];
+    labValStr.forEach(function (item, index) {
+        labVal.push(item.trim().split("\t"))
+    });
+    //行列互换
+    let labValNew = Array(labVal[0].length);
+    labValNew.fill(null).forEach(function (item, i) {
+        labValNew[i] = [];
+    });
+    labVal.forEach(function (itemI, i) {
+        itemI.forEach(function (itemJ, j) {
+            labValNew[j][i] = itemJ;
+        })
+    });
+    labVal = labValNew;
+    console.log(labVal.join("\n"))
+    // 翻页
+    let labNumbers = labVal.length;
+    let itemNumPerPage = 5;
+    let MaxPage = Math.floor(labNumbers/itemNumPerPage) +1;
+
+    let currentPage = 1;
+    pageTo(currentPage);
+    $(".pageBtn>span").click(function () {
+
+        if($(this).hasClass("pre")){
+            currentPage--;
+            if(currentPage<1){
+                currentPage = 1;
+                return false;
+            }
+        }else{
+            currentPage++;
+            if(currentPage > MaxPage){
+                currentPage = MaxPage;
+                return false;
+            }
+        }
+        pageTo(currentPage);
+        $(".data").wrapInner("<strong></strong>")
+
+    });
+    function pageTo(p) {
+        $(".item.status [class$=-body]").empty();
+        for (let i = (p - 1) * 5; i < p * 5; i++) {
+            dataItem(i)
+        }
+        setBarWidth()
+    }
+
+    barShows = [3, 7, 11];
+
+    function dataItem(indexLab) {
+        if(!labVal[indexLab]){
+            $(".item.status [class$=-body]").append("<div></div>")
+        }else{
+            //遍历每个实验室的每条数据
+            let labName = labVal[indexLab][0];
+            let bodyInnerHTML = `<div><h4>${labName}</h4>`;
+            labVal[indexLab].forEach(function (itemData, indexData) {
+                if (indexData > 0) {
+                    let barHtmlTmp = !(barShows.includes(indexData)) ? '' : barHtml;
+                    bodyInnerHTML +=
+                        `<div class="item">
+                        <h5>${labDataName[indexData - 1].trim()}：</h5>
+                        ${barHtmlTmp}
+                        <span class="data">${itemData.trim()}</span>
+                    </div>`;
+                    if (indexData === 3) {
+                        $(".l-top-body").append(bodyInnerHTML + "</div>");
+                        bodyInnerHTML = `<div><h4>${labName}</h4>`;
+                    } else if (indexData === 7) {
+                        $(".l-mid-body").append(bodyInnerHTML + "</div>");
+                        bodyInnerHTML = `<div><h4>${labName}</h4>`;
+                    } else if (indexData === 11) {
+                        $(".l-bottom-body").append(bodyInnerHTML + "</div>");
+                    }
+                }
+
+            })
+        }
+        if(indexLab === 0){//加订单弹出页的链接
+            $(".l-bottom-body>div:eq(0)>div:eq(3)").addClass("toOrderPopup");
+        }
+    }
+    $(".data").wrapInner("<strong></strong>")
+
+    //实验室状态页面关闭订单弹窗
+    $(".orderPopup>.close").click(function () {
+        $(this).parent().removeClass("show")
+    });
+    // 实验室状态页面的进度条
+    function setBarWidth(){
+        $(".lab .item.status .progress-bar").css("width", function () {
+            var text = $(this).parent().next().text();
+            if (text.indexOf("/") > 0) {
+                var str = "<strong>" + text.slice(0, text.indexOf('/')) + "</strong>" + text.slice(text.indexOf('/'))
+                $(this).parent().next().html(str);
+                text = text.split("/")[0] / text.split("/")[1] * 100 + "%";
+            }
+            return text;
+        });
+    }
+
+    // 为了达到两端对齐的效果而添加空标签<span>
+    $(".lab .item.status [class^=item]>h5").append("<span></span>");
+
+    // 订单弹出页
+    $(".item.status .leftContent .l-bottom-body>div").eq(0).children().eq(4).addClass("toOrderPopup");
+    $(".item.status").on("click",".toOrderPopup",function () {
+        $(".orderPopup").addClass("show")
+    });
+
+
+}
+
 
 //                            _ooOoo_
 //                           o8888888o

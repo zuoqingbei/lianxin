@@ -64,9 +64,6 @@ public class LayoutController extends BaseController {
 	public void orderPopup() {
 		render("orderPopup.html");
 	}
-	public void orderPopup2() {
-		render("orderPopup2.html");
-	}
 
 	public void hallMap() {
 		render("hallMap.html");

@@ -49,7 +49,7 @@
                         </ul>
                     </div>
                     <div class="list-body">
-                        <div v-if="orderList.itemList" v-for="(item,index) in orderList.itemList" class="item ">
+                        <div v-if="curItemList" v-for="(item,index) in curItemList" class="item ">
 
                             <button class="evaluation">评价</button>
                             <header>
@@ -132,7 +132,7 @@
                         itemList: [],
                     },
                     orderListHeader:['totalNum','underTest','toBeDistributed','testing','completed','completion'],
-                    allItemList: [],
+                    curItemList: [],
                     pageCur: 1,
                     itemPerPage: 3,
                     pageTotal: 0,
@@ -147,8 +147,8 @@
                     getOrderList() {
                         $.get(contextPath + "/static/data/orderList.json", data => {
                             this.orderList = data;
-                            this.allItemList = data.itemList;
-                            this.pageTotal = (this.allItemList.length / this.itemPerPage | 0) + 1;
+                            let isInt = this.orderList.itemList.length % this.itemPerPage === 0;
+                            this.pageTotal = (this.orderList.itemList.length / this.itemPerPage + (isInt ? 0 : 1)) | 0;
                             this.pagination();
 
                         })
@@ -168,8 +168,7 @@
                         });
                     },
                     pagination() {
-                        // let itemList = this.allItemList.itemList;
-                        this.orderList.itemList = this.allItemList.slice((this.pageCur - 1) * this.itemPerPage, (this.pageCur) * this.itemPerPage)
+                        this.curItemList = this.orderList.itemList.slice((this.pageCur - 1) * this.itemPerPage, (this.pageCur) * this.itemPerPage)
                     },
                     changePage(next) {
                         console.log(next)

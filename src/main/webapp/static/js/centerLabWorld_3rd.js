@@ -599,12 +599,12 @@ function findSensorDataCenetrTabAjaxWorld(labTypeCode, testUnitId, fileName) {
     $.post(contextPath + "/lab/getJsonFile", {"fileName": fileName}, function (data) {
         // loadingAnimateOut("curve", 500);
         setTimeout(function () {
-            data = eval("(" + data + ")");
-            console.log(data)
             if (data == "") {
                 //alert("暂未开测");
                 return;
             }
+            data = eval("(" + data + ")");
+            console.log(data)
             myChartWorld1.clear();
             myChartWorld2.clear();
             $("#legend_ul_world").html('');

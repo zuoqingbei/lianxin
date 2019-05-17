@@ -256,8 +256,6 @@ $(function () {
 
     initfour();//及时率
     inittwo();//满意度
-
-    labAllForCenterLabAjax();
 });
 function inlandTabShow(mark) { //国内
     if (mark === "zhonghaiborui") {
