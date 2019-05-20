@@ -150,6 +150,7 @@ function createClickFuntionForDataCenter(item) {
 function setCenterLabHtmlDB(dataCenter,dataCenterId) {
     /*数据库恢复时出错，暂时没有后台，就这这里改一下应急*/
     if(dataCenterId==='1'){
+        dataCenter.center_name='检测中心';
         dataCenter.center_desc='海尔质量检测认证中心占地约18000㎡，拥有一流的专业实验室57个，覆盖安全、性能、EMC、噪音、运输、可靠性、成套智能家电等10大整机专业测试领域和电脑板、电机、压缩机、橡塑、钣金等10大类模块的6000多个项目的检测能力。中心拥有一支技术专业、经验丰富的团队，严格按照ISO/IEC17025标准体系要求，在电子电器产品及关键模块领域具有主导和参与标准制定的能力。合作的50多家国际认证机构如VDE、UL、JET、TUV等实现了检测数据互认，可为海尔销往全球各地的产品提供专业、快速、经济的检测认证。';
         dataCenter.img_content='../static/img/labMain/centerLab0.png';
     }
@@ -166,28 +167,9 @@ function loadVideosByDataCenterAjax(dataCenterId) {
         console.log('获取视频的data',data);
         var centerDataVideoArray = [];
         var html = "";
-        // console.log("获取数据中心的视频列表", data);
         if (data.length > 0) {
             $(".sheshi_tab.centerVideo").removeClass("disabled");
-            /* 从数据中心获取各个实验室的视频
-                        for (var i = 0; i < data.length; i++) {
-                            for (var j = 0; j < data[i].videos.length; j++) {
-                                var obj = {};
-                                obj.videoName = data[i].videos[j].show_title;
-                                obj.videoUrl = data[i].videos[j].videl_url;
-                                centerDataVideoArray.push(obj)
-                            }
-                        }
-                        // console.log("centerDataVideoArray", centerDataVideoArray);
-                        if (centerDataVideoArray) {
-                            for (var i = 0; i < centerDataVideoArray.length; i++) {
-                                html += "<li data-videourl=" + centerDataVideoArray[i].videoUrl + " >" + centerDataVideoArray[i].videoName + "</li>"
-                            }
-                        }
-            */
             for (var i = 0; i < data.length; i++) {
-                // console.log(data[i].videl_url);
-                http://10.130.96.65:10800/play.html?channel=8
                     var localVideo = data[i].videl_url.replace("10.130.96.65:10800", "10.130.96.113:10801");
                 html += "<li data-videourl=" + localVideo + " >" + data[i].show_title + "</li>"
             }
@@ -215,22 +197,6 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
     var parentDataCenter = dataCenterMap.get(dataCenter.parent_id);
     var data_type = dataCenter.data_type;
     var data_source = dataCenter.data_source;
-    //判断出现那块DIV（国内 国外）
-    /* if (data_type == 0) {
-         if (data_source == "webservice") {
-             // inlandTabShow();
-         } else {
-             setCenterLabHtmlDB(parentDataCenter);
-             // inlandTabShow_world();
-         }
-     } else {
-         if (data_source == "webservice") {
-             // abroadTabShow();
-         } else {
-             setCenterLabHtmlDB(parentDataCenter);
-             // abroadTabShow();
-         }
-     }*/
     setCenterLabHtmlDB(dataCenter,dataCenterId);
     //加载数据中心第三级
     $.post(contextPath + "/lab/loadAllDataCenterLabAjax", {"dataCenterId": dataCenterId}, function (data) {
@@ -280,23 +246,10 @@ function loadAllDataCenterLabAjaxFunc(dataCenterId) {
                                     item.labName = item.labName.replace("（", "(").replace("）", ")").replace("、", "/");
                                     htmls += ' <li class="lab_code_' + item.labCode + '"><header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("' + item.labCode + '","' + item.url + '")>' + item.labName + '<span>∨</span></header>';
                                     labsHtmlsMap.put(item.labCode, '<header labcode="' + item.labCode + '"  onclick=loadLabUnitInfoAjaxZhbr("' + item.labCode + '","' + item.url + '")>' + item.labName + '<span>∧</span></header>');
-                                    /* if (item.testUnitList.length > 0) {
-                                        htmls += '<ul class="taiwei_hide">';
-                                        $.each(item.testUnitList, function (ind, it) {
-                                            if (it.testUnitStatus == "停测") {
-                                                htmls += '<li >台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
-                                            } else {
-                                                htmls += '<li onclick=findSensorByLabCenetrTabAjax(\"' + item.labCode + '\",\"' + item.url + '\",\"' + it.testUnitId + '\")>台位：' + it.testUnitName + '  (' + it.testUnitStatus + ')</li>';
-                                            }
-                                        });
-                                        htmls += '</ul>';
-                                    }*/
                                     htmls += ' </li>';
                                 });
                                 $(".quxian_li_" + item.id).find("ul:eq(0)").append(htmls);
                             });
-
-                            ///
                         }
                     });
                     labsHtmls += '</ul>';

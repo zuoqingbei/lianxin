@@ -35,7 +35,7 @@
     }
 
     .lab_content_r {
-        flex: 0 0 77%;
+        flex: 0 0 78%;
         display: flex;
         flex-direction: column;
         margin-top: -1em;
@@ -46,7 +46,8 @@
     }
 
     .lab_content_r > .switchBox {
-        flex: 0 0 87.9%;
+        /*flex: 0 0 87.9%;*/
+        height: 45em;
     }
 }
 

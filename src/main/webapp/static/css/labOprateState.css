@@ -90,8 +90,8 @@
 
 [class$=-header],
 [class$=-body] > div {
-    flex: 7;
-    padding: 1% .8% 0;
+    flex: 6.5;
+    padding: .6em .6em 0;
 }
 
 [class$=-header] > div,
@@ -124,7 +124,7 @@
     width: 19%;
     height: .8em;
     display: inline-block;
-    margin: 0 1%;
+    margin: 0;
     background-color: #224f64;
 }
 
@@ -162,7 +162,9 @@
     margin-bottom: 6%;
     margin-top: 3%;
 }
-
+.l-top-body h4{
+    margin-bottom: 8%;
+}
 span strong {
     font-weight: normal;
     /*font-size: 1.1em;*/

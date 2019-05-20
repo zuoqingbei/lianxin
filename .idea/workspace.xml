@@ -2,16 +2,21 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="ulab:war exploded" />
+      <artifact name="hlht:war" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="745ef7df-f67e-49a1-81e2-8809f6fc464d" name="Default" comment="视频服务部署到服务器调通，增加判断和开启flash按钮，实验室运营状态的订单数据格式确定">
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/static/img/labMain/centerLab0.png" afterDir="false" />
+    <list default="true" id="745ef7df-f67e-49a1-81e2-8809f6fc464d" name="Default" comment="因数据库恢复问题导致检测中心的图片和介绍不对，先在前端写死，调相关样式。">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/.idea/lab.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/lab.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/lab.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/static/css/lab.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/css/lab.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/static/css/labMain.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/css/labMain.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/img/labMain/labmain-1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/css/labOprateState.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/css/labOprateState.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/static/data/labRunStatus.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/data/labRunStatus.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/static/js/labData.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/static/js/labData.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -25,7 +30,7 @@
     <option name="PARALLEL_COMPILATION" value="true" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/hlht$Tomcat_9_0_14.ic" NAME="Tomcat 9.0.14 Coverage Results" MODIFIED="1557903779091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/hlht$Tomcat_9_0_14.ic" NAME="Tomcat 9.0.14 Coverage Results" MODIFIED="1558086870977" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="CoverageViewManager">
     <option name="myElementSize" value="182" />
@@ -54,35 +59,18 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/data/orderList.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="908">
-              <caret line="129" column="30" selection-start-line="129" selection-start-column="30" selection-end-line="129" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/java/com/ulab/controller/LayoutController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
-              <folding>
-                <element signature="e#1756#1757#0" expanded="true" />
-                <element signature="e#1788#1789#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/lab.html">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="233">
-              <caret line="65" column="56" selection-start-line="65" selection-start-column="56" selection-end-line="65" selection-end-column="56" />
+              <caret line="26" column="37" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="37" />
               <folding>
                 <element signature="n#div#0;n#nav#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#style#0;n#ul#1;n#div#0;n#nav#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+                <element signature="n#div#2;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#div#2;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
                 <element signature="n#div#3;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
               </folding>
@@ -91,45 +79,71 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/labAction.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="52" column="51" selection-start-line="52" selection-start-column="51" selection-end-line="52" selection-end-column="51" />
-              <folding>
-                <element signature="n#style#0;n#iframe#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/labData.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="159" column="56" lean-forward="true" selection-start-line="159" selection-start-column="56" selection-end-line="159" selection-end-column="56" />
+            <state relative-caret-position="444">
+              <caret line="289" lean-forward="true" selection-start-line="289" selection-end-line="289" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/img/labMain/lab_left_border.png">
-          <provider selected="true" editor-type-id="images" />
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin/mapForm.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="756">
+              <caret line="66" column="54" selection-start-line="66" selection-start-column="46" selection-end-line="66" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin/login.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-744" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/chromeFontSize.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/common.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="210">
+              <caret line="165" column="31" lean-forward="true" selection-start-line="165" selection-start-column="31" selection-end-line="165" selection-end-column="31" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/labMain.css">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="126" column="38" lean-forward="true" selection-start-line="126" selection-start-column="38" selection-end-line="126" selection-end-column="38" />
+            <state relative-caret-position="414">
+              <caret line="32" column="5" lean-forward="true" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/lab.css">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin/labLogin.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+            <state relative-caret-position="-924">
+              <caret line="13" column="12" lean-forward="true" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/static/data/labRunStatus.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="182" column="29" lean-forward="true" selection-start-line="182" selection-start-column="29" selection-end-line="182" selection-end-column="29" />
             </state>
           </provider>
         </entry>
@@ -138,38 +152,40 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sphere-right-top</find>
-      <find>lab_all_count</find>
-      <find>labNumStatis</find>
-      <find>727</find>
-      <find>index</find>
-      <find>full_pro_line</find>
-      <find>pro_line</find>
-      <find>pageResize()</find>
-      <find>wordCloudText</find>
-      <find>bg-2.jpg</find>
-      <find>10.130.96.113</find>
-      <find>play.html?channel=</find>
-      <find>&lt;!--合并后的视频监控和曲线--&gt;</find>
-      <find>视频</find>
-      <find>labmain-1</find>
-      <find>small</find>
-      <find>10.130.</find>
-      <find>orderPopup</find>
-      <find>close</find>
-      <find>btnGroup</find>
-      <find>中海博瑞</find>
-      <find>${</find>
-      <find>bodyScale</find>
-      <find>loadAllDataCenterLabAjaxFunc</find>
-      <find>loadAllDataCenterLabAjax</find>
-      <find>labMain_cbl_one</find>
-      <find>center_desc</find>
       <find>margin</find>
       <find>rem</find>
       <find>46</find>
+      <find>lab_all_count</find>
+      <find>.labMain_cblt_ttwo img</find>
+      <find>l-top-header</find>
+      <find>center_desc</find>
+      <find>loadAllDataCenterLabAjaxFunc</find>
+      <find>labMain_cbl_one</find>
+      <find>Haier Global Labs</find>
+      <find>Haier U-lab Data Center</find>
+      <find>:</find>
+      <find>split</find>
+      <find>runStatus</find>
+      <find>orderList</find>
+      <find>allItemList</find>
+      <find>curItemList</find>
+      <find>toOrderPopup</find>
+      <find>&lt;/h5&gt;</find>
+      <find>$(this).parent().removeClass(&quot;show&quot;)</find>
+      <find>.close</find>
+      <find>data = eval(&quot;(&quot; + data + &quot;)&quot;);</find>
+      <find>getJsonFile</find>
+      <find>orderNumsAjax</find>
+      <find>testData</find>
+      <find>findSensorByLabCenetrTabAjaxWorld</find>
+      <find>&quot;100%&quot;</find>
+      <find>labName_world</find>
+      <find>&lt;span&gt;&lt;/</find>
+      <find>updateUser</find>
     </findStrings>
     <replaceStrings>
+      <replace>',</replace>
+      <replace>&quot;100.0%&quot;</replace>
       <replace />
     </replaceStrings>
   </component>
@@ -182,57 +198,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/full.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/manyEcharts.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/centerLab.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/tab/tab2.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab2.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/css/tabs/tab4.css" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/centerLabWorld.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/tabs/tab2.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/centerLab.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab3.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/statistics.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/index_left.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/fullScreen_map.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/centerLabWorld.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/flatWorld.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/asserts/echarts/flatMapAutoTip.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/centerLab.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/tabs/tab4.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/phm/phm2.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/phm/css/phm2.css" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/main_right.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/hallMap.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/hallMap.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/db/sql/PHM_DEVICE_INFO.sql" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/symbolEarth3D/sphereMap.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/right.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/common.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld_3rd.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/js/flat.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/full_statistics.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/fullScreen_map.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/full.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/phm/index.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/测试span下的img.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/testVideoWait.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/labAction.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/left.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/index.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/lab.html" />
         <option value="$PROJECT_DIR$/java/com/ulab/core/BaseController.java" />
-        <option value="$PROJECT_DIR$/java/com/ulab/controller/LayoutController.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/orderPopup2.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/data/orderList.json" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/css/labOprateState.css" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/orderPopup.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/full_statistics.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/statistics.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/css/hallMap.css" />
+        <option value="$PROJECT_DIR$/java/com/ulab/controller/LayoutController.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/hallMap.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/hallMap.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/190517/hello.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/hello.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/maiyatang.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/labAction.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/centerLab.js" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/orderPopup.html" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/js/labData.js" />
-        <option value="$PROJECT_DIR$/src/main/webapp/static/css/lab.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld_3rd.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/flex.html" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/lab.html" />
         <option value="$PROJECT_DIR$/src/main/webapp/static/css/labMain.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/css/lab.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/css/labOprateState.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/data/labRunStatus.json" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/js/labData.js" />
+        <option value="$PROJECT_DIR$/src/main/webapp/static/css/common.css" />
+        <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/index.html" />
       </list>
     </option>
   </component>
@@ -269,16 +285,18 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-40" />
-    <option name="y" value="36" />
-    <option name="width" value="720" />
-    <option name="height" value="551" />
+    <option name="x" value="161" />
+    <option name="y" value="260" />
+    <option name="width" value="837" />
+    <option name="height" value="475" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -328,26 +346,7 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="webapp" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="img" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="hlht" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ulab" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="img" type="462c0819:PsiDirectoryNode" />
-              <item name="labMain" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="hlht" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ulab" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="hlht" type="b2602c69:ProjectViewProjectNode" />
@@ -365,6 +364,16 @@
               <item name="webapp" type="462c0819:PsiDirectoryNode" />
               <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="hlht" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ulab" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="hlht" type="b2602c69:ProjectViewProjectNode" />
@@ -384,16 +393,12 @@
               <item name="webapp" type="462c0819:PsiDirectoryNode" />
               <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
-              <item name="layout" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="hlht" type="b2602c69:ProjectViewProjectNode" />
               <item name="ulab" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="webapp" type="462c0819:PsiDirectoryNode" />
-              <item name="WEB-INF" type="462c0819:PsiDirectoryNode" />
-              <item name="pages" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -405,8 +410,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -414,7 +417,7 @@
     <property name="JavaScriptWeakerCompletionTypeGuess" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1557994353052" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1558344806691" />
     <property name="editor.config.ad.shown" value="true" />
     <property name="js.eslint.eslintPackage" value="" />
     <property name="last_opened_file_path" value="$USER_HOME$/Desktop" />
@@ -428,16 +431,18 @@
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.JSON" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="B:\git\ulab\target\hlht\.idea" />
-      <recent name="C:\Users\Administrator\git\ulab\ulab\src\main\webapp\static\img\labMain" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="B:\git\ulab\src\main\webapp\static\data" />
+      <recent name="B:\git\ulab\src\main\webapp\static\js" />
       <recent name="B:\git\ulab\src\main\webapp\static\img\labMain" />
       <recent name="B:\git\ulab\src\main\webapp\WEB-INF\pages\layout" />
       <recent name="B:\git\ulab\src\main\webapp\static\assets\js" />
-      <recent name="B:\git\ulab\src\main\webapp\WEB-INF\pages\test\symbolEarth3D" />
-      <recent name="$PROJECT_DIR$/src/main/webapp/static/phm/images/system" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="B:\git\ulab\src\main\webapp\WEB-INF\pages\test" />
+      <recent name="B:\git\ulab\src\main\webapp\WEB-INF\pages\test\190517" />
+      <recent name="B:\git\ulab\target\hlht\.idea" />
+      <recent name="C:\Users\Administrator\git\ulab\ulab\src\main\webapp\static\img\labMain" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -608,7 +613,9 @@
       <workItem from="1557828020521" duration="488000" />
       <workItem from="1557882466581" duration="9112000" />
       <workItem from="1557902375056" duration="9274000" />
-      <workItem from="1557969364987" duration="16295000" />
+      <workItem from="1557969364987" duration="20965000" />
+      <workItem from="1558056046616" duration="24320000" />
+      <workItem from="1558314912688" duration="13181000" />
     </task>
     <task id="LOCAL-00001" summary="配置idea的开发环境和热部署">
       <created>1552010667182</created>
@@ -638,11 +645,25 @@
       <option name="project" value="LOCAL" />
       <updated>1557987975451</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="因数据库恢复问题导致检测中心的图片和介绍不对，先在前端写死，调相关样式。">
+      <created>1557994608658</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1557994608658</updated>
+    </task>
+    <task id="LOCAL-00006" summary="订单和实验室运营状态均确定json格式，并用vue从本地模拟数据绑数">
+      <created>1558085974109</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1558085974109</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="151589000" />
+    <option name="totallyTimeSpent" value="193760000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -657,7 +678,7 @@
     <frame x="-8" y="-8" width="1382" height="753" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2655068" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.36157337" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -675,7 +696,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32956383" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.35056543" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50075644" side_tool="true" weight="0.3279483" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.18901454" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.3489499" />
       <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Application Servers" order="11" weight="0.32956383" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32956383" />
@@ -696,7 +717,7 @@
       <window_info anchor="right" id="Preview" order="12" weight="0.32980332" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19591528" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.36157337" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -714,7 +735,7 @@
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32956383" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.35056543" />
       <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.50075644" side_tool="true" weight="0.3279483" />
-      <window_info anchor="bottom" id="Version Control" order="9" weight="0.18901454" />
+      <window_info anchor="bottom" id="Version Control" order="9" weight="0.3489499" />
       <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
       <window_info anchor="bottom" id="Application Servers" order="11" weight="0.32956383" />
       <window_info anchor="bottom" id="Java Enterprise" order="12" weight="0.32956383" />
@@ -750,6 +771,14 @@
               <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
                 <collection />
               </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
             </State>
           </value>
         </entry>
@@ -777,7 +806,9 @@
     <MESSAGE value="PHM指向Ulab链接，地图上链接跳转到实验室，地球全屏页面的视频显示控制放在session,实验室总数和互联数，实验室订单页面的菜单，修改目录asserts为assets，标记部分没用的文件加前缀del_" />
     <MESSAGE value="视频服务部署到服务器调通，增加判断和开启flash按钮，实验室运营状态的订单数据格式确定" />
     <MESSAGE value="实验室运营状态的订单分页" />
-    <option name="LAST_COMMIT_MESSAGE" value="实验室运营状态的订单分页" />
+    <MESSAGE value="因数据库恢复问题导致检测中心的图片和介绍不对，先在前端写死，调相关样式。" />
+    <MESSAGE value="订单和实验室运营状态均确定json格式，并用vue从本地模拟数据绑数" />
+    <option name="LAST_COMMIT_MESSAGE" value="订单和实验室运营状态均确定json格式，并用vue从本地模拟数据绑数" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -804,134 +835,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/img/labMain/home_active.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/hallMap.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="414">
-          <caret line="23" column="11" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/centerLab.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10242">
-          <caret line="569" column="51" selection-start-line="569" selection-start-column="51" selection-end-line="569" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/orderPopup.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/iframe.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/hallMap.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="167" column="28" selection-start-line="167" selection-start-column="28" selection-end-line="167" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/del_main_left.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="273" column="16" selection-start-line="273" selection-start-column="16" selection-end-line="273" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/right.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="54">
-          <caret line="3" column="65" selection-start-line="3" selection-start-column="65" selection-end-line="3" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/common.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="866" column="13" selection-start-line="866" selection-start-column="13" selection-end-line="866" selection-end-column="13" />
-          <folding>
-            <element signature="e#315#1256#0" />
-            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/flat.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="885">
-          <caret line="471" column="31" selection-start-line="471" selection-start-column="31" selection-end-line="471" selection-end-column="31" />
-          <folding>
-            <element signature="e#69#75#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/totalState.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-497" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/flatMap.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="534">
-          <caret line="34" column="65" selection-start-line="34" selection-start-column="63" selection-end-line="34" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld_3rd.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="505" column="42" selection-start-line="505" selection-start-column="9" selection-end-line="505" selection-end-column="42" />
-          <folding>
-            <element signature="e#14#1862#0" />
-            <element signature="n#style#0;n#span#0;n#li#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/phm/js/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
-          <caret line="19" column="32" lean-forward="true" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/phm/status.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="24" column="10" selection-start-line="24" selection-start-column="10" selection-end-line="24" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/phm/strategy.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="954">
           <caret line="53" column="10" selection-start-line="53" selection-start-column="10" selection-end-line="53" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/fullScreen_map.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1296">
-          <caret line="72" column="131" selection-start-line="72" selection-start-column="131" selection-end-line="72" selection-end-column="131" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#h4#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/full.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="738">
-          <caret line="62" column="7" selection-start-line="62" selection-start-column="7" selection-end-line="62" selection-end-column="7" />
-          <folding>
-            <element signature="n#script#0;n#div#0;n#html#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1009,13 +916,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/full_statistics.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="44">
-          <caret line="56" column="17" lean-forward="true" selection-start-line="56" selection-start-column="17" selection-end-line="56" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/full.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="530">
@@ -1030,13 +930,6 @@
           <folding>
             <element signature="n#style#0;n#a#0;n#div#0;n#div#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="62" column="37" lean-forward="true" selection-start-line="62" selection-start-column="37" selection-end-line="62" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -1060,16 +953,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/orderPopup2.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="110" column="44" selection-start-line="110" selection-start-column="40" selection-end-line="110" selection-end-column="44" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin/userList.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-20">
@@ -1079,27 +962,6 @@
             <element signature="e#103#110#1" expanded="true" />
             <element signature="e#78#85#1" expanded="true" />
             <element signature="e#80#87#1" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/labOprateState.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/orderPopup.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="19" column="51" lean-forward="true" selection-start-line="19" selection-start-column="51" selection-end-line="19" selection-end-column="51" />
-          <folding>
-            <element signature="n#div#0;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="e#6626#9728#0" />
           </folding>
         </state>
       </provider>
@@ -1128,40 +990,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/java/com/ulab/controller/LayoutController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
-          <folding>
-            <element signature="e#1756#1757#0" expanded="true" />
-            <element signature="e#1788#1789#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/labAction.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="52" column="51" selection-start-line="52" selection-start-column="51" selection-end-line="52" selection-end-column="51" />
-          <folding>
-            <element signature="n#style#0;n#iframe#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/lab.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="65" column="56" selection-start-line="65" selection-start-column="56" selection-end-line="65" selection-end-column="56" />
-          <folding>
-            <element signature="n#div#0;n#nav#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#style#0;n#ul#1;n#div#0;n#nav#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#div#2;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-            <element signature="n#div#3;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/static/img/labMain/lab_left_border.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
@@ -1171,24 +999,609 @@
     <entry file="file://$PROJECT_DIR$/src/main/webapp/static/img/labMain/Center.png">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/labData.js">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/full.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="159" column="56" lean-forward="true" selection-start-line="159" selection-start-column="56" selection-end-line="159" selection-end-column="56" />
+        <state relative-caret-position="738">
+          <caret line="62" column="7" selection-start-line="62" selection-start-column="7" selection-end-line="62" selection-end-column="7" />
+          <folding>
+            <element signature="n#script#0;n#div#0;n#html#0;n#!!top" />
+            <element signature="n#style#0;n#div#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/lab.css">
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/fullScreen_map.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="4" column="21" lean-forward="true" selection-start-line="4" selection-start-column="21" selection-end-line="4" selection-end-column="21" />
+        <state relative-caret-position="284">
+          <caret line="72" column="106" selection-start-line="72" selection-start-column="93" selection-end-line="72" selection-end-column="106" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#1;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#h4#0;n#div#0;n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/full_statistics.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1278">
+          <caret line="71" lean-forward="true" selection-start-line="71" selection-end-line="71" />
+          <folding>
+            <element signature="n#style#0;n#span#1;n#li#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#span#2;n#li#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/hallMap.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="88" column="16" lean-forward="true" selection-start-line="88" selection-start-column="16" selection-end-line="88" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/hallMap.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="28" column="37" lean-forward="true" selection-start-line="28" selection-start-column="37" selection-end-line="28" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/centerLab_bak.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/orderPopup2.html" />
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/maiyatang.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="29" column="9" lean-forward="true" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/centerLab.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="971">
+          <caret line="1752" lean-forward="true" selection-start-line="1752" selection-end-line="1752" />
+          <folding>
+            <element signature="e#510#570#0" />
+            <element signature="e#755#2438#0" />
+            <element signature="e#782#1039#0" />
+            <element signature="e#800#1032#0" />
+            <element signature="e#821#954#0" />
+            <element signature="e#868#939#0" />
+            <element signature="e#979#1022#0" />
+            <element signature="e#1068#1503#0" />
+            <element signature="e#1086#1497#0" />
+            <element signature="e#1137#1419#0" />
+            <element signature="e#1264#1405#0" />
+            <element signature="e#1444#1487#0" />
+            <element signature="e#1536#1790#0" />
+            <element signature="e#1554#1761#0" />
+            <element signature="e#1605#1683#0" />
+            <element signature="e#1708#1751#0" />
+            <element signature="e#1842#2415#0" />
+            <element signature="e#1863#1942#0" />
+            <element signature="e#1958#2008#0" />
+            <element signature="e#2026#2409#0" />
+            <element signature="e#2040#2399#0" />
+            <element signature="e#2210#2385#0" />
+            <element signature="e#2475#4758#0" />
+            <element signature="e#2548#2655#0" />
+            <element signature="e#2673#4753#0" />
+            <element signature="e#3173#3425#0" />
+            <element signature="e#3195#3415#0" />
+            <element signature="e#3338#3401#0" />
+            <element signature="e#3500#4744#0" />
+            <element signature="e#3525#3580#0" />
+            <element signature="e#3601#3928#0" />
+            <element signature="e#3619#3913#0" />
+            <element signature="e#3693#3767#0" />
+            <element signature="e#3949#4375#0" />
+            <element signature="e#3967#4361#0" />
+            <element signature="e#4118#4188#0" />
+            <element signature="e#4270#4342#0" />
+            <element signature="e#4395#4513#0" />
+            <element signature="e#4535#4734#0" />
+            <element signature="e#4553#4720#0" />
+            <element signature="e#4787#5354#0" />
+            <element signature="e#5110#5320#0" />
+            <element signature="e#5132#5215#0" />
+            <element signature="e#5393#7584#0" />
+            <element signature="e#5454#5538#0" />
+            <element signature="e#5556#7580#0" />
+            <element signature="e#5602#5753#0" />
+            <element signature="e#5663#5743#0" />
+            <element signature="e#6236#6485#0" />
+            <element signature="e#6258#6475#0" />
+            <element signature="e#6398#6461#0" />
+            <element signature="e#6516#7572#0" />
+            <element signature="e#6541#6596#0" />
+            <element signature="e#6618#6943#0" />
+            <element signature="e#6636#6928#0" />
+            <element signature="e#6708#6782#0" />
+            <element signature="e#6964#7254#0" />
+            <element signature="e#6982#7240#0" />
+            <element signature="e#7148#7220#0" />
+            <element signature="e#7274#7392#0" />
+            <element signature="e#7414#7562#0" />
+            <element signature="e#7432#7548#0" />
+            <element signature="e#7613#7790#0" />
+            <element signature="e#7848#10872#0" />
+            <element signature="e#7911#8023#0" />
+            <element signature="e#8041#10868#0" />
+            <element signature="e#8051#8248#0" />
+            <element signature="e#8750#10802#0" />
+            <element signature="e#8835#10790#0" />
+            <element signature="e#8864#8927#0" />
+            <element signature="e#8953#9140#0" />
+            <element signature="e#9051#9122#0" />
+            <element signature="e#9164#9302#0" />
+            <element signature="e#9327#9994#0" />
+            <element signature="e#9349#9976#0" />
+            <element signature="e#9540#9621#0" />
+            <element signature="e#9658#9954#0" />
+            <element signature="e#9790#9928#0" />
+            <element signature="e#10019#10242#0" />
+            <element signature="e#10041#10224#0" />
+            <element signature="e#10121#10201#0" />
+            <element signature="e#10268#10776#0" />
+            <element signature="e#10290#10758#0" />
+            <element signature="e#10592#10736#0" />
+            <element signature="e#10630#10710#0" />
+            <element signature="e#10813#10862#0" />
+            <element signature="e#10874#13463#0" />
+            <element signature="e#13486#15167#0" />
+            <element signature="e#15832#16949#0" />
+            <element signature="e#16067#16945#0" />
+            <element signature="e#16181#16577#0" />
+            <element signature="e#16226#16335#0" />
+            <element signature="e#16341#16567#0" />
+            <element signature="e#16614#16652#0" />
+            <element signature="e#17036#17817#0" />
+            <element signature="e#17184#17260#0" />
+            <element signature="e#17278#17813#0" />
+            <element signature="e#17346#17365#0" />
+            <element signature="e#17464#17655#0" />
+            <element signature="e#17493#17550#0" />
+            <element signature="e#17585#17645#0" />
+            <element signature="e#17666#17676#0" />
+            <element signature="e#17935#19512#0" />
+            <element signature="e#18080#18176#0" />
+            <element signature="e#18194#19508#0" />
+            <element signature="e#18261#18292#0" />
+            <element signature="e#18613#18774#0" />
+            <element signature="e#19081#19115#0" />
+            <element signature="e#19440#19466#0" />
+            <element signature="e#19544#20520#0" />
+            <element signature="e#19732#20181#0" />
+            <element signature="e#20561#20856#0" />
+            <element signature="e#20631#20853#0" />
+            <element signature="e#20670#20739#0" />
+            <element signature="e#20759#20847#0" />
+            <element signature="e#20909#21456#0" />
+            <element signature="e#20928#21005#0" />
+            <element signature="e#21011#21454#0" />
+            <element signature="e#21496#22981#0" />
+            <element signature="e#21605#22940#0" />
+            <element signature="e#21697#22316#0" />
+            <element signature="e#22322#22933#0" />
+            <element signature="e#23021#24504#0" />
+            <element signature="e#23127#24502#0" />
+            <element signature="e#23253#23380#0" />
+            <element signature="e#23309#23370#0" />
+            <element signature="e#23487#23625#0" />
+            <element signature="e#23554#23601#0" />
+            <element signature="e#23649#24496#0" />
+            <element signature="e#23862#24357#0" />
+            <element signature="e#23971#24104#0" />
+            <element signature="e#24204#24343#0" />
+            <element signature="e#24363#24486#0" />
+            <element signature="e#24549#26030#0" />
+            <element signature="e#24655#26028#0" />
+            <element signature="e#24781#24908#0" />
+            <element signature="e#24837#24898#0" />
+            <element signature="e#25118#25581#0" />
+            <element signature="e#25223#25344#0" />
+            <element signature="e#25444#25571#0" />
+            <element signature="e#25587#26022#0" />
+            <element signature="e#25719#25877#0" />
+            <element signature="e#25790#25845#0" />
+            <element signature="e#25905#25998#0" />
+            <element signature="e#26084#26996#0" />
+            <element signature="e#26292#26526#0" />
+            <element signature="e#26411#26520#0" />
+            <element signature="e#26619#26916#0" />
+            <element signature="e#26797#26889#0" />
+            <element signature="e#26819#26879#0" />
+            <element signature="e#26937#26977#0" />
+            <element signature="e#27047#27884#0" />
+            <element signature="e#27242#27476#0" />
+            <element signature="e#27361#27470#0" />
+            <element signature="e#27542#27839#0" />
+            <element signature="e#27720#27812#0" />
+            <element signature="e#27742#27802#0" />
+            <element signature="e#27930#28096#0" />
+            <element signature="e#27998#28094#0" />
+            <element signature="e#28129#35742#0" />
+            <element signature="e#28145#34689#0" />
+            <element signature="e#28164#28423#0" />
+            <element signature="e#28218#28275#0" />
+            <element signature="e#28302#28347#0" />
+            <element signature="e#28441#28506#0" />
+            <element signature="e#28516#28673#0" />
+            <element signature="e#28688#28816#0" />
+            <element signature="e#28836#28957#0" />
+            <element signature="e#28837#28916#0" />
+            <element signature="e#28918#28956#0" />
+            <element signature="e#28974#29732#0" />
+            <element signature="e#28988#29722#0" />
+            <element signature="e#29051#29102#0" />
+            <element signature="e#29130#29181#0" />
+            <element signature="e#29210#29443#0" />
+            <element signature="e#29311#29425#0" />
+            <element signature="e#29471#29661#0" />
+            <element signature="e#29579#29643#0" />
+            <element signature="e#29749#34652#0" />
+            <element signature="e#29763#30982#0" />
+            <element signature="e#29956#30034#0" />
+            <element signature="e#30215#30272#0" />
+            <element signature="e#30301#30506#0" />
+            <element signature="e#30374#30488#0" />
+            <element signature="e#30535#30689#0" />
+            <element signature="e#30607#30671#0" />
+            <element signature="e#30717#30776#0" />
+            <element signature="e#30805#30923#0" />
+            <element signature="e#30835#30905#0" />
+            <element signature="e#30996#32250#0" />
+            <element signature="e#31188#31268#0" />
+            <element signature="e#31450#31690#0" />
+            <element signature="e#31558#31672#0" />
+            <element signature="e#31718#31775#0" />
+            <element signature="e#31804#31958#0" />
+            <element signature="e#31876#31940#0" />
+            <element signature="e#31986#32045#0" />
+            <element signature="e#32074#32192#0" />
+            <element signature="e#32104#32174#0" />
+            <element signature="e#32264#33429#0" />
+            <element signature="e#32398#32478#0" />
+            <element signature="e#32628#32868#0" />
+            <element signature="e#32736#32850#0" />
+            <element signature="e#32896#32953#0" />
+            <element signature="e#32982#33136#0" />
+            <element signature="e#33054#33118#0" />
+            <element signature="e#33164#33223#0" />
+            <element signature="e#33252#33370#0" />
+            <element signature="e#33282#33352#0" />
+            <element signature="e#33443#34641#0" />
+            <element signature="e#33617#33697#0" />
+            <element signature="e#33840#34080#0" />
+            <element signature="e#33948#34062#0" />
+            <element signature="e#34108#34165#0" />
+            <element signature="e#34194#34348#0" />
+            <element signature="e#34266#34330#0" />
+            <element signature="e#34376#34435#0" />
+            <element signature="e#34464#34582#0" />
+            <element signature="e#34494#34564#0" />
+            <element signature="e#34811#34862#0" />
+            <element signature="e#34869#35740#0" />
+            <element signature="e#35794#39111#0" />
+            <element signature="e#35800#35859#0" />
+            <element signature="e#35946#36088#0" />
+            <element signature="e#36106#38949#0" />
+            <element signature="e#36222#36253#0" />
+            <element signature="e#36365#36977#0" />
+            <element signature="e#36437#36967#0" />
+            <element signature="e#36487#36791#0" />
+            <element signature="e#37059#38421#0" />
+            <element signature="e#37135#38411#0" />
+            <element signature="e#37153#37538#0" />
+            <element signature="e#37567#38225#0" />
+            <element signature="e#37738#38207#0" />
+            <element signature="e#38027#38136#0" />
+            <element signature="e#38447#38943#0" />
+            <element signature="e#38628#38761#0" />
+            <element signature="e#38653#38707#0" />
+            <element signature="e#38795#38931#0" />
+            <element signature="e#38820#38874#0" />
+            <element signature="e#38956#39043#0" />
+            <element signature="e#39147#39308#0" />
+            <element signature="e#39210#39290#0" />
+            <element signature="e#39241#39284#0" />
+            <element signature="e#39435#41134#0" />
+            <element signature="e#39567#39794#0" />
+            <element signature="e#39678#39788#0" />
+            <element signature="e#39854#41132#0" />
+            <element signature="e#39977#40098#0" />
+            <element signature="e#40030#40088#0" />
+            <element signature="e#40205#40343#0" />
+            <element signature="e#40272#40319#0" />
+            <element signature="e#40367#41126#0" />
+            <element signature="e#40580#41012#0" />
+            <element signature="e#40689#40792#0" />
+            <element signature="e#40892#40998#0" />
+            <element signature="e#41018#41116#0" />
+            <element signature="e#41159#49967#0" />
+            <element signature="e#41176#48229#0" />
+            <element signature="e#41195#41454#0" />
+            <element signature="e#41249#41306#0" />
+            <element signature="e#41333#41378#0" />
+            <element signature="e#41472#41537#0" />
+            <element signature="e#41553#41652#0" />
+            <element signature="e#41672#41793#0" />
+            <element signature="e#41673#41752#0" />
+            <element signature="e#41754#41792#0" />
+            <element signature="e#41810#42564#0" />
+            <element signature="e#41824#42554#0" />
+            <element signature="e#41934#41985#0" />
+            <element signature="e#42013#42064#0" />
+            <element signature="e#42093#42322#0" />
+            <element signature="e#42193#42304#0" />
+            <element signature="e#42350#42539#0" />
+            <element signature="e#42457#42521#0" />
+            <element signature="e#42581#48189#0" />
+            <element signature="e#42595#44177#0" />
+            <element signature="e#42786#42866#0" />
+            <element signature="e#43002#43047#0" />
+            <element signature="e#43149#43617#0" />
+            <element signature="e#43207#43452#0" />
+            <element signature="e#43310#43391#0" />
+            <element signature="e#43485#43599#0" />
+            <element signature="e#43645#43702#0" />
+            <element signature="e#43731#43885#0" />
+            <element signature="e#43803#43867#0" />
+            <element signature="e#43913#43972#0" />
+            <element signature="e#44001#44119#0" />
+            <element signature="e#44031#44101#0" />
+            <element signature="e#44191#45404#0" />
+            <element signature="e#44333#44413#0" />
+            <element signature="e#44634#44842#0" />
+            <element signature="e#44710#44824#0" />
+            <element signature="e#44870#44927#0" />
+            <element signature="e#44956#45111#0" />
+            <element signature="e#45029#45093#0" />
+            <element signature="e#45139#45198#0" />
+            <element signature="e#45227#45345#0" />
+            <element signature="e#45257#45327#0" />
+            <element signature="e#45418#46952#0" />
+            <element signature="e#45559#45639#0" />
+            <element signature="e#45775#45820#0" />
+            <element signature="e#45923#46391#0" />
+            <element signature="e#45981#46226#0" />
+            <element signature="e#46084#46165#0" />
+            <element signature="e#46259#46373#0" />
+            <element signature="e#46419#46476#0" />
+            <element signature="e#46505#46660#0" />
+            <element signature="e#46578#46642#0" />
+            <element signature="e#46688#46747#0" />
+            <element signature="e#46776#46894#0" />
+            <element signature="e#46806#46876#0" />
+            <element signature="e#46966#48179#0" />
+            <element signature="e#47107#47187#0" />
+            <element signature="e#47409#47617#0" />
+            <element signature="e#47485#47599#0" />
+            <element signature="e#47645#47702#0" />
+            <element signature="e#47731#47886#0" />
+            <element signature="e#47804#47868#0" />
+            <element signature="e#47914#47973#0" />
+            <element signature="e#48002#48120#0" />
+            <element signature="e#48032#48102#0" />
+            <element signature="e#48356#48410#0" />
+            <element signature="e#48417#49089#0" />
+            <element signature="e#49094#49964#0" />
+            <element signature="e#50024#50166#0" />
+            <element signature="e#50091#50164#0" />
+            <element signature="e#50116#50156#0" />
+            <element signature="e#50201#50350#0" />
+            <element signature="e#50274#50329#0" />
+            <element signature="e#50384#50490#0" />
+            <element signature="e#50417#50472#0" />
+            <element signature="e#50528#50676#0" />
+            <element signature="e#50561#50658#0" />
+            <element signature="e#50729#50872#0" />
+            <element signature="e#50785#50855#0" />
+            <element signature="e#50816#50849#0" />
+            <element signature="e#50909#51143#0" />
+            <element signature="e#50967#51126#0" />
+            <element signature="e#51172#51294#0" />
+            <element signature="e#51321#51497#0" />
+            <element signature="e#51425#51471#0" />
+            <element signature="e#51546#51743#0" />
+            <element signature="e#51610#51719#0" />
+            <element signature="e#51789#52284#0" />
+            <element signature="e#51847#52267#0" />
+            <element signature="e#51942#52129#0" />
+            <element signature="e#52033#52118#0" />
+            <element signature="e#52135#52242#0" />
+            <element signature="e#52154#52231#0" />
+            <element signature="e#52322#52665#0" />
+            <element signature="e#52398#52633#0" />
+            <element signature="e#52497#52552#0" />
+            <element signature="e#52558#52590#0" />
+            <element signature="e#52699#53030#0" />
+            <element signature="e#52775#52998#0" />
+            <element signature="e#52874#52917#0" />
+            <element signature="e#52923#52955#0" />
+            <element signature="e#53064#54021#0" />
+            <element signature="e#53228#53740#0" />
+            <element signature="e#53307#53734#0" />
+            <element signature="e#53441#53533#0" />
+            <element signature="e#53602#53694#0" />
+            <element signature="e#54067#55389#0" />
+            <element signature="e#54251#55085#0" />
+            <element signature="e#54330#55079#0" />
+            <element signature="e#54411#54478#0" />
+            <element signature="e#54556#54621#0" />
+            <element signature="e#54754#54846#0" />
+            <element signature="e#54915#55007#0" />
+            <element signature="e#55452#56446#0" />
+            <element signature="e#55616#56165#0" />
+            <element signature="e#55695#56159#0" />
+            <element signature="e#55896#55988#0" />
+            <element signature="e#56057#56149#0" />
+            <element signature="e#69830#69867#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/com/ulab/controller/LayoutController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="29" column="24" lean-forward="true" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
+          <folding>
+            <element signature="e#1756#1757#0" expanded="true" />
+            <element signature="e#1788#1789#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/java/com/ulab/controller/TestController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="247">
+          <caret line="160" column="28" lean-forward="true" selection-start-line="160" selection-start-column="28" selection-end-line="160" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/labMain.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="126" column="38" lean-forward="true" selection-start-line="126" selection-start-column="38" selection-end-line="126" selection-end-column="38" />
+        <state relative-caret-position="108">
+          <caret line="6" column="25" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/labOprateState.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="93" column="20" selection-start-line="93" selection-start-column="20" selection-end-line="93" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/orderPopup.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="166" column="41" selection-start-line="166" selection-start-column="41" selection-end-line="166" selection-end-column="41" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#div#0;n#div#1;n#div#0;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/centerLabWorld_3rd.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="574" column="12" lean-forward="true" selection-start-line="574" selection-start-column="12" selection-end-line="574" selection-end-column="12" />
+          <folding>
+            <element signature="e#14#1862#0" />
+            <element signature="n#style#0;n#span#0;n#li#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/labAction.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="267" selection-start-line="267" selection-end-line="267" />
+          <folding>
+            <element signature="e#8727#10675#0" />
+            <element signature="n#style#0;n#iframe#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/data/labRunStatus.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="182" column="29" lean-forward="true" selection-start-line="182" selection-start-column="29" selection-end-line="182" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/orderPopup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="792">
+          <caret line="771" column="8" selection-start-line="771" selection-start-column="8" selection-end-line="771" selection-end-column="8" />
+          <folding>
+            <element signature="e#220#1806#0" />
+            <element signature="e#7679#9623#0" />
+            <element signature="n#style#0;n#span#0;n#li#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/lab.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="37" column="22" lean-forward="true" selection-start-line="37" selection-start-column="22" selection-end-line="37" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/flex.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="332">
+          <caret line="22" column="23" selection-start-line="22" selection-start-column="23" selection-end-line="22" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/layout/lab.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="26" column="37" selection-start-line="26" selection-start-column="24" selection-end-line="26" selection-end-column="37" />
+          <folding>
+            <element signature="n#div#0;n#nav#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#style#0;n#ul#1;n#div#0;n#nav#0;n#div#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#div#0;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#0;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#1;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#2;n#div#2;n#div#0;n#div#1;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#2;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+            <element signature="n#div#3;n#div#0;n#div#1;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/js/labData.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="289" lean-forward="true" selection-start-line="289" selection-end-line="289" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin/mapForm.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="756">
+          <caret line="66" column="54" selection-start-line="66" selection-start-column="46" selection-end-line="66" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin/labLogin.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-924">
+          <caret line="13" column="12" lean-forward="true" selection-start-line="13" selection-start-column="12" selection-end-line="13" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/admin/login.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-744" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/static/css/common.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="165" column="31" lean-forward="true" selection-start-line="165" selection-start-column="31" selection-end-line="165" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/test/chromeFontSize.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/pages/lab/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="32" column="5" lean-forward="true" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -1198,7 +1611,7 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
-          <last-edited>hlht</last-edited>
+          <last-edited>hlht:war</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
@@ -1246,12 +1659,11 @@
       </state>
       <state key="ModuleStructureConfigurable.UI">
         <settings>
-          <last-edited>ulab</last-edited>
+          <last-edited>Web|ulab</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.20479302" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

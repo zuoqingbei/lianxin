@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="zh-CN">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -11,14 +12,18 @@
 
     /*屏幕描述
      一共 7x3 个屏幕，每一块屏幕是1360x768，
-     总共的大小就是9520x2304，比预计像素少7x6=42个像素。*/
+     总共的大小就是9520x2304，比预计像素少7x6=42个像素。
+     实际上经测试，大屏的实际显示尺寸为5736x1384*/
 
-    var pageH = $(window).height();
-    var pageW = pageH * 16 * 7 / (9 * 3);
+    // var pageH = $(window).height(); //有时不准
+    var pageH = document.documentElement.clientHeight;
+    // var pageW = document.documentElement.clientWidth;
+    pageW = pageH * 16 * 7 / (9 * 3);
+
     var bodyScale = pageH / 595;
     var bodyFontSize = bodyScale * 100 + "%";
-    if (pageH > 2300) { // 如果是大屏幕(2304)
-        pageW -= 52
+    if (pageH === 1384) { // 如果是大屏幕，消除滚动条
+        pageW = '100%'
     }
     function pageResize() {
         $("body").css("font-size", bodyFontSize);

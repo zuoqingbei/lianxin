@@ -71,52 +71,6 @@
                             </div>
                         </div>
                         <!--运营状态-->
-                        <!--<div class="item status">
-                            <div class="labMain_cb_left">
-                                <div class="pageBtn">
-                                    <span class="icon pre"></span>
-                                    <span class="icon next"></span>
-                                </div>
-
-                                <div class="orderPopup" hidden>
-                                    <div class="close"></div>
-                                    <iframe src="${contextPath!}/layout/orderPopup"></iframe>
-                                </div>
-                                <div class="leftContent">
-                                    &lt;!&ndash;第一行&ndash;&gt;
-                                    <div class="l-top">
-                                        <div class="l-top-title">
-                                            <h3>实验室状态</h3>
-                                        </div>
-                                        <div class="l-top-header">
-                                        </div>
-                                        <div class="l-top-body" id="center_lab_top_div">
-                                        </div>
-                                    </div>
-                                    &lt;!&ndash;第二行&ndash;&gt;
-                                    <div class="l-mid">
-                                        <div class="l-mid-title">
-                                            <h3>设备状态</h3>
-                                        </div>
-                                        <div class="l-mid-header">
-                                        </div>
-                                        <div class="l-mid-body" id="center_lab_center_div">
-                                        </div>
-                                    </div>
-                                    &lt;!&ndash;第三行&ndash;&gt;
-                                    <div class="l-bottom">
-                                        <div class="l-bottom-title">
-                                            <h3>订单状态</h3>
-                                        </div>
-                                        <div class="l-bottom-header">
-                                        </div>
-                                        <div class="l-bottom-body" id="center_lab_bottom_div">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>-->
-
                         <div class="item status" id="runStatus" v-cloak>
                             <div class="labMain_cb_left">
                                 <div class="pageBtn">
@@ -555,7 +509,11 @@
                 },
                 updated(){
                     // 为了达到两端对齐的效果而添加空标签<span>
-                    $("[class^=item]>h5").append("<span></span>");
+                    let $h5 = $(".item.status [class^=item]>h5");
+                    if($h5.find('span').length===0){
+                        $h5.append("<span></span>")
+                    }
+                    // $("[class^=item]>h5");
                     //实验室状态页面关闭订单弹窗
                     $(".orderPopup>.close").click(function () {
                         $(this).parent().removeClass("show")

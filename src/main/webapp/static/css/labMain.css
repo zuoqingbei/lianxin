@@ -4,7 +4,7 @@
     /*background: url(../img/labMain/lab_left_border_wider.png) 0 0 no-repeat;*/
     /*background-size: 100% 100%;*/
     position: relative;
-    margin: 0 1em;
+    margin: 0 1em 0 .5em;
     display: flex;
     flex-direction: row;
 }
