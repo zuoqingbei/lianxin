@@ -76,8 +76,13 @@ public class CreditReportController extends BaseProjectController{
                 }
             }
             //计算绩效
-            OrderProcessController op = new OrderProcessController();
-            op.getKpi(model,userid);
+            try{
+                OrderProcessController op = new OrderProcessController();
+                op.getKpi(model,userid);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
         }catch(Exception e){
                 //日志输出
                 e.printStackTrace();
@@ -91,8 +96,13 @@ public class CreditReportController extends BaseProjectController{
                 //增加站内信
                 ReportInfoGetData.sendErrMsg(model, userid,  "重新发送报告时失败!请联系管理员或者再次发送!");
         }
+        //发送成功修改状态
         //增加跟踪记录
-        CreditOrderFlow.addOneEntry(this, model,errorMessage,true);
+      //报告发送成功,改变状态
+        CreditOrderInfo tempModel = new CreditOrderInfo();
+        int statusCode = 311;
+        tempModel.set("id", orderId).set("status", statusCode).update();
+        CreditOrderFlow.addOneEntry(this, model.set("status",statusCode),errorMessage,true);
         CreditOperationLog.dao.addOneEntry(userid, model, "重新发送/", "/report/resend/run");//操作日志记录
         renderJson(record);
     }

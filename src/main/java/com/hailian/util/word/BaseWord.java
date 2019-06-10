@@ -10,6 +10,8 @@ import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
+import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
@@ -180,6 +182,7 @@ public class BaseWord {
             iputstream.close();
         } catch (Exception e) {
             e.printStackTrace();
+            CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("status","monitor1"),e.toString(),false);
             if(e.getMessage().contains("No valid entries or contents found, this is not a valid OOXML (Office Open XML) file")){
                 throw new RuntimeException(e.getMessage());
             }
@@ -197,7 +200,6 @@ public class BaseWord {
                 try {
                     template.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }

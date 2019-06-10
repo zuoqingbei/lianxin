@@ -475,17 +475,24 @@ public class BaseBusiCrdt extends BaseWord{
             map.put("bigFinancial", new MiniTableRenderData(null));
         }
         map = (HashMap<String, Object>) dealDataMapByreportType(reportType,map);
-        //生成word
+        //在指定路径生成word
         BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
         //重新添加图片并生成word
-        String wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
+        String wordPath = "";
+        try{
+             wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
+        }catch (Exception e){
+            e.printStackTrace();
+            CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("status","monitor2"),e.toString(),false);
+        }
+
         //发送邮件
         String _pre = "http://" + ip + ":" + serverPort + "/";
         List<Map<String, String>> fileList = new ArrayList<>();
         Map<String, String> fileMap = new HashMap();
-        fileMap.put(reportName + ".doc",_pre + wordPath);
+        fileMap.put(reportName + ".doc",_pre + wordPath);//对应文件名和ftp路径
         for(String path:excelPath) {
-            fileMap.put(reportName + ".xls", _pre + path);
+            fileMap.put(reportName + ".xls", _pre + path);//对应文件名和财务excel 的ftp路径
         }
         fileList.add(fileMap);
         sendMail(reportName,customId, fileList);
