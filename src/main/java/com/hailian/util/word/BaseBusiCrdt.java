@@ -45,7 +45,7 @@ public class BaseBusiCrdt extends BaseWord{
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
     public static final int serverPort = Config.getToInt("searver_port");
-
+    private static Object o = new Object();
     public static void main(String []args){
         try {
             /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
@@ -67,7 +67,6 @@ public class BaseBusiCrdt extends BaseWord{
             e.printStackTrace();
         }
     }
-
     /**
      * 报告生成
      * @param order  订单
@@ -476,26 +475,34 @@ public class BaseBusiCrdt extends BaseWord{
         }
         map = (HashMap<String, Object>) dealDataMapByreportType(reportType,map);
         //在指定路径生成word
-        BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
-        //重新添加图片并生成word
+        synchronized (o){
+            BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
+        }
         String wordPath = "";
         try{
-             wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
+            //重新添加图片并生成word
+            synchronized (o){
+                wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
+            }
         }catch (Exception e){
             e.printStackTrace();
+            //log表中增加记录
             CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("status","monitor2"),e.toString(),false);
         }
 
         //发送邮件
-        String _pre = "http://" + ip + ":" + serverPort + "/";
-        List<Map<String, String>> fileList = new ArrayList<>();
-        Map<String, String> fileMap = new HashMap();
-        fileMap.put(reportName + ".doc",_pre + wordPath);//对应文件名和ftp路径
-        for(String path:excelPath) {
-            fileMap.put(reportName + ".xls", _pre + path);//对应文件名和财务excel 的ftp路径
+        synchronized(o){
+            String _pre = "http://" + ip + ":" + serverPort + "/";
+            List<Map<String, String>> fileList = new ArrayList<>();
+            Map<String, String> fileMap = new HashMap();
+            fileMap.put(reportName + ".doc",_pre + wordPath);//对应文件名和ftp路径
+            for(String path:excelPath) {
+                fileMap.put(reportName + ".xls", _pre + path);//对应文件名和财务excel 的ftp路径
+            }
+            fileList.add(fileMap);
+            sendMail(reportName,customId, fileList);
         }
-        fileList.add(fileMap);
-        sendMail(reportName,customId, fileList);
+
     }
 
     /**

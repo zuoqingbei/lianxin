@@ -40,7 +40,7 @@ public class Roc102 extends BaseWord{
     public static final String ip = Config.getStr("ftp_ip");
     //ftp端口 9980
     public static final int serverPort = Config.getToInt("searver_port");
-    
+    private static Object o = new Object();
     public static void main(String []args){
         try {
             /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
@@ -493,19 +493,33 @@ public class Roc102 extends BaseWord{
         }
 
         //生成word
-        BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
+       synchronized(o){
+           BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
+       }
+        String wordPath = "";
         //重新添加图片并生成word
-        String wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
-        //发送邮件
-        String _pre = "http://" + ip + ":" + serverPort + "/";
-        List<Map<String, String>> fileList = new ArrayList<>();
-        Map<String, String> fileMap = new HashMap();
-        fileMap.put(reportName + ".doc",_pre + wordPath);
-        if(!"".equals(excelPath)) {
-            fileMap.put(reportName + ".xls", _pre + excelPath);
+        synchronized(o) {
+            try {
+                wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
+            }catch (Exception e){
+                e.printStackTrace();
+                //log表中增加记录
+                CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("status","monitor2"),e.toString(),false);
+            }
+
         }
-        fileList.add(fileMap);
-        sendMail(reportName,customId, fileList);
+        //发送邮件
+        synchronized (o){
+            String _pre = "http://" + ip + ":" + serverPort + "/";
+            List<Map<String, String>> fileList = new ArrayList<>();
+            Map<String, String> fileMap = new HashMap();
+            fileMap.put(reportName + ".doc",_pre + wordPath);
+            if(!"".equals(excelPath)) {
+                fileMap.put(reportName + ".xls", _pre + excelPath);
+            }
+            fileList.add(fileMap);
+            sendMail(reportName,customId, fileList);
+        }
     }
 
     /**
