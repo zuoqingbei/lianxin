@@ -2072,9 +2072,10 @@ let ReportConfig = {
         this.numCop = 0   //计数器
         let allTableData = [] //存放翻译过所有表格数据
         tableTitlesEn.forEach((item,index)=>{
-            console.assert(item.alter_source.split('?')[1],item)
+            console.log('aaaa',item.alter_source.split('?')[1],item)
+            let tableTitleSourceClassName = '' 
             if(item.alter_source.split('?')[1]){
-                let tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
+                tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
             }
 //    		console.log(tableTitleSourceClassName)
 
@@ -2274,8 +2275,9 @@ let ReportConfig = {
             formIndexEn.forEach((item,index)=>{
                 let alterSource = formTitlesEn[index]["alter_source"];
 //    		console.log(alterSource)
+                let formTitleSourceClassName  = ''
                 if(alterSource.split('?')[1]){
-                    let formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
+                    formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
 
                 }
                 if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){ return}
