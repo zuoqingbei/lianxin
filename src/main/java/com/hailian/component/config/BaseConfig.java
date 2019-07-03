@@ -18,6 +18,7 @@ package com.hailian.component.config;
 
 import com.hailian.jfinal.component.handler.XssHandler;
 import com.jfinal.plugin.ehcache.EhCachePlugin;
+
 import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal3.JFinal3BeetlRenderFactory;
 
@@ -66,6 +67,7 @@ import com.jfinal.config.Interceptors;
 import com.jfinal.config.JFinalConfig;
 import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
+import com.jfinal.core.JFinal;
 import com.jfinal.ext.handler.ContextPathHandler;
 import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.i18n.I18nInterceptor;
@@ -308,5 +310,8 @@ public class BaseConfig extends JFinalConfig {
 	private boolean isDevMode() {
 		return Config.getToBoolean("CONSTANTS.DEV_MODE");
 	}
-
+	public static void main(String[] args) {
+    	PathKit.setWebRootPath("src/main/webapp/");
+		JFinal.start("src/main/webapp", 8080, "/", 5);
+    }
 }
