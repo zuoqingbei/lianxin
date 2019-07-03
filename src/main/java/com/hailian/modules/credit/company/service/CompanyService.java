@@ -474,7 +474,7 @@ public class CompanyService {
 	 * @date: 2019年2月21日上午9:13:16
 	 * @Description:
 	 */
-	public static  final String  PAGESIZE = "4";//爬取的条数，最大不超过50条
+	public static  final String  PAGESIZE = "30";//爬取的条数，最大不超过50条
 
 
 	public void enterpriseGrabOther(String companyId,String companyName,String sys_language) throws Exception{
