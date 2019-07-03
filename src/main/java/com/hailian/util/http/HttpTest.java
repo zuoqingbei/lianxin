@@ -116,11 +116,12 @@ public class HttpTest {
 		return result;
 	}
 	//裁判文书
-	public static JSONObject getJudgmentDoc(String conpanyName,String pageIndex) throws Exception{
+	public static JSONObject getJudgmentDoc(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/SearchJudgmentDoc?key="+qichacha_key+"&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		//HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/SearchJudgmentDoc?key="+qichacha_key+"&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/SearchJudgmentDoc?key="+qichacha_key+"&pageSize="+pageSize+"&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -163,11 +164,11 @@ public class HttpTest {
 		return json;
 	}
 	//法院公告
-	public static JSONObject getCourtAnnouncement(String conpanyName,String pageIndex) throws Exception{
+	public static JSONObject getCourtAnnouncement(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/CourtNoticeV4/SearchCourtAnnouncement?key="+qichacha_key+"&pageSize=50&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtNoticeV4/SearchCourtAnnouncement?key="+qichacha_key+"&pageSize="+pageSize+"&companyName="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -188,11 +189,11 @@ public class HttpTest {
 		return json;
 	}
 	//开庭公告
-	public static JSONObject getCourtNotice(String conpanyName,String pageIndex) throws Exception{
+	public static JSONObject getCourtNotice(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/CourtAnnoV4/SearchCourtNotice?key="+qichacha_key+"&pageSize=50&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtAnnoV4/SearchCourtNotice?key="+qichacha_key+"&pageSize="+pageSize+"&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -213,11 +214,11 @@ public class HttpTest {
 		return json;
 	}
 		//企业商标 
-	public static JSONObject getBrandandpatent(String conpanyName,String pageIndex) throws Exception{
+	public static JSONObject getBrandandpatent(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/tm/Search?key="+qichacha_key+"&pageSize=50&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/tm/Search?key="+qichacha_key+"&pageSize="+pageSize+"&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -239,48 +240,8 @@ public class HttpTest {
 		return json;
 	}
 	public static void main(String[] args) throws Exception {
-		String companyName = " ";
-		int count = 0;
-		JSONObject brandandpatent = HttpTest.getBrandandpatent(companyName,"");//企业图标
-		String brandandpatentstatus = brandandpatent.getString("Status");
-		if(brandandpatentstatus.equals("200")){
-			JSONObject Paging = brandandpatent.getJSONObject("Paging");
-			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
-			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
-			int totalpage=1;
-			if(TotalRecords%PageSize==0){
-				totalpage=TotalRecords/PageSize;
-
-			}else{
-				totalpage=TotalRecords/PageSize+1;
-			}
-			count += PageSize;
-			for(int i=1;i<=totalpage;i++){
-				JSONObject brandandpatentjson = HttpTest.getBrandandpatent(companyName,i+"");//
-				String brandandpatentstatus2 = brandandpatent.getString("Status");
-				if(!brandandpatentstatus2.equals("200")){
-					continue;
-				}
-				count += PageSize;
-			}
-			System.err.println(count);
-		}
 
 
-		//getBrandandpatent();
-		//getCustomsUrl();//爬取企业信息基本情况
-		//getSourceUrl();//爬取商务部业务系统网站
-
-		//CookieStore cookieStore = getIcrisCookie();//获取香港查册网站cookie信息
-		//getIcrisUrl(cookieStore);//爬取香港查册网站
-
-		//getCourtUrl();//爬取全国法院被执行人信息查询网站
-		//getYjapi();
-		//getYjapi("大连万达集团股份有限公司");
-//		getBrandandpatent("青岛海联软件科技有限公司", "");
-//		getJudgmentDoc("青岛海联软件科技有限公司", "");
-
-		//test
 
 	}
 
