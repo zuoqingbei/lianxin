@@ -2513,7 +2513,7 @@ let ReportConfig = {
             }
             //console.log(_this.currentDom)
             let newTxt = _this.wrongTranslate.replace(error_phrase_en,correct_phrase_en)
-            this.currentDom.val(newTxt)
+            _this.currentDom.val(newTxt)
             $.ajax({
                 url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
                 type:'post',
