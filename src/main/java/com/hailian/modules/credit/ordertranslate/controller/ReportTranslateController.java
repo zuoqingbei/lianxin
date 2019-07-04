@@ -49,9 +49,6 @@ public class ReportTranslateController extends BaseProjectController {
 		String reporttype=getPara("reportType");//报告类型
 		String className = getPara("className");//模块的key
 		JSONObject jsonObject = JSONObject.fromObject(json);
-		if(json.contains("北京市石景山区西井路7号1号楼2层221室")){
-			System.out.println(1);
-		}
 		try {
 			if(StringUtils.isBlank(targetlanguage)){
 				targetlanguage="en";
