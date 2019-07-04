@@ -563,9 +563,16 @@ let ReportConfig = {
         $(".tab-bar li").click((e)=>{
             $(e.target).addClass("tab-active").parents("li").siblings().children('a').removeClass("tab-active")
 
-            /* 解决锚链接的偏移问题*/
-            $("#container ").css('height',"calc(100% - 5.6rem)");
-            $(".main ").css('marginBottom',"-.6rem");
+            
+           $("#container ").css('height',"calc(100% - 4.5rem)");
+           $("#container ").css('padding-bottom',"0");
+           $(".container-fluid").removeClass("over-hidden")
+           /* 解决锚链接的偏移问题*/
+           setTimeout(() => {
+        	   $(".main").scrollTop( $(".main").scrollTop()-100)
+        	   $(".container-fluid").addClass("over-hidden")
+           }, 0);
+           
         })
     },
     initFloat(){
