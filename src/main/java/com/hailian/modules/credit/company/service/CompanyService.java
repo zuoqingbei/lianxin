@@ -474,11 +474,15 @@ public class CompanyService {
 	 * @date: 2019年2月21日上午9:13:16
 	 * @Description:
 	 */
+	public static  final String  PAGESIZE = "30";//爬取的条数，最大不超过50条
+
+
 	public void enterpriseGrabOther(String companyId,String companyName,String sys_language) throws Exception{
-		JSONObject caipanjson = HttpTest.getJudgmentDoc(companyName,"");//裁判文书
+
+		JSONObject caipanjson = HttpTest.getJudgmentDoc(companyName,"1",PAGESIZE);//裁判文书
 		String caipanstatus = caipanjson.getString("Status");
 		if("200".equals(caipanstatus)){
-			JSONObject Paging = caipanjson.getJSONObject("Paging");
+			/*JSONObject Paging = caipanjson.getJSONObject("Paging");
 			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
 			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
 			int totalpage=1;
@@ -486,12 +490,12 @@ public class CompanyService {
 		           totalpage=TotalRecords/PageSize;
 			}else{
 		           totalpage=TotalRecords/PageSize+1;
-			}
+			}*/
 			CreditCompanyJudgmentdoc.dao.deleteBycomIdAndLanguage(companyId, sys_language);//删除
 			List<CreditCompanyJudgmentdoc> judgmentdoclist=new ArrayList<CreditCompanyJudgmentdoc>();
-			for(int i=1;i<=totalpage;i++){
-				JSONObject json = HttpTest.getJudgmentDoc(companyName,i+"");//获取每页
-				JSONArray jsonArray = json.getJSONArray("Result");
+			//for(int i=1;i<=totalpage;i++){
+				//JSONObject json = HttpTest.getJudgmentDoc(companyName,i+"",CAI_PAN_WEN_SHU_PAGESIZE);//获取每页
+				JSONArray jsonArray = caipanjson.getJSONArray("Result");
 				 
 				if(jsonArray !=null && jsonArray.size()>0){
 										for(int j=0;j<jsonArray.size();j++){
@@ -527,15 +531,15 @@ public class CompanyService {
 						judgmentdoclist.add(model);
 					}
 				}
-			}
+			//}
 			if(CollectionUtils.isNotEmpty(judgmentdoclist)){
 				Db.batchSave(judgmentdoclist, judgmentdoclist.size());
 			}
 		}
-		JSONObject courtannouncement = HttpTest.getCourtAnnouncement(companyName,"");//法院公告
+		JSONObject courtannouncement = HttpTest.getCourtAnnouncement(companyName,"1",PAGESIZE);//法院公告
 		String courtannouncementstatus = courtannouncement.getString("Status");
 		if(courtannouncementstatus.equals("200")){
-			JSONObject Paging = courtannouncement.getJSONObject("Paging");
+		/*	JSONObject Paging = courtannouncement.getJSONObject("Paging");
 			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
 			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
 			int totalpage=1;
@@ -543,12 +547,12 @@ public class CompanyService {
 		           totalpage=TotalRecords/PageSize;
 			}else{
 		           totalpage=TotalRecords/PageSize+1;
-			}
+			}*/
 			CreditCompanyCourtannouncement.dao.deleteBycomIdAndLanguage(companyId, sys_language);
 			List<CreditCompanyCourtannouncement> list=new ArrayList<CreditCompanyCourtannouncement>();
-			for(int i=1;i<=totalpage;i++){
-				JSONObject CourtAnnouncementjson = HttpTest.getCourtAnnouncement(companyName,i+"");
-				JSONArray jsonArray = CourtAnnouncementjson.getJSONArray("Result");
+			//for(int i=1;i<=totalpage;i++){
+				//JSONObject CourtAnnouncementjson = HttpTest.getCourtAnnouncement(companyName,i+"");
+				JSONArray jsonArray = courtannouncement.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
 					for(int j=0;j<jsonArray.size();j++){
 						JSONObject CourtAnnouncement = (JSONObject)jsonArray.get(j);
@@ -573,17 +577,17 @@ public class CompanyService {
 						list.add(model);
 					}
 			}
-		}
+		//}
 		if(CollectionUtils.isNotEmpty(list)){//淇濆瓨
 			Db.batchSave(list, list.size());
 		}
 		}
 		
 		
-		JSONObject courtnotice = HttpTest.getCourtNotice(companyName,"");//开庭公告
+		JSONObject courtnotice = HttpTest.getCourtNotice(companyName,"1",PAGESIZE);//开庭公告
 		String courtnoticestatus = courtnotice.getString("Status");
 		if(courtnoticestatus.equals("200")){
-			JSONObject Paging = courtnotice.getJSONObject("Paging");
+			/*JSONObject Paging = courtnotice.getJSONObject("Paging");
 			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
 			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
 			int totalpage=1;
@@ -591,12 +595,12 @@ public class CompanyService {
 		           totalpage=TotalRecords/PageSize;
 			}else{
 		           totalpage=TotalRecords/PageSize+1;
-			}
+			}*/
 			CreditCompanyCourtnotice.dao.deleteBycomIdAndLanguage(companyId, sys_language);//鏍规嵁鍏徃缂栫爜鍜屾姤鍛婄被鍨嬪垹闄よ褰�
 			List<CreditCompanyCourtnotice> list=new ArrayList<CreditCompanyCourtnotice>();
-			for(int i=1;i<=totalpage;i++){
-				JSONObject courtnoticejson = HttpTest.getCourtNotice(companyName,i+"");//鑾峰彇api浼佷笟寮�搴叕鍛�
-				JSONArray jsonArray = courtnoticejson.getJSONArray("Result");
+			//for(int i=1;i<=totalpage;i++){
+				//JSONObject courtnoticejson = HttpTest.getCourtNotice(companyName,i+"");//鑾峰彇api浼佷笟寮�搴叕鍛�
+				JSONArray jsonArray = courtnotice.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
 					for(int j=0;j<jsonArray.size();j++){
 						JSONObject CourtAnnouncement = (JSONObject)jsonArray.get(j);
@@ -617,31 +621,31 @@ public class CompanyService {
 						list.add(model);
 					}
 			   }
-			}
+			//}
 			if(CollectionUtils.isNotEmpty(list)){
 				Db.batchSave(list, list.size());
 			}
 		}
-		JSONObject brandandpatent = HttpTest.getBrandandpatent(companyName,"");//企业图标
+		JSONObject brandandpatent = HttpTest.getBrandandpatent(companyName,"1",PAGESIZE);//企业图标
 		String brandandpatentstatus = brandandpatent.getString("Status");
 		if(brandandpatentstatus.equals("200")){
-			JSONObject Paging = brandandpatent.getJSONObject("Paging");
-			int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
+			//JSONObject Paging = brandandpatent.getJSONObject("Paging");
+			/*int TotalRecords = Integer.parseInt(Paging.getString("TotalRecords"));
 			int PageSize = Integer.parseInt(Paging.getString("PageSize"));
 			int totalpage=1;
 			if(TotalRecords%PageSize==0){
 		           totalpage=TotalRecords/PageSize;
 			}else{
 		           totalpage=TotalRecords/PageSize+1;
-			}
+			}*/
 			CreditCompanyBrandandpatent.dao.deleteBycomIdAndLanguage(companyId, sys_language);//
-			for(int i=1;i<=totalpage;i++){
-				JSONObject brandandpatentjson = HttpTest.getBrandandpatent(companyName,i+"");//
+			//for(int i=1;i<=totalpage;i++){
+				//JSONObject brandandpatentjson = HttpTest.getBrandandpatent(companyName,i+"");//
 				String brandandpatentstatus2 = brandandpatent.getString("Status");
-				if(!brandandpatentstatus2.equals("200")){
+				/*if(!brandandpatentstatus2.equals("200")){
 					continue;
-				}
-				JSONArray jsonArray = brandandpatentjson.getJSONArray("Result");
+				}*/
+				JSONArray jsonArray = brandandpatent.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
 					List<CreditCompanyBrandandpatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyBrandandpatent.class);
 					for(CreditCompanyBrandandpatent model:list){
@@ -650,7 +654,7 @@ public class CompanyService {
 					}
 					Db.batchSave(list, list.size());
 			    }
-			}
+		//	}
 		}
 	}
 	class threadEnterpriseGrabOther implements Runnable{
@@ -733,12 +737,4 @@ public class CompanyService {
 			}
 	}
 
-	public static void main(String[] args) {
-		try {
-			HttpTest.getYjapi("成都泛美印象软件开发中心（有限合伙）".trim());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}//获取api企业信息数据
-	}
 }
