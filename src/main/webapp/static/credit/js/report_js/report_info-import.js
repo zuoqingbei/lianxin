@@ -278,6 +278,10 @@ let Verify = {
                     		}
                     		
                     		//检测订单流程  当status为301的时候只能进行分析；为306的时候只能进行翻译;694的时候只能进行填报
+                    		//595系统查询中
+                    		//293信息录入
+                    		//295代理中
+                    		//694 系统查询完毕
                     		if(item.status === '301'){
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
@@ -286,11 +290,15 @@ let Verify = {
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".write").get(index)).addClass("disable")
-                    		}else if(item.status === '293'||item.status === '295'||item.status === '694'||item.status === '595') {
+                    		}else if(item.status === '293'||item.status === '295'||item.status === '694') {
 //                    			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
-                    		}
+                    		}else if (item.status === '595') {
+                    			$($(".write").get(index)).addClass("disable")
+                    			$($(".analyze").get(index)).addClass("disable")
+                    			$($(".translate").get(index)).addClass("disable")
+							}
                     	});
                         let $fixedTableBodyColumns = $('.fixed-table-body-columns');
                         setTimeout(function () {

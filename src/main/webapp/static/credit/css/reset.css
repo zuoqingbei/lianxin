@@ -177,6 +177,9 @@ label.col-md-4{
     font-size: 1rem;
 }
 
+.over-hidden {
+	overflow:hidden;
+}
 
 .fixed-table-header-columns, .fixed-table-body-columns {
     z-index: 999;
