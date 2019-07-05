@@ -111,6 +111,10 @@ public class Roc102 extends BaseWord{
         }else{
             map.put("company", companyInfo.getStr("name_en"));
         }
+        //查询企业名称
+        if(ReportTypeCons.ROC_ZH.equals(reportType)){
+            map.put("right_company_name_en",order.getStr("right_company_name_en"));
+        }
 
         //订单公司名称和报告公司名称相同，则显示“與註冊記錄同”
         if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
