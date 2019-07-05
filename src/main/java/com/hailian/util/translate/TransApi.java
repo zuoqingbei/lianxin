@@ -1,133 +1,209 @@
 package com.hailian.util.translate;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hailian.util.Config;
-
-import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
+import com.hailian.util.MD5;
+import com.hailian.util.http.HttpUtil;
+import com.hailian.util.http.RandomUtil;
+import com.hailian.util.http.TransResult;
 public class TransApi {	 
 	public static final String appId = Config.getStr("appid");//百度翻译appid
 	public static final String secretkey = Config.getStr("secretkey");//百度翻译秘钥
-	public static String Trans(String q,String targetlanguage) {//targetlanguage目标语言  en英语  cht中文繁体
-         String appid=appId;
-//         String appid="20181213000247765";
-         String salt=String.valueOf(new Random().nextInt(100));
-         String sign=appid+q+salt+secretkey;
-//         String sign=appid+q+salt+"HN0OWJ2NVBDvAAbjE0Z5";
-         MessageDigest md5;
- 		try {
- 			md5 = MessageDigest.getInstance("MD5");
- 			 md5.update((sign).getBytes("UTF-8"));
- 	         byte b[] = md5.digest();
- 	          
- 	         int i;
- 	         StringBuffer buf = new StringBuffer("");
- 	          
- 	         for(int offset=0; offset<b.length; offset++){
- 	         	i = b[offset];
- 	         	if(i<0){
- 	         		i+=256;
- 	         	}
- 	         	if(i<16){
- 	         		buf.append("0");
- 	         	}
- 	         	buf.append(Integer.toHexString(i));
- 	         }
- 	 	   
- 	         sign = buf.toString();
- 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
- 			// TODO Auto-generated catch block
- 			e.printStackTrace();
+	
+	  /**
+     * 百度翻译接口地址
+     */
+    private static final String TRANS_API_HOST = "http://api.fanyi.baidu.com/api/trans/vip/translate";
 
- 		} 
- 		 String result=getResult(q,sign,appid,salt,targetlanguage);
-         String content="{"+result;
-         String json=getDate(content);
-         return json;
-	}
-	//百度平台（翻译接口）相关数据
-	public static String getResult(String q,String sign,String appid,String salt,String targetlanguage){
-		String result="";
-		//拼接相关参数
-		String params="http://api.fanyi.baidu.com/api/trans/vip/translate?q="+q+"&from=auto&to="+targetlanguage+"&appid="+appid+"&salt="+salt+"&sign="+sign;		
-		 try {
-			URL url = new URL(params);
-			URLConnection connection = url.openConnection();  
-			//设置连接时间(10*1000)
-			connection.setConnectTimeout(10*1000);
-		    //设置输出
-			connection.setDoOutput(true);
-			//设置输出
-			connection.setDoInput(true);
-            //设置缓存
-			connection.setUseCaches(false);			
-			//outputstream-----输出流
-			InputStream inputstream=connection.getInputStream();
-			//缓存字符流
-			BufferedReader buffer = new BufferedReader(new InputStreamReader(inputstream)); 
-			//返回相关结果
-			StringBuilder builder=new StringBuilder();
-			while(buffer.read()!=-1){
-				builder.append(buffer.readLine());				
+
+    private static String appid=Config.getStr("appid");//百度翻译appid
+
+    private static String securityKey=Config.getStr("secretkey");//百度翻译秘钥
+	public static String Trans(String q,String targetlanguage) {
+		if("en".equals(targetlanguage)){
+			//英语走google翻译
+			return GoogleTranslationApi.translateEnglish(q);
+		}else{
+			return GoogleTranslationApi.translateCht(q);
+			/*String result="";
+			//繁体走百度  百度翻译有调用频率限制
+			try {
+				result=getTransResult(q, "auto", targetlanguage);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			//返回相关结果
-			result=builder.toString();
-			//缓存字符流关闭操作
-			buffer.close();
- 
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
+			return result;*/
+		}
+	}
+	 /**
+     * 获得翻译结果
+     * @param query
+     * @param from
+     * @param to
+     * @return
+     * @throws IOException
+     */
+    public static String getTransResult(String query, String from, String to) throws IOException {
+        Map<String, String> params = buildParams(query, from, to);
+        JSONObject jsonObject;
+        try {
+        	 Thread.sleep(RandomUtil.randomLong(2000,10000));
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		return result;
-	}
-	//解析百度服务器平台返回的相关数据信息
-	public static String getDate(String result){
-		System.out.println("百度云返回的数据如下一行:");
-        System.out.println(result);
-		String date="";
-		
-		JSONObject object=JSONObject.fromObject(result);
-		JSONArray array=object.getJSONArray("trans_result");
-		System.out.println("解析后的数据如下几行:");
-		int length=array.size();
-		for(int i=0;i<length;i++){
-			JSONObject params=JSONObject.fromObject(array.get(i));
-			String str=params.getString("dst");
-			try {
-				str=URLDecoder.decode(str,"utf-8");
-				date=str;
-				System.out.println(array.get(i)+":"+date);
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}			
-		}	
-		return date;
-		
-	}
- 
+        //当请求翻译内容过长 用post
+        if (query.length() >= 2000) {
+            //post 请求方式
+            jsonObject = HttpUtil.doPostStr(TRANS_API_HOST, params);
+        } else {
+           //  get请求方式
+            String url = getUrlWithQueryString(TRANS_API_HOST, params);
+            jsonObject = HttpUtil.doGetStr(url);
+        }
+        if (jsonObject.get("error_code")!=null) {
+        	System.out.println(jsonObject);
+        	String r=query+" 翻译失败，原因："+jsonObject.get("error_msg")+",错误码："+jsonObject.get("error_code");
+             System.out.println(r);//54003	访问频率受限	请降低您的调用频率
+             if("54003".equals(jsonObject.get("error_code"))){
+            	 return getTransResulRepeat(query, from, to);
+             }else{
+            	 return "";
+             }
+        }else{
+            TransResult transResult = JSON.parseObject(jsonObject.toString(), TransResult.class);
+            return " 翻译结果 "+transResult.getTrans_result().get(0).getDst();
+        }
+    }
+    public static String getTransResulRepeat(String query, String from, String to) throws IOException {
+        Map<String, String> params = buildParams(query, from, to);
+        JSONObject jsonObject;
+        try {
+        	 Thread.sleep(RandomUtil.randomLong(2000,10000));
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        //当请求翻译内容过长 用post
+        if (query.length() >= 2000) {
+            //post 请求方式
+            jsonObject = HttpUtil.doPostStr(TRANS_API_HOST, params);
+        } else {
+           //  get请求方式
+            String url = getUrlWithQueryString(TRANS_API_HOST, params);
+            jsonObject = HttpUtil.doGetStr(url);
+        }
+        if (jsonObject.get("error_code")!=null) {
+        	System.out.println(jsonObject);
+        	String r=query+" 翻译失败，原因："+jsonObject.get("error_msg")+",错误码："+jsonObject.get("error_code");
+            return r;
+        }else{
+            TransResult transResult = JSON.parseObject(jsonObject.toString(), TransResult.class);
+            return transResult.getTrans_result().get(0).getDst();
+        }
+    }
+
+    /**
+     * 构建参数map
+     *
+     * @param query
+     * @param from
+     * @param to
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    private static Map<String, String> buildParams(String query, String from, String to) throws UnsupportedEncodingException {
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("q", query);
+        params.put("from", from);
+        params.put("to", to);
+
+        params.put("appid", appid);
+
+        // 随机数
+        String salt = String.valueOf(System.currentTimeMillis());
+        params.put("salt", salt);
+
+        // 签名
+        String src = appid + query + salt + securityKey; // 加密前的原文
+        params.put("sign", MD5.md5(src));
+
+        return params;
+    }
+
+
+    /**
+     * 拼接url get方式拼接参数  返回url
+     *
+     * @param url
+     * @param params
+     * @return
+     */
+    public static String getUrlWithQueryString(String url, Map<String, String> params) {
+        if (params == null) {
+            return url;
+        }
+
+        StringBuilder builder = new StringBuilder(url);
+        if (url.contains("?")) {
+            builder.append("&");
+        } else {
+            builder.append("?");
+        }
+
+        int i = 0;
+        for (String key : params.keySet()) {
+            String value = params.get(key);
+            if (value == null) { // 过滤空的key
+                continue;
+            }
+
+            if (i != 0) {
+                builder.append('&');
+            }
+
+            builder.append(key);
+            builder.append('=');
+            builder.append(encode(value));
+
+            i++;
+        }
+
+        return builder.toString();
+    }
+
+
+    /**
+     * 对输入的字符串进行URL编码, 即转换为%20这种形式
+     *
+     * @param input 原文
+     * @return URL编码. 如果编码失败, 则返回原文
+     */
+    public static String encode(String input) {
+        if (input == null) {
+            return "";
+        }
+
+        try {
+            return URLEncoder.encode(input, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return input;
+    }
+	
 	public static void main(String[] args) {
-		String trans = Trans("信息安全及保密承诺书","cht");
-		String transTOEn = Trans("信息安全及保密承诺书","en");
+		String trans = Trans("山东省青岛市高新区汇智桥路151号中科研发城2号楼5层13室","cht");
 		System.out.println(trans);
+		String transTOEn = Trans("山东省青岛市高新区汇智桥路151号中科研发城2号楼5层13室","en");
 		System.out.println(transTOEn);
 	}
 }
