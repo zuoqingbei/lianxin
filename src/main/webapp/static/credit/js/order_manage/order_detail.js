@@ -502,6 +502,7 @@ let OrderDetail = {
                                 // data.message = "报告生成或者发送失败！请联系管理员！";
                                 // data.statusCode = 0;
                                 if (param === 'update' || param2 === 'submit') {
+                                	  $("body").mLoading("hide")
                                     if (data.statusCode === 0) {
                                         Public.message('error', data.message)
                                     } else {
@@ -564,6 +565,7 @@ let OrderDetail = {
 
                     });
                     $("#submit").click(function () {
+                    	 $("body").mLoading("show")
                         $("#save").trigger('click', 'submit');
                     });
                     break;

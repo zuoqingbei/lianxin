@@ -36,7 +36,7 @@ let ReportConfig = {
             const $tableEn = $("#table"+item+"En");
             let contents = this.contentsArr[index]
             let contentsEn = this.contentsArrEn[index]
-            console.log(contents,contentsEn)
+           // console.log(contents,contentsEn)
             let titles = this.title
             let urlTemp = titles[index].get_source;
             let conf_id = titles[index].id;
@@ -56,7 +56,7 @@ let ReportConfig = {
                 })
             }
             let selectInfo = []
-            console.log(_this.selectInfoObj,titles[index])
+          //  console.log(_this.selectInfoObj,titles[index])
             if(+_this.selectInfoObj["parent_temp"] === titles[index]["id"]) {
                 //哪个表格有select，就传
                 delete _this.selectInfoObj["parent_temp"]
@@ -111,7 +111,7 @@ let ReportConfig = {
                                 $table.parents(".fixed-table-container").css("height","180px")
                             }
                         }, 200);
-                        console.log(_this.total,index,this.idArr.length)
+                        //console.log(_this.total,index,this.idArr.length)
                         if( this.idArr.length === tableNum) {
                             //中文表格数据加载完成，可以点翻译按钮啦
                             $("#translateBtn").removeClass("disable")
@@ -163,7 +163,7 @@ let ReportConfig = {
                                 $table.parents(".fixed-table-container").css("height","180px")
                             }
                         }, 200);
-                        console.log(_this.total,index,this.idArr.length)
+                        //console.log(_this.total,index,this.idArr.length)
                         if( this.idArr.length === tableNum) {
                             //中文表格数据加载完成，可以点翻译按钮啦
                             $("#translateBtn").removeClass("disable")
@@ -206,7 +206,7 @@ let ReportConfig = {
                     }, 200);
                 },
                 onClickRow:(row,dom)=>{
-                    console.log(row)
+                  //  console.log(row)
                     _this.tableRowIndex = $tableEn.find("tr").index($(dom)) //第几行编辑，从1开始
                 }
 
@@ -281,12 +281,12 @@ let ReportConfig = {
 //					width: 1/a.length,
                     events: {
                         "click .edit":(e,value,row,index)=>{
-                            console.log(row)
+                         //   console.log(row)
                             _this.orderNum = row.order_num
                             _this.isAdd = false
                             _this.rowId = row.id
                             //回显
-                            console.log(row)
+                         //   console.log(row)
                             let formArr = Array.from($("#modalEn"+tempId).find(".form-inline"))
                             formArr.forEach((item,index)=>{
                                 let id = $(item).children("label").next().attr("id");
@@ -304,7 +304,7 @@ let ReportConfig = {
                                             }
                                         })
                                     })
-                                    console.log($("#"+id),arr)
+                                    //console.log($("#"+id),arr)
                                     $("#"+id).val(arr).change()
                                     return
                                 }
@@ -382,7 +382,7 @@ let ReportConfig = {
     						</div>`
                         break;
                     case 'select':
-                        console.log(ele)
+                      //  console.log(ele)
                         if(!ele.get_source) {return}
                         let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
                         ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
@@ -811,10 +811,6 @@ let ReportConfig = {
         let cw_dom;
         let ds_dom;
         _this.tableTitle = []
-        setTimeout(()=>{
-
-            console.log(floatIndexEn)
-        },0)
         floatIndexEn.forEach((item,index)=>{
             let floatParentIdEn = this.floatTitleEn[index]['float_parent'];//浮动的父节点id
             this.entityTitleEn.forEach((item,i)=>{
@@ -823,7 +819,7 @@ let ReportConfig = {
                     if(floatParentIdEn !== 4648) {
                         //非财务模块浮动
                         let html = this.notMoneyFloatHtmlEn[i+1]
-                        console.log($("#titleEn"+i),this.notMoneyFloatHtmlEn)
+                        //console.log($("#titleEn"+i),this.notMoneyFloatHtmlEn)
                         $("#titleEn"+i).after(html)
                         this.formIndexEn.push(i)
                         this.formTitleEn.push(this.floatTitleEn[index])
@@ -1161,12 +1157,13 @@ let ReportConfig = {
         let reportType = JSON.parse(row).report_type
         let istranslate = true
         let type = 1
+       
         $.ajax({
             type:"get",
             url:BASE_PATH + "credit/front/getmodule/list",
             data:{id,reportType,istranslate,type},
             success:(data)=>{
-                console.log("~~data:",data);
+                //console.log("~~data:",data);
                 setTimeout(()=>{
                     _this.initmodal();
                     InitObjTrans.addressInit();
@@ -2066,21 +2063,20 @@ let ReportConfig = {
         let tableDataArrEn = this.tableDataArrEn
         let idArrEn = this.idArrEn
         let dataEn  = []
-        this.numCop = 0   //表格条数计数器
-        this.formNum = 0  //表单条数计数器
+        this.numCop = 0   //翻译表格条数计数器
+        this.formNum = 0  //翻译表单条数计数器
+        
+        this.numCom = 0 //提交计数
         this.isTableTranslated = false;
         this.isFormTranslated = false;
         let allTableData = [] //存放翻译过所有表格数据
+       
         tableTitlesEn.forEach((item,index)=>{
             console.log('aaaa',item.alter_source.split('?')[1],item)
             let tableTitleSourceClassName = '' 
             if(item.alter_source.split('?')[1]){
                 tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
             }
-//    		console.log(tableTitleSourceClassName)
-
-
-
             //循环表格表头
             let alterSource = item["alter_source"];
             let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
@@ -2454,33 +2450,39 @@ let ReportConfig = {
                         }
                     })
                     dataJson[0] = dataJsonObj
-
+                     $("body").mLoading("show")
                     $.ajax({
                         url,
                         type:'post',
-                        async:false,
+                        //async:false,
                         data:{
                             dataJson:JSON.stringify(dataJson)
                         },
                         contentType:'application/x-www-form-urlencoded;charset=UTF-8',
                         success:(data)=>{
-                            this.numCop++;
-                            // console.log(this.numCop)
-
-                            let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;
-                            $.ajax({
-                                url,
-                                type:'post',
-                                success:(data)=>{
-                                    Public.message("success",data.message)
-                                    Public.goToInfoImportPage();
-                                }
-                            })
+                        	this.numCom++;
+                            console.log(index,this.formIndexEn.length)
+                            if (this.numCom === this.formIndexEn.length) {
+                            	  $("body").mLoading("hide")
+                            	  this.numCom = 0
+                            	 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;
+	                            $.ajax({
+	                                url,
+	                                type:'post',
+	                                success:(data)=>{
+	                                	
+	                                    Public.message("success",data.message)
+	                                    Public.goToInfoImportPage();
+	                                }
+	                            })
+							}
                         }
                     })
                 })
             })
         },1500)
+        
+       
     },
     showTranslateMadal(){
         let _this = this
@@ -2530,7 +2532,7 @@ let ReportConfig = {
                     error_phrase_en:_this.wrongTranslate,correct_phrase_en:newTxt,correct_phrase_ch
                 },
                 success:(data)=>{
-                    console.log(data)
+                   // console.log(data)
                     if(data.statusCode === 1) {
                         $("#modal_revise .close").trigger("click")
                         Public.message("success",data.message)
