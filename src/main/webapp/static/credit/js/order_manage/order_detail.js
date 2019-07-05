@@ -171,11 +171,20 @@ let OrderDetail = {
                                 </span>
                             </div>`;
                         } else {
-                            formHtml += `
-                            <div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money' ? 'moneyCol' : ''}">
-                                <span>${item.temp_name}：</span>
-                                <span data-column_name="${item.column_name}"></span>
-                            </div>`
+                        	if (item.field_type === 'select') {
+                        		 formHtml += `
+                                     <div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money' ? 'moneyCol' : ''}">
+                                         <span>${item.temp_name}：</span>
+                                         <span data-column_name="${item.column_name}" data-select-url=${item.get_source}></span>
+                                     </div>`
+							}else {
+								
+								formHtml += `
+									<div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money' ? 'moneyCol' : ''}">
+									<span>${item.temp_name}：</span>
+									<span data-column_name="${item.column_name}"></span>
+									</div>`
+							}
                         }
                     });
                     $wrap.append(`
@@ -199,7 +208,27 @@ let OrderDetail = {
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
-                                        $(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
+                                    	if ($(this).data("select-url")) {
+											let url = $(this).data("select-url")
+											let val = data.rows[0][column_name]
+											let that = this
+											$.ajax({
+												url:BASE_PATH + `credit/front/ReportGetData/` + url,
+												type:'GET',
+												success:data=>{
+													let str = data.selectStr;
+													str.split('</option>').forEach(item=>{
+														if (item.includes('selected')) {
+															
+															$(that).text(item.slice(item.search(/>/)+1));
+														}
+													})
+												}
+											})
+										}else {
+											
+											$(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
+										}
                                     }
                                 });
                                 $wrap.find('div.moneyCol [data-column_name]').text(function () {

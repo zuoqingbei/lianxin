@@ -614,9 +614,7 @@ let ReportConfig = {
         let formIndexEn = this.formIndexEn;
         let _this = this
         if(tempData ){
-            console.log(tempData)
             let arr = Array.from($("#titleEn"+i))
-            console.log($("#titleEn"+i))
             arr.forEach((item,index)=>{
                 if($(item).siblings(".radio-con").length !== 0) {
                     //radio类型绑数
@@ -1601,7 +1599,6 @@ let ReportConfig = {
                         contentHtml += `</div>`
                     }
 
-                    console.log(modulesToEn.length,index)
                     let item_en = modulesToEn[index]
                     if(!item_en){return}
                     let smallModileTypeEn = item_en.smallModileType
@@ -2069,7 +2066,10 @@ let ReportConfig = {
         let tableDataArrEn = this.tableDataArrEn
         let idArrEn = this.idArrEn
         let dataEn  = []
-        this.numCop = 0   //计数器
+        this.numCop = 0   //表格条数计数器
+        this.formNum = 0  //表单条数计数器
+        this.isTableTranslated = false;
+        this.isFormTranslated = false;
         let allTableData = [] //存放翻译过所有表格数据
         tableTitlesEn.forEach((item,index)=>{
             console.log('aaaa',item.alter_source.split('?')[1],item)
@@ -2119,10 +2119,14 @@ let ReportConfig = {
 //	   						console.log(index,this.numCop,this.total,data)
                             if(this.numCop === this.total){
                                 //如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
-                                Public.message("success","翻译完成！")
+                            	this.isTableTranslated = true;
+                            	if (this.isFormTranslated ) {
+									//如果表单也翻译完成
+                            		Public.message("success","表格翻译完成！")
+                            		$("body").mLoading("hide")
+								}
                                 this.numCop = 0
 //	   							console.log(allTableData)
-                                $("body").mLoading("hide")
                                 tableTitlesEn.forEach((item,index)=>{
                                     if(allTableData[index]){
                                         allTableData[index].forEach((e,i)=>{
@@ -2158,9 +2162,7 @@ let ReportConfig = {
 
             $(".position-fixed").on("click","#save",(e)=>{
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
-                //console.log(data)
                 if(data.length === 0 || !Array.isArray(data)){return}
-                //console.log(data)
                 data.forEach((ele,i)=>{
                     delete ele["mySort"]
                     delete ele["create_date"]
@@ -2267,11 +2269,12 @@ let ReportConfig = {
                 })
             })
         })
-
+        this.formTotal = this.formIndexEn.length;
         setTimeout(()=>{
             let formTitlesEn = this.formTitleEn;
             let formIndexEn = this.formIndexEn;
             //_this.formDataArr
+            
             formIndexEn.forEach((item,index)=>{
                 let alterSource = formTitlesEn[index]["alter_source"];
 //    		console.log(alterSource)
@@ -2280,7 +2283,7 @@ let ReportConfig = {
                     formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
 
                 }
-                if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){ return}
+                if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){this.formTotal--; return}
                 let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
                 let dataJson = []
                 let dataJsonObj = {}
@@ -2295,12 +2298,6 @@ let ReportConfig = {
                         }
                     })
                 }
-                /*	console.log(_this.formDataArr)
-                    if(!_this.formDataArr[index]){
-                        this.numCop++;
-                        console.log(this.numCop,formIndexEn.length);
-                        return
-                     }*/
                 //点击翻译按钮
                 $(".position-fixed").on("click","#translateBtn",(e)=>{
                     //表单翻译
@@ -2317,7 +2314,19 @@ let ReportConfig = {
                             dataJson:JSON.stringify(_this.formDataArr[index])
                         },
                         success:(data)=>{
-//    					 console.log(_this.formIndex,_this.formIndexEn,index)
+                        	this.formNum++;
+                        	//console.log(this.formTotal,this.formNum)
+                        	if(this.formTotal === this.formNum) {
+                        		this.formNum = 0;
+                        		//表单翻译完成
+                        		this.isFormTranslated= true;
+                            	if (this.isTableTranslated ) {
+									//如果表格也翻译完成
+                            		Public.message("success","表单翻译完成！")
+                            		$("body").mLoading("hide")
+								}
+                        		
+                        	}
                             _this.bindFormDataEn(data,_this.formIndexEn[index])
                         }
                     });
