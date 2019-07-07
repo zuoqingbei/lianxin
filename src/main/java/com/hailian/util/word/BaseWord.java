@@ -164,9 +164,10 @@ public class BaseWord {
         FileOutputStream out = null;
         XWPFTemplate template = null;
         InputStream iputstream = null;
+        HttpURLConnection uc = null;
         try {
             URL url = new URL(netUrl);
-            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+             uc = (HttpURLConnection) url.openConnection();
             //设置是否要从 URL 连接读取数据,默认为true
             uc.setDoInput(true);
             uc.connect();
@@ -177,9 +178,6 @@ public class BaseWord {
             out = new FileOutputStream(targetDoc);
             template.write(out);
             out.flush();
-            out.close();
-            template.close();
-            iputstream.close();
         } catch (Exception e) {
             e.printStackTrace();
             CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("status","monitor1"),e.toString(),false);
@@ -192,9 +190,12 @@ public class BaseWord {
                 try {
                     out.close();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+            }
+            if(uc!=null){
+
+                uc.disconnect();
             }
             if (template != null) {
                 try {

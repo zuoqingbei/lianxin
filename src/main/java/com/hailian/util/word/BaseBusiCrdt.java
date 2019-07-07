@@ -521,8 +521,12 @@ public class BaseBusiCrdt extends BaseWord{
                         new SendMailUtil(staffEmail, "", "(订单异常回执)"+order.getStr("num"), content).sendEmail();
                     }
                 }else{
-                    if(!"".equals(excelPath)) {
-                        fileMap.put(reportName + ".xls", _pre + excelPath);
+                    if(excelPath!=null&&excelPath.size()!=0) {
+                        int count = 0;
+                        for (String   singlePath : excelPath) {
+                            fileMap.put(reportName+ ++count+ ".xls", _pre + singlePath);
+                        }
+
                     }
                     fileList.add(fileMap);
                     sendMail(reportName,customId, fileList);

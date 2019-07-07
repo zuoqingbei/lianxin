@@ -595,9 +595,10 @@ public class Roc102 extends BaseWord{
     static boolean checkUpload(String testUrl,Long fileSize){
         URL url = null;
         InputStream iputstream = null;
+        HttpURLConnection uc = null;
         try {
             url = new URL(testUrl);
-            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+             uc = (HttpURLConnection) url.openConnection();
             //设置是否要从 URL 连接读取数据,默认为true
             uc.setDoInput(true);
             uc.connect();
@@ -611,6 +612,9 @@ public class Roc102 extends BaseWord{
             e.printStackTrace();
             return false;
         }finally{
+            if(uc!=null){
+                uc.disconnect();
+            }
             if(iputstream!=null){
                 try {
                     iputstream.close();
@@ -624,17 +628,32 @@ public class Roc102 extends BaseWord{
         return false;
     }
     public static void inputstreamtofile(InputStream ins,File file) {
+        OutputStream os = null;
         try {
-            OutputStream os = new FileOutputStream(file);
+            os = new FileOutputStream(file);
             int bytesRead = 0;
             byte[] buffer = new byte[8192];
             while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
                 os.write(buffer, 0, bytesRead);
             }
-            os.close();
-            ins.close();
+            os.flush();
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            if(os!=null){
+                try {
+                    os.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(ins!=null){
+                try {
+                    ins.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
     /**

@@ -158,7 +158,13 @@ public class SendMailUtil {
         			for(String name : map.keySet()){
         				   String fileURL = map.get(name);
         				   messageBodyPart=new MimeBodyPart();
-        	                 InputStream is=downLoadFromUrl(fileURL);
+                        InputStream is = null;
+        				   try{
+                                is=downLoadFromUrl(fileURL);
+                           }catch (Exception e){
+        				       throw new Exception(e);
+                           }
+
         	                 //DataSource dataSource1=new FileDataSource("d:/aa.doc");
         	                 DataSource dataSource1=new ByteArrayDataSource(is, "application/png");
         	                 DataHandler dataHandler=new DataHandler(dataSource1);
