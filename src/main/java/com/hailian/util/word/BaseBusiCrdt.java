@@ -15,6 +15,7 @@ import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
+import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
@@ -491,7 +492,47 @@ public class BaseBusiCrdt extends BaseWord{
         }
 
         //发送邮件
-        synchronized(o){
+        synchronized (o){
+            {
+                String _pre = "http://" + ip + ":" + serverPort + "/";
+                List<Map<String, String>> fileList = new ArrayList<>();
+                Map<String, String> fileMap = new HashMap();
+                fileMap.put(reportName + ".doc",_pre + wordPath);
+                //检查是否上传成功
+                File file = new File(_prePath+".docx");
+                boolean isUploadSuccess = false;
+                if(file.exists()&&file.length()>0L){
+                    isUploadSuccess = Roc102.checkUpload(_pre + wordPath,file.length());
+                }
+                if(!isUploadSuccess){
+                    //获取当前订单客服的id
+                    String staffId = String.valueOf(order.getStr("create_by"));
+                    //获取客服的邮箱
+                    String  staffEmail = null;
+                    if(staffId!=null){
+                        SysUser staff =  SysUser.dao.findFirst(" select * from sys_user where userid = "+staffId );
+                        if(staff!=null){
+                            staffEmail = String.valueOf(staff.getStr("email"));
+                        }
+                    }
+                    if(StringUtils.isNotBlank(staffEmail)){
+                        String content = "  尊敬的工作人员您好,由于网络不稳定导致发往客户的订单号为:"+order.getStr("num")+"的邮件发送失败!" +
+                                "<br/><br/>请重新发送,或者联系管理员!";
+                        new SendMailUtil(staffEmail, "", "(订单异常回执)"+order.getStr("num"), content).sendEmail();
+                    }
+                }else{
+                    if(!"".equals(excelPath)) {
+                        fileMap.put(reportName + ".xls", _pre + excelPath);
+                    }
+                    fileList.add(fileMap);
+                    sendMail(reportName,customId, fileList);
+                }
+
+
+            }
+        }
+      /*旧版发送邮件代码,已经加上检查邮件发送失败的补丁
+       synchronized(o){
             String _pre = "http://" + ip + ":" + serverPort + "/";
             List<Map<String, String>> fileList = new ArrayList<>();
             Map<String, String> fileMap = new HashMap();
@@ -501,8 +542,7 @@ public class BaseBusiCrdt extends BaseWord{
             }
             fileList.add(fileMap);
             sendMail(reportName,customId, fileList);
-        }
-
+        }*/
     }
 
     /**

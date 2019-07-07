@@ -14,6 +14,7 @@ import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataControl
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
@@ -27,6 +28,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -41,8 +43,9 @@ public class Roc102 extends BaseWord{
     //ftp端口 9980
     public static final int serverPort = Config.getToInt("searver_port");
     private static Object o = new Object();
-    public static void main(String []args){
+    public static void main(String []args) throws IOException {
         try {
+            System.out.println(checkUpload("http://localhost:8080/static/credit/imgs/index/error.png", 1130L));
             /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
             URL url = new URL(urlStr);
             HttpURLConnection uc = (HttpURLConnection) url.openConnection();
@@ -89,6 +92,9 @@ public class Roc102 extends BaseWord{
         //获取订单信息
         String customId = order.getStr("custom_id");
         String orderId = order.getInt("id") + "";
+
+
+
         //获取公司信息
         String sql = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
         CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
@@ -518,11 +524,37 @@ public class Roc102 extends BaseWord{
             List<Map<String, String>> fileList = new ArrayList<>();
             Map<String, String> fileMap = new HashMap();
             fileMap.put(reportName + ".doc",_pre + wordPath);
-            if(!"".equals(excelPath)) {
-                fileMap.put(reportName + ".xls", _pre + excelPath);
+            //检查是否上传成功
+            File file = new File(_prePath+".docx");
+            boolean isUploadSuccess = false;
+            if(file.exists()&&file.length()>0L){
+                isUploadSuccess = checkUpload(_pre + wordPath,file.length());
             }
-            fileList.add(fileMap);
-            sendMail(reportName,customId, fileList);
+            if(!isUploadSuccess){
+                //获取当前订单客服的id
+                String staffId = String.valueOf(order.getStr("create_by"));
+                //获取客服的邮箱
+                String  staffEmail = null;
+                if(staffId!=null){
+                    SysUser staff =  SysUser.dao.findFirst(" select * from sys_user where userid = "+staffId );
+                    if(staff!=null){
+                        staffEmail = String.valueOf(staff.getStr("email"));
+                    }
+                }
+                if(StringUtils.isNotBlank(staffEmail)){
+                    String content = "  尊敬的工作人员您好,由于网络不稳定导致发往客户的订单号为:"+order.getStr("num")+"的邮件发送失败!" +
+                            "<br/><br/>请重新发送,或者联系管理员!";
+                    new SendMailUtil(staffEmail, "", "(订单异常回执)"+order.getStr("num"), content).sendEmail();
+                }
+            }else{
+                if(!"".equals(excelPath)) {
+                    fileMap.put(reportName + ".xls", _pre + excelPath);
+                }
+                fileList.add(fileMap);
+                sendMail(reportName,customId, fileList);
+            }
+
+
         }
     }
 
@@ -546,17 +578,65 @@ public class Roc102 extends BaseWord{
         for (CreditCompanyBrandandpatent model : list) {
             Integer id = model.getInt("id");
             String url = model.getStr("brand_url");
-            if(StringUtils.isNotEmpty(url)) {
+                if(StringUtils.isNotEmpty(url)) {
                 map.put("img" + id, new PictureRenderData(120, 120, downloadFile(url, brandPath)));
             }
         }
         String sourcePath = tarPath + "_p.docx";
         String targetPath = tarPath + ".docx";
         BaseWord.buildWord(map, sourcePath, targetPath);
+        BaseWord.uploadReport(targetPath, orderId, userid);
         //上传文件
-        return BaseWord.uploadReport(targetPath, orderId, userid);
-    }
+        String resultPath = BaseWord.uploadReport(targetPath, orderId, userid);
 
+        return resultPath;
+    }
+    //检查文件大小
+    static boolean checkUpload(String testUrl,Long fileSize){
+        URL url = null;
+        InputStream iputstream = null;
+        try {
+            url = new URL(testUrl);
+            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+            //设置是否要从 URL 连接读取数据,默认为true
+            uc.setDoInput(true);
+            uc.connect();
+            iputstream = uc.getInputStream();
+            File file = new File("test");
+            inputstreamtofile(iputstream,file);
+            if(file.length()==fileSize){
+                return  true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }finally{
+            if(iputstream!=null){
+                try {
+                    iputstream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+        return false;
+    }
+    public static void inputstreamtofile(InputStream ins,File file) {
+        try {
+            OutputStream os = new FileOutputStream(file);
+            int bytesRead = 0;
+            byte[] buffer = new byte[8192];
+            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            os.close();
+            ins.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 发送带附件邮件
      * @param customerId
