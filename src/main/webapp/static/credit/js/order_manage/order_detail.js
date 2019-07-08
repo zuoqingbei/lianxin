@@ -208,7 +208,7 @@ let OrderDetail = {
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
-                                    	if ($(this).data("select-url")) {
+                                    	if ($(this).data("select-url") && !isNaN(data.rows[0][column_name])) {
 											let url = $(this).data("select-url")
 											let val = data.rows[0][column_name]
 											let that = this
@@ -218,15 +218,13 @@ let OrderDetail = {
 												success:data=>{
 													let str = data.selectStr;
 													str.split('</option>').forEach(item=>{
-														if (item.includes('selected')) {
-															
+														if (item.includes(val)) {
 															$(that).text(item.slice(item.search(/>/)+1));
 														}
 													})
 												}
 											})
 										}else {
-											console.log(data.rows[0])
 											$(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
 										}
                                     }
