@@ -1117,7 +1117,7 @@ let OrderDetail = {
                                 });
                                 if (['出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
                                     sum = sum.toFixed(2);
-                                    if (sum === '99.99') {
+                                    if (sum === '99.99' || sum === '100.01') {
                                         sum = '100.00'
                                     }
                                 }

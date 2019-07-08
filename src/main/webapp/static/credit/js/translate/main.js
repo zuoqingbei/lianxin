@@ -263,6 +263,9 @@ let ReportConfig = {
                                 })
                                 if(typeof total === 'number'){
                                     total = total.toFixed(2)
+                                    if (total === '99.99' || total === '100.01') {
+                						 total = '100.00'
+                                    }
                                 }
                                 if(total === 'NaN'){
                                     return
@@ -1193,23 +1196,43 @@ let ReportConfig = {
                 let header = data.defaultModule;
                 let headerHtml = ''
                 let temp = ''
-                header.forEach((item,index)=>{
-                    if(item.node_level === '1') {
-                        headerHtml += `<div class="order-num main-title">${item.temp_name}：<span id="num"></span></div>`
-                    }else {
-                        if(index < 4){
-                            temp += `<div class="order-item col-md-4">
-		                                <span class="fw"  >${item.temp_name}：</span>
-		                                <span id=""></span>
-		                            </div>`
-                        }else {
-                            temp += `<div class="order-item col-md-4 mt-3">
-		                                <span class="fw"  >${item.temp_name}：</span>
-		                                <span id=""></span>
-		                            </div>`
-                        }
-                    }
-                })
+            	let flagIndex;
+	       		 header.forEach((item,index)=>{
+	                	if(item.node_level === '1') {
+	                		flagIndex = index
+	                	}
+	       		 })
+               header.forEach((item,index)=>{
+               	if(item.node_level === '1') {
+               		headerHtml += `<div class="order-num main-title">${item.temp_name}：<span id="num"></span></div>`
+               	}else {
+               		if (flagIndex < 4) {
+               			if(index < 4){
+               				temp += `<div class="order-item col-md-4">
+               					<span class="fw"  >${item.temp_name}：</span>
+               					<span id=""></span>
+               					</div>`
+               			}else {
+               				temp += `<div class="order-item col-md-4 mt-3">
+               					<span class="fw"  >${item.temp_name}：</span>
+               					<span id=""></span>
+               					</div>`
+               			}
+						}else {
+							if(index < 3){
+               				temp += `<div class="order-item col-md-4">
+               					<span class="fw"  >${item.temp_name}：</span>
+               					<span id=""></span>
+               					</div>`
+               			}else {
+               				temp += `<div class="order-item col-md-4 mt-3">
+               					<span class="fw"  >${item.temp_name}：</span>
+               					<span id=""></span>
+               					</div>`
+               			}
+						}
+               	}
+               })
                 headerHtml += `<div class="order-item-box d-flex flex-wrap justify-content-start row pr-4">`
                 headerHtml += 	temp;
                 headerHtml += `</div>`
