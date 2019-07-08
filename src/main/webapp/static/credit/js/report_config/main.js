@@ -84,10 +84,11 @@ let ReportConfig = {
         					}
         				})
         				setTimeout(() => {
+        					let height = $table.parents(".fixed-table-body").siblings(".fixed-table-header").height();
     	    				if(rows.length < 1) {
-    	    					$table.parents(".fixed-table-container").css("height","80px!important")
+    	    					$table.parents(".fixed-table-container").css("height",(40+height)+"px!important")
     	    				}else if(rows.length < 4) {
-    	    					$table.parents(".fixed-table-container").css("height","180px")
+    	    					$table.parents(".fixed-table-container").css("height",(140+height)+"px")
     	    				}
         				 }, 200);
         			}
@@ -136,11 +137,11 @@ let ReportConfig = {
         					}
         				})
         				setTimeout(() => {
+        					let height = $table.parents(".fixed-table-body").siblings(".fixed-table-header").height();
     	    				if(rows.length < 1) {
-    	    					$table.parents(".fixed-table-container").css("height","80px!important")
-//    	    					console.log($table.parents(".fixed-table-container"))
+    	    					$table.parents(".fixed-table-container").css("height",(40+height)+"px!important")
     	    				}else if(rows.length < 4) {
-    	    					$table.parents(".fixed-table-container").css("height","180px")
+    	    					$table.parents(".fixed-table-container").css("height",(140+height)+"px")
     	    				}
         				 }, 200);
         				
@@ -1458,11 +1459,11 @@ let ReportConfig = {
     
     		})
     		//自动计算出生年月和年龄
-    		if($("#modal"+item).find(".modal-header").text().trim() === '自然人股东详情' || $("#modal"+item).find(".modal-header").text().trim() === '管理层') {
+    		if($("#modal"+item).find(".modal-header").text().trim() === '自然人股东详情' || $("#modal"+item).find(".modal-header").text().trim() === '管理层' || $("#modal"+item).find(".modal-header").text().trim() === 'Mangement' || $("#modal"+item).find(".modal-header").text().trim() === 'Natural Person Shareholder Details') {
     			let arr = $("#modal"+item).find(".modal-body").find("label").next().attr("id").split("_")
     			let index  = arr[arr.length-1];
     			let $idCard = $("#id_no_"+index)
-				if($("#modal"+item).find(".modal-header").text().trim() === '管理层'){
+				if($("#modal"+item).find(".modal-header").text().trim() === '管理层' || $("#modal"+item).find(".modal-header").text().trim() === 'Mangement'){
 					$idCard = $("#id_card_"+index)
 				}
     			let $age = $("#age_"+index)

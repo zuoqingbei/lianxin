@@ -192,7 +192,7 @@ let OrderDetail = {
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
-                    if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
+                    if (false) { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
                             let text = _this.row[$(this).data('column_name')];
                             $(this).text(Public.textFilter(text, 'null'));
@@ -226,7 +226,7 @@ let OrderDetail = {
 												}
 											})
 										}else {
-											
+											console.log(data.rows[0])
 											$(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
 										}
                                     }
@@ -987,7 +987,11 @@ let OrderDetail = {
     },
     // 设置头部信息
     setHeader() {
-        $("#orderName").text(this.data.defaultModule[0].temp_name + " :");
+    	this.data.defaultModule.forEach(item=>{
+    		if (item.node_level === '1') {
+    			$("#orderName").text(item.temp_name + " :");
+			}
+    	})
         $("#orderNum").text(this.row.num);
         $("#status").text(this.row.statusName);
     },
