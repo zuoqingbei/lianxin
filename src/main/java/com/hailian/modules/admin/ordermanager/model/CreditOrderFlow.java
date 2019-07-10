@@ -74,6 +74,9 @@ public class CreditOrderFlow extends BaseProjectModel<CreditOrderFlow> implement
 				}
 			};
 		}
+		if(model==null||model.get("id")==null){
+			return;
+		}
 		//获取订单记录对象
 		CreditOrderFlow cof = new CreditOrderFlow();
 		//订单号

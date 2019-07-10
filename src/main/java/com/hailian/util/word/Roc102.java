@@ -514,7 +514,7 @@ public class Roc102 extends BaseWord{
             }catch (Exception e){
                 e.printStackTrace();
                 //log表中增加记录
-                CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("status","monitor2"),e.toString(),false);
+                CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("id",orderId).set("status","monitor2"),e.toString(),false);
             }
 
         }
@@ -599,6 +599,9 @@ public class Roc102 extends BaseWord{
     }
     //检查文件大小
     static boolean checkUpload(String testUrl,Long fileSize){
+        if(fileSize==0){
+            return false;
+        }
         URL url = null;
         InputStream iputstream = null;
         HttpURLConnection uc = null;
@@ -611,7 +614,10 @@ public class Roc102 extends BaseWord{
             iputstream = uc.getInputStream();
             File file = new File("test");
             inputstreamtofile(iputstream,file);
-            if(file.length()==fileSize){
+            //传输过程可能丢失若干字节,所以允许误差
+            Long flagSize1 = (long)(fileSize/1.1);
+            Long flagSize2 = (long)(fileSize*1.1);
+            if(file.length()>flagSize1&&file.length()<flagSize2){
                 return  true;
             }
         } catch (IOException e) {
