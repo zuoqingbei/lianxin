@@ -36,28 +36,28 @@ import org.apache.log4j.Logger;
 
 public class SendMailUtil {
 	
-	public static Logger log = Logger.getLogger(SendMailUtil.class);
+	public  Logger log = Logger.getLogger(SendMailUtil.class);
 	
 //	 //发件人地址
 //    public static String SenderAddress = "2530644578@qq.com";
-    public static String SenderAddress = "international@inter-credit.net";
+    public  String SenderAddress = "international@inter-credit.net";
 
 //    //发件人账户名
 //    public static String SenderAccount = "2530644578@qq.com";
-    public static String SenderAccount = "international@inter-credit.net";
+    public  String SenderAccount = "international@inter-credit.net";
 
 //    //发件人账户密码
 //    public static String SenderPassword = "typwolfiqocrecaf";
-    public static String SenderPassword = "Y1A1N2N9I#";//"Chris777";
+    public  String SenderPassword = "Y1A1N2N9I#";//"Chris777";
 	
     //收件人地址
-    public static  String recipientAddress;
+    public   String recipientAddress;
     public  String recipientAddressCC;
     //邮件主题
-    public static String title;
+    public  String title;
     //邮件内容
-    public static String content;
-    public  static List<Map<String,String>> list;
+    public  String content;
+    public   List<Map<String,String>> list;
    
 
 

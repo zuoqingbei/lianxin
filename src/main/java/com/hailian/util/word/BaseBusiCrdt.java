@@ -488,7 +488,7 @@ public class BaseBusiCrdt extends BaseWord{
         }catch (Exception e){
             e.printStackTrace();
             //log表中增加记录
-            CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("status","monitor2"),e.toString(),false);
+            CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("id",orderId).set("status","monitor2"),e.toString(),false);
         }
 
         //发送邮件
