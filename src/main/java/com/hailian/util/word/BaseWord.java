@@ -1152,6 +1152,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
     static void sendErrorEmail(CreditOrderInfo order,Exception e1) throws Exception {
         if (e1==null){
             e1 = new Exception();
+            throw new RuntimeException();
         }
         if(order.get("id")==null||order.get("num")==null){
             return;
