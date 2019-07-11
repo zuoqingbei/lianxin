@@ -93,8 +93,11 @@ public class CreditReportController extends BaseProjectController{
                 tempModel.set("id", orderId).set("status", statusCode).update();
                 model.set("status", statusCode);
                 record.clear().set("statusCode", 0).set("message", "重新发送报告时失败!请联系管理员或者再次发送!");
+                CreditOrderFlow.addOneEntry(this, model.set("status",statusCode),errorMessage,true);
                 //增加站内信
                 ReportInfoGetData.sendErrMsg(model, userid,  "重新发送报告时失败!请联系管理员或者再次发送!");
+                renderJson(record);
+                 return;
         }
         //发送成功修改状态
         //增加跟踪记录

@@ -544,8 +544,14 @@ public class Roc102 extends BaseWord{
                 if(StringUtils.isNotBlank(staffEmail)){
                     String content = "  尊敬的工作人员您好,由于网络不稳定导致发往客户的订单号为:"+order.getStr("num")+"的邮件发送失败!" +
                             "<br/><br/>请重新发送,或者联系管理员!";
-                    new SendMailUtil(staffEmail, "", "(订单异常回执)"+order.getStr("num"), content).sendEmail();
+                    try{
+                        new SendMailUtil(staffEmail, "", "(订单异常回执)"+order.getStr("num"), content).sendEmail();
+                    }catch (Exception e){
+                        throw new Exception("报告上传失败导致的错误且当前订单客服没有正确的邮箱!");
+                    }
+
                 }
+                throw new Exception("报告上传失败导致的错误!");
             }else{
                 if(!"".equals(excelPath)) {
                     fileMap.put(reportName + ".xls", _pre + excelPath);
