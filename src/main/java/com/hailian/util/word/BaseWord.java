@@ -22,6 +22,7 @@ import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.system.dict.SysDictDetail;
+import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
@@ -1036,7 +1037,7 @@ public class BaseWord {
      * 上传文件
      * @param filePath
      */
-    public static String uploadReport(String filePath, String orderId, Integer userid) {
+    public static String uploadReport(String filePath, String orderId, Integer userid) throws FileNotFoundException {
         String factpath = null;
         String storePath = ftpStore + "/" + DateUtils.getNow(DateUtils.YMD);
         File file = new File(filePath);
@@ -1047,7 +1048,7 @@ public class BaseWord {
         CreditUploadFileModel fileModel = new CreditUploadFileModel();
         fileModel.set("business_type", "311");//订单完成
         fileModel.set("business_id", orderId);
-        try {
+
             for(File fl:commonFiles) {
                 //获取真实文件名
                 String originalFile = fl.getName();
@@ -1080,7 +1081,12 @@ public class BaseWord {
 
             boolean storePdfFile = true;
             if(pdfFiles.size()>0) {
-                storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+                //预览文件上传异常宽松化处理,不向外抛出异常
+                try {
+                    storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
             boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile(now, commonFiles, storePath, ip, port, userName, password);
             if(!storePdfFile){
@@ -1109,9 +1115,7 @@ public class BaseWord {
                 //将上传信息维护进实体表
                 UploadFileService.service.save(0, file.getName(), file.length(), factpath, factpath, ftpFactpath, ftpFactpath, fileModel, originalFileName + now, userid);
             }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+
         return factpath;
     }
 
@@ -1141,5 +1145,39 @@ public class BaseWord {
         }
        return mapData;
     }
+//发向客服送异常回执
+static void sendErrorEmail(CreditOrderInfo order) throws Exception {
+    sendErrorEmail( order,null);
+}
+    static void sendErrorEmail(CreditOrderInfo order,Exception e1) throws Exception {
+        if (e1==null){
+            e1 = new Exception();
+        }
+        if(order.get("id")==null||order.get("num")==null){
+            return;
+        }
+            //获取当前订单客服的id
+            String staffId = String.valueOf(order.getStr("create_by"));
+            //获取客服的邮箱
+            String  staffEmail = null;
+            if(staffId!=null){
+                SysUser staff =  SysUser.dao.findFirst(" select * from sys_user where userid = "+staffId );
+                if(staff!=null){
+                    staffEmail = String.valueOf(staff.getStr("email"));
+                }
+            }
+            if(StringUtils.isNotBlank(staffEmail)){
+                String content = "  尊敬的工作人员您好,由于文件上传至ftp服务器失败导致发往客户的订单号为:"+order.getStr("num")+"的邮件发送失败!" +
+                        "<br/><br/>请重新发送,或者联系管理员!";
+                try{
+                    new SendMailUtil(staffEmail, "", "(订单异常回执)"+order.getStr("num"), content).sendEmail();
+                }catch (Exception e2){
+                    e2.printStackTrace();
+                    throw new Exception("报告上传失败导致的错误且当前订单客服没有正确的邮箱!错误原因"+e1);
+                }
+
+            }
+            throw new Exception("报告上传失败导致的错误!"+e1);
+        }
 
 }

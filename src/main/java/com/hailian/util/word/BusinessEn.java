@@ -16,6 +16,7 @@ import com.hailian.util.Config;
 import com.jfinal.kit.PathKit;
 import org.jfree.data.general.DefaultPieDataset;
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -243,7 +244,12 @@ public class BusinessEn {
 
         BaseWord.buildWord(map, webRoot + "/word/" + "_BUSINESS INFORMATION REPORT.docx", _prePath + ".docx");
         //上传文件
-        String filePath = BaseWord.uploadReport(_prePath + ".docx", orderId, userid);
+        String filePath = null;
+        try {
+            filePath = BaseWord.uploadReport(_prePath + ".docx", orderId, userid);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         //发送邮件
         List<Map<String, String>> fileList = new ArrayList<Map<String, String>>();
         Map<String, String> fileMap = new HashMap<String, String>();

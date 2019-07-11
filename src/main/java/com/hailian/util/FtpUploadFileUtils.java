@@ -190,7 +190,8 @@ public class FtpUploadFileUtils {
 		return result;
 	}
 	//多文件上传
-	public static boolean storeMoreFtpFile(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException {
+	public static boolean storeMoreFtpFile(String now,List<File> filelist,String storePath,String url,int port,String userName,String password)  {
+
 		FileInputStream fis = null;
 		boolean result = false;
 		FTPClient ftp = new FTPClient();
@@ -255,22 +256,9 @@ public class FtpUploadFileUtils {
 			fis.close();
 			// 登出服务器
 			ftp.logout();
-		} catch (IOException e) {
-			try {
-				// 判断输入流是否存在
-				if (null != fis) {
-					// 关闭输入流
-					fis.close();
-				}
-				// 判断连接是否存在
-				if (ftp.isConnected()) {
-					// 断开连接
-					ftp.disconnect();
-				}
-			} catch (IOException e2) {
-				e2.printStackTrace();
-			}
-			e.printStackTrace();
+		} catch (Exception e) {
+			 e.printStackTrace();
+			 throw new RuntimeException(e);
 		} finally {
 			try {
 				// 判断输入流是否存在

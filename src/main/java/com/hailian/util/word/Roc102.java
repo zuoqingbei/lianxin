@@ -513,8 +513,7 @@ public class Roc102 extends BaseWord{
                 wordPath = replaceImg(_prePath, orderId, userid, companyId, sysLanguage);
             }catch (Exception e){
                 e.printStackTrace();
-                //log表中增加记录
-                CreditOrderFlow.addOneEntry(null, new CreditOrderInfo().set("id",orderId).set("status","monitor2"),e.toString(),false);
+                sendErrorEmail(order,e);
             }
 
         }
@@ -527,32 +526,12 @@ public class Roc102 extends BaseWord{
             //检查是否上传成功
             File file = new File(_prePath+".docx");
             boolean isUploadSuccess = false;
-            if(file.exists()&&file.length()>0L){
+            if(file.exists()&&file.length()>0L&&StringUtils.isNotBlank(wordPath)){
                 isUploadSuccess = checkUpload(_pre + wordPath,file.length());
             }
             if(!isUploadSuccess){
-                //获取当前订单客服的id
-                String staffId = String.valueOf(order.getStr("create_by"));
-                //获取客服的邮箱
-                String  staffEmail = null;
-                if(staffId!=null){
-                    SysUser staff =  SysUser.dao.findFirst(" select * from sys_user where userid = "+staffId );
-                    if(staff!=null){
-                        staffEmail = String.valueOf(staff.getStr("email"));
-                    }
-                }
-                if(StringUtils.isNotBlank(staffEmail)){
-                    String content = "  尊敬的工作人员您好,由于网络不稳定导致发往客户的订单号为:"+order.getStr("num")+"的邮件发送失败!" +
-                            "<br/><br/>请重新发送,或者联系管理员!";
-                    try{
-                        new SendMailUtil(staffEmail, "", "(订单异常回执)"+order.getStr("num"), content).sendEmail();
-                    }catch (Exception e){
-                        throw new Exception("报告上传失败导致的错误且当前订单客服没有正确的邮箱!");
-                    }
-
-                }
-                throw new Exception("报告上传失败导致的错误!");
-            }else{
+                sendErrorEmail(order);
+            }{
                 if(!"".equals(excelPath)) {
                     fileMap.put(reportName + ".xls", _pre + excelPath);
                 }
@@ -575,7 +554,7 @@ public class Roc102 extends BaseWord{
      * @param companyId
      * @param sysLanguage
      */
-    public static String replaceImg(String tarPath,String orderId,Integer userid,String companyId,String sysLanguage) {
+    public static String replaceImg(String tarPath,String orderId,Integer userid,String companyId,String sysLanguage) throws FileNotFoundException {
         //图片保存路径
         String brandPath = PathKit.getWebRootPath()+ "/upload/brand";
         //获取图片
@@ -591,12 +570,26 @@ public class Roc102 extends BaseWord{
         String sourcePath = tarPath + "_p.docx";
         String targetPath = tarPath + ".docx";
         BaseWord.buildWord(map, sourcePath, targetPath);
-        BaseWord.uploadReport(targetPath, orderId, userid);
+       // BaseWord.uploadReport(targetPath, orderId, userid);
         //上传文件
-        String resultPath = BaseWord.uploadReport(targetPath, orderId, userid);
+        String resultPath = null;
+        try {
+            resultPath = BaseWord.uploadReport(targetPath, orderId, userid);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            try {
+                resultPath = BaseWord.uploadReport(targetPath, orderId, userid);
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                resultPath = BaseWord.uploadReport(targetPath, orderId, userid);
+            }
+
+        }
 
         return resultPath;
     }
+
+
     //检查文件大小
     static boolean checkUpload(String testUrl,Long fileSize){
         if(fileSize==0){
