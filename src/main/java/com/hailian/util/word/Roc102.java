@@ -530,7 +530,7 @@ public class Roc102 extends BaseWord{
                 isUploadSuccess = checkUpload(_pre + wordPath,file.length());
             }
             if(!isUploadSuccess){
-                sendErrorEmail(order);
+                sendErrorEmail(order,new RuntimeException(" 服务器文件生成路径:"+_prePath+".docx; file.exists="+file.exists()+"; file.length="+file.length()+"; wordPath="+_pre + wordPath));
             }{
                 if(!"".equals(excelPath)) {
                     fileMap.put(reportName + ".xls", _pre + excelPath);
@@ -554,7 +554,7 @@ public class Roc102 extends BaseWord{
      * @param companyId
      * @param sysLanguage
      */
-    public static String replaceImg(String tarPath,String orderId,Integer userid,String companyId,String sysLanguage) throws FileNotFoundException {
+    public static String replaceImg(String tarPath,String orderId,Integer userid,String companyId,String sysLanguage) throws Exception {
         //图片保存路径
         String brandPath = PathKit.getWebRootPath()+ "/upload/brand";
         //获取图片
@@ -575,11 +575,11 @@ public class Roc102 extends BaseWord{
         String resultPath = null;
         try {
             resultPath = BaseWord.uploadReport(targetPath, orderId, userid);
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             try {
                 resultPath = BaseWord.uploadReport(targetPath, orderId, userid);
-            } catch (FileNotFoundException ex) {
+            } catch (Exception ex) {
                 ex.printStackTrace();
                 resultPath = BaseWord.uploadReport(targetPath, orderId, userid);
             }

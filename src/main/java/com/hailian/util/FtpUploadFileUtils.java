@@ -204,13 +204,15 @@ public class FtpUploadFileUtils {
 			// 连接至服务器，端口默认为21时，可直接通过URL连接
 			ftp.connect(url, port);
 			// 登录服务器
-			ftp.login(userName, password);
+			boolean loginFlag = ftp.login(userName, password);
 			// 判断返回码是否合法
-			if (!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
+            boolean replyCodeFlag = FTPReply.isPositiveCompletion(ftp.getReplyCode());
+			if (!replyCodeFlag) {
 				// 不合法时断开连接
 				ftp.disconnect();
+				throw  new RuntimeException( "此时ftp登录账号:"+userName +",密码:"+password+"; loginFlag="+loginFlag+"; ftp返回码合法与否="+replyCodeFlag);
 				// 结束程序
-				return result;
+				//return result;
 			}
 			// 判断ftp目录是否存在，如果不存在则创建目录，包括创建多级目录
 //			ftp.enterLocalActiveMode();
@@ -251,11 +253,11 @@ public class FtpUploadFileUtils {
 				result = ftp.storeFile(ftpName, fis);
 			}
 			
-			// 关闭输入流
+			/*// 关闭输入流
 			if(fis!=null)
 			fis.close();
 			// 登出服务器
-			ftp.logout();
+			ftp.logout();*/
 		} catch (Exception e) {
 			 e.printStackTrace();
 			 throw new RuntimeException(e);
@@ -268,6 +270,7 @@ public class FtpUploadFileUtils {
 				}
 				// 判断连接是否存在
 				if (ftp.isConnected()) {
+                    ftp.logout();
 					// 断开连接
 					ftp.disconnect();
 				}
