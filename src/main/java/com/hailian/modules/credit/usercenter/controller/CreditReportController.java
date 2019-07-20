@@ -1,6 +1,8 @@
 package com.hailian.modules.credit.usercenter.controller;
 
 
+import java.io.IOException;
+
 import com.feizhou.swagger.annotation.Api;
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectController;
@@ -11,6 +13,9 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.util.word.*;
 import com.jfinal.plugin.activerecord.Record;
+
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
 import org.apache.log4j.Logger;
 
 /**
@@ -24,6 +29,47 @@ import org.apache.log4j.Logger;
 public class CreditReportController extends BaseProjectController{
     public static Logger log = Logger.getLogger(CreditReportController.class);
     String errorMessage = "";
+    public void testFtp(){
+    	String result="";
+    	FTPClient ftp = new FTPClient();
+		ftp.setControlEncoding("UTF-8");
+		ftp.setPassiveNatWorkaround(true);
+		try {
+			// 连接至服务器，端口默认为21时，可直接通过URL连接
+			ftp.connect("120.27.46.160", 9999);
+			// 登录服务器
+			boolean success=ftp.login("ftpuser", "Hl@20181124");
+			result=success+"";
+			// 判断返回码是否合法
+			if (!FTPReply.isPositiveCompletion(ftp.getReplyCode())) {
+				// 不合法时断开连接
+				ftp.disconnect();
+				// 结束程序
+			}
+			
+			// 登出服务器
+			boolean close=ftp.logout();
+			result+=",关闭："+close;
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				// 判断连接是否存在
+				if (ftp.isConnected()) {
+					// 断开连接
+					ftp.disconnect();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.println("链接状态："+result);
+		if("true,关闭：true".equals(result)){
+			renderText(result);
+		}else{
+			renderError(404);
+		}
+    }
     public void run() {
         String orderNum = getPara("orderNum");
         Integer userid = getSessionUser().getUserid();

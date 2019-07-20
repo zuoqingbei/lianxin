@@ -16,11 +16,12 @@
  */
 package com.hailian.component.config;
 
-import com.hailian.jfinal.component.handler.XssHandler;
-import com.jfinal.plugin.ehcache.EhCachePlugin;
+import java.net.URL;
 
 import org.beetl.core.GroupTemplate;
 import org.beetl.ext.jfinal3.JFinal3BeetlRenderFactory;
+
+import cn.dreampie.quartz.QuartzPlugin;
 
 import com.beetl.functions.BeetlStrUtils;
 import com.feizhou.swagger.config.routes.SwaggerRoutes;
@@ -36,6 +37,7 @@ import com.hailian.jfinal.component.annotation.AutoBindRoutes;
 import com.hailian.jfinal.component.handler.BasePathHandler;
 import com.hailian.jfinal.component.handler.CurrentPathHandler;
 import com.hailian.jfinal.component.handler.HtmlHandler;
+import com.hailian.jfinal.component.handler.XssHandler;
 import com.hailian.jfinal.component.interceptor.ExceptionInterceptor;
 import com.hailian.jfinal.component.interceptor.JflyfoxInterceptor;
 import com.hailian.jfinal.component.interceptor.SessionAttrInterceptor;
@@ -72,6 +74,7 @@ import com.jfinal.ext.handler.ContextPathHandler;
 import com.jfinal.ext.interceptor.SessionInViewInterceptor;
 import com.jfinal.i18n.I18nInterceptor;
 import com.jfinal.kit.PathKit;
+import com.jfinal.kit.PropKit;
 import com.jfinal.log.Log4jLogFactory;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.CaseInsensitiveContainerFactory;
@@ -80,10 +83,10 @@ import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.activerecord.dialect.PostgreSqlDialect;
 import com.jfinal.plugin.activerecord.dialect.Sqlite3Dialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
+import com.jfinal.plugin.cron4j.Cron4jPlugin;
+import com.jfinal.plugin.ehcache.EhCachePlugin;
 import com.jfinal.render.ViewType;
 import com.jfinal.template.Engine;
-
-import java.net.URL;
 
 /**
  * API引导式配置
@@ -171,6 +174,11 @@ public class BaseConfig extends JFinalConfig {
         me.add(new EhCachePlugin(url));
 
 		new AutoBindModels(arp);
+		
+		//定时器
+		QuartzPlugin quartzPlugin = new QuartzPlugin();
+		quartzPlugin.setJobs("conf/quartz.properties");
+		me.add(quartzPlugin);
 	}
 
 	@Override

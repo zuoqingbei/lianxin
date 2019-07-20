@@ -1735,6 +1735,7 @@ let ReportConfig = {
                 $('.type23-content').addClass('px-3').find("[for=grade]").text('扣分：')
                     .end().find("[for=quality_opinion]").text('质检意见：');
                 let dealQualityData = (param, param2) => {
+                	
                     let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
                     $.get(`${BASE_PATH}credit/front/ReportGetData/getOrsaveOpintion?className=CreditQualityOpintion
                     ${param === 'update' ? '&update=true' : ''}${param2 === 'submit' ? '&submit=true' : ''}`, {
@@ -1746,15 +1747,24 @@ let ReportConfig = {
                         report_type: _this.rows.report_type,
                         grade: $("#grade").val() || 0
                     }, (data) => {
-                        if (!data.rows || data.rows.length === 0) {
+                    	/*console.log(param)
+                    	console.log(param2)
+                    	console.log(data)
+	                	console.log(data.rows)
+	                	console.log(data.rows.length)*/
+                        /*if (!data.rows || data.rows.length === 0) {
+                        	 $("body").mLoading("hide")
+                             if (data.statusCode === 0&&data.message.indexOf("该订单已经计算过绩效,请勿重复计算")==-1) {
+                            	 Public.message('error', data.message);
+                             }
                             return
-                        }
+                        }*/
                         // 保存或提交后如果出错则报错再跳转，实际上业务只有提交可能报错
                         // data.message = "报告生成或者发送失败！请联系管理员！";
                         // data.statusCode = 0;
                         if (param === 'update' || param2 === 'submit') {
                         	 $("body").mLoading("hide")
-                            if (data.statusCode === 0) {
+                            if (data.statusCode === 0&&data.message.indexOf("该订单已经计算过绩效,请勿重复计算")==-1) {
                                 Public.message('error', data.message)
                             } else {
                                 Public.message('success', '保存成功！')

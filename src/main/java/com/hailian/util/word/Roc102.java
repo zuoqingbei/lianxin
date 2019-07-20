@@ -149,11 +149,15 @@ public class Roc102 extends BaseWord{
         String reportName = referenceNum;
         //保存的文件名
         //String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
-        String _prePath = webRoot + "/upload/tmp/" + orderCode;
-        if(!new File(_prePath).exists()){
-            new File(_prePath).mkdir();
+        String _prePath = webRoot +File.separator+ "upload"+File.separator+"tmp"+File.separator + orderCode;
+        File f=new File(_prePath);
+        if(!f.exists()){
+           boolean b=f.mkdirs();
+           if(b){
+        	   System.out.println("目录创建成功");
+           }
         }
-        _prePath = _prePath + "/" + referenceNum;
+        _prePath = _prePath +File.separator+referenceNum;
 
         //找到当前报告类型下的父节点
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
