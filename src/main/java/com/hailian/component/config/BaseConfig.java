@@ -176,9 +176,9 @@ public class BaseConfig extends JFinalConfig {
 		new AutoBindModels(arp);
 		
 		//定时器
-		QuartzPlugin quartzPlugin = new QuartzPlugin();
+		/*QuartzPlugin quartzPlugin = new QuartzPlugin();
 		quartzPlugin.setJobs("conf/quartz.properties");
-		me.add(quartzPlugin);
+		me.add(quartzPlugin);*/
 	}
 
 	@Override
