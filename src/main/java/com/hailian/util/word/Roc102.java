@@ -138,7 +138,6 @@ public class Roc102 extends BaseWord{
             }
         }}
 
-        map.put("company", companyInfo.getStr("name_en"));
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", detailDate(new Date(), reportType)); 
@@ -171,6 +170,9 @@ public class Roc102 extends BaseWord{
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
             String tableId = crmc.getInt("table_id")+"";
+            if("1138".equals(confId)){
+            	System.out.println(1);
+            }
             //无url的跳过取数
             if (StringUtils.isEmpty(source)) {
                 continue;

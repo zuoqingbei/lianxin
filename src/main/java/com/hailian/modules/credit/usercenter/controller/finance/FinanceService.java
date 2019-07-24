@@ -7,7 +7,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
+
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
@@ -262,7 +264,17 @@ public class FinanceService {
 				//删除当前配置下已有实体
 				 deleteFinancialEntrysByConfig(financeConfigId,userId,now);
 				 //将实体插入财务信息实体表
-				 Db.batchSave(modelList, modelList.size());
+				 for(CreditCompanyFinancialEntry m:modelList){
+					 if("营业总额/资产总额".equals(m.getStr("item_name"))){
+						 System.out.println(m.getStr("begin_date_value"));
+						//System.out.println( m.save());
+						System.out.println(m.get("id"));
+					 }
+				 }
+				 System.out.println( modelList.size());
+				 int[] i=Db.batchSave(modelList, modelList.size());
+				 System.out.println(i.length);
+				 System.out.println(i);
 				 //删除无用数据
 				  Db.update("delete  from credit_company_financial_entry where del_flag=9");
 				return true;

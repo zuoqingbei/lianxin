@@ -436,7 +436,9 @@ public class ExcelModule extends BaseProjectController  {
 						//System.out.println("item_name:"+str1);
 					} 
 				} 
-				
+				if("营业总额/资产总额".equals(str1.trim())||"营业成本/营业总额".equals(str1.trim())){
+					System.out.println(1);
+				}
 				HSSFCell beginDateValue = row.getCell(colStart+1);
 				String str2 = ""; 
 				if(beginDateValue!=null) {

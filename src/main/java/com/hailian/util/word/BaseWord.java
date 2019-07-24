@@ -486,7 +486,9 @@ public class BaseWord {
                     }
                 }
                 //日期
-                else if("date".equals(fieldType)){
+                else if("date".equals(fieldType)
+                		&&!"history".equals(moduleName)//登记变更情况，日期用中文就可以
+                		){
                 	 
                 	try {
 						value = detailDate(sdf.parse(value),reportType);
