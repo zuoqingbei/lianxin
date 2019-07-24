@@ -263,8 +263,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             System.out.println(confId + "=" + className);
             Class<?> table = Class.forName(PAKAGENAME_PRE + className);
             BaseProjectModel model = (BaseProjectModel) table.newInstance();
-           
             String targetStr = "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
+            if("credit_company_shareholder".equals(tableName)){
+            	//出资情况 要去重
+            	targetStr = "select DISTINCT sh_name,contribution,company_id,money,currency,sys_language  from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
+            }
             targetStr = this.sortStatementSpecialHandling(targetStr,className);//对语句有条件的特殊处理
             rows = model.find(targetStr);
             //使用ehcache缓存数据

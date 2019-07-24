@@ -354,6 +354,9 @@ public class BaseWord {
         if(ReportTypeCons.ROC_EN.equals(reportType)) {
         	style.setFontFamily("Times New Roman");
         }
+        if(("contribution".equals(columnName)||"money".equals(columnName))&&"capital".equals(moduleName)) {
+        	style.setFontFamily("Times New Roman");
+        }
     	//股东模块
     	if("partner".equals(moduleName)) {
     		switch(columnName) {
@@ -392,9 +395,6 @@ public class BaseWord {
             CreditReportModuleConf module = child.get(i);
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
-            if("日期".equals(temp_name)){
-                System.out.println(temp_name);
-            }
             String field_type = module.getStr("field_type");
             String word_default = module.get("word_default") != null ? module.get("word_default") : "";
             if ("操作".equals(temp_name) || "Operation".equals(temp_name) || "Summary".equals(temp_name)) {
@@ -778,7 +778,7 @@ public class BaseWord {
                             String[] _qx = value.split("至");
                             if (_qx.length > 1) {
                                 if (ReportTypeCons.ROC_EN.equals(reportType)) {
-                                    value = DateUtils.getYmdHmsssEn(_qx[0]) + DateUtils.getYmdHmsssEn(_qx[1]);
+                                    value = DateUtils.getYmdHmsssEn(_qx[0])+" to " + DateUtils.getYmdHmsssEn(_qx[1]);
                                 } else {
                                     value = DateUtils.getYmdHmsssZh(_qx[0]) +" 至 "+ DateUtils.getYmdHmsssZh(_qx[1]);
                                 }

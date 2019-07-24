@@ -218,6 +218,9 @@ public class BaseBusiCrdt extends BaseWord{
                 String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
                 String columnName = conf.getStr("column_name");
+                if("business_date_end".equals(columnName)){
+                	System.out.println(111);
+                }
                 if (s == null || "".equals(s)) {
                     continue;
                 }
