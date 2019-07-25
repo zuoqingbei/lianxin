@@ -268,7 +268,7 @@ public class FinanceService {
 					 if("营业总额/资产总额".equals(m.getStr("item_name"))){
 						 System.out.println(m.getStr("begin_date_value"));
 						//System.out.println( m.save());
-						System.out.println(m.get("id"));
+						//System.out.println(m.get("id"));
 					 }
 				 }
 				 System.out.println( modelList.size());
