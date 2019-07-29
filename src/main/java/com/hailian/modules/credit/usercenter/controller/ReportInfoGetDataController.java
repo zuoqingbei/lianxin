@@ -127,8 +127,25 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			int a = 0;
 			a++;
 		}
+        String jsonStr = getPara("dataJson");
+
 		try {
-			this.infoEntry(getPara("dataJson"), PAKAGENAME_PRE + getPara("className"), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"),isCompanyMainTable(),null);
+            if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
+                throw new IllegalAccessException();
+            }
+            List<Map<Object, Object>> entrys = parseJsonArray(jsonStr);
+            /**
+             * 涉及到商业报告中的行业代码industry_code字段处理问题
+             */
+            if("CreditCompanyIndustryInfo".equals(getPara("className"))){
+                String companyId = String.valueOf(entrys.get(0).get("company_id"));
+                if(StringUtils.isNotEmpty(companyId)&&entrys!=null&&entrys.size()!=0){
+                    String industryCode = String.valueOf(entrys.get(0).get("industry_code"));
+                    CreditCompanyInfo cci = new CreditCompanyInfo();
+                    cci.set("id",companyId).set("industry_code",industryCode).update();
+                }
+            }
+			this.infoEntry(entrys, PAKAGENAME_PRE + getPara("className"), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"),isCompanyMainTable(),null);
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
@@ -263,8 +280,11 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             System.out.println(confId + "=" + className);
             Class<?> table = Class.forName(PAKAGENAME_PRE + className);
             BaseProjectModel model = (BaseProjectModel) table.newInstance();
-           
             String targetStr = "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
+            if("credit_company_shareholder".equals(tableName)){
+            	//出资情况 要去重
+            	targetStr = "select DISTINCT sh_name,contribution,company_id,money,currency,sys_language  from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
+            }
             targetStr = this.sortStatementSpecialHandling(targetStr,className);//对语句有条件的特殊处理
             rows = model.find(targetStr);
             //使用ehcache缓存数据

@@ -426,7 +426,7 @@ let InitObjTrans = {
     	});
 		function columns(){
     		let arr = []
-    		contents.forEach((ele,index)=>{
+    		contents.forEach((ele,index)=>{ 
     			_this.tableColumnNameArrDs.push(ele.column_name);
     			if(ele.temp_name !== '删除'){
     				arr.push({

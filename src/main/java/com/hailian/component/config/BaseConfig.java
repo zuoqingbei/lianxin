@@ -91,6 +91,7 @@ import com.jfinal.template.Engine;
 /**
  * API引导式配置
  */
+//  这是备份的项目的启动文件
 public class BaseConfig extends JFinalConfig {
 
 	private static final String CONFIG_WEB_ROOT = "{webroot}";

@@ -173,12 +173,12 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public <T> List<BaseProjectModel> infoEntry(String jsonStr,String className,String sysLanguage,boolean isMainTable,String reportType) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+	public <T> List<BaseProjectModel> infoEntry(List<Map<Object, Object>> entrys,String className,String sysLanguage,boolean isMainTable,String reportType) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
 			Integer userId = 8;//getSessionUser().getUserid();
 			String now = getNow();
 			//实体是否存在id
-			boolean exitsId = true; 
-			if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
+			boolean exitsId = true;
+			if(entrys==null||entrys.size()==0){
 				return new ArrayList<>();
 			}
 			List<BaseProjectModel> list = new ArrayList<BaseProjectModel>();
@@ -188,7 +188,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			BaseProjectModel model = null;
 			System.out.println("\n\t\t\t\ttable:"+className.substring(className.lastIndexOf(".")+1)+"\n");
 			
-			List<Map<Object, Object>> entrys = parseJsonArray(jsonStr);
+
 			
 			if(isMainTable) {
 				if("".equals(entrys.get(0).get("company_id"))||entrys.get(0).get("company_id")==null){
@@ -232,9 +232,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 				}
 				list.add(model);
 			}
-			
-			
-			
+
 			//批量执行
 			if(!exitsId){
                 try {
