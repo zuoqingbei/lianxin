@@ -744,7 +744,8 @@ let InitObj = {
 		 * getSource:财务getSource
 		 */
 		let _this = this
-		$(document).on("change",'.fileInp',(e)=>{
+		$(".fileInp").unbind();
+		$(document).unbind().on("change",'.fileInp',(e)=>{
 			//$(e.target).parents(".aa-btn").addClass("loading")
 			$("body").mLoading("show");//显示loading组件
 			let file = $(e.target).prop('files')[0];

@@ -138,7 +138,6 @@ public class Roc102 extends BaseWord{
             }
         }}
 
-        map.put("company", companyInfo.getStr("name_en"));
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", detailDate(new Date(), reportType)); 
@@ -171,6 +170,9 @@ public class Roc102 extends BaseWord{
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
             String tableId = crmc.getInt("table_id")+"";
+            if("1138".equals(confId)){
+            	System.out.println(1);
+            }
             //无url的跳过取数
             if (StringUtils.isEmpty(source)) {
                 continue;
@@ -222,6 +224,9 @@ public class Roc102 extends BaseWord{
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
+                if("credit_company_shareholder".equals(tableName)){
+                	System.out.println(1);
+                }
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
@@ -240,6 +245,7 @@ public class Roc102 extends BaseWord{
                                 temp = sysDict.get("detail_name");
                             }
                         }
+                        //剔除重复数据
                     }
                     table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,temp,companyId);
                 }else if("z".equals(tableType)){
