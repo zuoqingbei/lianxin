@@ -321,6 +321,6 @@ public class BaseConfig extends JFinalConfig {
 	}
 	public static void main(String[] args) {
     	PathKit.setWebRootPath("src/main/webapp/");
-		JFinal.start("src/main/webapp", 8080, "/", 5);
+		JFinal.start("src/main/webapp", 8080, "/");
     }
 }

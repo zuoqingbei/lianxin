@@ -27,6 +27,7 @@ import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.StrUtils;
+import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
 
@@ -678,6 +679,13 @@ public class BaseWord {
                     style.setAlign(STJc.LEFT);
                 }else if("contribution".equals(column)||"money".equals(column)){
                     style.setAlign(STJc.RIGHT);
+                }
+                if ("date".equals(column)||
+                		"change_items".equals(column)||
+                		"change_font".equals(column)||
+                		"change_back".equals(column)
+                		){
+                	temp_name=TransApi.Trans(temp_name, "");
                 }
             } else if (ReportTypeCons.ROC_HY.equals(reportType)) {
                 //四号字体

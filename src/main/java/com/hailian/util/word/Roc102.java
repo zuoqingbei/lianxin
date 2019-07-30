@@ -125,7 +125,7 @@ public class Roc102 extends BaseWord{
         //订单公司名称和报告公司名称相同，则显示“與註冊記錄同”
         if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
            List<Object> tempList =
-            		Db.query("select name from credit_company_info where order_id=? and sys_language=613 and del_flag=0 ",orderId);
+            		Db.query("select name from credit_company_info where order_id=? and sys_language=612 and del_flag=0 ",orderId);
            String translatedName = "";
            if(tempList!=null&&tempList.size()>0) {
         	     translatedName = tempList.get(0)+"";
@@ -170,9 +170,6 @@ public class Roc102 extends BaseWord{
             String key = crmc.getStr("word_key");
             String tableType = crmc.getStr("word_table_type");
             String tableId = crmc.getInt("table_id")+"";
-            if("1138".equals(confId)){
-            	System.out.println(1);
-            }
             //无url的跳过取数
             if (StringUtils.isEmpty(source)) {
                 continue;
@@ -224,7 +221,7 @@ public class Roc102 extends BaseWord{
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
-                if("credit_company_shareholder".equals(tableName)){
+                if("credit_company_his".equals(tableName)){
                 	System.out.println(1);
                 }
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
