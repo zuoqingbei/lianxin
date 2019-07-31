@@ -221,7 +221,8 @@ public class Roc102 extends BaseWord{
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
-                if("credit_company_his".equals(tableName)){
+                if("credit_company_sale_info".equals(tableName)||
+                		"credit_company_purchase_info".equals(tableName)){
                 	System.out.println(1);
                 }
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
