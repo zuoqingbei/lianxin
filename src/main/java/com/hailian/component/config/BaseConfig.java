@@ -91,6 +91,7 @@ import com.jfinal.template.Engine;
 /**
  * API引导式配置
  */
+//  这是备份的项目的启动文件
 public class BaseConfig extends JFinalConfig {
 
 	private static final String CONFIG_WEB_ROOT = "{webroot}";
@@ -320,6 +321,6 @@ public class BaseConfig extends JFinalConfig {
 	}
 	public static void main(String[] args) {
     	PathKit.setWebRootPath("src/main/webapp/");
-		JFinal.start("src/main/webapp", 8080, "/", 5);
+		JFinal.start("src/main/webapp", 8080, "/");
     }
 }

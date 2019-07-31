@@ -9,6 +9,7 @@ import com.deepoove.poi.data.style.TableStyle;
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.ordermanager.model.*;
+import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
@@ -32,6 +33,8 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -199,6 +202,9 @@ public class BaseBusiCrdt extends BaseWord{
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
+                if("credit_company_judgmentdoc".equals(tableName)){
+                	System.out.println(1);
+                }
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
@@ -218,6 +224,7 @@ public class BaseBusiCrdt extends BaseWord{
                 String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
                 String columnName = conf.getStr("column_name");
+                String fieldType = conf.get("field_type");
                 if("business_date_end".equals(columnName)){
                 	System.out.println(111);
                 }
@@ -234,7 +241,7 @@ public class BaseBusiCrdt extends BaseWord{
                 //主表
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
-                    if("396CredibilityCode".equals(word_key)){
+                    if("credit_company_subtables".equals(word_key)){
                         System.out.println("dddddd");
                     }
                     System.out.println("word_key===="+word_key);
@@ -245,7 +252,10 @@ public class BaseBusiCrdt extends BaseWord{
                             for (Object key23 : model.getAttrs().keySet()) {
                                 System.out.println(key23+"================="+model.get(key23+""));
                                 if(key23.equals(columnName)){
-                                    map.put(word_key, model.get(key23+""));
+                                	String value= model.get(key23+"")+"";
+                                	 value = getValue(reportType, sysLanguage,
+											sdf, fieldType, value);
+                                    map.put(word_key,value);
                                     continue;
                                 }
                             }
@@ -255,6 +265,9 @@ public class BaseBusiCrdt extends BaseWord{
                 } else {
                     //取word里配置的关键词
                     String word_key = conf.get("word_key") + "";
+                    if("credit_company_subtables".equals(t)){
+                    	System.out.println("dddddd");
+                    }
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         //取数据
                         List rs = report.getTableData(false, companyId, t, cn, ci, "",reportType);
@@ -263,7 +276,11 @@ public class BaseBusiCrdt extends BaseWord{
                             for (Object key23 : model.getAttrs().keySet()) {
                                 System.out.println(key23+"================="+model.get(key23+""));
                                 if(key23.equals(columnName)){
-                                    map.put(word_key, model.get(key23+""));
+                                	String value= model.get(key23+"")+"";
+                               	 value = getValue(reportType, sysLanguage,
+											sdf, fieldType, value);
+                                   map.put(word_key,value);
+                                    map.put(word_key, value);
                                     continue;
                                 }
                             }
@@ -536,6 +553,48 @@ public class BaseBusiCrdt extends BaseWord{
             sendMail(reportName,customId, fileList);
         }*/
     }
+	private static String getValue(String reportType, String sysLanguage,
+			SimpleDateFormat sdf, String fieldType, String value) {
+		//下拉选择
+		if ("select".equals(fieldType)) {
+		    value = !"".equals(value) ? ReportInfoGetDataController.dictIdToString(value, reportType, sysLanguage) : "";
+		}
+		//下拉多选
+		else if("select2".equals(fieldType)){
+		    String[] vals = value.split("\\$");
+		    String selName = "";
+		    for(String val : vals){
+		        selName += ReportInfoGetDataController.dictIdToString(val, reportType, sysLanguage) + ",";
+		    }
+		    if(selName.contains(",")) {
+		        selName = selName.substring(0, selName.length() - 1);
+		    }
+		    value = selName;
+		}
+		else if ("country".equals(fieldType)) {
+		    value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
+		}//处理千位符号
+		else if ("money".equals(fieldType)) {
+		    try {
+		        DecimalFormat df = new DecimalFormat("###,###.##");
+		        NumberFormat nf = NumberFormat.getInstance();
+		        value = df.format(nf.parse(value));
+		    } catch (ParseException e) {
+		        e.printStackTrace();
+		    }
+		}
+		//日期
+		else if("date".equals(fieldType)){
+			 
+			try {
+				value = detailDate(sdf.parse(value),reportType);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		   
+		}
+		return value;
+	}
 
     /**
      * poi-tl工具类不支持在table中插入图片

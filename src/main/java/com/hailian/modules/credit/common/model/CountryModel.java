@@ -3,14 +3,18 @@ package com.hailian.modules.credit.common.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ModelBind;
 import com.hailian.modules.credit.company.model.CompanyModel;
+import com.hailian.system.dict.DictCache;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -46,6 +50,28 @@ public class CountryModel extends BaseProjectModel<CountryModel> {
 		List<CountryModel> list = dao.find(sql.toString(), params.toArray());
 		return list;
 	}
+	 /**
+     * 将id转化为字典表中对应的字符串
+     * @param id
+     * @param sysLanguage
+     */
+    public static String getCountryById(String id,String reportType,String sysLanguage) {
+        //判断id必须是数字
+        if (id.matches("-?[0-9]+.*[0-9]*")){
+        	CountryModel cm = dao.findFirst("select t.* from credit_country t where t.id=? ", id);
+            if (cm != null) {
+                //英文
+                if ("613".equals(sysLanguage)) {
+                	 return cm.get("name_en") + "";
+                } else {
+                    return cm.get("name") + "";
+                }
+            }
+        } else {
+            System.out.println("此信息输出不影响程序往下运行，异常id=" + id);
+        }
+        return "";
+    }
 	public static List<CountryModel> getCountryByName(String name) {
 		List<Object> params = new ArrayList<Object>();
 		StringBuffer sql = new StringBuffer();

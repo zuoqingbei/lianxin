@@ -351,6 +351,8 @@ let ReportConfig = {
     					let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
     					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
     					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					
+    					//console.log("这是填报的select1，ele::",ele)
             			$.ajax({
             				type:'get',
             				url,
@@ -363,6 +365,7 @@ let ReportConfig = {
             							${data.selectStr}
             						</select>
             						</div>`
+            						 
             				}
             			})
     					break;
@@ -371,6 +374,7 @@ let ReportConfig = {
     					let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
     					ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
     					_this.selectInfoObj[ele.get_source] = ele.column_name
+    					//console.log("这是填报的select2，ele::",ele)
     					$.ajax({
     						type:'get',
     						url:url1,
@@ -1616,6 +1620,7 @@ let ReportConfig = {
     		 //点击提交按钮
     		$(".position-fixed").on("click","#commit",(e)=>{
     			InitObj.saveDsConfigInfo(_this.dsConfigAlterSource,_this.rows);
+    			console.log("_this.dsConfigAlterSource-----_this.rows",_this.dsConfigAlterSource,_this.rows)
     			 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `model.id=${_this.rows["id"]}&statusCode=294`;
 				 $.ajax({
 					 url,
@@ -1732,8 +1737,9 @@ let ReportConfig = {
     			 //点击提交按钮
     		$(".position-fixed").on("click","#commit",(e)=>{
     			 $("body").mLoading("show")
+    			 console.log("_this.cwConfigAlterSource,_this.rows",_this.cwConfigAlterSource,_this.rows)
     			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
-    			 InitObj.saveDsConfigInfo(_this.dsConfigAlterSource,_this.rows);
+    			InitObj.saveDsConfigInfo(_this.dsConfigAlterSource,_this.rows);
     			$("#commit").addClass("disabled")
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
@@ -1782,6 +1788,7 @@ let ReportConfig = {
     				 }
     			 })
     			 dataJson[0] = dataJsonObj
+    			 console.log("dataJson",dataJson)
     			 $.ajax({
     				 url,
     				 type:'post',
@@ -1801,7 +1808,6 @@ let ReportConfig = {
     								 if(data.statusCode === 1) {
     									 Public.message("success",data.message)
     									 Public.goToInfoImportPage();
-    									 
     								 }else if(data.statusCode !== 1){
     									 Public.message("error",data.message)
     								 }

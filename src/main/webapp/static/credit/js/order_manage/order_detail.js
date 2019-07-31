@@ -118,7 +118,6 @@ let OrderDetail = {
     setContent: function () {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info px-4 mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
-
         //获取将数字转换成汉字的selectInfo
         let selectInfoObj = {};
         this.data.modules.forEach((item, index) => {
@@ -133,7 +132,6 @@ let OrderDetail = {
         });
         this.selectInfo = '[' + JSON.stringify(selectInfoObj) + ']';
         // console.log('~~this.selectInfo:', this.selectInfo);
-
         // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
         this.data.modules.forEach((item, index, items) => {
             let smallModuleType = item.smallModileType;
@@ -178,7 +176,7 @@ let OrderDetail = {
                                          <span data-column_name="${item.column_name}" data-select-url=${item.get_source}></span>
                                      </div>`
 							}else {
-								
+								// 对行业情况下面的行业代码和行业名称进行dom结构布局
 								formHtml += `
 									<div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money' ? 'moneyCol' : ''}">
 									<span>${item.temp_name}：</span>
@@ -205,6 +203,7 @@ let OrderDetail = {
                             if (data.rows && data.rows.length > 0) {
                                 $wrap.find('span[data-column_name]').each(function (index, dom) {
                                     let column_name = $(this).data('column_name');
+                                    console.log("index,dom:",index,column_name,dom)
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
@@ -216,8 +215,10 @@ let OrderDetail = {
 												url:BASE_PATH + `credit/front/ReportGetData/` + url,
 												type:'GET',
 												success:data=>{
+													console.log("data----",data)
 													let str = data.selectStr;
-													str.split('</option>').forEach(item=>{
+													let strArr = str.split('</option>')
+													strArr.slice(0,strArr.length-1).forEach(item=>{
 														if (item.includes(val)) {
 															$(that).text(item.slice(item.search(/>/)+1));
 														}
@@ -226,6 +227,7 @@ let OrderDetail = {
 											})
 										}else {
 											$(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
+											//console.log("data.rows[0][column_name],",data.rows[0])
 										}
                                     }
                                 });
@@ -265,6 +267,7 @@ let OrderDetail = {
                         if (data.rows && data.rows.length > 0) {
                             this.processNames.forEach((name, index) => {
                                 data.rows.forEach((item) => {
+                                	console.log("item+++++",item)
                                     if (processObj[name].includes(item.order_state)) {
                                         $ul.children('li').eq(index).addClass('active').children('span:eq(1)').text(item.create_oper)
                                             .next('span').text(item.create_time)
@@ -622,7 +625,7 @@ let OrderDetail = {
                         });
                         objArr.push(obj)
                     });
-                    console.log("~~~对象数组：", objArr);
+                    //console.log("~~~对象数组：", objArr);
 
                     //递归初始化
                     let [targetPosition, currPosition] = ['', ''];
@@ -656,7 +659,7 @@ let OrderDetail = {
                     }
                 }
 
-                    console.log("~~~targetObj：", JSON.stringify(targetObj, undefined, 2));
+                    //console.log("~~~targetObj：", JSON.stringify(targetObj, undefined, 2));
                     let myChart = echarts.init($("#ec04_tree")[0]);
                     myChart.setOption(option = {
                         tooltip: {
@@ -818,6 +821,7 @@ let OrderDetail = {
         $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.get_source}&company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
             $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.get_source}&ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
                 data.rows.forEach((row) => {
+                	console.log("row----",row)
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
                         let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
@@ -1045,6 +1049,7 @@ let OrderDetail = {
         }
         // 绑数
         $.post(this.getUrl(item, otherProperty), {selectInfo: this.selectInfo}, (data) => {
+        	//console.log("data====:",data)
                 if (data.rows) {
                     if (data.rows.length === 0) {
                         $wrap.find('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</td></tr>`);

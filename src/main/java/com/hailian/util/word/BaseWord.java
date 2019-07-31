@@ -13,6 +13,7 @@ import com.hailian.modules.admin.file.service.UploadFileService;
 import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
@@ -27,6 +28,7 @@ import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.StrUtils;
+import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
 
@@ -221,7 +223,8 @@ public class BaseWord {
      * @param rows
      * @return
      */
-    public static MiniTableRenderData createTableS(String moduleName,String reportType,  List<CreditReportModuleConf> child,List rows,String sysLanguage,String companyId){
+    public static MiniTableRenderData createTableS(String moduleName,String reportType,  List<CreditReportModuleConf> child,
+    		List rows,String sysLanguage,String companyId){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
         Style style = new Style();
@@ -269,7 +272,26 @@ public class BaseWord {
                 value = model.get(column) != null ? model.get(column) + "" : "";
                
                 if ("select".equals(fieldType)) {
-                    value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
+                	if("国籍".equals(strs[0])||"国家".equals(strs[0])){
+                		 value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
+                	}else{
+                		value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
+                	}
+                }
+                //下拉多选
+                else if("select2".equals(fieldType)){
+                    String[] vals = value.split("\\$");
+                    String selName = "";
+                    for(String val : vals){
+                        selName += ReportInfoGetDataController.dictIdToString(val, reportType, sysLanguage) + ",";
+                    }
+                    if(selName.contains(",")) {
+                        selName = selName.substring(0, selName.length() - 1);
+                    }
+                    value = selName;
+                }
+                else if ("country".equals(fieldType)) {
+                    value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
                 }else  if("date".equals(fieldType)&&!StrUtils.isEmpty(value)){
                     try {
 						value = detailDate(sdf.parse(value),reportType);
@@ -475,6 +497,9 @@ public class BaseWord {
                     }
                     value = selName;
                 }
+                else if ("country".equals(fieldType)) {
+                    value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
+                }
                 //处理千位符号
                 else if ("money".equals(fieldType)) {
                     try {
@@ -679,6 +704,13 @@ public class BaseWord {
                 }else if("contribution".equals(column)||"money".equals(column)){
                     style.setAlign(STJc.RIGHT);
                 }
+                if ("date".equals(column)||
+                		"change_items".equals(column)||
+                		"change_font".equals(column)||
+                		"change_back".equals(column)
+                		){
+                	temp_name=TransApi.Trans(temp_name, "");
+                }
             } else if (ReportTypeCons.ROC_HY.equals(reportType)) {
                 //四号字体
                 style.setFontSize(14);
@@ -748,7 +780,24 @@ public class BaseWord {
                     }else{
                         value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType, sysLanguage) : "--";
                     }
-                }else if("date".equals(fieldType)){
+                }
+                //下拉多选
+                else if("select2".equals(fieldType)){
+                    String[] vals = value.split("\\$");
+                    String selName = "";
+                    for(String val : vals){
+                        selName += ReportInfoGetDataController.dictIdToString(val, reportType, sysLanguage) + ",";
+                    }
+                    if(selName.contains(",")) {
+                        selName = selName.substring(0, selName.length() - 1);
+                    }
+                    value = selName;
+                }
+                else if ("country".equals(fieldType)) {
+                    value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
+                }
+                else if("date".equals(fieldType)
+                		){
                     try {
                         //处理日期格式
                         if(!StringUtils.isEmpty(value)) {

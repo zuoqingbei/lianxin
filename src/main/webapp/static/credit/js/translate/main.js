@@ -36,7 +36,7 @@ let ReportConfig = {
             const $tableEn = $("#table"+item+"En");
             let contents = this.contentsArr[index]
             let contentsEn = this.contentsArrEn[index]
-           // console.log(contents,contentsEn)
+           
             let titles = this.title
             let urlTemp = titles[index].get_source;
             let conf_id = titles[index].id;
@@ -55,14 +55,17 @@ let ReportConfig = {
                     urlCH += `&${item}=${this.rows[item]}`
                 })
             }
+//          // 定义一个数据用于存放向后台传递的参数； 
             let selectInfo = []
-          //  console.log(_this.selectInfoObj,titles[index])
-            if(+_this.selectInfoObj["parent_temp"] === titles[index]["id"]) {
+            //console.log("======",titles)
+            //console.log("++++++",contents)
+            //console.log("#######",_this.selectInfoObj)
+            
+            	//if(+_this.selectInfoObj["parent_temp"] === titles[index]["id"]) {
                 //哪个表格有select，就传
-                delete _this.selectInfoObj["parent_temp"]
-                selectInfo.push(_this.selectInfoObj)
-            }
-
+                //delete _this.selectInfoObj["parent_temp"]
+             selectInfo.push(_this.selectInfoObj)
+               //}
             let tempRows = []
             //合计
             if(titles[index]["get_source"].includes("credit_company_shareholder")) {
@@ -73,6 +76,7 @@ let ReportConfig = {
                     url:urlCH, // 请求后台的URL（*）
                     method : 'post', // 请求方式（*）post/get
                     queryParams:function(param){
+                    	//console.log("selectInfo::",selectInfo)
                         param.selectInfo = JSON.stringify(selectInfo)
                         return param
                     },
@@ -125,6 +129,7 @@ let ReportConfig = {
                     url:urlCH, // 请求后台的URL（*）
                     method : 'post', // 请求方式（*）post/get
                     queryParams:function(param){
+                    	//console.log("selectInfo2:",selectInfo)
                         param.selectInfo = JSON.stringify(selectInfo)
                         return param
                     },
@@ -214,8 +219,11 @@ let ReportConfig = {
 
 
         })
+      
+        
 
     },
+    
     tableColumns(a,lang,tempI,tempId){
         if(!a){return}
         let _this = this
@@ -346,10 +354,11 @@ let ReportConfig = {
         ids.forEach((item,index)=>{
             let modalBody = ''
             let myIndex = index;
+          
             contents[index].forEach((ele,index)=>{
                 if(ele.temp_name === '操作' || ele.temp_name === 'Operation') {
                     return;
-                }
+                }	
 
                 if(!ele.field_type || ele.field_type === 'text') {
                     modalBody += ` <div class="form-inline justify-content-center my-3">
@@ -385,12 +394,12 @@ let ReportConfig = {
     						</div>`
                         break;
                     case 'select':
-                      //  console.log(ele)
                         if(!ele.get_source) {return}
+                        console.log("我是ele:",ele)
                         let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
                         ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
                         _this.selectInfoObj[ele.get_source] = ele.column_name
-                        _this.selectInfoObj["parent_temp"] = ele.parent_temp
+                        //_this.selectInfoObj["parent_temp"] = ele.parent_temp
                         $.ajax({
                             type:'get',
                             url,
@@ -403,6 +412,7 @@ let ReportConfig = {
             							${data.selectStr}
             						</select>
             						</div>`
+                                	 
                             }
                         })
                         break;
@@ -411,7 +421,7 @@ let ReportConfig = {
                         let url1 = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
                         ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
                         _this.selectInfoObj[ele.get_source] = ele.column_name
-                        _this.selectInfoObj["parent_temp"] = ele.parent_temp
+                        //_this.selectInfoObj["parent_temp"] = ele.parent_temp
                         $.ajax({
                             type:'get',
                             url:url1,
@@ -497,8 +507,9 @@ let ReportConfig = {
     </div>
 </div>`)
 
-
     },
+    
+   
     bindFormData(){
         /**
          * 绑定表单数据
@@ -508,7 +519,6 @@ let ReportConfig = {
         let titles = this.formTitle;
         let formIndex = this.formIndex;
         let _this = this
-//    	console.log(formIndex)
         formIndex.forEach((item,index)=>{
             let conf_id = titles[index].id;
             let getFormUrl = titles[index].get_source;
@@ -529,7 +539,6 @@ let ReportConfig = {
                 data:paramObj,
 //	    			async:false,
                 success:(data)=>{
-//	    				console.log(data)
                     temp = data
                     _this.formDataArr[index] = data.rows[0]
                     _this.formTitleArr[index] = item
@@ -537,7 +546,6 @@ let ReportConfig = {
                     let arr = Array.from($("#title"+item))
                     if(temp.rows === null){return}
                     arr.forEach((item,index)=>{
-//	    					 console.log(item)
                         if($(item).siblings(".radio-con").length !== 0) {
                             //radio类型绑数
                             if(temp.rows.length === 0){return}
@@ -550,7 +558,7 @@ let ReportConfig = {
                             return
                         }
                         if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
-                            //信用等级
+                        	//信用等级
                             if(temp.rows.length === 0){return}
                             let name =$(item).next().find("select").attr("name")
                             $(item).next().find("select").val(temp.rows[0][name])
@@ -584,6 +592,7 @@ let ReportConfig = {
                             let anotherIdArr = id.split("_")
                             anotherIdArr.pop();
                             let anotherId = anotherIdArr.join('_')
+                            	
                             $("#"+id).attr("entryid",obid)
                             if($(item).is('select')){
                                 //如果是select
@@ -591,7 +600,7 @@ let ReportConfig = {
                             }else {
                                 if($("#"+id).hasClass("money-checked")){
                                     //如果是金融
-                                    if(obj[anotherId]){
+                                    if(obj[anotherId]){ 
                                         $("#"+id).val(Number(obj[anotherId].replace(/,/g,'')).toLocaleString('en-US'))
                                     }
                                 }else {
@@ -870,6 +879,7 @@ let ReportConfig = {
             ds_cw_title.forEach((item,index)=>{
                 //初始化大数财务模块
                 let this_content = ds_cw_contents[index];
+                console.log("this_content---->",this_content)
                 let moneySource = ds_cw_contents[0][0].get_source;
                 console.assert(moneySource,ds_cw_contents)
                 let moneyStr = ''
@@ -1007,6 +1017,7 @@ let ReportConfig = {
                         options = data.selectStr
                     }
                 })
+                // 这是拼接 <盈利能力>,<周转能力>,<融资能力>,<目标公司的总体财务状况>,这四个字段具体内容的模板字符串
                 cw_bottom_html +=`<div class="bottom-html"><div class="cw-bottom p-4">
     								<label class="control-label">${this_content[10].temp_name}</label>
     								<select disabled="disabled" class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options}</select>
@@ -1014,19 +1025,19 @@ let ReportConfig = {
     							 </div>
     							 <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[12].temp_name}</label>
-    								<input disabled="disabled" class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}" />
+    								<select disabled="disabled" class="form-control my-3 ${this_content[12].column_name}" id="${this_content[12].column_name}cw" name="${this_content[12].column_name}">${options}</select>
     								<textarea disabled="disabled" class="form-control ${this_content[13].column_name}" id="${this_content[13].column_name}cw" name="${this_content[13].column_name}" placeholder="${this_content[13].place_hold}"></textarea>
     							 </div>
     							  <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[14].temp_name}</label>
-    								<input disabled="disabled" class="form-control my-3 ${this_content[14].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}" />
+                					<select disabled="disabled" class="form-control my-3 ${this_content[10].column_name}" id="${this_content[14].column_name}cw" name="${this_content[14].column_name}">${options}</select>
     								<textarea disabled="disabled" class="form-control ${this_content[15].column_name}" id="${this_content[15].column_name}cw" name="${this_content[15].column_name}" placeholder="${this_content[15].place_hold}"></textarea>
     							 </div>
     							 <div class="cw-bottom p-4">
     								<label class="control-label">${this_content[16].temp_name}</label>
-    								<input disabled="disabled" class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" />
-    								<textarea disabled="disabled" class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
+    								<select disabled="disabled" class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}">${options}</select>
     							 </div></div>`
+//                	 
             }else {
                 let addtext = cw_title[1].place_hold
                 let conf_id = cw_title[0].id
@@ -1166,7 +1177,6 @@ let ReportConfig = {
             url:BASE_PATH + "credit/front/getmodule/list",
             data:{id,reportType,istranslate,type},
             success:(data)=>{
-                //console.log("~~data:",data);
                 setTimeout(()=>{
                     _this.initmodal();
                     InitObjTrans.addressInit();
@@ -1367,12 +1377,15 @@ let ReportConfig = {
                                         case 'select':
                                             if(item.get_source === null){return}
                                             let url = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
+                                            item.get_source = item.get_source.replace(new RegExp(/&/g),"$")
+                                            _this.selectInfoObj[item.get_source] = item.column_name
                                             $.ajax({
                                                 type:'get',
                                                 url,
                                                 async:false,
                                                 dataType:'json',
                                                 success:(data)=>{
+                                                	//console.log("select2>>data<<:",data)
                                                     formGroup += `<div class="form-group">
 										            					<label for="" class="mb-2">${item.temp_name}</label>
 										            					<select disabled="disabled" name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
@@ -1386,6 +1399,8 @@ let ReportConfig = {
                                         case 'select3':
                                             if(item.get_source === null){return}
                                             let urls = BASE_PATH + 'credit/front/ReportGetData/' + item.get_source
+                                            item.get_source = item.get_source.replace(new RegExp(/&/g),"$")
+                                            _this.selectInfoObj[item.get_source] = item.column_name
                                             $.ajax({
                                                 type:'get',
                                                 url:urls,
@@ -1706,6 +1721,7 @@ let ReportConfig = {
                                         case 'select':
                                             if(item_en.get_source === null){return}
                                             let url = BASE_PATH + 'credit/front/ReportGetData/' + item_en.get_source
+                                            
                                             $.ajax({
                                                 type:'get',
                                                 url,
@@ -1725,6 +1741,7 @@ let ReportConfig = {
                                         case 'select3':
                                             if(item_en.get_source === null){return}
                                             let urls = BASE_PATH + 'credit/front/ReportGetData/' + item_en.get_source
+                                            
                                             $.ajax({
                                                 type:'get',
                                                 url:urls,
@@ -1814,7 +1831,6 @@ let ReportConfig = {
                             break;
                         case '5':
                             //固定底部的按钮组
-                            console.log(item_en)
                             item_en.title.column_name === 'save'?_this.saveStatusUrl = item_en.title.alter_source:_this.submitStatusUrl = item_en.title.alter_source
                             let className = item_en.title.column_name === 'save'?'btn btn-default ml-4':'btn btn-primary ml-4'
                             if(item_en.title.column_name === 'save'){
@@ -2007,7 +2023,6 @@ let ReportConfig = {
                     if($("#"+id).hasClass("select2")) {
                         let name = $('#'+id).attr("name")
                         let val = $('#'+id).val()
-                        console.log(val)
                         val = val.join("$")
                         dataJsonObj[name] = val
                         return
@@ -2095,7 +2110,6 @@ let ReportConfig = {
         let allTableData = [] //存放翻译过所有表格数据
        
         tableTitlesEn.forEach((item,index)=>{
-            console.log('aaaa',item.alter_source.split('?')[1],item)
             let tableTitleSourceClassName = '' 
             if(item.alter_source.split('?')[1]){
                 tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
@@ -2106,10 +2120,11 @@ let ReportConfig = {
             let dataJson = []
             //点击翻译按钮
             $(".position-fixed").on("click","#translateBtn",(e)=>{
+            	
                 //表格翻译
                 let oneTableData = []
                 $("body").mLoading("show")
-                console.log(tableTitlesEn,index)
+//                console.log(tableTitlesEn,index)
                 if(!_this.tableDataArr[index]){return}
                 if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {$("body").mLoading("hide")}
                 _this.tableDataArr[index]['rows'].forEach((ele,i)=>{
@@ -2484,7 +2499,7 @@ let ReportConfig = {
                         contentType:'application/x-www-form-urlencoded;charset=UTF-8',
                         success:(data)=>{
                         	this.numCom++;
-                            console.log(index,this.formIndexEn.length)
+                          //  console.log(index,this.formIndexEn.length)
                             if (this.numCom === this.formIndexEn.length) {
                             	  $("body").mLoading("hide")
                             	  this.numCom = 0
@@ -2504,8 +2519,7 @@ let ReportConfig = {
                 })
             })
         },1500)
-        
-       
+         
     },
     showTranslateMadal(){
         let _this = this
