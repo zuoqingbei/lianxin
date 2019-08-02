@@ -160,6 +160,19 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 		model.update();
 	 };
 
+	public boolean checkExist(boolean isMainTable,Map<Object, Object> entrys){
+		boolean exitsId = true;
+		if(isMainTable) {
+			if("".equals(entrys.get("company_id"))||entrys.get("company_id")==null){
+				 exitsId = false;
+			}
+		}else {
+			if("".equals(entrys.get("id"))||entrys.get("id")==null){
+				 exitsId = false;
+			}
+		}
+		return exitsId;
+	}
 	/**
 	 *  把 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]的json数组分解放进model里并保存
 	 * @param jsonStr
@@ -177,11 +190,13 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			Integer userId = 8;//getSessionUser().getUserid();
 			String now = getNow();
 			//实体是否存在id
-			boolean exitsId = true;
+			//boolean exitsId = true;
 			if(entrys==null||entrys.size()==0){
 				return new ArrayList<>();
 			}
 			List<BaseProjectModel> list = new ArrayList<BaseProjectModel>();
+			List<BaseProjectModel> update = new ArrayList<BaseProjectModel>();
+			List<BaseProjectModel> insert = new ArrayList<BaseProjectModel>();
 			//反射获取Class对象
 			@SuppressWarnings("rawtypes")
 			Class entryType = entryType = Class.forName(className);
@@ -190,7 +205,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			
 
 			
-			if(isMainTable) {
+		/*	if(isMainTable) {
 				if("".equals(entrys.get(0).get("company_id"))||entrys.get(0).get("company_id")==null){
 					 exitsId = false;
 				}
@@ -199,12 +214,13 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					 exitsId = false;
 				}
 			}
-			
+			*/
 			if(entrys.size()<1){
 				return null;
 			}
 			
 			for (Map<Object, Object> entry : entrys) {
+				boolean exit=checkExist(isMainTable, entry);
 				if(isMainTable) {
 					String id = entry.get("company_id")+"";
 					
@@ -221,20 +237,71 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			    model = (BaseProjectModel) entryType.newInstance();
 			    model.set("update_by", userId);
 				model.set("update_date", now);
-				
-				if(!exitsId){
+				if(!exit){
 					model.set("create_by", userId);
 					model.set("create_date", now);
 				}
+				
 				Map b = new HashMap<>();
 				for (Object key : entry.keySet()) {
-					model.set((""+key).trim(), (""+(entry.get(key))).trim());
+					if("com.hailian.modules.admin.ordermanager.model.CreditCompanyHis".equals(className)){
+						if(!"company_type".equals(key.toString())&&
+								!"currency".equals(key.toString())&&
+								!"roc_registration_status".equals(key.toString())&&
+								!"register_code_type".equals(key.toString())&&
+								!"year_result".equals(key.toString())&&
+								!"capital_type".equals(key.toString()))
+						model.set((""+key).trim(), (""+(entry.get(key))).trim());
+					}else if("com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder".equals(className)){
+						if(!"company_type".equals(key.toString())&&
+								!"currency".equals(key.toString())&&
+								!"roc_registration_status".equals(key.toString())&&
+								!"register_code_type".equals(key.toString())&&
+								!"year_result".equals(key.toString())&&
+								!"capital_type".equals(key.toString()))
+						model.set((""+key).trim(), (""+(entry.get(key))).trim());
+					}else{
+						model.set((""+key).trim(), (""+(entry.get(key))).trim());
+					}
+				}
+				if(!exit){
+					insert.add(model);
+				}else{
+					update.add(model);
 				}
 				list.add(model);
 			}
-
+			//新增
+			if(insert.size()>0){
+				 try {
+	                	
+	                    Db.batchSave(insert, insert.size());
+	                }catch (Exception e){
+	                    e.printStackTrace();
+	                    if(e.getMessage().contains("Duplicate")){
+	                        if(!isMainTable) {
+	                            for (BaseProjectModel m : insert) {
+	                                List<BaseProjectModel> ms = m.findByWhere(" where del_flag=0 and company_id=?", entrys.get(0).get("company_id"));
+	                                if (ms.size() > 0) {
+	                                    m.set("id", ms.get(0).getInt("id"));
+	                                }
+	                            }
+	                            Db.batchUpdate(insert, insert.size());
+	                        }
+	                    }
+	                }
+			}
+			if(update.size()>0){
+				 //子表将company_id移除掉
+                if(!isMainTable) {
+                    for (BaseProjectModel m : update) {
+                        m.remove("company_id");
+                    }
+                }
+                Db.batchUpdate(update, update.size());
+			}
 			//批量执行
-			if(!exitsId){
+			/*if(!exitsId){
                 try {
                 	
                     Db.batchSave(list, list.size());
@@ -260,7 +327,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
                     }
                 }
                 Db.batchUpdate(list, list.size());
-            }
+            }*/
 			return list;
 		}
 	/**

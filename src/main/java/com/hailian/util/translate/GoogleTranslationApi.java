@@ -13,7 +13,7 @@ public class GoogleTranslationApi {
 	    private static int i = 0;
 	    private static Querier<GoogleTranslatorHtml> querierTrans = null;
 	    public static void main(String[] args) {
-	         String result = translateCht("我是测试");
+	         String result = translateCht("出资者/股东");
 	         System.out.println(result);
 	    }
 	    public static String translateEnglish(String text){

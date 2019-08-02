@@ -48,6 +48,9 @@ public class ReportTranslateController extends BaseProjectController {
 		String targetlanguage=getPara("targetlanguage");//目标语言
 		String reporttype=getPara("reportType");//报告类型
 		String className = getPara("className");//模块的key
+		if("CreditCompanyShareholder".equals(className)){
+			System.out.println(1);
+		}
 		JSONObject jsonObject = JSONObject.fromObject(json);
 		try {
 			if(StringUtils.isBlank(targetlanguage)){
