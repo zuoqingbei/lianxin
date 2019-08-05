@@ -283,7 +283,7 @@
         <dependency>
             <groupId>com.deepoove</groupId>
             <artifactId>poi-tl</artifactId>
-            <version>1.4.2</version>
+            <version>1.5.0</version>
         </dependency>
         <!--用于生成图片  -->
         <dependency>

@@ -709,13 +709,15 @@ public class HomeController extends BaseProjectController {
 			company.set("sys_language", "612");
 			company.remove("id").save();
 			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
-			if(infoLanguage.equals("613")) {common.set("sys_language", "613");common.remove("id").save(); companInfoId = common.get("id");}
+			common.set("sys_language", "613");common.remove("id").save();
+			if(infoLanguage.equals("613")) { companInfoId = common.get("id");}
 			if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();companInfoId = common.get("id");}
 		}else if("217".equals(language)){
 			company.set("sys_language", "614");
 			company.remove("id").save();
 			if(infoLanguage.equals("614")) { companInfoId = company.get("id");}
-			if(infoLanguage.equals("613")){common.set("sys_language", "613");common.remove("id").save();companInfoId = common.get("id");}
+			common.set("sys_language", "613");common.remove("id").save();
+			if(infoLanguage.equals("613")){companInfoId = common.get("id");}
 			if(infoLanguage.equals("612")) { common.set("sys_language", "612"); common.remove("id").save();companInfoId = common.get("id");}
 		}else if("213".equals(language)){
 			company.set("sys_language", "612");
