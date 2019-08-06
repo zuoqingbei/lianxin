@@ -1,7 +1,6 @@
 let OrderDetail = {
     init: function () {
         this.row = JSON.parse(localStorage.getItem("row"));
-        console.log('~~row：', this.row);
         this.isQuality = !!this.row.quality_type;//是否质检页面
         this.quality_deal = ''; //订单处理阶段 0-完成，1-退回/修改
         this.qualityOpinionId = '';
@@ -101,7 +100,6 @@ let OrderDetail = {
         let type = this.row.quality_type ? 3 : 2;// 质检页面type传'',详情页面type传0
         $.get(`${this.BASE_PATH}getmodule/list/`, {id, reportType, type}, (data) => {
             setTimeout(() => {
-                console.log('~~~详情data.modules：', data.modules);
                 if (!data.defaultModule) {
                     console.error(`--本页面接口故障：
                         ${this.BASE_PATH}getmodule/detail/?id=${id}&reportType=${reportType}&type=0`);
@@ -203,7 +201,6 @@ let OrderDetail = {
                             if (data.rows && data.rows.length > 0) {
                                 $wrap.find('span[data-column_name]').each(function (index, dom) {
                                     let column_name = $(this).data('column_name');
-                                    console.log("index,dom:",index,column_name,dom)
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
@@ -215,7 +212,6 @@ let OrderDetail = {
 												url:BASE_PATH + `credit/front/ReportGetData/` + url,
 												type:'GET',
 												success:data=>{
-													console.log("data----",data)
 													let str = data.selectStr;
 													let strArr = str.split('</option>')
 													strArr.slice(0,strArr.length-1).forEach(item=>{
@@ -267,7 +263,6 @@ let OrderDetail = {
                         if (data.rows && data.rows.length > 0) {
                             this.processNames.forEach((name, index) => {
                                 data.rows.forEach((item) => {
-                                	console.log("item+++++",item)
                                     if (processObj[name].includes(item.order_state)) {
                                         $ul.children('li').eq(index).addClass('active').children('span:eq(1)').text(item.create_oper)
                                             .next('span').text(item.create_time)
@@ -801,7 +796,6 @@ let OrderDetail = {
         if (!type9MulText.contents) {
             return
         }
-        console.log('~~type9MulText.contents',type9MulText.contents);
         type9MulText.contents.forEach(function (content, index) {// 多行文本框
             if (index < 10) {
                 return
@@ -821,7 +815,6 @@ let OrderDetail = {
         $.get(BASE_PATH + `credit/front/ReportGetData/${type9MulText.title.get_source}&company_id=${this.row.company_id}&report_type=${this.row.report_type}`, (type9MulTextData) => {
             $.get(BASE_PATH + `credit/front/ReportGetData/${type10Items.title.get_source}&ficConf_id=${type9MulTextData.rows[0].id}&report_type=${this.row.report_type}`, (data) => {
                 data.rows.forEach((row) => {
-                	console.log("row----",row)
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
                         let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
@@ -995,7 +988,7 @@ let OrderDetail = {
 			}
     	})
         $("#orderNum").text(this.row.num);
-        $("#status").text(this.row.statusName);
+        $("#status_js").html(this.row.statuName);
     },
     initProcess() {
         let $li = $(`<li>

@@ -201,7 +201,7 @@ public class TransApi {
     }
 	
 	public static void main(String[] args) {
-		String trans = Trans("山东省青岛市高新区汇智桥路151号中科研发城2号楼5层13室","cht");
+		String trans = Trans("辛玲利","cht");
 		System.out.println(trans);
 		String transTOEn = Trans("山东省青岛市高新区汇智桥路151号中科研发城2号楼5层13室","en");
 		System.out.println(transTOEn);

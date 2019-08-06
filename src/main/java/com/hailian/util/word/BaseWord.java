@@ -806,6 +806,7 @@ public class BaseWord {
                                 value = sdf_en_hy.format(date);
                             } else {
                                 value = sdf_zh.format(date);
+                                //value=TransApi.Trans(value, "cht");
                             }
                         }
                     }catch (ParseException e){

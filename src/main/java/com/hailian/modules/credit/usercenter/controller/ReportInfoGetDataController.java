@@ -123,7 +123,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 2018/11/8 lzg 修改或者新增bootStrapTable式的数据
 	 */
 	public void alterBootStrapTable() {
-		if("CreditCompanySubtables".equals(getPara("className"))) {
+		if("CreditCompanyInfo".equals(getPara("className"))) {
 			int a = 0;
 			a++;
 		}
@@ -274,19 +274,49 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             sqlSuf2 = sqlSuf2.replace("company_id", "id");
             sqlSuf = new StringBuffer(sqlSuf2);
         }
-        List rows = null;
+        List<BaseProjectModel> rows = null;
         try {
         	
             System.out.println(confId + "=" + className);
             Class<?> table = Class.forName(PAKAGENAME_PRE + className);
             BaseProjectModel model = (BaseProjectModel) table.newInstance();
             String targetStr = "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
-            if("credit_company_shareholder".equals(tableName)){
+           /* if("credit_company_shareholder".equals(tableName)){
             	//出资情况 要去重
             	targetStr = "select DISTINCT sh_name,contribution,company_id,money,currency,sys_language  from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
-            }
+            }*/
             targetStr = this.sortStatementSpecialHandling(targetStr,className);//对语句有条件的特殊处理
             rows = model.find(targetStr);
+            if(StringUtils.isNotBlank(companyId)&&"credit_company_info".equals(tableName)&&"CreditCompanyInfo".equals(className)){
+            	 CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);
+            	  if(info!=null){
+                 	 CreditOrderInfo order=CreditOrderInfo.dao.getOrder(info.getInt("order_id"),null);
+                 	 if(order!=null){
+                 		/*for (BaseProjectModel r : rows) {
+                 			 r.put("custom_id", order.get("custom_id"));
+                 			 r.put("area", order.get("continentName"));
+                 			 r.put("name", order.get("customName"));
+                 			r.put("receiver_date", order.get("receiver_date"));
+                 			r.put("reportLanguage", order.get("reportLanguage"));
+                 			r.put("reportType", order.get("reportType"));
+                 			r.put("name_en", order.get("englishName"));
+                 			r.put("country", order.get("countryName"));
+                 			r.put("telphone", order.get("telphone"));
+                 			r.put("speed", order.get("reportSpeed"));
+                 			r.put("email", order.get("email"));
+                 			r.put("reference_num", order.get("reference_num"));
+                 			r.put("address", order.get("address"));
+                 			r.put("contacts", order.get("contacts"));
+                 			r.put("fax", order.get("fax"));
+                 			r.put("create_date", order.get("create_date"));
+                 			r.put("end_date", order.get("end_date"));
+                 			r.put("remarks", order.get("remarks"));
+                 			r.put("company_en_name", order.get("right_company_name_en"));
+                 			
+                 		 }*/
+                 	 }
+                  }
+            }
             //使用ehcache缓存数据
             //System.out.println(tableName + sqlSuf);
             //rows = model.findByCache("company", tableName + sqlSuf, "select * from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ");
