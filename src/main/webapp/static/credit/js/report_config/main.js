@@ -554,8 +554,15 @@ let ReportConfig = {
 					 })
 					 
 					 //年检年度默认2012
+					 //2012年以后成立的公司年度为空结果默认为 未作年检（新成立）就行
 			    	if(!$("#year_1").val()) {
-			    		$("#year_1").val("未作年检（新成立）")
+			    		$("#year_1").val("未作年检（新成立）");
+			    		var clsj=$("#establishment_date_1").val();
+			    		if(clsj!=null&&clsj!=""){
+			    			if(parseInt(clsj.substring(0,4))<=2012){
+			    				$("#year_1").val("");
+			    			}
+			    		}
 			    	}
 				 }
 			 })
