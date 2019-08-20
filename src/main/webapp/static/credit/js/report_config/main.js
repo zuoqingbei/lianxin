@@ -556,14 +556,37 @@ let ReportConfig = {
 					 //年检年度默认2012
 					 //2012年以后成立的公司年度为空结果默认为 未作年检（新成立）就行
 			    	if(!$("#year_1").val()) {
-			    		$("#year_1").val("未作年检（新成立）");
+			    		$("#year_1").val("");
 			    		var clsj=$("#establishment_date_1").val();
 			    		if(clsj!=null&&clsj!=""){
-			    			if(parseInt(clsj.substring(0,4))<=2012){
-			    				$("#year_1").val("");
+			    			if(parseInt(clsj.substring(0,4))>2012){
+			    				var numbers = $("#year_result_1").find("option"); //获取select下拉框的所有值
+			    				for (var j = 1; j < numbers.length; j++) {
+			    					$(numbers[j]).removeAttr("selected");
+			    					//console.log($(numbers[j]).val(),($(numbers[j]).val() == '687'))
+				    				if ($(numbers[j]).val() == '687') {
+				    					//$(numbers[j]).attr("selected", "selected");
+				    					$("#year_result_1 option[value='687']").prop("selected","selected");//两种方法效果一样
+				    				}
+			    				} 
+			    			}else{
+			    				$("#year_1").val("2012");
+			    				var numbers = $("#year_result_1").find("option"); //获取select下拉框的所有值
+			    				for (var j = 1; j < numbers.length; j++) {
+			    					$(numbers[j]).removeAttr("selected");
+			    					//console.log($(numbers[j]).val(),($(numbers[j]).val() == '687'))
+				    				if ($(numbers[j]).val() == '685') {
+				    					//$(numbers[j]).attr("selected", "selected");
+				    					$("#year_result_1 option[value='685']").prop("selected","selected");//两种方法效果一样
+				    				}
+			    				} 
 			    			}
 			    		}
 			    	}
+					 
+					 if(!$("#transaction_payment").val()) {
+				    		$("#transaction_payment").val("目标公司未提供供应商名称，目前无法获取此信息。（SC did not provide any name of trade/service suppliers and we have no other sources to conduct the enquiry at present.  ）");
+				    	}
 				 }
 			 })
 	    	

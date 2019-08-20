@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.commons.collections.map.HashedMap;
 
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
+import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.util.StrUtils;
 import com.hailian.util.cache.Cache;
@@ -82,8 +83,12 @@ public class DictCache {
 		cache.add("map", dictMap);
 		cache.add("financialDictMap", FinancialDictMap);
 		cache.add("sonSectorCodeList", sonSectorCodeList);
+		List<TranslateModel> translateDictList = TranslateModel.dao.refreshDict();
+		cache.add("translateDictList", translateDictList);
 	}
-
+	public static List<TranslateModel> getTranslateList() {
+		return cache.get("translateDictList");
+	}
 	public static Map<Integer, SysDictDetail> getCacheMap() {
 		return cache.get("map");
 	}

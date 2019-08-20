@@ -120,6 +120,11 @@ let ReportConfig = {
                             //中文表格数据加载完成，可以点翻译按钮啦
                             $("#translateBtn").removeClass("disable")
                         }
+                        $("#table3En").parent().parent().find(".fixed-table-footer").html($("#table3").parent().parent().find(".fixed-table-footer").html());
+                        $("#table3En").parent().parent().find(".fixed-table-footer")
+                        .css({"margin-right":"0px"})
+                        .css({"display":"block"});
+                        $("#table3En").parent().css({"height":"90%"});
                     }
                 });
             }else{
@@ -2133,18 +2138,30 @@ let ReportConfig = {
                     if(tableDataArrEn[index]){
                         ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
                     }
+                    var pa={targetlanguage:"",reportType:"","_random":"","className":"","dataJson":""};
                     ele["mySort"] = i
                     let url = BASE_PATH + `credit/ordertranslate/translate`;
                     if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
                         //102报告类型需要传参
+                    	pa.targetlanguage="cht";
+                    	pa.reportType=_this.rows["report_type"];
+                    	pa.className=tableTitleSourceClassName.split("=")[1];
                         url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${tableTitleSourceClassName}`
+                    }else{
+                    	 url += `?_random=${Math.random()}`
                     }
+                    pa.dataJson=JSON.stringify(ele);
                     $.ajax({
-                        url,
+                       /* url,
                         type:'post',
                         data:{
                             dataJson:JSON.stringify(ele)
-                        },
+                        },*/
+                    	 url,
+                         type:'post',
+                         contentType: "application/json", //必须有
+                         dataType: "json", //表示返回值类型，不必须
+                         data:JSON.stringify(pa),
                         success:(data)=>{
                             //index代表每个表格的索引
                             this.numCop++;
@@ -2196,6 +2213,7 @@ let ReportConfig = {
 
             $(".position-fixed").on("click","#save",(e)=>{
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
+                var pa={"dataJson":"","sys_language":"","className":""};
                 if(data.length === 0 || !Array.isArray(data)){return}
                 data.forEach((ele,i)=>{
                     delete ele["mySort"]
@@ -2236,12 +2254,15 @@ let ReportConfig = {
                         }
                     })
                 })
+                 pa.dataJson=JSON.stringify(data);
+                pa.className=url.split("*")[0].split("=")[1];
 //    			 console.log(url,data)
                 $.ajax({
-                    url:url,
-                    data:{
-                        dataJson:JSON.stringify(data)
-                    },
+                	 url:url,
+                     type:'post',
+                     contentType: "application/json", //必须有
+                     dataType: "json", //表示返回值类型，不必须
+                     data:JSON.stringify(pa),
                     type:'post',
                     success:(data)=>{
                         //console.log(data)
@@ -2252,6 +2273,7 @@ let ReportConfig = {
 
             $(".position-fixed").on("click","#commit",(e)=>{
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
+                var pa={"dataJson":"","sys_language":"","className":""};
                 if(data.length === 0 || !Array.isArray(data)){return}
                 data.forEach((ele,i)=>{
                     delete ele["mySort"]
@@ -2290,13 +2312,14 @@ let ReportConfig = {
                         }
                     })
                 })
-
+                pa.dataJson=JSON.stringify(data);
+                pa.className=url.split("*")[0].split("=")[1];
                 $.ajax({
-                    url:url,
-                    data:{
-                        dataJson:JSON.stringify(data)
-                    },
-                    type:'post',
+                	 url:url,
+                	 type:'post',
+                     contentType: "application/json", //必须有
+                     dataType: "json", //表示返回值类型，不必须
+                     data:JSON.stringify(pa),
                     success:(data)=>{
                         // console.log(data)
                     }
@@ -2336,17 +2359,25 @@ let ReportConfig = {
                 $(".position-fixed").on("click","#translateBtn",(e)=>{
                     //表单翻译
                     let url = BASE_PATH + `credit/ordertranslate/translate`;
+                    var pa={targetlanguage:"",reportType:"","_random":"","className":"","dataJson":""};
+                    pa._random=Math.random();
                     if(_this.rows["report_type"] === '12' || _this.rows["report_type"] === '14' ){
                         //102报告类型需要传参
+                    	pa.targetlanguage="cht";
+                    	pa.reportType=_this.rows["report_type"];
+                    	pa.className=formTitleSourceClassName.split("=")[1];
                         url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}`
+                    }else{
+                    	 url += `?_random=${Math.random()}`
                     }
+                    pa.dataJson=JSON.stringify(_this.formDataArr[index]);
                     //console.log(_this.formDataArr,index)
                     $.ajax({
-                        url,
-                        type:'post',
-                        data:{
-                            dataJson:JSON.stringify(_this.formDataArr[index])
-                        },
+                    	 url,
+                         type:'post',
+                         contentType: "application/json", //必须有
+                         dataType: "json", //表示返回值类型，不必须
+                         data:JSON.stringify(pa),
                         success:(data)=>{
                         	this.formNum++;
                         	//console.log(this.formTotal,this.formNum)
@@ -2421,14 +2452,16 @@ let ReportConfig = {
 
                     })
 
+                    var pa={"dataJson":"","sys_language":"","className":""};
+	                pa.className=url.split("*")[0].split("=")[1];
                     dataJson[0] = dataJsonObj
+                    pa.dataJson=JSON.stringify(dataJson);
                     $.ajax({
-                        url,
+                    	url:url,
+                        contentType: "application/json", //必须有
+                        dataType: "json", //表示返回值类型，不必须
+                        data:JSON.stringify(pa),
                         type:'post',
-                        data:{
-                            dataJson:JSON.stringify(dataJson)
-                        },
-                        contentType:'application/x-www-form-urlencoded;charset=UTF-8',
                         success:(data)=>{
                             $("body").mLoading("hide")
                             //console.log(index)
@@ -2489,14 +2522,15 @@ let ReportConfig = {
                     })
                     dataJson[0] = dataJsonObj
                      $("body").mLoading("show")
+                      var pa={"dataJson":"","sys_language":"","className":""};
+	                pa.className=url.split("*")[0].split("=")[1];
+                    pa.dataJson=JSON.stringify(dataJson);
                     $.ajax({
-                        url,
+                    	url:url,
+                        contentType: "application/json", //必须有
+                        dataType: "json", //表示返回值类型，不必须
+                        data:JSON.stringify(pa),
                         type:'post',
-                        //async:false,
-                        data:{
-                            dataJson:JSON.stringify(dataJson)
-                        },
-                        contentType:'application/x-www-form-urlencoded;charset=UTF-8',
                         success:(data)=>{
                         	this.numCom++;
                           //  console.log(index,this.formIndexEn.length)

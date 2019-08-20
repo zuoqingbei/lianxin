@@ -376,9 +376,9 @@ public class Roc102 extends BaseWord{
                         for(int j=0;j<items.length;j++) {
                             String[] item = items[j].split("-");
                             if (value.equals(item[0])) {
-                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r\n") + " ");
+                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\n") + " ");
                             } else {
-                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r\n") + " ");
+                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\n") + " ");
                             }
                         }
                         Style style = new Style();

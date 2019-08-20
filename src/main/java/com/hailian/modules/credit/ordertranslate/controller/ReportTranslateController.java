@@ -3,7 +3,6 @@ package com.hailian.modules.credit.ordertranslate.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
@@ -20,10 +18,12 @@ import org.apache.commons.lang.StringUtils;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.credit.translate.model.TranslateModel;
-import com.hailian.modules.credit.translate.service.TranslateService;
+import com.hailian.system.dict.DictCache;
 import com.hailian.util.StrUtils;
-import com.hailian.util.pinyin.SpellHelper;
 import com.hailian.util.translate.TransApi;
+import com.jfinal.aop.Before;
+import com.jfinal.ext.interceptor.POST;
+import com.jfinal.kit.HttpKit;
 
 /**
  * @Description: 翻译接口
@@ -42,13 +42,33 @@ public class ReportTranslateController extends BaseProjectController {
 	}
 	
 	
-	
 	public void translate() {
-		String json = getPara("dataJson").replace("null", "''");
-		String targetlanguage=getPara("targetlanguage");//目标语言
-		String reporttype=getPara("reportType");//报告类型
-		String className = getPara("className");//模块的key
-		if("CreditCompanyShareholder".equals(className)){
+		String postData=null;
+		try {
+			postData=HttpKit.readData(getRequest());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		String json =null;
+		String targetlanguage=null;
+		String reporttype=null;
+		String className = null;
+		if(StringUtils.isBlank(postData)){
+			 json = getPara("dataJson").replace("null", "''");
+			 targetlanguage=getPara("targetlanguage");//目标语言
+			 reporttype=getPara("reportType");//报告类型
+			 className = getPara("className");//模块的key
+			if("CreditCompanyHis".equals(className)){
+				System.out.println(1);
+			}
+		}else{
+			JSONObject p = JSONObject.fromObject(postData);
+			 json = p.getString("dataJson").replace("null", "''");
+			 targetlanguage= getPara("targetlanguage",p.getString("targetlanguage"));//目标语言
+			 reporttype=getPara("reportType", p.getString("reportType"));//报告类型
+			 className = getPara("className", p.getString("className"));//模块的key
+		}
+		if("CreditCompanyHis".equals(className)){
 			System.out.println(1);
 		}
 		JSONObject jsonObject = JSONObject.fromObject(json);
@@ -112,9 +132,10 @@ public class ReportTranslateController extends BaseProjectController {
 						}
 					}
 					
-					List<TranslateModel> translateDict = TranslateModel.dao.refreshDict();
-					
-					
+					List<TranslateModel> translateDict =DictCache.getTranslateList();
+					if(translateDict==null){
+						translateDict=TranslateModel.dao.refreshDict();
+					}
 					//翻译校正
 					if(!StrUtils.isEmpty(value,value_en)) {
 						value_en = doCheck(value,value_en,translateDict);

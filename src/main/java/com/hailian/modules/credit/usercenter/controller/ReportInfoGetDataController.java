@@ -10,6 +10,8 @@ import java.util.UUID;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONObject;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -45,6 +47,7 @@ import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
 import com.hailian.util.word.MainReport;
+import com.jfinal.kit.HttpKit;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
@@ -123,12 +126,29 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 2018/11/8 lzg 修改或者新增bootStrapTable式的数据
 	 */
 	public void alterBootStrapTable() {
-		if("CreditCompanyInfo".equals(getPara("className"))) {
+		if("CreditCompanyHis".equals(getPara("className"))) {
 			int a = 0;
 			a++;
 		}
-        String jsonStr = getPara("dataJson");
-
+		String postData=null;
+		try {
+			postData=HttpKit.readData(getRequest());
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		String jsonStr =null;
+		String targetlanguage=null;
+		String className = null;
+		if(StringUtils.isBlank(postData)){
+			jsonStr = getPara("dataJson").replace("null", "''");
+			 targetlanguage=getPara("sys_language");//目标语言
+			 className = getPara("className");//模块的key
+		}else{
+			JSONObject p = JSONObject.fromObject(postData);
+			jsonStr = p.getString("dataJson").replace("null", "''");
+			 targetlanguage=getPara("sys_language",p.getString("sys_language"));//目标语言
+			 className = getPara("className", p.getString("className"));//模块的key
+		}
 		try {
             if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
                 throw new IllegalAccessException();
@@ -137,7 +157,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             /**
              * 涉及到商业报告中的行业代码industry_code字段处理问题
              */
-            if("CreditCompanyIndustryInfo".equals(getPara("className"))){
+            if("CreditCompanyIndustryInfo".equals(className)){
                 String companyId = String.valueOf(entrys.get(0).get("company_id"));
                 if(StringUtils.isNotEmpty(companyId)&&entrys!=null&&entrys.size()!=0){
                     String industryCode = String.valueOf(entrys.get(0).get("industry_code"));
@@ -145,7 +165,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     cci.set("id",companyId).set("industry_code",industryCode).update();
                 }
             }
-			this.infoEntry(entrys, PAKAGENAME_PRE + getPara("className"), StrUtils.isEmpty(getPara("sys_language"))?SimplifiedChinese:getPara("sys_language"),isCompanyMainTable(),null);
+			this.infoEntry(entrys, PAKAGENAME_PRE + className, StrUtils.isEmpty(targetlanguage)?SimplifiedChinese:targetlanguage,isCompanyMainTable(),null);
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

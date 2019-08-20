@@ -469,7 +469,7 @@ public class BaseWord {
                             totalRow.put(column, val);
                         } else {
                             String val = totalRow.get(column);
-                            String v=totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val) ? val : "-";
+                            String v=totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val)||"合計".equals(val) ? val : "-";
                             if("合计".equals(v)){
                             	v="合計";
                             }

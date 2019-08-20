@@ -29,22 +29,33 @@ public class GoogleTranslationApi {
 	    	return detectLanguage(LANG.ZHTW, text);
 	    }
 	    public static String detectLanguage(LANG target,String text){
-	        if(StringUtils.isBlank(text)){
+	       /* if(StringUtils.isBlank(text)){
 	            return "";
 	        }
-	        if(querierTrans==null||i==20){
+	        if(querierTrans==null||i==50){
 	            querierTrans = new Querier<GoogleTranslatorHtml>();                   // 获取查询器
 	            querierTrans.attach(new GoogleTranslatorHtml());     // 向查询器中添加 Google 翻译器
 	        }
-	        if(i==20){
+	        if(i==50){
 	            try {
 	                //System.out.println("----waiting");
-	                Thread.sleep(RandomUtil.randomLong(1000,10000));
+	                Thread.sleep(RandomUtil.randomLong(500,5000));
 	                //System.out.println("----complete");
 	            } catch (InterruptedException e) {
 	                e.printStackTrace();
 	            }
 	            i=0;
+	        }
+	        querierTrans.setParams(LANG.AUTO, target, text);    // 设置参数
+	        List<String> result = querierTrans.execute();    // 执行查询并接收查询结果
+	        i++;
+	        return result.get(0);*/
+	    	if(StringUtils.isBlank(text)){
+	            return "";
+	        }
+	    	if(querierTrans==null){
+	            querierTrans = new Querier<GoogleTranslatorHtml>();                   // 获取查询器
+	            querierTrans.attach(new GoogleTranslatorHtml());     // 向查询器中添加 Google 翻译器
 	        }
 	        querierTrans.setParams(LANG.AUTO, target, text);    // 设置参数
 	        List<String> result = querierTrans.execute();    // 执行查询并接收查询结果
