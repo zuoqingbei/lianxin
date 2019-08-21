@@ -112,7 +112,7 @@ public class BaseConfig extends JFinalConfig {
 		me.setI18nDefaultLocale("zh_CN");
 		// 开启日志
 		SqlReporter.setLog(true);
-		me.setMaxPostSize(104857600*5);
+		me.setMaxPostSize(104857600*50);
 		configDirective(me);
 
 	};

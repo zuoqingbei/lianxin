@@ -310,5 +310,91 @@ public class StrUtils {
 		buf.append(text.substring(start));
 		return buf.toString();
 	}
+	public static String[] splitStr(String str, int splitLen) {  
+	    int count = str.length() / splitLen + (str.length() % splitLen == 0 ? 0 : 1);  
+	    String[] strs = new String[count];  
+	    for (int i = 0; i < count; i++) {  
+	        if (str.length() <= splitLen) {  
+	            strs[i] = str;  
+	        } else {  
+	            strs[i] = str.substring(0, splitLen);  
+	            str = str.substring(splitLen);  
+	        }  
+	    }  
+	    return strs;  
+	} 
+	public static String toJoinString(String str,int splitLen){
+		String[] splitStrings=splitStr(str, splitLen);
+		StringBuffer sb=new StringBuffer();
+		for(int x=0;x<splitStrings.length;x++){
+			System.out.println(splitStrings[x]+"\n");
+			if(x<splitStrings.length-1){
+				sb.append(splitStrings[x]+"\n");
+			}else{
+				sb.append(splitStrings[x]);
+			}
+		}
+		return sb.toString();
+	}
+	public static String bSubstring(String s,int start, int length) throws Exception
+    {
 
+        byte[] bytes = s.getBytes("Unicode");
+        int n = 0; // 表示当前的字节数
+        int i = 2+start; // 要截取的字节数，从第3个字节开始
+        for (; i < bytes.length && n < length; i++)
+        {
+            // 奇数位置，如3、5、7等，为UCS2编码中两个字节的第二个字节
+            if (i % 2 == 1)
+            {
+                n++; // 在UCS2第二个字节时n加1
+            }
+            else
+            {
+                // 当UCS2编码的第一个字节不等于0时，该UCS2字符为汉字，一个汉字算两个字节
+                if (bytes[i] != 0)
+                {
+                    n++;
+                }
+            }
+        }
+        // 如果i为奇数时，处理成偶数
+        if (i % 2 == 1)
+
+        {
+            // 该UCS2字符是汉字时，去掉这个截一半的汉字
+            if (bytes[i - 1] != 0)
+                i = i - 1;
+            // 该UCS2字符是字母或数字，则保留该字符
+            else
+                i = i + 1;
+        }
+
+        return new String(bytes, start, i, "Unicode");
+    }
+	public static int getWordCount(String s)
+    {
+        int length = 0;
+        for(int i = 0; i < s.length(); i++)
+        {
+            int ascii = Character.codePointAt(s, i);
+            if(ascii >= 0 && ascii <=255)
+                length++;
+            else
+                length += 2;
+                
+        }
+        return length;
+        
+    }
+
+	public static void main(String[] args) throws Exception {
+		String s="股東(發起人)名稱:江万花,證件(照)類型:中華人民共和國居民身份證,證件(照)號碼:****,認繳出資額:500萬,幣種:,認繳出資額折萬美元:0,認繳出資方式:貨幣,認繳出資時間:2036-10-13;【退出】";
+		toJoinString(s, 9);
+		/*System.out.println("500萬,幣種:,".length());
+		System.out.println(getWordCount(s));
+		System.out.println(s.length());
+		System.out.println(bSubstring(s,0, 16));
+		System.out.println(bSubstring(s,16, 16));*/
+	}
 }

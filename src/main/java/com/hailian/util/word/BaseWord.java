@@ -27,6 +27,7 @@ import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.hailian.util.SplitString;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
@@ -411,7 +412,6 @@ public class BaseWord {
         List<LinkedHashMap<String, String>> datas = new ArrayList<LinkedHashMap<String, String>>();
         //合计项
         LinkedHashMap<String, String> totalRow = new LinkedHashMap<String, String>();
-
         //取列名
         for (int i = 0; i < child.size(); i++) {
             CreditReportModuleConf module = child.get(i);
@@ -421,12 +421,12 @@ public class BaseWord {
             String word_default = module.get("word_default") != null ? module.get("word_default") : "";
             if ("操作".equals(temp_name) || "Operation".equals(temp_name) || "Summary".equals(temp_name)) {
             } else {
-                Map<String, String> colMap = new HashMap<>();
-                colMap.put("temp_name", temp_name);
-                colMap.put("field_type", field_type);
-                colMap.put("word_default", word_default);
-                //cols.put(column_name, temp_name + "|" + field_type);
-                cols.put(column_name, colMap);
+            	 Map<String, String> colMap = new HashMap<>();
+                 colMap.put("temp_name", temp_name);
+                 colMap.put("field_type", field_type);
+                 colMap.put("word_default", word_default);
+                 //cols.put(column_name, temp_name + "|" + field_type);
+                 cols.put(column_name, colMap);
             }
         }
         //取数据
@@ -448,6 +448,11 @@ public class BaseWord {
                 	value = model.get(column) != null ? model.get(column) + "" : "";
                 }*/
                 value = model.get(column) != null ? model.get(column) + "" : "";
+                if("变更前".equals(tempName)||"变更后".equals(tempName)){
+                	if(StringUtils.isNotBlank(value))
+                	//value=StrUtils.toJoinString(value, 10);
+                		value=SplitString.str_split(value, 9, "\n");
+                }
                 //合计项计算
                 if(hasTotal) {
                     try {
@@ -464,7 +469,11 @@ public class BaseWord {
                             totalRow.put(column, val);
                         } else {
                             String val = totalRow.get(column);
-                            totalRow.put(column, totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val) ? val : "-");
+                            String v=totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val)||"合計".equals(val) ? val : "-";
+                            if("合计".equals(v)){
+                            	v="合計";
+                            }
+                            totalRow.put(column,v);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -709,7 +718,7 @@ public class BaseWord {
                 		"change_font".equals(column)||
                 		"change_back".equals(column)
                 		){
-                	temp_name=TransApi.Trans(temp_name, "");
+                	temp_name=TransApi.Trans(temp_name, "cht");
                 }
             } else if (ReportTypeCons.ROC_HY.equals(reportType)) {
                 //四号字体
