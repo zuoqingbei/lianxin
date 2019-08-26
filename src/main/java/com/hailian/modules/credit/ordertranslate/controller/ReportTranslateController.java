@@ -86,8 +86,8 @@ public class ReportTranslateController extends BaseProjectController {
 				if(!isValidDate(value)){
 					try {
 						if(!"12".equals(reporttype)){
-							value_en = TransApi.Trans(value.replace(" ", "").replace("%", ""),"en");
-							
+							value_en = TransApi.Trans(value/*.replace(" ", "").replace("%", "")*/,"en");
+
 							/*if(!"14".equals(reporttype)){//如果是102 ROC English
 								if(isPersonalName102(key)) {
 									value_en = SpellHelper.getUpEname(value.trim());
@@ -107,7 +107,7 @@ public class ReportTranslateController extends BaseProjectController {
 					}
 					if("cht".equals(targetlanguage)){
 						try {
-							value_cht=TransApi.Trans(value.replace(" ", "").replace("%", ""),targetlanguage);
+							value_cht=TransApi.Trans(value/*.replace(" ", "").replace("%", "")*/,targetlanguage);
 							if("14".equals(reporttype)){ 
 								if("chairman".equals(key) || "vice_president".equals(key) || "board_members".equals(key) 
 										|| "supervisory_board_chairman".equals(key) || "general_manager".equals(key) || "vice_general_manager".equals(key) || "managing_partner".equals(key)

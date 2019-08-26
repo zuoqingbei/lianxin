@@ -240,7 +240,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 								!"year_result".equals(key.toString())&&
 								!"capital_type".equals(key.toString()))
 						model.set((""+key).trim(), (""+(entry.get(key))).trim());
-					}else if("com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder".equals(className)){
+					}else if("com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder".equals(className)&&!"8".equals(reportType)&&!"10".equals(reportType)){
 						if(!"company_type".equals(key.toString())&&
 								!"currency".equals(key.toString())&&
 								!"roc_registration_status".equals(key.toString())&&
