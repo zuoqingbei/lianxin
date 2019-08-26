@@ -140,6 +140,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String targetlanguage=null;
 		String className = null;
 		String isTranslate=null;
+		String reportType = null;
+        String orderId = null;
 		if(StringUtils.isBlank(postData)){
 			 jsonStr = getPara("dataJson").replace("null", "''");
 			 targetlanguage=getPara("sys_language");//目标语言
@@ -157,18 +159,21 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 throw new IllegalAccessException();
             }
             List<Map<Object, Object>> entrys = parseJsonArray(jsonStr);
+            String companyId = String.valueOf(entrys.get(0).get("company_id"));
+            orderId =  CreditCompanyInfo.dao.findFirst("select order_id from credit_company_info where id = ? ",new String[]{companyId}).get("order_id")+"";
+            reportType =  CreditOrderInfo.dao.findFirst("select report_type from credit_order_info where id = ?",new String[]{orderId}).get("report_type")+"";
             /**
              * 涉及到商业报告中的行业代码industry_code字段处理问题
              */
+            Integer A;
             if("CreditCompanyIndustryInfo".equals(className)){
-                String companyId = String.valueOf(entrys.get(0).get("company_id"));
                 if(StringUtils.isNotEmpty(companyId)&&entrys!=null&&entrys.size()!=0){
                     String industryCode = String.valueOf(entrys.get(0).get("industry_code"));
                     CreditCompanyInfo cci = new CreditCompanyInfo();
                     cci.set("id",companyId).set("industry_code",industryCode).update();
                 }
             }
-			this.infoEntry(isTranslate,entrys, PAKAGENAME_PRE + className, StrUtils.isEmpty(targetlanguage)?SimplifiedChinese:targetlanguage,isCompanyMainTable(),null);
+			this.infoEntry(isTranslate,entrys, PAKAGENAME_PRE + className, StrUtils.isEmpty(targetlanguage)?SimplifiedChinese:targetlanguage,isCompanyMainTable(),reportType);
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
