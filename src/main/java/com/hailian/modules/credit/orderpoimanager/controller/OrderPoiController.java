@@ -169,15 +169,18 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+(r)+"行，第C列信息漏填;";
 						}
+						String reportTypeId = null;
+					  String report_type = null;
 						if (row.getCell(3) != null) {
 							row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
-							String report_type = row.getCell(3).getStringCellValue();
+							 report_type = row.getCell(3).getStringCellValue();
 							List<ReportTypeModel> reportTypeByName = ReportTypeModel.dao.getReportTypeByName(report_type);
 							if(CollectionUtils.isEmpty(reportTypeByName)){
 								errornum++;
 								errormark+=errornum+".第"+(r)+"行，第D列信息填写错误;";
 							}else{
-								orderReal.set("report_type", reportTypeByName.get(0).get("id"));
+								reportTypeId = reportTypeByName.get(0).get("id")+"";
+								orderReal.set("report_type", reportTypeId);
 							}
 							order.set("report_type", report_type);
 						} else {
@@ -200,21 +203,29 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+(r)+"行，第E列信息漏填;";
 						}
-						if (row.getCell(5) != null) {
-							row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
-							String report_language=row.getCell(5).getStringCellValue();
-							List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(report_language,"language");
-							if(CollectionUtils.isEmpty(dictDetailBy)){
-								errornum++;
-								errormark+=errornum+".第"+(r)+"行，第F列信息填写错误；";
-							}else{
-								orderReal.set("report_language", dictDetailBy.get(0).get("detail_id"));
-							}
-							order.set("report_language", report_language);
-						} else {
-							errornum++;
-							errormark+=errornum+".第"+(r)+"行，第F列信息漏填;";
-						}
+
+					  if("14".equals(reportTypeId)||"12".equals(reportTypeId)){
+						  order.set("report_language", "中文繁体+英文");
+						  orderReal.set("report_language", "217");
+					  }else{
+						  if (row.getCell(5) != null) {
+							  row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
+							  String report_language=row.getCell(5).getStringCellValue();
+							  List<SysDictDetail> dictDetailBy = SysDictDetail.dao.getDictDetailBy(report_language,"language");
+							  if(CollectionUtils.isEmpty(dictDetailBy)){
+								  errornum++;
+								  errormark+=errornum+".第"+(r)+"行，第F列信息填写错误；";
+							  }else{
+								  orderReal.set("report_language", dictDetailBy.get(0).get("detail_id"));
+							  }
+							  order.set("report_language", report_language);
+
+						  } else {
+							  errornum++;
+							  errormark+=errornum+".第"+(r)+"行，第F列信息漏填;";
+						  }
+					  }
+
 						if (row.getCell(6) != null) {
 							row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
 							String name = row.getCell(6).getStringCellValue();

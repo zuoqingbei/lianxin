@@ -240,9 +240,8 @@ public class HttpTest {
 		return json;
 	}
 	public static void main(String[] args) throws Exception {
-
-
-
+		//getSubsidiaries("大连万达集团股份有限公司","1","31");
+		 searchWide("中国沈阳国际经济技术合作公司和平分公司","1","1","");
 	}
 
 	public static void getSaicUrl(){
@@ -792,4 +791,78 @@ public class HttpTest {
         }
 	}
 
+	/**
+	 * 企业对外投资
+	 * @param CompanyName
+	 * @param pageIndex
+	 * @param pageSize
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONObject getSubsidiaries(String CompanyName,String pageIndex,String pageSize) throws Exception{
+		if(StringUtils.isEmpty(pageIndex)){
+			pageIndex="1";
+		}
+		if(StringUtils.isEmpty(pageSize)){
+			pageSize="30";
+		}
+		HttpGet get = new HttpGet("http://api.qichacha.com/ECIRelationV4/SearchInvestment?key="+qichacha_key+"&keyWord="+CompanyName+"&pageSize="+pageSize+"&pageIndex="+pageIndex);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
+
+
+	/**
+	 * 模糊查询
+	 * @param CompanyName
+	 * @param pageIndex
+	 * @param pageSize
+	 * @param type
+	 * @return
+	 * @throws Exception
+	 */
+	public static JSONObject searchWide(String CompanyName,String pageIndex,String pageSize,String type) throws Exception{
+		if(StringUtils.isEmpty(pageIndex)){
+			pageIndex="1";
+		}
+		if(StringUtils.isEmpty(pageSize)){
+			pageSize="30";
+		}
+		if(StringUtils.isEmpty(type)){
+			type="default";
+		}
+		HttpGet get = new HttpGet("http://api.qichacha.com/ECIV4/SearchWide?key="+qichacha_key+"&keyWord="+CompanyName+"&pageSize="+pageSize+"&pageIndex="+pageIndex+"&type="+type);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return json;
+	}
 }

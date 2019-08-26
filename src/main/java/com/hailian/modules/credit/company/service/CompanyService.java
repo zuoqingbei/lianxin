@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.hailian.modules.admin.ordermanager.model.*;
+import com.jfinal.plugin.activerecord.Model;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -16,14 +18,6 @@ import org.apache.commons.lang.StringUtils;
 import com.alibaba.fastjson.JSON;
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectController;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyCourtannouncement;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyCourtnotice;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyHis;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyJudgmentdoc;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyManagement;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder;
 import com.hailian.modules.credit.company.model.CompanyModel;
 import com.hailian.modules.credit.companychangeitem.model.ChangeitemModel;
 import com.hailian.modules.credit.companychangeitem.service.ChangeitemService;
@@ -93,13 +87,15 @@ public class CompanyService {
 		String status;
 		try {
 			JSONObject json = HttpTest.getYjapi(companyName.trim());//获取api企业信息数据
+			JSONArray branches = null;
 			status = json.getString("Status");
 			System.out.println(status);
 			//200调用成功并查到企业相关信息
 			if("200".equals(status)){
 				flag=true;
 				JSONObject jsonResulet = json.getJSONObject("Result");
-				
+				branches = jsonResulet.getJSONArray("Branches");
+
 				for (Object object : jsonResulet.keySet()) {
 					System.err.println(object+":"+jsonResulet.get(object));
 				}
@@ -160,8 +156,9 @@ public class CompanyService {
 					principalType = 639;
 				}
 				companyinfoModel.set("principal_type", principalType);
-				companyinfoModel.set("registered_capital", RegistCapi);
-				if(RegistCapi.indexOf("万元人民币") !=-1){
+				//对于爬取得来的资本进行处理
+				dealCurrency(RegistCapi, companyinfoModel ,"registered_capital","currency");
+				/*if(RegistCapi.indexOf("万元人民币") !=-1){
 					String replace = RegistCapi.replace("万元人民币", "");
 					BigDecimal a = new BigDecimal(replace);
 					BigDecimal b = new BigDecimal("10000");
@@ -181,7 +178,7 @@ public class CompanyService {
 					BigDecimal b = new BigDecimal("10000");
 					companyinfoModel.set("registered_capital", a.multiply(b).toString());
 					companyinfoModel.set("currency","266");
-				}
+				}*/
 				String StartDateFor = dateFormat(StartDate);//转成年月日
 				companyinfoModel.set("establishment_date", StartDateFor);
 				String CheckDateFor = dateFormat(CheckDate);//转成年月日
@@ -225,7 +222,7 @@ public class CompanyService {
 				companyinfoModel.set("id", companyId);
 				companyinfoModel.set("sys_language", sys_language);
 				companyinfoModel.set("name", companyName);
-				
+
 				try {
 					JSONObject ContactInfo = json.getJSONObject("Result").getJSONObject("ContactInfo");//联系信息
 					String PhoneNumber = ContactInfo.getString("PhoneNumber").replace("null", "");//电话
@@ -433,11 +430,121 @@ public class CompanyService {
 				
 			}
 			if("8".equals(reporttype) || "10".equals(reporttype)){
-			//线程爬取企查查裁判文书，法院公告，开庭公告信息,商标数据并保存
-			Thread th=new Thread(new threadEnterpriseGrabOther(companyId, companyName, sys_language));
-			th.start();
+			//爬取分支机构(分公司)
+			try{
+				if(branches!=null&&branches.size()>0){
+					//删除原有的
+					CreditCompanyBranchestwo.dao.deleteBycomIdAndLanguage(companyId,sys_language);
+					List<CreditCompanyBranchestwo> list = new ArrayList<>();
+					//限制10条
+					for (int i = 0; i < (branches.size()>10?10:branches.size()); i++) {
+						CreditCompanyBranchestwo model = new CreditCompanyBranchestwo();
+						JSONObject branch = branches.getJSONObject(i);
+						String  branchName = branch.getString("Name");
+						model.set("branch_name",branchName);
+					//爬取成立日期
+						if(StringUtils.isNotBlank(branchName)){
+							JSONObject json_ = HttpTest.searchWide(branchName,"1","1",null);
+							String  json_status = json_.getString("Status");
+							if("200".equals(json_status)){
+								try {
+									JSONObject result = ((JSONObject)(json_.getJSONArray("Result").get(0)));
+									String startDate = result.getString("StartDate");
+									if(StringUtils.isNotBlank(startDate)){
+										startDate  = startDate.trim().substring(0,10);
+										model.set("register_date",startDate);
+									}
+									String legal = result.getString("OperName");
+									if(legal!=null)
+									model.set("principal",legal);
+
+									String creditCode = result.getString("CreditCode");
+									if(creditCode!=null)
+									model.set("registered_no",creditCode);
+
+								}catch (Exception e){
+									e.printStackTrace();
+								}
+							}
+						}
+						model.set("company_id",companyId);
+						model.set("sys_language",sys_language);
+						list.add(model);
+					}
+					if(CollectionUtils.isNotEmpty(list)){
+						Db.batchSave(list, list.size());
+					}
+				}
+
+
+			}catch (Exception e)	{
+				e.printStackTrace();
 			}
-//			enterpriseGrabOther(companyId,companyName,sys_language);//抓取企查查裁判文书，法院公告，开庭公告信息数据并保存
+
+			//爬取 企业对外投资
+				try{
+					JSONObject subsidiariesJson = HttpTest.getSubsidiaries(companyName,"1",PAGESIZE);
+					String caipanstatus = subsidiariesJson.getString("Status");
+					if("200".equals(caipanstatus)){
+						CreditCompanySubsidiaries.dao.deleteBycomIdAndLanguage(companyId,sys_language);//删除
+						List<CreditCompanySubsidiaries> subsidiarieslist = new ArrayList<CreditCompanySubsidiaries>();
+
+						JSONArray jsonArray = subsidiariesJson.getJSONArray("Result");
+
+						if(jsonArray !=null && jsonArray.size()>0){
+							for(int j=0;j<jsonArray.size();j++){
+								CreditCompanySubsidiaries model = new CreditCompanySubsidiaries();
+								JSONObject subsidiaries = (JSONObject)jsonArray.get(j);
+								String comStatus = subsidiaries.getString("Status");
+								if("吊销".equals(comStatus)||"注销".equals(comStatus)){
+									continue;
+								}
+
+								String name = subsidiaries.getString("Name");
+								String lianxinCode = "";
+								//根据公司名找到时间最近的相同公司名的订单且需要报告类型一致
+								if(StringUtils.isNotBlank(name)){
+									String sql = "select num from credit_order_info " +
+													" where  del_flag=0 " +
+													" and company_by_report= \""+name+
+													"\" and report_type="+reporttype+
+													" order by create_date desc";
+									CreditOrderInfo temp = 	CreditOrderInfo.dao.findFirst(sql);
+									 if(temp!=null){
+									 	lianxinCode = temp.getStr("num");
+									 }
+								}
+								model.set("inter_credit_code", lianxinCode);
+								model.set("company_id",companyId).set("sys_language",sys_language);
+								model.set("company_name", name);
+
+								String creditCode = subsidiaries.getString("CreditCode");
+								model.set("registered_no", creditCode);
+
+								String legal  = subsidiaries.getString("OperName");
+								model.set("legal", legal);
+
+								String startDate = subsidiaries.getString("StartDate");
+								model.set("register_date", startDate);
+
+								String registCapi = subsidiaries.getString("RegistCapi");
+								dealCurrency(registCapi,model,"registered_capital","registered_capital_currency");
+
+								subsidiarieslist.add(model);
+							}
+						}
+						if(CollectionUtils.isNotEmpty(subsidiarieslist)){
+							Db.batchSave(subsidiarieslist, subsidiarieslist.size());
+						}
+					}
+				}catch (Exception e){
+					e.printStackTrace();
+				}
+				//线程爬取企查查裁判文书，法院公告，开庭公告信息,商标数据并保存
+				Thread th=new Thread(new threadEnterpriseGrabOther(companyId, companyName, sys_language));
+				th.start();
+			}
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -468,13 +575,16 @@ public class CompanyService {
 		
 		return StartDate;
 	}
+
+
+
 	/**
 	 * 爬取裁判文书,开庭公告，图标等等
 	 * @author dou_shuiahi
 	 * @date: 2019年2月21日上午9:13:16
 	 * @Description:
 	 */
-	public static  final String  PAGESIZE = "30";//爬取的条数，最大不超过50条
+	public static  final String  PAGESIZE = "30";//爬取的条数，最大不超过30条
 
 
 	public void enterpriseGrabOther(String companyId,String companyName,String sys_language) throws Exception{
@@ -679,7 +789,28 @@ public class CompanyService {
 		}
 		
 	}
+	//引用之前的报告,节省成本
 	public void enterGrabTheSameCompany(String companyId,String sys_language,String reporttype){
+
+		List<CreditCompanySubsidiaries> subsidiariesList = CreditCompanySubsidiaries.dao.getBycomIdAndLanguage(companyId, sys_language);//对外投资
+		for(int i=0;i<subsidiariesList.size();i++){
+			CreditCompanySubsidiaries entity= subsidiariesList.get(i);
+			entity.remove("id");
+			entity.set("company_id", companyId);
+			entity.set("sys_language", sys_language);
+
+		}
+		Db.batchSave(subsidiariesList, subsidiariesList.size());
+
+		List<CreditCompanyBranchestwo> branchestwoList = CreditCompanyBranchestwo.dao.getBycomIdAndLanguage(companyId, sys_language);//分支机构
+		for(int i=0;i<branchestwoList.size();i++){
+			CreditCompanyBranchestwo entity= branchestwoList.get(i);
+			entity.remove("id");
+			entity.set("company_id", companyId);
+			entity.set("sys_language", sys_language);
+		}
+		Db.batchSave(branchestwoList, branchestwoList.size());
+
 		List<CreditCompanyManagement> managementList = CreditCompanyManagement.dao.getBycomIdAndLanguage(companyId, sys_language);//管理层
 		for(int i=0;i<managementList.size();i++){
 			CreditCompanyManagement management= managementList.get(i);
@@ -689,7 +820,9 @@ public class CompanyService {
 		 
 			}
 		Db.batchSave(managementList, managementList.size());
+
 		List<CreditCompanyShareholder> shareholderList = CreditCompanyShareholder.dao.getBycomIdAndLanguage(companyId, sys_language);//股东
+
 		for(int i=0;i<shareholderList.size();i++){
 			CreditCompanyShareholder shareholder= shareholderList.get(i);
 			shareholder.remove("id");
@@ -737,4 +870,28 @@ public class CompanyService {
 			}
 	}
 
+	static void dealCurrency(String registCapi, Model model ,String capital_filedName,String currency_fieldName){
+
+		if(registCapi.indexOf("万元人民币") !=-1){
+			String replace = registCapi.replace("万元人民币", "");
+			BigDecimal a = new BigDecimal(replace);
+			BigDecimal b = new BigDecimal("10000");
+			model.set(capital_filedName, a.multiply(b).toString());
+			model.set(currency_fieldName,"274");
+		}
+		if(registCapi.indexOf("万美元") !=-1){
+			String replace = registCapi.replace("万美元", "");
+			BigDecimal a = new BigDecimal(replace);
+			BigDecimal b = new BigDecimal("10000");
+			model.set(capital_filedName, a.multiply(b).toString());
+			model.set(currency_fieldName,"267");
+		}
+		if(registCapi.indexOf("万港元") !=-1){
+			String replace = registCapi.replace("万港元", "");
+			BigDecimal a = new BigDecimal(replace);
+			BigDecimal b = new BigDecimal("10000");
+			model.set(capital_filedName, a.multiply(b).toString());
+			model.set(currency_fieldName,"266");
+		}
+	}
 }

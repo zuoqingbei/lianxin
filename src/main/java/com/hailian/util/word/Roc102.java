@@ -276,9 +276,10 @@ public class Roc102 extends BaseWord{
                             String v = model.get(word_key) + "";
                             Style style = new Style();
                             if("operation_scope".equals(word_key)){
-                                if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                                    style.setFontFamily("Times New Roman");
-                                }
+                                style.setFontFamily("PMingLiU");
+                                /*if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                                    style.setFontFamily("PMingLiU");
+                                }*/
                             }
                             map.put(word_key, new TextRenderData(v, style));
                         }
@@ -332,7 +333,7 @@ public class Roc102 extends BaseWord{
                             //经营范围设置字体
                             if("operation_scope".equals(column)){
                                 if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
-                                    style.setFontFamily("Times New Roman");
+                                    style.setFontFamily("PMingLiU");
                                 }
                             }
                             map.put(column, new TextRenderData(value, style));

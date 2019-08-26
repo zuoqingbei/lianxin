@@ -590,7 +590,7 @@ public class BaseWord {
                     }
                     //字体
                     if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
-                        style.setFontFamily("Times New Roman");
+                        style.setFontFamily("PMingLiU");//my_ todo
                     }else{
                         if("sh_name".equals(column)){
                             style.setFontFamily("PMingLiU");
@@ -690,6 +690,7 @@ public class BaseWord {
     public static RowRenderData tableHeaderH(LinkedHashMap<String, Map<String,String>> cols,String reportType,String sysLanguage) {
         RowRenderData rowRenderData = null;
         TableStyle tableStyle = new TableStyle();
+
         //表格边框
         if(ReportTypeCons.ROC_HY.equals(reportType)){
             //红印的表格不显示边框
@@ -704,8 +705,8 @@ public class BaseWord {
             Style style = new Style();
             //102 股东信息
             if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
-                //style.setFontFamily("PMingLiU");
-                style.setFontFamily("Times New Roman");
+                style.setFontFamily("PMingLiU");
+                //style.setFontFamily("Times New Roman");
                 style.setUnderLine(true);
                 style.setFontSize(11);
                 if("sh_name".equals(column)){
@@ -720,6 +721,7 @@ public class BaseWord {
                 		){
                 	temp_name=TransApi.Trans(temp_name, "cht");
                 }
+
             } else if (ReportTypeCons.ROC_HY.equals(reportType)) {
                 //四号字体
                 style.setFontSize(14);
