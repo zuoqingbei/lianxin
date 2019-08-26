@@ -125,6 +125,7 @@ let ReportConfig = {
                         .css({"margin-right":"0px"})
                         .css({"display":"block"});
                         $("#table3En").parent().css({"height":"90%"});
+                        $("#table3En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計")
                     }
                 });
             }else{
@@ -267,7 +268,12 @@ let ReportConfig = {
                                 let total = 0;
                                 a.forEach((item,index)=>{
                                     if(ele.column_name === 'order_num'){
-                                        total = '合计'
+                                    	if(lang=="ch"){
+                                    		 total = '合计'
+                                    	}else{
+                                    		 total = '合计'
+                                    	}
+                                       
                                     }else {
                                         if(item[ele.column_name]){
                                             total += Number(item[ele.column_name].toString().replace(/,/g,''))
@@ -2046,7 +2052,7 @@ let ReportConfig = {
                 let data = $("#table"+item + 'En').bootstrapTable("getData")
                 data.splice(_this.tableRowIndex-1,1,dataJsonObj)
                 $("#table"+item + 'En').bootstrapTable("load",data)
-                /*		let urlTemp = this.title[index].alter_source
+                		let urlTemp = this.title[index].alter_source
                         if(!urlTemp){return}
                         let url = BASE_PATH  + 'credit/front/ReportGetData/' + urlTemp.split("*")[0]
                         let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
@@ -2077,7 +2083,7 @@ let ReportConfig = {
                                     Public.message("error",data.message)
                                 }
                             }
-                        })*/
+                        })
             })
         })
     },
@@ -2146,9 +2152,9 @@ let ReportConfig = {
                     	pa.targetlanguage="cht";
                     	pa.reportType=_this.rows["report_type"];
                     	pa.className=tableTitleSourceClassName.split("=")[1];
-                        url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${tableTitleSourceClassName}`
+                        url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${tableTitleSourceClassName}&isTranslate=true`
                     }else{
-                    	 url += `?_random=${Math.random()}`
+                    	 url += `?_random=${Math.random()}&isTranslate=true`
                     }
                     pa.dataJson=JSON.stringify(ele);
                     $.ajax({
@@ -2256,7 +2262,9 @@ let ReportConfig = {
                 })
                  pa.dataJson=JSON.stringify(data);
                 pa.className=url.split("*")[0].split("=")[1];
+                pa.isTranslate=true;
 //    			 console.log(url,data)
+                url+="&isTranslate=true";
                 $.ajax({
                 	 url:url,
                      type:'post',
@@ -2314,6 +2322,8 @@ let ReportConfig = {
                 })
                 pa.dataJson=JSON.stringify(data);
                 pa.className=url.split("*")[0].split("=")[1];
+                pa.isTranslate=true;
+                url+="&isTranslate=true";
                 $.ajax({
                 	 url:url,
                 	 type:'post',
@@ -2366,11 +2376,12 @@ let ReportConfig = {
                     	pa.targetlanguage="cht";
                     	pa.reportType=_this.rows["report_type"];
                     	pa.className=formTitleSourceClassName.split("=")[1];
-                        url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}`
+                        url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}&isTranslate=true`
                     }else{
-                    	 url += `?_random=${Math.random()}`
+                    	 url += `?_random=${Math.random()}&isTranslate=true`
                     }
                     pa.dataJson=JSON.stringify(_this.formDataArr[index]);
+                    pa.isTranslate=true;
                     //console.log(_this.formDataArr,index)
                     $.ajax({
                     	 url,
@@ -2456,6 +2467,8 @@ let ReportConfig = {
 	                pa.className=url.split("*")[0].split("=")[1];
                     dataJson[0] = dataJsonObj
                     pa.dataJson=JSON.stringify(dataJson);
+                    pa.isTranslate=true;
+                    url+="&isTranslate=true";
                     $.ajax({
                     	url:url,
                         contentType: "application/json", //必须有
@@ -2525,6 +2538,8 @@ let ReportConfig = {
                       var pa={"dataJson":"","sys_language":"","className":""};
 	                pa.className=url.split("*")[0].split("=")[1];
                     pa.dataJson=JSON.stringify(dataJson);
+                    pa.isTranslate=true;
+                    url+="&isTranslate=true";
                     $.ajax({
                     	url:url,
                         contentType: "application/json", //必须有

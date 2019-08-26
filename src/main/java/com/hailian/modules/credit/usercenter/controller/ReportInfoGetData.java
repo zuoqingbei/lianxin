@@ -186,8 +186,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
 	 */
-	public <T> List<BaseProjectModel> infoEntry(List<Map<Object, Object>> entrys,String className,String sysLanguage,boolean isMainTable,String reportType) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-			Integer userId = 8;//getSessionUser().getUserid();
+	public <T> List<BaseProjectModel> infoEntry(String isTranslate,List<Map<Object, Object>> entrys,String className,String sysLanguage,boolean isMainTable,String reportType) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
+			Integer userId =getSessionUser().getUserid();
 			String now = getNow();
 			//实体是否存在id
 			//boolean exitsId = true;
@@ -203,27 +203,15 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			BaseProjectModel model = null;
 			System.out.println("\n\t\t\t\ttable:"+className.substring(className.lastIndexOf(".")+1)+"\n");
 			
-
-			
-		/*	if(isMainTable) {
-				if("".equals(entrys.get(0).get("company_id"))||entrys.get(0).get("company_id")==null){
-					 exitsId = false;
-				}
-			}else {
-				if("".equals(entrys.get(0).get("id"))||entrys.get(0).get("id")==null){
-					 exitsId = false;
-				}
-			}
-			*/
 			if(entrys.size()<1){
 				return null;
 			}
-			
+			String companyId=null;
 			for (Map<Object, Object> entry : entrys) {
 				boolean exit=checkExist(isMainTable, entry);
 				if(isMainTable) {
 					String id = entry.get("company_id")+"";
-					
+					companyId=id;
 					entry.remove("company_id");
 					entry.put("id",id);
 					
@@ -232,6 +220,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					if(!("".equals(sysLanguage)||sysLanguage==null)) {
 						entry.put("sys_language", Integer.parseInt(sysLanguage));
 					}
+					companyId=entry.get("company_id")+"";
 				}
 				//根据Class对象创建实例
 			    model = (BaseProjectModel) entryType.newInstance();
@@ -271,63 +260,82 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 				}
 				list.add(model);
 			}
-			//新增
-			if(insert.size()>0){
-				 try {
-	                	
-	                    Db.batchSave(insert, insert.size());
-	                }catch (Exception e){
-	                    e.printStackTrace();
-	                    if(e.getMessage().contains("Duplicate")){
-	                        if(!isMainTable) {
-	                            for (BaseProjectModel m : insert) {
-	                                List<BaseProjectModel> ms = m.findByWhere(" where del_flag=0 and company_id=?", entrys.get(0).get("company_id"));
-	                                if (ms.size() > 0) {
-	                                    m.set("id", ms.get(0).getInt("id"));
-	                                }
-	                            }
-	                            Db.batchUpdate(insert, insert.size());
-	                        }
-	                    }
-	                }
-			}
-			if(update.size()>0){
-				 //子表将company_id移除掉
-                if(!isMainTable) {
-                    for (BaseProjectModel m : update) {
-                        m.remove("company_id");
-                    }
-                }
-                Db.batchUpdate(update, update.size());
-			}
-			//批量执行
-			/*if(!exitsId){
-                try {
-                	
-                    Db.batchSave(list, list.size());
-                }catch (Exception e){
-                    e.printStackTrace();
-                    if(e.getMessage().contains("Duplicate")){
-                        if(!isMainTable) {
-                            for (BaseProjectModel m : list) {
-                                List<BaseProjectModel> ms = m.findByWhere(" where del_flag=0 and company_id=?", entrys.get(0).get("company_id"));
-                                if (ms.size() > 0) {
-                                    m.set("id", ms.get(0).getInt("id"));
-                                }
-                            }
-                            Db.batchUpdate(list, list.size());
-                        }
-                    }
-                }
-			}else{
-                //子表将company_id移除掉
-                if(!isMainTable) {
-                    for (BaseProjectModel m : list) {
-                        m.remove("company_id");
-                    }
-                }
-                Db.batchUpdate(list, list.size());
-            }*/
+			boolean needDetele=false;
+			//若是翻译步骤且是非主表则先删除
+			 if("true".equals(isTranslate)&&!isCompanyMainTable()
+					 &&companyId!=null
+					 &&((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanyHis").equals(className)||
+							 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanyShareholder").equals(className))){
+			     needDetele=true;
+			 }
+			 if(needDetele){
+				 //先删除
+				 Class<?>  c =  Class.forName(className);
+			     BaseProjectModel model2 = (BaseProjectModel) c.newInstance();
+			     String sql="select * from "+model2.getTable().getName()+" where del_flag=0 and company_id=?";
+			     List<BaseProjectModel> l=model2.dao().find(sql,new String[]{companyId});
+			     for(BaseProjectModel m:l){
+			    	 //m.set("del_flag", 1).update();
+			    	 m.delete();
+			     }
+			     if(update.size()>0){
+			    	 //子表将company_id移除掉
+						 for (BaseProjectModel m : update) {
+							 m.remove("id");
+							 insert.add(m);
+						 }
+			     }
+			     //新增
+				 if(insert.size()>0){
+					 try { 
+						 
+						 Db.batchSave(insert, insert.size());
+					 }catch (Exception e){
+						 e.printStackTrace();
+						 if(e.getMessage().contains("Duplicate")){
+							 if(isMainTable) {
+								 for (BaseProjectModel m : insert) {
+									 List<BaseProjectModel> ms = m.findByWhere(" where del_flag=0 and company_id=?", entrys.get(0).get("company_id"));
+									 if (ms.size() > 0) {
+										 m.set("id", ms.get(0).getInt("id"));
+									 }
+								 }
+								 Db.batchUpdate(insert, insert.size());
+							 }
+						 }
+					 }
+				 }
+			 }else{
+				 //新增
+				 if(insert.size()>0){
+					 try { 
+						 
+						 Db.batchSave(insert, insert.size());
+					 }catch (Exception e){
+						 e.printStackTrace();
+						 if(e.getMessage().contains("Duplicate")){
+							 if(!isMainTable) {
+								 for (BaseProjectModel m : insert) {
+									 List<BaseProjectModel> ms = m.findByWhere(" where del_flag=0 and company_id=?", entrys.get(0).get("company_id"));
+									 if (ms.size() > 0) {
+										 m.set("id", ms.get(0).getInt("id"));
+									 }
+								 }
+								 Db.batchUpdate(insert, insert.size());
+							 }
+						 }
+					 }
+				 }
+				 if(update.size()>0){
+					 //子表将company_id移除掉
+					 if(isMainTable) {
+						 for (BaseProjectModel m : update) {
+							 m.remove("company_id");
+						 }
+					 }
+					 Db.batchUpdate(update, update.size());
+				 }
+			 }
 			return list;
 		}
 	/**
