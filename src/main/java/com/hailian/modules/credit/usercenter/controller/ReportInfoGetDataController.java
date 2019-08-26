@@ -54,7 +54,7 @@ import com.jfinal.upload.UploadFile;
 @ControllerBind(controllerKey = "/credit/front/ReportGetData")
 public class ReportInfoGetDataController extends ReportInfoGetData {
 	private TemplateDictService template = new TemplateDictService();
-	private final static String PAKAGENAME_PRE = "com.hailian.modules.admin.ordermanager.model.";
+	public final static String PAKAGENAME_PRE = "com.hailian.modules.admin.ordermanager.model.";
 	//private static FinanceService  financeService = new FinanceService();
 	public static Logger log = Logger.getLogger(ReportInfoGetDataController.class);
 	/**
@@ -139,15 +139,18 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		String jsonStr =null;
 		String targetlanguage=null;
 		String className = null;
+		String isTranslate=null;
 		if(StringUtils.isBlank(postData)){
-			jsonStr = getPara("dataJson").replace("null", "''");
+			 jsonStr = getPara("dataJson").replace("null", "''");
 			 targetlanguage=getPara("sys_language");//目标语言
 			 className = getPara("className");//模块的key
+			 isTranslate=getPara("isTranslate");
 		}else{
 			JSONObject p = JSONObject.fromObject(postData);
 			jsonStr = p.getString("dataJson").replace("null", "''");
 			 targetlanguage=getPara("sys_language",p.getString("sys_language"));//目标语言
 			 className = getPara("className", p.getString("className"));//模块的key
+			 isTranslate=getPara("isTranslate",p.getString("isTranslate"));
 		}
 		try {
             if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
@@ -165,7 +168,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     cci.set("id",companyId).set("industry_code",industryCode).update();
                 }
             }
-			this.infoEntry(entrys, PAKAGENAME_PRE + className, StrUtils.isEmpty(targetlanguage)?SimplifiedChinese:targetlanguage,isCompanyMainTable(),null);
+			this.infoEntry(isTranslate,entrys, PAKAGENAME_PRE + className, StrUtils.isEmpty(targetlanguage)?SimplifiedChinese:targetlanguage,isCompanyMainTable(),null);
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
