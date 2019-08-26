@@ -125,7 +125,7 @@ let ReportConfig = {
                         .css({"margin-right":"0px"})
                         .css({"display":"block"});
                         $("#table3En").parent().css({"height":"90%"});
-                        $("#table3En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計")
+                        $("#table3En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計");
                     }
                 });
             }else{
@@ -178,6 +178,7 @@ let ReportConfig = {
                         if( this.idArr.length === tableNum) {
                             //中文表格数据加载完成，可以点翻译按钮啦
                             $("#translateBtn").removeClass("disable")
+                            addTable();
                         }
                     }
                 });
@@ -2090,6 +2091,7 @@ let ReportConfig = {
     refreshTable(ele){
         //刷新表格中的数据
         $(ele).bootstrapTable("refresh")
+        addTable();
     },
     getFormData(form) {
         //序列化
@@ -2630,7 +2632,22 @@ let ReportConfig = {
         })
     }
 }
-
+function addTable(){
+	 //计算合计
+    var c=0;
+    var zhanbi=0;
+    var rs=$("#table3En").find(".moneyCol");
+    for(var x=1;x<rs.length;x++){
+    	 c=c+parseFloat($(rs[x]).html().replace(/,/g,""));
+    	 zhanbi=zhanbi+parseFloat($(rs[x]).next().html());
+    }
+    $("#table3En").parent().parent().find(".fixed-table-footer").find("td").eq(2).html(format(c));
+    $("#table3En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(2).html(zhanbi);
+    
+}
+function format (num) {
+    return (num.toFixed() + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+}
 ReportConfig.init();
 $('.return_back').on('click',function () {
     layer.confirm('是否保存已录入信息？', {
