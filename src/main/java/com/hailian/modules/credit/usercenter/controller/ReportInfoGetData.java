@@ -230,7 +230,6 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					model.set("create_by", userId);
 					model.set("create_date", now);
 				}
-				
 				Map b = new HashMap<>();
 				for (Object key : entry.keySet()) {
 					if("com.hailian.modules.admin.ordermanager.model.CreditCompanyHis".equals(className)){
@@ -247,7 +246,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 								!"roc_registration_status".equals(key.toString())&&
 								!"register_code_type".equals(key.toString())&&
 								!"year_result".equals(key.toString())&&
-								!"capital_type".equals(key.toString()))
+								!"capital_type".equals(key.toString())&&
+								!"order_num".equals(key.toString()))
 						model.set((""+key).trim(), (""+(entry.get(key))).trim());
 					}else{
 						model.set((""+key).trim(), (""+(entry.get(key))).trim());
