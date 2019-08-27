@@ -10,6 +10,7 @@ import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
@@ -404,6 +405,8 @@ public class BaseWord {
      * @return
      */
     public static MiniTableRenderData createTableH(String moduleName,String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal,String temp,String companyId) {
+        String orderId =  CreditCompanyInfo.dao.findFirst("select order_id from credit_company_info where id = ? ",new String[]{companyId}).get("order_id")+"";
+        String reportLanguage =  CreditOrderInfo.dao.findFirst("select report_language from credit_order_info where id = ?",new String[]{orderId}).get("report_language")+"";
         //存放行数据-word模板
         List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
         //表格列字段集合
@@ -469,9 +472,9 @@ public class BaseWord {
                             totalRow.put(column, val);
                         } else {
                             String val = totalRow.get(column);
-                            if(!("合计".equals(val)||"合計".equals(val))){
+                            /*if(!("合计".equals(val)||"合計".equals(val))){
                                 val = "-";
-                            }
+                            }*/
                            /* 这段代码是对
                             String v = totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val)||"合計".equals(val) ? val : "-";
                            的分解
@@ -488,13 +491,20 @@ public class BaseWord {
                                 v="合計";
                             }
                             }*/
-                           if("612".equals(sysLanguage)){
+                           if(ReportTypeCons.ROC_HY.equals(reportType)){//红印
                                val = "合计";
-                           }else if("613".equals(sysLanguage)){
-                               val = "Total";
-                           }else if("614".equals(sysLanguage)){
+                           }else  if(ReportTypeCons.ROC_ZH.equals(reportType)){//ROC Chinese
                                val = "合計";
-                            }
+                            }else  if(ReportTypeCons.ROC_EN.equals(reportType)) {//ROC English
+                               val = "Total";
+                           }else if(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType)){//商业报告
+                               if("612".equals(sysLanguage)){
+                                   val = "合计";
+                               }else{
+                                   val = "Total";
+                               }
+                           }
+
                             totalRow.put(column,val);
                         }
                     } catch (Exception e) {
