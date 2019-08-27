@@ -469,11 +469,33 @@ public class BaseWord {
                             totalRow.put(column, val);
                         } else {
                             String val = totalRow.get(column);
-                            String v=totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val)||"合計".equals(val) ? val : "-";
-                            if("合计".equals(v)){
-                            	v="合計";
+                            if(!("合计".equals(val)||"合計".equals(val))){
+                                val = "-";
                             }
-                            totalRow.put(column,v);
+                           /* 这段代码是对
+                            String v = totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val)||"合計".equals(val) ? val : "-";
+                           的分解
+                           String v = "-";
+                            if(totalRow.keySet().size()==0){
+                                v = "合计";
+                            }else{
+                                if(!("合计".equals(val)||"合計".equals(val))){
+                                    v = "-";
+                                }else{
+                                    v = val;
+                                }
+                                if("合计".equals(v)){
+                                v="合計";
+                            }
+                            }*/
+                           if("612".equals(sysLanguage)){
+                               val = "合计";
+                           }else if("613".equals(sysLanguage)){
+                               val = "Total";
+                           }else if("614".equals(sysLanguage)){
+                               val = "合計";
+                            }
+                            totalRow.put(column,val);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
