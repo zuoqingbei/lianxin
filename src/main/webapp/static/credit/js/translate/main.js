@@ -69,6 +69,9 @@ let ReportConfig = {
             let tempRows = []
             //合计
             if(titles[index]["get_source"].includes("credit_company_shareholder")) {
+            	//debugger;
+            	console.log(contents)
+            	arr=_this.tableColumns(contents,'ch')
                 $table.bootstrapTable({
                     height:300,
                     columns: _this.tableColumns(contents,'ch'),
@@ -120,10 +123,18 @@ let ReportConfig = {
                             //中文表格数据加载完成，可以点翻译按钮啦
                             $("#translateBtn").removeClass("disable")
                         }
-                        $("#table3En").parent().parent().find(".fixed-table-footer").html($("#table3").parent().parent().find(".fixed-table-footer").html());
+                        var h=$("#table3").parent().parent().find(".fixed-table-footer").html();
+                        h=h.replace(/<td/g,"<td style='border:none!important'")
+                        $("#table3En").parent().parent().find(".fixed-table-footer").html(h);
                         $("#table3En").parent().parent().find(".fixed-table-footer")
-                        .css({"margin-right":"0px"})
+                        .css({"margin-right":"0px"}).css({"position":"relative"}).css({"top":"-20px"})
                         .css({"display":"block"});
+                       /* var s=$("#table3En").parent().parent().find(".fixed-table-footer").find("td");
+                        $.each(s,function(index,item){
+                        	console.log($(item).html())
+                        })
+                       // console.log($("#table3En").parent().parent().find(".fixed-table-footer").find("td"))
+                        $("#table3En").parent().parent().find(".fixed-table-footer").find("td").css({"border":"none!important"});*/
                         $("#table3En").parent().css({"height":"90%"});
                         $("#table3En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計");
                     }
@@ -235,6 +246,7 @@ let ReportConfig = {
         if(!a){return}
         let _this = this
         let arr = []
+        if(a[0].temp_name!='序号')
         a.unshift({temp_name: "序号",column_name:"order_num"})
         a.forEach((ele,index)=>{
             if(ele.temp_name !== '操作' && ele.temp_name !== 'Operation'){
@@ -269,18 +281,21 @@ let ReportConfig = {
                                 let total = 0;
                                 a.forEach((item,index)=>{
                                     if(ele.column_name === 'order_num'){
-                                    	if(lang=="ch"){
-                                    		 total = '合计'
+                                    	/*if(lang=="ch"){
+                                    		 total = '合計'
                                     	}else{
                                     		 total = '合计'
-                                    	}
-                                       
+                                    	}*/
+                                    	 total = '合计'
                                     }else {
                                         if(item[ele.column_name]){
                                             total += Number(item[ele.column_name].toString().replace(/,/g,''))
                                         }
                                     }
                                 })
+                                if(a==""&&ele.column_name === 'order_num'){
+                                	total = '合计';
+                                }
                                 if(typeof total === 'number'){
                                     total = total.toFixed(2)
                                     if (total === '99.99' || total === '100.01') {
@@ -2679,7 +2694,7 @@ function addTable(){
     	 zhanbi=zhanbi+parseFloat($(rs[x]).next().html());
     }
     $("#table3En").parent().parent().find(".fixed-table-footer").find("td").eq(2).html(format(c));
-    $("#table3En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(2).html(zhanbi);
+    $("#table3En").parent().parent().find(".fixed-table-footer").find("td").eq(3).find(".th-inner").html(zhanbi);
     
 }
 function format (num) {
