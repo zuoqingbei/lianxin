@@ -674,7 +674,7 @@ public class BaseWord {
                     if ("sh_name".equals(column)) {
                         style.setFontFamily("PMingLiU");
                     } else if ("contribution".equals(column) || "money".equals(column)) {
-                        style.setFontFamily("Times New Roman");
+                        style.setFontFamily("PMingLiU");
                     }
                     if("money".equals(column)){
                         value += "%";
