@@ -1496,23 +1496,37 @@ let ReportConfig = {
                 					</div>`
                             }else if(item.title.temp_name && item.title.temp_name.includes('股东详情')){
                                 //法人，自然人股东 不换行
-                                contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
+                               /* contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
                 					<table id="table${index}"
                 					data-toggle="table"
                 					style="position: relative"
                 					>
                 					</table>
                 					<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
-                					</div>`
+                					</div>`*/
+                            	 contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
+	             					<table id="table${index}"
+	             					data-toggle="table"
+	             					style="position: relative"
+	             					>
+	             					</table>
+	             					</div>`
                             }else {
-                                contentHtml += `<div class="table-content1" style="background:#fff">
+                               /* contentHtml += `<div class="table-content1" style="background:#fff">
                 					<table id="table${index}"
                 					data-toggle="table"
                 					style="position: relative;table-layout: fixed;"
                 					>
                 					</table>
                 					<button class="btn btn-lg btn-block mb-3 mt-4" type="button" id="addBtn${index}" data-toggle="modal" data-target="#modal${index}" >+ ${btnText}</button>
-                					</div>`
+                					</div>`*/
+                            	 contentHtml += `<div class="table-content1" style="background:#fff">
+	             					<table id="table${index}"
+	             					data-toggle="table"
+	             					style="position: relative;table-layout: fixed;"
+	             					>
+	             					</table>
+	             					</div>`
                             }
 
                             break;
@@ -2230,6 +2244,7 @@ let ReportConfig = {
                                         })
                                     }
                                 })
+                                addTable();
 
                             }
 //

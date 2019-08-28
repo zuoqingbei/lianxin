@@ -17,7 +17,23 @@ public class GoogleTranslationApi {
 	         System.out.println(result);
 	    }
 	    public static String translateEnglish(String text){
-	    	return detectLanguage(LANG.EN, text);
+	    	String value="";
+	    	if(StringUtils.isBlank(text)){
+	    		return value;
+	    	}
+	    	value=detectLanguage(LANG.EN, text);
+	    	if(StringUtils.isBlank(value)){
+	    		value=detectLanguage(LANG.EN, text);
+	    	}
+	    	if(StringUtils.isBlank(value)){
+	    		 try {
+		                Thread.sleep(RandomUtil.randomLong(500,5000));
+		                value=detectLanguage(LANG.EN, text);
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+	    	}
+	    	return value;
 	    }
 	    /**
 	     * 繁体
@@ -26,7 +42,23 @@ public class GoogleTranslationApi {
 	     */
 	    public static String translateCht(String text){
 	    	//zh-TW
-	    	return detectLanguage(LANG.ZHTW, text);
+	    	String value="";
+	    	if(StringUtils.isBlank(text)){
+	    		return value;
+	    	}
+	    	value=detectLanguage(LANG.ZHTW, text);
+	    	if(StringUtils.isBlank(value)){
+	    		value=detectLanguage(LANG.ZHTW, text);
+	    	}
+	    	if(StringUtils.isBlank(value)){
+	    		 try {
+		                Thread.sleep(RandomUtil.randomLong(500,5000));
+		                value=detectLanguage(LANG.ZHTW, text);
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+	    	}
+	    	return value;
 	    }
 	    public static String detectLanguage(LANG target,String text){
 	       /* if(StringUtils.isBlank(text)){

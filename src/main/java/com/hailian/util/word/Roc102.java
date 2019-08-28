@@ -130,7 +130,7 @@ public class Roc102 extends BaseWord{
            if(tempList!=null&&tempList.size()>0) {
         	     translatedName = tempList.get(0)+"";
            }
-            String reportCompanyName = order.getStr("company_by_report");
+            String reportCompanyName = order.getStr("right_company_name_en");
             if(!StrUtils.isEmpty(translatedName)) {
             if(translatedName.equals(reportCompanyName)){
                 map.put("as_registered_zh", "與註冊記錄同");
@@ -351,71 +351,72 @@ public class Roc102 extends BaseWord{
                 List rows = report.getTableData(sysLanguage, companyIdZH, tableName, className, confId, "",reportType);
                 //取列值
                 LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
-                //取列值
-                for (int i = 0; i < child.size(); i++) {
-                    CreditReportModuleConf module = child.get(i);
-                    String column_name = module.getStr("column_name");
-                    String get_source = module.getStr("get_source");
-                    cols.put(column_name, get_source);
-                }
-                /*for (int i = 0; i < child.size(); i++) {
-                    CreditReportModuleConf module = child.get(i);
-                    String column_name = module.getStr("column_name");
-                    String temp_name = module.getStr("temp_name");
-                    String field_type = module.getStr("field_type");
-                    cols.put(column_name, temp_name + "|" + field_type);
-                }*/
-                //取数据
-                for (int i = 0; i < rows.size(); i++) {
-                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
-                    for (String column : cols.keySet()) {
+                if((ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType))
+                		&&("credit_company_subtables".equals(tableName)||"credit_company_branches".equals(tableName))){
+                	 //取列值
+                    for (int i = 0; i < child.size(); i++) {
+                        CreditReportModuleConf module = child.get(i);
+                        String column_name = module.getStr("column_name");
+                        String get_source = module.getStr("get_source");
+                        BaseProjectModel model = (BaseProjectModel) rows.get(0);
                         //取值
-                        String value = model.get(column) != null ? model.get(column) + "" : "";
-                        String get_source = cols.get(column);
+                        String value = model.get(column_name) != null ? model.get(column_name) + "" : "";
                         String[] items = get_source.split("&");
-                        StringBuffer html = new StringBuffer();
-                        for(int j=0;j<items.length;j++) {
-                            String[] item = items[j].split("-");
-                            if (value.equals(item[0])) {
-                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\n") + " ");
+                        for(int x=1;x<4;x++){
+                        	String mkey=column_name+x;
+                        	String mvalue=items[x-1];
+                        	String ch=mvalue.split("</br>")[0].split("-")[1];
+                        	String fString="";
+                        	String[] item = mvalue.split("-");
+                        	if (value.equals(item[0])) {
+                        		fString=new String(new int[]{0x2611}, 0, 1)+ " " +ch;
                             } else {
-                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\n") + " ");
+                            	fString=new String(new int[]{0x2610}, 0, 1) + " " + ch;
                             }
-                        }
-                        Style style = new Style();
-                        if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
-                            //style.setFontFamily("Times New Roman");
+                        	Style style = new Style();
                         	style.setFontFamily("PMingLiU");
-                            style.setFontSize(11);
+                        	style.setFontSize(11);
+                            map.put(mkey, new TextRenderData(fString, style));
                         }
-                        map.put(column, new TextRenderData(html.toString(), style));
+                        
+                    }
+                }else{
+                	 //取列值
+                    for (int i = 0; i < child.size(); i++) {
+                        CreditReportModuleConf module = child.get(i);
+                        String column_name = module.getStr("column_name");
+                        String get_source = module.getStr("get_source");
+                        cols.put(column_name, get_source);
+                    }
+                    //取数据
+                    for (int i = 0; i < rows.size(); i++) {
+                        BaseProjectModel model = (BaseProjectModel) rows.get(0);
+                        for (String column : cols.keySet()) {
+                            //取值
+                            String value = model.get(column) != null ? model.get(column) + "" : "";
+                            String get_source = cols.get(column);
+                            String[] items = get_source.split("&");
+                            StringBuffer html = new StringBuffer();
+                            for(int j=0;j<items.length;j++) {
+                                String[] item = items[j].split("-");
+                                if (value.equals(item[0])) {
+                                    html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\n") + " ");
+                                } else {
+                                    html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\n") + " ");
+                                }
+                            }
+                            Style style = new Style();
+                            if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
+                                style.setFontFamily("Times New Roman");
+                            	//style.setFontFamily("PMingLiU");
+                                style.setFontSize(11);
+                            }
+                            map.put(column, new TextRenderData(html.toString(), style));
+                        }
                     }
                 }
-                /*if (rows!=null && rows.size()>0) {
-                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
-                    //取单选数据
-                    String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
-                    String value = model.getStr("overall_rating");
-                    String[] items = get_source.split("&");
-                    StringBuffer html = new StringBuffer();
-                    for (int j = 0; j < items.length; j++) {
-                        String[] item = items[j].split("-");
-                        if(ReportTypeCons.ROC_ZH.equals(reportType)){
-                            if (value.equals(item[0])) {
-                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
-                            } else {
-                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
-                            }
-                        }else{
-                            if (item[0].equals(value)) {
-                                html.append("(√)" + item[1] + " ");
-                            } else {
-                                html.append("( )" + item[1] + " ");
-                            }
-                        }
-                    }
-                    map.put("overall_rating", html.toString());
-                }*/
+               
+               
             }
 
             //图形表

@@ -254,6 +254,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					}
 				}
 				if(!exit){
+					model.remove("id");
 					insert.add(model);
 				}else{
 					update.add(model);
