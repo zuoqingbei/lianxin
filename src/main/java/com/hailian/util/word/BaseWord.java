@@ -425,6 +425,17 @@ public class BaseWord {
             if ("操作".equals(temp_name) || "Operation".equals(temp_name) || "Summary".equals(temp_name)) {
             } else {
             	 Map<String, String> colMap = new HashMap<>();
+            	 if("history".equals(moduleName)){
+            		 if("日期".equals(temp_name)){
+            			 temp_name="日期 Date";
+            		 }else if("变更前".equals(temp_name)){
+            			 temp_name="变更前 Before change";
+            		 }else if("变更后".equals(temp_name)){
+            			 temp_name="变更后 After change";
+            		 }else if("变更项".equals(temp_name)){
+            			 temp_name="变更项 Change item";
+            		 }
+            	 }
                  colMap.put("temp_name", temp_name);
                  colMap.put("field_type", field_type);
                  colMap.put("word_default", word_default);
@@ -451,11 +462,11 @@ public class BaseWord {
                 	value = model.get(column) != null ? model.get(column) + "" : "";
                 }*/
                 value = model.get(column) != null ? model.get(column) + "" : "";
-                if("变更前".equals(tempName)||"变更后".equals(tempName)){
+                /*if("变更前".equals(tempName)||"变更后".equals(tempName)){
                 	if(StringUtils.isNotBlank(value))
                 	//value=StrUtils.toJoinString(value, 10);
                 		value=SplitString.str_split(value, 9, "\n");
-                }
+                }*/
                 //合计项计算
                 if(hasTotal) {
                     try {

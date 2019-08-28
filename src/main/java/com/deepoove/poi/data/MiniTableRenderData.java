@@ -73,7 +73,7 @@ public class MiniTableRenderData implements RenderData {
 	}
 
 	public MiniTableRenderData(RowRenderData headers, List<RowRenderData> datas) {
-		this(headers, datas, WIDTH_A4_FULL);
+		this(headers, datas, WIDTH_A4_MEDIUM_FULL);
 	}
 
 	public MiniTableRenderData(RowRenderData headers, List<RowRenderData> datas, float width) {
@@ -81,7 +81,7 @@ public class MiniTableRenderData implements RenderData {
 	}
 
 	public MiniTableRenderData(RowRenderData headers, String noDatadesc) {
-		this(headers, null, noDatadesc, WIDTH_A4_FULL);
+		this(headers, null, noDatadesc, WIDTH_A4_MEDIUM_FULL);
 	}
 
 	/**

@@ -314,6 +314,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             	targetStr = "select DISTINCT sh_name,contribution,company_id,money,currency,sys_language  from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
             }*/
             targetStr = this.sortStatementSpecialHandling(targetStr,className);//对语句有条件的特殊处理
+            if(StringUtils.isNotBlank(companyId)&&"credit_company_info".equals(tableName)&&"CreditCompanyInfo".equals(className)){
+            	targetStr="SELECT deta.detail_name as speed_name,info.*,detai.detail_name AS area,t. NAME AS reportType,cu.`name` AS custom_name,de.detail_name AS speeds,de.detail_name AS reportLanguage,det.name AS country,c.* ";
+            	targetStr+=" from "+ tableName + " c LEFT JOIN credit_order_info info ON c.order_id = info.id LEFT JOIN credit_custom_info cu ON info.custom_id = cu.id";
+            	targetStr+=" LEFT JOIN sys_dict_detail de ON de.detail_id = info.report_language LEFT JOIN credit_country det ON det.id = info.country ";
+            	targetStr+=" LEFT JOIN sys_dict_detail deta ON deta.detail_id = info.speed LEFT JOIN sys_dict_detail detai ON detai.detail_id = info.continent ";
+            	targetStr += "LEFT JOIN credit_report_type t ON t.id = info.report_type WHERE 	c." + sqlSuf + " 1=1 ";
+            }
             rows = model.find(targetStr);
             if(StringUtils.isNotBlank(companyId)&&"credit_company_info".equals(tableName)&&"CreditCompanyInfo".equals(className)){
             	 CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);
