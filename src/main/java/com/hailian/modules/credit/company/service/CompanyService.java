@@ -441,8 +441,29 @@ public class CompanyService {
 						CreditCompanyBranchestwo model = new CreditCompanyBranchestwo();
 						JSONObject branch = branches.getJSONObject(i);
 						String  branchName = branch.getString("Name");
+						//if(i==0){branchName = "万达地产集团有限公司";}测试
 						model.set("branch_name",branchName);
-					//爬取成立日期
+
+						//inter_credit_code
+						try{
+							String lianxinCode = "";//联信编码
+							//根据公司名找到时间最近的相同公司名的订单且需要报告类型一致
+							if(StringUtils.isNotBlank(branchName)){
+								String sql = "select num from credit_order_info " +
+										" where  del_flag=0 " +
+										" and company_by_report= \""+branchName+
+										"\" and report_type="+reporttype+
+										" order by create_date desc";
+								CreditOrderInfo temp = 	CreditOrderInfo.dao.findFirst(sql);
+								if(temp!=null){
+									lianxinCode = temp.getStr("num");
+								}
+							}
+							model.set("inter_credit_code", lianxinCode);
+						}catch (Exception e){
+							e.printStackTrace();
+						}
+						/*//爬取成立日期
 						if(StringUtils.isNotBlank(branchName)){
 							JSONObject json_ = HttpTest.searchWide(branchName,"1","1",null);
 							String  json_status = json_.getString("Status");
@@ -466,7 +487,7 @@ public class CompanyService {
 									e.printStackTrace();
 								}
 							}
-						}
+						}*/
 						model.set("company_id",companyId);
 						model.set("sys_language",sys_language);
 						list.add(model);
@@ -501,7 +522,7 @@ public class CompanyService {
 								}
 
 								String name = subsidiaries.getString("Name");
-								String lianxinCode = "";
+								String lianxinCode = "";//联信编码
 								//根据公司名找到时间最近的相同公司名的订单且需要报告类型一致
 								if(StringUtils.isNotBlank(name)){
 									String sql = "select num from credit_order_info " +
