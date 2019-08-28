@@ -94,6 +94,8 @@ public class CompanyService {
 			if("200".equals(status)){
 				flag=true;
 				JSONObject jsonResulet = json.getJSONObject("Result");
+                //删除原有的分支机构
+                CreditCompanyBranchestwo.dao.deleteBycomIdAndLanguage(companyId,sys_language);
 				branches = jsonResulet.getJSONArray("Branches");
 
 				for (Object object : jsonResulet.keySet()) {
@@ -245,6 +247,7 @@ public class CompanyService {
 				//管理层
 				JSONArray Employees = null;
 				try {
+                    CreditCompanyManagement.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 					Employees = json.getJSONObject("Result").getJSONArray("Employees");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -252,7 +255,6 @@ public class CompanyService {
 				}
 				List<CreditCompanyManagement> managementlist=new ArrayList<CreditCompanyManagement>();
 				if(Employees !=null && Employees.size()>0){
-					CreditCompanyManagement.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 					for(int i=0;i<Employees.size();i++){
 						JSONObject employee = (JSONObject)Employees.get(i);
 						//CreditCompanyManagement
@@ -346,9 +348,9 @@ public class CompanyService {
 				//股东信息
 				JSONArray partners = null;
 				try {
+                    CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 					partners = json.getJSONObject("Result").getJSONArray("Partners");
 					if(partners !=null && partners.size()>0){
-						CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 						List<CreditCompanyShareholder> shareholderlist=new ArrayList<CreditCompanyShareholder>();
 						for(int i=0;i<partners.size();i++){
 							JSONObject partner = (JSONObject)partners.get(i);
@@ -397,13 +399,12 @@ public class CompanyService {
 				//变更事项
 				JSONArray ChangeRecords = null;
 				try {
+                    CreditCompanyHis.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 					ChangeRecords = json.getJSONObject("Result").getJSONArray("ChangeRecords");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if(ChangeRecords != null && ChangeRecords.size()>0){
-					CreditCompanyHis.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
 					List<CreditCompanyHis> hisModellist=new ArrayList<CreditCompanyHis>();
 					for(int i=0;i<ChangeRecords.size();i++){
 						JSONObject changerecord = (JSONObject)ChangeRecords.get(i);
@@ -433,8 +434,6 @@ public class CompanyService {
 			//爬取分支机构(分公司)
 			try{
 				if(branches!=null&&branches.size()>0){
-					//删除原有的
-					CreditCompanyBranchestwo.dao.deleteBycomIdAndLanguage(companyId,sys_language);
 					List<CreditCompanyBranchestwo> list = new ArrayList<>();
 					//限制10条
 					for (int i = 0; i < (branches.size()>10?10:branches.size()); i++) {
@@ -899,20 +898,22 @@ public class CompanyService {
 			BigDecimal b = new BigDecimal("10000");
 			model.set(capital_filedName, a.multiply(b).toString());
 			model.set(currency_fieldName,"274");
-		}
+		} else
 		if(registCapi.indexOf("万美元") !=-1){
 			String replace = registCapi.replace("万美元", "");
 			BigDecimal a = new BigDecimal(replace);
 			BigDecimal b = new BigDecimal("10000");
 			model.set(capital_filedName, a.multiply(b).toString());
 			model.set(currency_fieldName,"267");
-		}
+		}else
 		if(registCapi.indexOf("万港元") !=-1){
 			String replace = registCapi.replace("万港元", "");
 			BigDecimal a = new BigDecimal(replace);
 			BigDecimal b = new BigDecimal("10000");
 			model.set(capital_filedName, a.multiply(b).toString());
 			model.set(currency_fieldName,"266");
-		}
+		}else{
+
+        }
 	}
 }
