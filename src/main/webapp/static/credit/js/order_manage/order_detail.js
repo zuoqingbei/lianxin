@@ -988,7 +988,7 @@ let OrderDetail = {
 			}
     	})
         $("#orderNum").text(this.row.num);
-        $("#status_js").html(this.row.statuName);
+        $("#status_js").html(this.row.statusName);
     },
     initProcess() {
         let $li = $(`<li>

@@ -681,6 +681,29 @@ let ReportConfig = {
                     if($(item).is('select')){
 //    					console.log($(item),obj[anotherId])
                         //如果是select
+                    	var reportType=_this.rows['report_type'];
+                    	var reportLanguage=_this.rows['report_language'];
+                    	var type="";
+                    	if("12"==reportType){//ROC Chinese
+                    		type="tw";
+                    	 }else  if("14"==reportType) {//ROC English
+                    		 type="en";
+                    	}else if("8"==reportType||"9"==reportType){//商业报告
+                    		    if(!"612".equals(sysLanguage)){
+                    		    	type="en";
+                    		    }
+                    	}
+                    	$("#"+id +" option").each(function(){  //遍历所有option 
+                            var txt = $(this).val();   //获取option值  
+                            if(txt!=undefined&&txt!=''&&txt!='undefined'){
+                            	if(type=="en"){
+                            		 $(this).html($(this).attr("m-english"));
+                            	}else if(type=="tw"){
+                            		 $(this).html($(this).attr("m-fanti"));
+                            	}
+                                
+                            } 
+                       }) 
                         $("#"+id).find("option[value='"+obj[anotherId]+"']").attr("selected",true);
                     }else {
                         if($("#"+id).hasClass("money-checked")){
