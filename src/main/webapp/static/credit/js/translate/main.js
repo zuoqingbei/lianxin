@@ -2184,14 +2184,18 @@ let ReportConfig = {
             let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
             let dataJson = []
             //点击翻译按钮
-            $(".position-fixed").on("click","#translateBtn",(e)=>{
+            $(".position-fixed").unbind().on("click","#translateBtn",(e)=>{
             	
                 //表格翻译
                 let oneTableData = []
                 $("body").mLoading("show")
 //                console.log(tableTitlesEn,index)
                 if(!_this.tableDataArr[index]){return}
-                if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {$("body").mLoading("hide")}
+                if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {
+                	setTimeout(function(){
+                		$("body").mLoading("hide")
+            		},2000);
+                }
                 _this.tableDataArr[index]['rows'].forEach((ele,i)=>{
                     //循环每个表格中的条数进行翻译
 //	   				console.log(ele)

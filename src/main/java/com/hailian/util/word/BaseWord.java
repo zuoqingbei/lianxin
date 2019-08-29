@@ -375,12 +375,9 @@ public class BaseWord {
         if(ReportTypeCons.ROC_HY.equals(reportType)){
             style.setFontSize(14);
         }
-        if(ReportTypeCons.ROC_EN.equals(reportType)) {
+       /* if(("contribution".equals(columnName)||"money".equals(columnName))&&"capital".equals(moduleName)) {
         	style.setFontFamily("Times New Roman");
-        }
-        if(("contribution".equals(columnName)||"money".equals(columnName))&&"capital".equals(moduleName)) {
-        	style.setFontFamily("Times New Roman");
-        }
+        }*/
     	//股东模块
     	if("partner".equals(moduleName)) {
     		switch(columnName) {
@@ -672,8 +669,6 @@ public class BaseWord {
                 //字体
                 if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                     if ("sh_name".equals(column)) {
-                        style.setFontFamily("PMingLiU");
-                    } else if ("contribution".equals(column) || "money".equals(column)) {
                         style.setFontFamily("PMingLiU");
                     }
                     if("money".equals(column)){
