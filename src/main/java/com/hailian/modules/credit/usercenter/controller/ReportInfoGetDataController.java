@@ -207,6 +207,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		Record record = new Record();
 		String tableName = getPara("tableName", "");
 		String className = getPara("className");
+		if("CreditCompanyInfo".equals(className)){
+			System.out.println(1);
+		}
 		if(companyId==null||"".equals(companyId)) {
 			 companyId = getPara("company_id","");
 		}
@@ -315,42 +318,25 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             }*/
             targetStr = this.sortStatementSpecialHandling(targetStr,className);//对语句有条件的特殊处理
             if(StringUtils.isNotBlank(companyId)&&"credit_company_info".equals(tableName)&&"CreditCompanyInfo".equals(className)){
-            	targetStr="SELECT deta.detail_name as speed_name,info.*,detai.detail_name AS area,t. NAME AS reportType,cu.`name` AS custom_name,de.detail_name AS speeds,de.detail_name AS reportLanguage,det.name AS country,c.* ";
+            	targetStr="SELECT deta.detail_name as speed_name,info.*,detai.detail_name AS area,t. NAME AS reportType,cu.`name` AS custom_name,de.detail_name AS speeds,de.detail_name AS reportLanguage,det.name AS countryName,c.* ";
             	targetStr+=" from "+ tableName + " c LEFT JOIN credit_order_info info ON c.order_id = info.id LEFT JOIN credit_custom_info cu ON info.custom_id = cu.id";
             	targetStr+=" LEFT JOIN sys_dict_detail de ON de.detail_id = info.report_language LEFT JOIN credit_country det ON det.id = info.country ";
             	targetStr+=" LEFT JOIN sys_dict_detail deta ON deta.detail_id = info.speed LEFT JOIN sys_dict_detail detai ON detai.detail_id = info.continent ";
             	targetStr += "LEFT JOIN credit_report_type t ON t.id = info.report_type WHERE 	c." + sqlSuf + " 1=1 ";
             }
             rows = model.find(targetStr);
+            //处理联信编码 lianxin_id 若“徐州开达精细化工有限公司”之前有创建过商业报告订单，则将之前订单号作为联信编码，若有多个，取最新的订单号
             if(StringUtils.isNotBlank(companyId)&&"credit_company_info".equals(tableName)&&"CreditCompanyInfo".equals(className)){
-            	 CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);
+            	 /*CreditCompanyInfo info = CreditCompanyInfo.dao.findById(companyId);
             	  if(info!=null){
                  	 CreditOrderInfo order=CreditOrderInfo.dao.getOrder(info.getInt("order_id"),null);
-                 	 if(order!=null){
-                 		/*for (BaseProjectModel r : rows) {
-                 			 r.put("custom_id", order.get("custom_id"));
-                 			 r.put("area", order.get("continentName"));
-                 			 r.put("name", order.get("customName"));
-                 			r.put("receiver_date", order.get("receiver_date"));
-                 			r.put("reportLanguage", order.get("reportLanguage"));
-                 			r.put("reportType", order.get("reportType"));
-                 			r.put("name_en", order.get("englishName"));
-                 			r.put("country", order.get("countryName"));
-                 			r.put("telphone", order.get("telphone"));
-                 			r.put("speed", order.get("reportSpeed"));
-                 			r.put("email", order.get("email"));
-                 			r.put("reference_num", order.get("reference_num"));
-                 			r.put("address", order.get("address"));
-                 			r.put("contacts", order.get("contacts"));
-                 			r.put("fax", order.get("fax"));
-                 			r.put("create_date", order.get("create_date"));
-                 			r.put("end_date", order.get("end_date"));
-                 			r.put("remarks", order.get("remarks"));
-                 			r.put("company_en_name", order.get("right_company_name_en"));
-                 			
-                 		 }*/
+                 	 if(order!=null&&"8".equals(order.getStr("report_type"))){
+                 		 
                  	 }
-                  }
+                  }*/
+            	for(BaseProjectModel row:rows){
+            		row.set("lianxin_id", row.get("num"));
+            	}
             }
             //使用ehcache缓存数据
             //System.out.println(tableName + sqlSuf);
@@ -379,7 +365,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 // 解析前端传入的字符串
                 List<Map<Object, Object>> selectInfoMap = parseJsonArray(selectInfo);
                 // 将id转化为字典表中对应的字符串
-                if("CreditCompanyNaturalpersonShareholderDetail".equals(className)) {
+                if("CreditCompanyInfo".equals(className)) {
                 	System.out.println(1);
                 }
                 dictIdToString(rows, selectInfoMap,tableName);
