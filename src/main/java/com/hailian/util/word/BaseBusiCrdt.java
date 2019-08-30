@@ -715,18 +715,23 @@ public class BaseBusiCrdt extends BaseWord{
             return rowList;
         }
         TableStyle tableStyle = new TableStyle();
+        tableStyle.setHasBorder(false);
         String begin = financialConf.get("date1");
         String end = financialConf.get("date2");
+        String lrbegin = financialConf.get("date3");
+        String lrend = financialConf.get("date4");
         String financialConfId = financialConf.getInt("id") + "";
         int financeType = financialConf.getInt("type") ;
         String companyName = financialConf.get("company_name")+"";//公司名称
         //判断语言类型
         String language = "612";
         String currencyStr = "单位";
+        boolean isEnglish=false;
         if("EN".equals(ReportTypeCons.whichLanguage(reportType))){
             language = "613";
             currencyStr = "Unit";
             tableStyle.setHasBorder(false);
+            isEnglish=true;
             tableStyle.setAlign(STJc.LEFT);
         }
         String currencyId = financialConf.get("currency")+"";//币种id
@@ -749,6 +754,10 @@ public class BaseBusiCrdt extends BaseWord{
             begin = detailDate(sdf.parse(begin),reportType);
             if(!StrUtils.isEmpty(end))
             end = detailDate(sdf.parse(end),reportType);
+            if(!StrUtils.isEmpty(lrbegin))
+            	lrbegin = detailDate(sdf.parse(lrbegin),reportType);
+            if(!StrUtils.isEmpty(lrend))
+            	lrend = detailDate(sdf.parse(lrend),reportType);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -778,40 +787,64 @@ public class BaseBusiCrdt extends BaseWord{
                     //j=0表示第一条
                     if (j == 0) {
                         String title = "";
-                        String unit = "";
                         switch (son_sector.intValue()) {
                             case 1:
-                                title = "合计";
+                            	if(isEnglish){
+                            		title = "Key Financial Items";
+                            	}else{
+                            		title = "关键财务项目";
+                            	}
                                 break;
                             case 2:
-                                title = "流动资产";
+                                //title = "流动资产";
+                            	if(isEnglish){
+                            		title="Financial Statement";
+                            	}else{
+                            		title="财务报表";
+                            	}
                                 break;
                             case 3:
-                                title = "非流动资产";
+                                //title = "非流动资产";
+                            	title = "";
                                 break;
                             case 4:
-                                title = "流动负债";
+                                //title = "流动负债";
+                            	title = "";
                                 break;
                             case 5:
-                                title = "非流动负债";
+                                //title = "非流动负债";
+                            	title = "";
                                 break;
                             case 6:
-                                title = "负债及所有者权益";
+                                //title = "负债及所有者权益";
+                            	title = "";
                                 break;
                             case 7:
-                                title = "毛利润";
+                                //title = "毛利润";
+                            	if(isEnglish){
+                            		title = "Income Statement";
+                            	}else{
+                            		title = "利润表";
+                            	}
                                 break;
                             case 8:
-                                title = "营业利润";
+                                //title = "营业利润";
+                            	title = "";
                                 break;
                             case 9:
-                                title = "税前利润";
+                                //title = "税前利润";
+                            	title = "";
                                 break;
                             case 10:
-                                title = "所得税费用";
+                                //title = "所得税费用";
+                            	title = "";
                                 break;
                             case 11:
-                                title = "重要比率表";
+                            	if(isEnglish){
+                            		title = " Key Ratios";
+                            	}else{
+                            		title = "重要比率表";
+                            	}
                                 break;
                         }
                         if (financeType == 1 || financeType == 2) {
@@ -823,21 +856,76 @@ public class BaseBusiCrdt extends BaseWord{
 
 
                         //大标题
-                        Style titileStyle = new Style();
-                        titileStyle.setColor("843C0B");
-                        titileStyle.setBold(true);
-                        rowList.add(RowRenderData.build(
-                                new TextRenderData(title, titileStyle),
-                                new TextRenderData(begin),
-                                new TextRenderData(end)));
+                        if(StringUtils.isNotBlank(title)){
+                        	if("利润表".equals(title)||"重要比率表".equals(title)||
+                        			"Income Statement".equals(title)||"Key Ratios".equals(title)){
+                        		//居中 
+                        		Style titileStyle = new Style();
+                        		titileStyle.setBold(true);
+                        		titileStyle.setAlign(STJc.CENTER);
+                        		titileStyle.setFontFamily("宋体");
+                        		titileStyle.setFontSize(11);
+                        		rowList.add(RowRenderData.build(
+                        				new TextRenderData(""),
+                        				new TextRenderData(title, titileStyle),
+                        				new TextRenderData("")));
+                        	}else{
+                        		//靠左
+                        		Style titileStyle = new Style();
+                        		titileStyle.setColor("843C0B");
+                        		titileStyle.setBold(true);
+                        		rowList.add(RowRenderData.build(
+                        				new TextRenderData(title, titileStyle),
+                        				new TextRenderData(""),
+                        				new TextRenderData("")));
+                        	}
+                        }
 
-                        Style header = new Style();
-                        header.setBold(true);
-
-                        rowList.add(RowRenderData.build(
-                                new TextRenderData(""),
-                                new TextRenderData(""),
-                                new TextRenderData(currencyStr + "：" + currency + "（" + currencyUnit + "）", header)));
+                        if("财务报表".equals(title)||"Financial Statement".equals(title)){
+                        	//添加小标题 居中行
+                        	Style header = new Style();
+                            header.setBold(true);
+                            header.setAlign(STJc.CENTER);
+                            String t="资产负债表";
+                            if(isEnglish){
+                            	t="Balance Sheet";
+                            }
+                        	rowList.add(RowRenderData.build(
+                        			new TextRenderData(""),
+                        			new TextRenderData(t, header),
+                        			new TextRenderData("")));
+                        }
+                        if("关键财务项目".equals(title)||"财务报表".equals(title)
+                        		||"利润表".equals(title)||"重要比率表".equals(title)||
+                        		"Key Financial Items".equals(title)||"Financial Statement".equals(title)
+                        		||"Income Statement".equals(title)||"Key Ratios".equals(title)){
+                        	//添加币种行
+                        	Style header = new Style();
+                            header.setBold(true);
+                            header.setFontFamily("宋体");
+                            header.setFontSize(11);
+                            String c=currencyStr + "：" + currency + "（" + currencyUnit + "）";
+                            if(isEnglish){
+                            	c=currencyStr + "" + currency + "" + currencyUnit + "";
+                            }
+                        	rowList.add(RowRenderData.build(
+                        			new TextRenderData(""),
+                        			new TextRenderData(""),
+                        			new TextRenderData(c, header)));
+                        	//添加时间
+                        	if("利润表".equals(title)||"Income Statement".equals(title)){
+                        		//利润读取date3 date4  其他都是date1、date2
+                        		rowList.add(RowRenderData.build(
+                            			new TextRenderData(""),
+                            			new TextRenderData(lrbegin,header),
+                            			new TextRenderData(lrend, header)));
+                        	}else{
+                        		rowList.add(RowRenderData.build(
+                            			new TextRenderData(""),
+                            			new TextRenderData(begin,header),
+                            			new TextRenderData(end, header)));
+                        	}
+                        }
 
                     }
                 }
@@ -850,12 +938,32 @@ public class BaseBusiCrdt extends BaseWord{
                 if("0".equals(endValue+"")){
                     endValue = "--";
                 }
-                Integer is_sum_option = ccf.getInt("is_sum_option");
+                /*Integer is_sum_option = ccf.getInt("is_sum_option");
                 Style sumStyle = new Style();
                 if (is_sum_option.intValue() == 1) {
                     sumStyle.setBold(true);
+                }*/
+                
+                Integer is_sum_option = ccf.getInt("is_sum_option");
+                Style sumStyleValue = new Style();
+                sumStyleValue.setFontSize(11);
+                sumStyleValue.setFontFamily("宋体");
+                Style sumStyle = new Style();
+                sumStyle.setFontSize(11);
+                sumStyle.setFontFamily("宋体");
+                if((financeType==1||financeType==2)&&("流动资产合计".equals(itemName)||"Total Current Assets".equals(itemName)||
+                		"资产总额".equals(itemName)||"Total Assets".equals(itemName)||
+                		"流动负债合计".equals(itemName)||"TOTAL CURRENT LIABILITIES".equals(itemName)||
+                		"负债合计".equals(itemName)||"Equities".equals(itemName)||
+                		"所有者权益".equals(itemName)||"".equals(itemName)||
+                		"负债及所有者权益合计".equals(itemName)||"Total liabilities & equities".equals(itemName)||
+                		"毛利润".equals(itemName)||"Gross Profit".equals(itemName)||
+                		"营业利润".equals(itemName)||"Operating Profit".equals(itemName)||
+                		"税前利润".equals(itemName)||"Profit before tax".equals(itemName)||
+                		"净利润".equals(itemName)||"Profits".equals(itemName))){
+                	sumStyle.setBold(true);
                 }
-                RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString()), new TextRenderData(endValue.toString()));
+                RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString(),sumStyleValue), new TextRenderData(endValue.toString(),sumStyleValue));
                 tempRow.setStyle(tableStyle);
                 rowList.add(tempRow);
                 j++;

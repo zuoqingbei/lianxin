@@ -187,7 +187,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	 * @throws IllegalAccessException
 	 */
 	public <T> List<BaseProjectModel> infoEntry(String isTranslate,List<Map<Object, Object>> entrys,String className,String sysLanguage,boolean isMainTable,String reportType) throws ClassNotFoundException, InstantiationException, IllegalAccessException{
-			Integer userId =getSessionUser().getUserid();
+			Integer userId =8;
 			String now = getNow();
 			//实体是否存在id
 			//boolean exitsId = true;
@@ -384,10 +384,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 							flagStr += "_en";
 						}
 						
-						value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id="+  model.get(columnName) +"");
+						value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id='"+  model.get(columnName) +"'");
 						 if(StrUtils.isEmpty(value)) {
 							 columnName =countryColumn.get(className);
-							 value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id="+  model.get(columnName) +"");
+							 value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id='"+  model.get(columnName) +"'");
 						 }
 						model.put(columnName,value==null?"":value);
 					}else {
