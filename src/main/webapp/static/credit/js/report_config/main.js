@@ -60,7 +60,7 @@ let ReportConfig = {
         			smartDisplay:false,
         			locales:'zh-CN',
         			onLoadSuccess:(data)=>{
-        				console.log(data)
+        				//console.log(data)
         				if(data.rows === null){
 //        					alert("出错了")
         					return
@@ -73,16 +73,16 @@ let ReportConfig = {
         						let url = item.brand_url.includes("http")?item.brand_url:`http://${item["brand_url"]}`
         						item["brand_url"] = `<a href="${url}" target="_blank"><img src="${url}" style="height:40px;width:40px"></a>`
         					}
-        					console.log(item)
+        					//console.log(item)
         				})
         				$table.bootstrapTable("load",rows)
         				
-        				$(".monyCol").each((index,item)=>{
+        				/*$(".monyCol").each((index,item)=>{
         					if(!$(item).attr("data-field") && $(item).text() !== ''){
         						//不是表头
         						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
         					}
-        				})
+        				})*/
         				setTimeout(() => {
         					let height = $table.parents(".fixed-table-body").siblings(".fixed-table-header").height();
     	    				if(rows.length < 1) {
@@ -126,7 +126,7 @@ let ReportConfig = {
         				})
         				$table.bootstrapTable("load",rows)
         				
-        				$(".monyCol").each((index,item)=>{
+        				/*$(".monyCol").each((index,item)=>{
         					if(!$(item).attr("data-field")){
         						//不是表头
         						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
@@ -135,7 +135,7 @@ let ReportConfig = {
         					if($(item).text() === 'NaN') {
         						$(item).text('')
         					}
-        				})
+        				})*/
         				setTimeout(() => {
         					let height = $table.parents(".fixed-table-body").siblings(".fixed-table-header").height();
     	    				if(rows.length < 1) {
@@ -1145,7 +1145,7 @@ let ReportConfig = {
                 	//模块的类型
 
 					let outItem = item;
-					console.assert(outItem.title.is_disable!=='1',outItem)
+					//console.assert(outItem.title.is_disable!=='1',outItem)
                 	switch(smallModileType) {
                 		case '0':
                 			//表单类型
@@ -1154,7 +1154,7 @@ let ReportConfig = {
                 			let ind = index
                 			let rowNum = 0;//代表独占一行的input数量
 		                	formArr.forEach((item,index)=>{
-		                		console.assert(item.is_disable!=='1',item)
+		                		//console.assert(item.is_disable!=='1',item)
 		                				let formGroup = ''
 		                        		//判断input的类型
 		                        		let field_type = item.field_type
