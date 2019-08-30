@@ -504,7 +504,7 @@ public class BaseWord {
                            }else  if(ReportTypeCons.ROC_ZH.equals(reportType)){//ROC Chinese
                                val = "合計";
                             }else  if(ReportTypeCons.ROC_EN.equals(reportType)) {//ROC English
-                               val = "Total";
+                               val = "合計 Total";
                            }else if(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType)){//商业报告
                                if("612".equals(sysLanguage)){
                                    val = "合计";
