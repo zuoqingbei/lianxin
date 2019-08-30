@@ -375,12 +375,13 @@ public class CompanyService {
 							shareholderModel.set("money", StockPercentEd);
 							try {
 								if(StringUtils.isNotBlank(ShouldCapi.replace(",", ""))){
-									BigDecimal a = new BigDecimal(ShouldCapi);
+									BigDecimal a = new BigDecimal(ShouldCapi.trim());
 									BigDecimal b = new BigDecimal("10000");
 									shareholderModel.set("contribution", a.multiply(b).toString());
 								}
 							} catch (Exception e) {
 								// TODO Auto-generated catch block
+								e.printStackTrace();
 								shareholderModel.set("contribution", "");
 							}
 							shareholderModel.set("company_id", companyId);
@@ -915,5 +916,10 @@ public class CompanyService {
 		}else{
 
         }
+	}
+	public static void main(String[] args) {
+		BigDecimal a = new BigDecimal("652");
+		BigDecimal b = new BigDecimal("10000");
+		System.out.println( a.multiply(b));
 	}
 }
