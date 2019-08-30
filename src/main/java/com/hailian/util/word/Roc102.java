@@ -45,7 +45,8 @@ public class Roc102 extends BaseWord{
     private static Object o = new Object();
     public static void main(String []args) throws IOException {
         try {
-            System.out.println(checkUpload("http://localhost:8080/static/credit/imgs/index/error.png", 1130L));
+           // System.out.println(checkUpload("http://localhost:8080/static/credit/imgs/index/error.png", 1130L));
+          //  System.out.println("weqrsfs点十大".
             /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
             URL url = new URL(urlStr);
             HttpURLConnection uc = (HttpURLConnection) url.openConnection();
@@ -84,6 +85,7 @@ public class Roc102 extends BaseWord{
         String tplPath = "http://"+ ip + ":" + serverPort +"/"+ reportTypeModel.getStr("tpl_path");
         //客户参考号作为发送的报告名称
         String referenceNum = order.getStr("reference_num")!=null?order.getStr("reference_num"):"000000";
+        referenceNum = referenceNum.replaceAll("[\\u4e00-\\u9fa5]", "\\$");
         while(referenceNum.length()<7) {
                 referenceNum = "0" + referenceNum;
         }
@@ -536,7 +538,10 @@ public class Roc102 extends BaseWord{
             //检查是否上传成功
             File file = new File(_prePath+".docx");
             boolean isUploadSuccess = false;
-            if(file.exists()&&file.length()>0L&&StringUtils.isNotBlank(wordPath)){
+            boolean fileIsExists;
+            boolean fileIsBiggerThanZero;
+            boolean flagWordPath;
+            if(fileIsExists = file.exists()&&(fileIsBiggerThanZero=(file.length()>0L))&&(flagWordPath = StringUtils.isNotBlank(wordPath))){
                 isUploadSuccess = checkUpload(_pre + wordPath,file.length());
             }
             if(!isUploadSuccess){
