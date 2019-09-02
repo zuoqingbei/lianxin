@@ -125,21 +125,33 @@ public class Roc102 extends BaseWord{
         }
 
         //订单公司名称和报告公司名称相同，则显示“與註冊記錄同”
-        if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
-           List<Object> tempList =
-            		Db.query("select name from credit_company_info where order_id=? and sys_language=612 and del_flag=0 ",orderId);
-           String translatedName = "";
-           if(tempList!=null&&tempList.size()>0) {
-        	     translatedName = tempList.get(0)+"";
-           }
-            String reportCompanyName = order.getStr("right_company_name_en");
-            if(!StrUtils.isEmpty(translatedName)) {
-            if(translatedName.equals(reportCompanyName)){
-                map.put("as_registered_zh", "與註冊記錄同");
-                map.put("as_registered_en", "as registered");
-            }
-        }}
+        try {
+            if (ReportTypeCons.ROC_EN.equals(reportType) || ReportTypeCons.ROC_ZH.equals(reportType)) {
+                List<Object> tempList =
+                        Db.query("select name from credit_company_info where order_id=? and (sys_language=613 or sys_language=614) and del_flag=0 ", orderId);
+                String translatedName = "";//翻译后的公司名
 
+                if (tempList != null && tempList.size() > 0) {
+                    if ( tempList.get(0) != null && !"".equals(tempList.get(0) + "")) {
+                        translatedName = tempList.get(0) + "";
+                    } else if (tempList.size() == 2) {
+                        if(tempList.get(1)!=null){
+                            translatedName = tempList.get(1) + "";
+                        }
+                    }
+
+                    String reportCompanyName = order.getStr("right_company_name_en");//创建订单时候用的公司名
+                    if (!StrUtils.isEmpty(translatedName)) {
+                        if (translatedName.equals(reportCompanyName)) {
+                            map.put("as_registered_zh", "與註冊記錄同");
+                            map.put("as_registered_en", "as registered");
+                        }
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         //联信编码
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", detailDate(new Date(), reportType)); 
