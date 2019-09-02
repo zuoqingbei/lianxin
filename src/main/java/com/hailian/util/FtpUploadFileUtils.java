@@ -4,20 +4,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.SocketException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPClientConfig;
-import org.apache.commons.net.ftp.FTPReply;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.RequestConfig;
@@ -139,7 +133,7 @@ public class FtpUploadFileUtils {
         MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
         multipartEntityBuilder.addBinaryBody("file", file);
         multipartEntityBuilder.addTextBody("fileUploadPath", fileUploadPath);
-        multipartEntityBuilder.addTextBody("fileName", fileName);
+        multipartEntityBuilder.addTextBody("fileName",URLEncoder.encode(fileName, "UTF-8") );
         HttpEntity httpEntity = multipartEntityBuilder.build();
         httpPost.setEntity(httpEntity);
  

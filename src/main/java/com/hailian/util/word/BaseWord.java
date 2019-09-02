@@ -502,7 +502,7 @@ public class BaseWord {
                            if(ReportTypeCons.ROC_HY.equals(reportType)){//红印
                                val = "合计";
                            }else  if(ReportTypeCons.ROC_ZH.equals(reportType)){//ROC Chinese
-                               val = "合計";
+                               val = "合計 Total";
                             }else  if(ReportTypeCons.ROC_EN.equals(reportType)) {//ROC English
                                val = "合計 Total";
                            }else if(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType)){//商业报告
