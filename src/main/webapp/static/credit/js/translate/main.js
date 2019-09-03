@@ -2434,30 +2434,34 @@ let ReportConfig = {
                     }
                     pa.dataJson=JSON.stringify(_this.formDataArr[index]);
                     pa.isTranslate=true;
-                    //console.log(_this.formDataArr,index)
-                    $.ajax({
-                    	 url,
-                         type:'post',
-                         contentType: "application/json", //必须有
-                         dataType: "json", //表示返回值类型，不必须
-                         data:JSON.stringify(pa),
-                        success:(data)=>{
-                        	this.formNum++;
-                        	//console.log(this.formTotal,this.formNum)
-                        	if(this.formTotal === this.formNum) {
-                        		this.formNum = 0;
-                        		//表单翻译完成
-                        		this.isFormTranslated= true;
-                            	if (this.isTableTranslated ) {
-									//如果表格也翻译完成
-                            		Public.message("success","表单翻译完成！")
-                            		$("body").mLoading("hide")
-								}
-                        		
-                        	}
-                            _this.bindFormDataEn(data,_this.formIndexEn[index])
-                        }
-                    });
+                    if(_this.formDataArr[index]==undefined){
+                    	this.formNum++;
+                    }else{
+                    	//console.log(_this.formDataArr,index)
+                    	$.ajax({
+                    		url,
+                    		type:'post',
+                    		contentType: "application/json", //必须有
+                    		dataType: "json", //表示返回值类型，不必须
+                    		data:JSON.stringify(pa),
+                    		success:(data)=>{
+                    			this.formNum++;
+                    			console.log(this.formTotal,this.formNum,this.isFormTranslated,this.isTableTranslated)
+                    			if(this.formTotal === this.formNum) {
+                    				this.formNum = 0;
+                    				//表单翻译完成
+                    				this.isFormTranslated= true;
+                    				if (this.isTableTranslated ) {
+                    					//如果表格也翻译完成
+                    					Public.message("success","表单翻译完成！")
+                    					$("body").mLoading("hide")
+                    				}
+                    				
+                    			}
+                    			_this.bindFormDataEn(data,_this.formIndexEn[index])
+                    		}
+                    	});
+                    }
 
                 })
                 if(dataJsonObj["company_id"] && !dataJsonObj["company_id"] || !_this.formDataArr[index]){return}
