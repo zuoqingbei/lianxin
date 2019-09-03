@@ -520,15 +520,7 @@ public class BaseWord {
                     }
                 }
 
-                //出资情况，出资金额后面跟币种
-                if("contribution".equals(column)) {
-                    if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType) || ReportTypeCons.ROC_HY.equals(reportType)) {
-                        if(!tempName.contains("(")){
-                            String str = tempName + "(" + temp + ")";
-                            colMap.put("temp_name", str);
-                        }
-                    }
-                }
+
 
                 //下拉选择
                 if ("select".equals(fieldType)) {
@@ -601,7 +593,7 @@ public class BaseWord {
         Object[] colSize = cols.keySet().toArray();
 
         //组装表格-表头
-        RowRenderData rowRenderData = tableHeaderH(cols, reportType,sysLanguage);
+        RowRenderData rowRenderData = tableHeaderH(cols, reportType,sysLanguage,temp);
         rowRenderData.setStyle(tableStyle);
         //组装表格-数据
         for (LinkedHashMap<String, String> m : datas) {
@@ -649,9 +641,11 @@ public class BaseWord {
             rowData.setStyle(tableStyle);
             rowsList.add(rowData);
         }
+
         //合计项生成word格式
         if(hasTotal) {
             TextRenderData[] row = new TextRenderData[colSize.length];
+
             int j = 0;
             for (String column : cols.keySet()) {
                 String value = totalRow.get(column);
@@ -672,7 +666,9 @@ public class BaseWord {
                         style.setFontFamily("PMingLiU");
                     }
                     if("money".equals(column)){
-                        value += "%";
+                        if(!(StringUtils.isEmpty(value)||"null".equals(value))){
+                            value += "%";
+                        }
                     }
                     style.setFontSize(11);
                     
@@ -725,7 +721,7 @@ public class BaseWord {
      * @param reportType
      * @param sysLanguage
      */
-    public static RowRenderData tableHeaderH(LinkedHashMap<String, Map<String,String>> cols,String reportType,String sysLanguage) {
+    public static RowRenderData tableHeaderH(LinkedHashMap<String, Map<String,String>> cols,String reportType,String sysLanguage,String currencyStr) {
         RowRenderData rowRenderData = null;
         TableStyle tableStyle = new TableStyle();
 
@@ -741,6 +737,14 @@ public class BaseWord {
             Map<String,String> colMap = cols.get(column);
             String temp_name = colMap.get("temp_name");
             Style style = new Style();
+            //出资情况，出资金额后面跟币种
+            if("contribution".equals(column)) {
+                if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType) || ReportTypeCons.ROC_HY.equals(reportType)) {
+                    if(!temp_name.contains("(")){
+                        temp_name = temp_name + "(" + currencyStr + ")";
+                    }
+                }
+            }
             //102 股东信息
             if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
                 style.setFontFamily("PMingLiU");
