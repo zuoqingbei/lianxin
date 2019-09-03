@@ -126,6 +126,7 @@ public class ReportTranslateController extends BaseProjectController {
 							}
 							
 						} catch (Exception e) {
+							System.err.println(value+"   翻译为繁体失败,"+e.getMessage());
 							e.printStackTrace();
 							value_cht="";
 //							value_cht=value;

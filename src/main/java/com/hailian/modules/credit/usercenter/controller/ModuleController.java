@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.hailian.api.constant.ReportTypeCons;
 import org.apache.commons.lang.StringUtils;
 
 import com.feizhou.swagger.annotation.Api;
@@ -121,9 +122,16 @@ public class ModuleController extends BaseProjectController{
 					listToEn.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));
 					
 				}
-				record.set("defaultModuleToEn",defaultModuleToEn);
-				record.set("modulesToEn",listToEn);
-				record.set("tabFixedToEn",tabFixedToEn);
+				if (ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
+					record.set("defaultModuleToEn",defaultModule);
+					record.set("modulesToEn",list);
+					record.set("tabFixedToEn",tabFixed);
+				}else{
+					record.set("defaultModuleToEn",defaultModuleToEn);
+					record.set("modulesToEn",listToEn);
+					record.set("tabFixedToEn",tabFixedToEn);
+				}
+
 			}
 			
 		}

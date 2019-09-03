@@ -175,7 +175,6 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 	}
 	/**
 	 *  把 形如[{"a":b,"a1":b1},{"c":d,"a1":b1},{"e":f,"a1":b1}]的json数组分解放进model里并保存
-	 * @param jsonStr
 	 * @param className
 	 * @param sysLanguage
 	 * @param isMainTable
@@ -261,13 +260,12 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 				}
 				list.add(model);
 			}
-			boolean needDetele=false;
 			//若是翻译步骤且是非主表则先删除
-			 if("true".equals(isTranslate)&&!isCompanyMainTable()
-					 &&companyId!=null
-					 &&((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanyHis").equals(className)||
-							 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanyShareholder").equals(className))){
-			     needDetele=true;
+			boolean needDetele= "true".equals(isTranslate)&&!isCompanyMainTable() &&companyId!=null;
+			//副表和备注表不删除
+			 if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanyForNote").equals(className) ||
+					 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtables").equals(className)){
+				 needDetele = false;
 			 }
 			 if(needDetele){
 				 //先删除
