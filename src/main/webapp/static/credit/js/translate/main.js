@@ -120,10 +120,23 @@ let ReportConfig = {
                             //中文表格数据加载完成，可以点翻译按钮啦
                             $("#translateBtn").removeClass("disable")
                         }
-                        var h=$("#table3").parent().parent().find(".fixed-table-footer").html();
+                        var mId=3;
+                        var lis=$(".l-title");
+                        for(var x=0;x<lis.length;x++){
+                        	var item=lis[x];
+                        	if($(item).text()=='出资情况'){
+                        		var id=$(item).attr("id");
+                        		if(id.indexOf("title")!=-1&&id.indexOf("En")==-1){
+                        			mId=id.replace("title","");
+                        			mId=mId.replace("En","");
+                        		}
+                        	}
+                        }
+                        console.log(mId)
+                        var h=$("#table"+mId).parent().parent().find(".fixed-table-footer").html();
                         h=h.replace(/<td/g,"<td style='border:none!important'")
-                        $("#table3En").parent().parent().find(".fixed-table-footer").html(h);
-                        $("#table3En").parent().parent().find(".fixed-table-footer")
+                        $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").html(h);
+                        $("#table"+mId+"En").parent().parent().find(".fixed-table-footer")
                         .css({"margin-right":"0px"}).css({"position":"relative"}).css({"top":"-20px"})
                         .css({"display":"block"});
                        /* var s=$("#table3En").parent().parent().find(".fixed-table-footer").find("td");
@@ -132,8 +145,8 @@ let ReportConfig = {
                         })
                        // console.log($("#table3En").parent().parent().find(".fixed-table-footer").find("td"))
                         $("#table3En").parent().parent().find(".fixed-table-footer").find("td").css({"border":"none!important"});*/
-                        $("#table3En").parent().css({"height":"90%"});
-                        $("#table3En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計");
+                        $("#table"+mId+"En").parent().css({"height":"90%"});
+                        $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計");
                     }
                 });
             }else{
@@ -2690,13 +2703,25 @@ function addTable(){
 	 //计算合计
     var c=0;
     var zhanbi=0;
-    var rs=$("#table3En").find(".moneyCol");
-    for(var x=1;x<rs.length;x++){
-    	 c=c+parseFloat($(rs[x]).html().replace(/,/g,""));
-    	 zhanbi=zhanbi+parseFloat($(rs[x]).next().html());
+    var mId=3;
+    var lis=$(".l-title");
+    for(var x=0;x<lis.length;x++){
+    	var item=lis[x];
+    	if($(item).text()=='出资情况'){
+    		var id=$(item).attr("id");
+    		if(id.indexOf("title")!=-1&&id.indexOf("En")==-1){
+    			mId=id.replace("title","");
+    			mId=mId.replace("En","");
+    		}
+    	}
     }
-    $("#table3En").parent().parent().find(".fixed-table-footer").find("td").eq(2).html(format(c));
-    $("#table3En").parent().parent().find(".fixed-table-footer").find("td").eq(3).find(".th-inner").html(zhanbi);
+    var rs=$("#table"+mId+"En").find("td[class='moneyCol']");
+    for(var x=0;x<rs.length;x++){
+    	 c=c+parseFloat($(rs[x]).text().replace(/,/g,""));
+    	 zhanbi=zhanbi+parseFloat($(rs[x]).next().text());
+    }
+    $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find("td").eq(2).html(format(c));
+    $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find("td").eq(3).find(".th-inner").html(zhanbi.toFixed(2));
     
 }
 function format (num) {
