@@ -81,6 +81,8 @@ public class NoticeController extends BaseProjectController {
         // 日志添加
         NoticeModel model = getModel(NoticeModel.class);
         String str = model.getStr("notice_content");
+        String notice_title=getPara("notice_title");
+        String notice_content=getPara("notice_content");
         Integer userid = getSessionUser().getUserid();
         String now = getNow();
         // 新增
@@ -198,7 +200,7 @@ public class NoticeController extends BaseProjectController {
         String FTPfileName=now+"."+ext;
         String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
         try {
-            boolean storeFile = FtpUploadFileUtils.storeFtpFile(now,ftpfileList,storePath,ip,port,userName,password);
+            boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile2(now,ftpfileList,storePath,ip,port,userName,password);
             if(storeFile){
                 Map<String, Object> map=new HashMap<String, Object>();
                 map.put("errno", 0);

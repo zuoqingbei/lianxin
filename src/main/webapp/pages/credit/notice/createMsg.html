@@ -96,16 +96,22 @@
     })
     //发布公告
 	function save(title,content){
-        let newStr = content.replace(/&lt;/g,"<").replace(/&gt;/g,">")
+       /*  let newStr = content.replace(/&lt;/g,"<").replace(/&gt;/g,">")
    	    if(/<script[^>]*>(?:.*?)<\/script>/.test(newStr)) {
    	    	Public.message ("info","输入的内容不合法！")
    	    	return 
    	    }
-    	content = newStr.replace(/</g,"&lt;").replace(/>/g,"&gt;")
+    	content = newStr.replace(/</g,"&lt;").replace(/>/g,"&gt;") */
+    	 let newStr = content
+    	    if(/<script[^>]*>(?:.*?)<\/script>/.test(newStr)) {
+    	    	Public.message ("info","输入的内容不合法！")
+    	    	return 
+    	    }
+     	content = newStr
 		$.ajax({
    			type:"post",
        		url:"/credit/sysuser/notice/save",
-       		data:"model.notice_content="+encodeURI(content)+"&model.notice_title="+title,
+       		data:"model.notice_content="+encodeURI(content)+"&model.notice_title="+encodeURI(title),
        		dataType:"json",
        		success:function(data){
        			if(data.statusCode===1){
