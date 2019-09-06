@@ -8,6 +8,7 @@ import com.deepoove.poi.data.style.Style;
 import com.deepoove.poi.data.style.TableStyle;
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
+import com.hailian.jfinal.base.BaseModel;
 import com.hailian.modules.admin.ordermanager.model.*;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
@@ -199,20 +200,52 @@ public class BaseBusiCrdt extends BaseWord{
             if("partner".equals(key)) {
                  System.out.print("开始解析股东信息!");
             }
+
+            List<Object> appendRowsForInvestmentSituation = null;
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
                 if("credit_company_judgmentdoc".equals(tableName)){
                 	System.out.println(1);
                 }
-                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType);
+                List<BaseProjectModel> rows = (List<BaseProjectModel>)(report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType));
+
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
-                    table = BaseWord.createTableS(key,reportType,child, rows,sysLanguage,companyId);
+
+                    //如果是法人股东详情或者是自热人股东详情做特殊解析
+                    try{
+                        if("credit_company_legal_shareholder_detail".equals(tableName)||"credit_company_naturalperson_shareholder_detail".equals(tableName)){
+                            appendRowsForInvestmentSituation = new ArrayList<>();
+                            for (int i=0;i<child.size();i++) {
+                                if ("investment_situation".equals(child.get(i).get("column_name"))){
+                                    child.remove(i);
+                                }
+                            }
+                            //加上一些默认的字段
+                            //child.addAll(generatedInvestmentSituationConfHead(reportType));
+
+                            for (int i=0;i<rows.size();i++) {
+                                String investmentSituationStr = rows.get(i).getStr("investment_situation");//投资情况
+                                rows.get(i).remove("investment_situation");
+                                if(investmentSituationStr!=null&&!"".equals(investmentSituationStr=investmentSituationStr.trim())){
+                                    appendRowsForInvestmentSituation.add(i,investmentSituationStr);
+                                }else{
+                                    appendRowsForInvestmentSituation.add(i,null);
+                                }
+                            }
+                        }
+                        table = BaseWord.createTableS(key,reportType,child, rows,sysLanguage,companyId,appendRowsForInvestmentSituation);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 } else if ("h".equals(tableType)) {
                     //"出资情况"需要增加合计项
                     boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
+
+
                     table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,"",companyId);
+
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
@@ -1120,6 +1153,7 @@ public class BaseBusiCrdt extends BaseWord{
         }
         return list;
     }
+
 
 
 

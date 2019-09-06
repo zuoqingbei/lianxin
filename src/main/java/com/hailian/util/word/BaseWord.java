@@ -261,7 +261,7 @@ public class BaseWord {
 
                 //int tempNameLength = tempName.length();
                 String value = "";
-                
+
                 //特殊处理
                 /*if("name_en".equals(column)) {
                 	if("name_en".equals(column)&&(tempName.replace("英文", "").length()<tempNameLength ||
@@ -272,13 +272,13 @@ public class BaseWord {
                  	value = model.get(column) != null ? model.get(column) + "" : "";
                  }*/
                 value = model.get(column) != null ? model.get(column) + "" : "";
-               
+
                 if ("select".equals(fieldType)) {
-                	if("国籍".equals(strs[0])||"国家".equals(strs[0])){
-                		 value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
-                	}else{
-                		value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
-                	}
+                    if("国籍".equals(strs[0])||"国家".equals(strs[0])){
+                        value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
+                    }else{
+                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
+                    }
                 }
                 //下拉多选
                 else if("select2".equals(fieldType)){
@@ -296,24 +296,24 @@ public class BaseWord {
                     value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
                 }else  if("date".equals(fieldType)&&!StrUtils.isEmpty(value)){
                     try {
-						value = detailDate(sdf.parse(value),reportType);
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+                        value = detailDate(sdf.parse(value),reportType);
+                    } catch (ParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }else {
                     value = !"".equals(value) ? value : "N/A";
                 }
-                
+
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
                 //二合一的特殊处理
                 if(merger(value,column,reportType,mergeList,rowList,style)) {
                     rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
                 }
-               
+
             }
-            
+
             //每一个实体之间空一行
             if(i!=rows.size()-1) {rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));}
         }
@@ -1286,4 +1286,450 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
             throw new Exception("报告上传失败导致的错误!"+e1);
         }
 
+
+    public static MiniTableRenderData createTableH(String moduleName,String reportType,List<CreditReportModuleConf> child,List rows,String sysLanguage,boolean hasTotal,String temp,String companyId,List<Object> appendRowsForInvestmentSituation) {
+        String orderId =  CreditCompanyInfo.dao.findFirst("select order_id from credit_company_info where id = ? ",new String[]{companyId}).get("order_id")+"";
+        String reportLanguage =  CreditOrderInfo.dao.findFirst("select report_language from credit_order_info where id = ?",new String[]{orderId}).get("report_language")+"";
+        //存放行数据-word模板
+        List<RowRenderData> rowsList = new ArrayList<RowRenderData>();
+        //表格列字段集合
+        LinkedHashMap<String, Map<String,String>> cols = new LinkedHashMap<String, Map<String,String>>();
+        //存放表格数据
+        List<LinkedHashMap<String, String>> datas = new ArrayList<LinkedHashMap<String, String>>();
+        //合计项
+        LinkedHashMap<String, String> totalRow = new LinkedHashMap<String, String>();
+        //取列名
+        for (int i = 0; i < child.size(); i++) {
+            CreditReportModuleConf module = child.get(i);
+            String column_name = module.getStr("column_name");
+            String temp_name = module.getStr("temp_name");
+            String field_type = module.getStr("field_type");
+            String word_default = module.get("word_default") != null ? module.get("word_default") : "";
+            if ("操作".equals(temp_name) || "Operation".equals(temp_name) || "Summary".equals(temp_name)) {
+            } else {
+                Map<String, String> colMap = new HashMap<>();
+                if("history".equals(moduleName)){
+                    if("日期".equals(temp_name)){
+                        temp_name="日期 Date";
+                    }else if("变更前".equals(temp_name)){
+                        temp_name="变更前 Before change";
+                    }else if("变更后".equals(temp_name)){
+                        temp_name="变更后 After change";
+                    }else if("变更项".equals(temp_name)){
+                        temp_name="变更项 Change item";
+                    }
+                }
+                colMap.put("temp_name", temp_name);
+                colMap.put("field_type", field_type);
+                colMap.put("word_default", word_default);
+                //cols.put(column_name, temp_name + "|" + field_type);
+                cols.put(column_name, colMap);
+            }
+        }
+        //取数据
+        for (int i = 0; i < rows.size(); i++) {
+            LinkedHashMap<String, String> row = new LinkedHashMap<String, String>();
+            //取一行数据
+            BaseProjectModel model = (BaseProjectModel) rows.get(i);
+            for (String column : cols.keySet()) {
+                Map<String,String> colMap = cols.get(column);
+                String tempName = colMap.get("temp_name");
+                String fieldType = colMap.get("field_type");
+                String wordDefault = colMap.get("word_default");
+                Integer id = model.getInt("id");
+                String value = "";
+                /*//不同字段的特殊处理
+                if("name_en".equals(column)) {
+                	value = detailByColumn(companyId);
+                }else {
+                	value = model.get(column) != null ? model.get(column) + "" : "";
+                }*/
+                value = model.get(column) != null ? model.get(column) + "" : "";
+                /*if("变更前".equals(tempName)||"变更后".equals(tempName)){
+                	if(StringUtils.isNotBlank(value))
+                	//value=StrUtils.toJoinString(value, 10);
+                		value=SplitString.str_split(value, 9, "\n");
+                }*/
+                //合计项计算
+                if(hasTotal) {
+                    try {
+                        //数字和金额类型的字段才能计算
+                        if ("number".equals(fieldType) || "money".equals(fieldType)) {
+                            String val = totalRow.get(column);
+                            val = val != null ? val.replaceAll(",", "") : "0";
+                            val = new BigDecimal(val).add(new BigDecimal(value.replaceAll(",", ""))).toString();
+                            if ("money".equals(fieldType)) {
+                                DecimalFormat df = new DecimalFormat("###,###.##");
+                                NumberFormat nf = NumberFormat.getInstance();
+                                val = df.format(nf.parse(val));
+                            }
+                            totalRow.put(column, val);
+                        } else {
+                            String val = totalRow.get(column);
+                            /*if(!("合计".equals(val)||"合計".equals(val))){
+                                val = "-";
+                            }*/
+                           /* 这段代码是对
+                            String v = totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val)||"合計".equals(val) ? val : "-";
+                           的分解
+                           String v = "-";
+                            if(totalRow.keySet().size()==0){
+                                v = "合计";
+                            }else{
+                                if(!("合计".equals(val)||"合計".equals(val))){
+                                    v = "-";
+                                }else{
+                                    v = val;
+                                }
+                                if("合计".equals(v)){
+                                v="合計";
+                            }
+                            }*/
+                            if(ReportTypeCons.ROC_HY.equals(reportType)){//红印
+                                val = "合计";
+                            }else  if(ReportTypeCons.ROC_ZH.equals(reportType)){//ROC Chinese
+                                val = "合計 Total";
+                            }else  if(ReportTypeCons.ROC_EN.equals(reportType)) {//ROC English
+                                val = "合計 Total";
+                            }else if(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType)){//商业报告
+                                if("612".equals(sysLanguage)){
+                                    val = "合计";
+                                }else{
+                                    val = "Total";
+                                }
+                            }
+
+                            totalRow.put(column,val);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+
+                //下拉选择
+                if ("select".equals(fieldType)) {
+                    value = !"".equals(value) ? ReportInfoGetDataController.dictIdToString(value, reportType, sysLanguage) : "";
+                }
+                //下拉多选
+                else if("select2".equals(fieldType)){
+                    String[] vals = value.split("\\$");
+                    String selName = "";
+                    for(String val : vals){
+                        selName += ReportInfoGetDataController.dictIdToString(val, reportType, sysLanguage) + ",";
+                    }
+                    if(selName.contains(",")) {
+                        selName = selName.substring(0, selName.length() - 1);
+                    }
+                    value = selName;
+                }
+                else if ("country".equals(fieldType)) {
+                    value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
+                }
+                //处理千位符号
+                else if ("money".equals(fieldType)) {
+                    try {
+                        DecimalFormat df = new DecimalFormat("###,###.##");
+                        NumberFormat nf = NumberFormat.getInstance();
+                        value = df.format(nf.parse(value));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //日期
+                else if("date".equals(fieldType)
+                        &&!"history".equals(moduleName)//登记变更情况，日期用中文就可以
+                ){
+
+                    try {
+                        value = detailDate(sdf.parse(value),reportType);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    if(StringUtils.isEmpty(value)){
+                        value = wordDefault;
+                    }
+
+                }
+                //专利和商标图片先用占位符占用，再二次替换成图片
+                else if ("file".equals(fieldType)) {
+                    value = "{{@img" + id + "}}";
+                }
+
+                row.put(column,value);
+            }
+            if(appendRowsForInvestmentSituation!=null){
+                try{
+                    String appendRowsStr =  (String)appendRowsForInvestmentSituation.get(i);
+                    //格式:	腾讯:20;百度:30
+                    List<String> tempList = Arrays.asList( appendRowsStr.split(";") );
+                    for (String  tempStr: tempList) {
+                        String[] temp_ = tempStr.split(":");
+                        row.put(temp_[0],temp_[1]);
+                    }
+                    row.put("","");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }
+
+            datas.add(row);
+        }
+        //居中对齐
+        TableStyle tableStyle = new TableStyle();
+        tableStyle.setAlign(STJc.LEFT);
+        //表格边框
+        if(ReportTypeCons.ROC_HY.equals(reportType)){
+            //红印的表格不显示边框
+            tableStyle.setHasBorder(false);
+        }
+        //102模板，出资情况列表中的币种不展示
+        /*if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+            if(cols.containsKey("contribution")&&cols.containsKey("currency")){
+                cols.remove("currency");
+            }
+        }*/
+        Object[] colSize = cols.keySet().toArray();
+
+        //组装表格-表头
+        RowRenderData rowRenderData = tableHeaderH(cols, reportType,sysLanguage,temp);
+        rowRenderData.setStyle(tableStyle);
+        //组装表格-数据
+        for (LinkedHashMap<String, String> m : datas) {
+            int j = 0;
+            TextRenderData[] row = new TextRenderData[colSize.length];
+            for (String column : cols.keySet()) {
+                String value = m.get(column);
+                Style style = new Style();
+                if (ReportTypeCons.ROC_HY.equals(reportType)) {
+                    style.setFontFamily("宋体");
+                    style.setFontSize(14);
+                    if("sh_name".equals(column)){
+                        style.setAlign(STJc.LEFT);
+                    }else if("contribution".equals(column)||"money".equals(column)){
+                        style.setAlign(STJc.RIGHT);
+                        style.setFontFamily("Times New Roman");
+                    }
+                } else if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+                    //字号
+                    style.setFontSize(11);
+                    //单元格对齐方式
+                    if("sh_name".equals(column)){
+                        style.setAlign(STJc.LEFT);
+                    }else if("contribution".equals(column)||"money".equals(column)){
+                        style.setAlign(STJc.RIGHT);
+                    }
+                    //字体
+                    if(ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_ZH.equals(reportType)){
+                        style.setFontFamily("PMingLiU");//my_ todo
+                    }else{
+                        if("sh_name".equals(column)){
+                            style.setFontFamily("PMingLiU");
+                        }else if("contribution".equals(column)||"money".equals(column)){
+                            style.setFontFamily("Times New Roman");
+                        }
+                    }
+                    if("money".equals(column)){
+                        value += "%";
+                    }
+                }
+                row[j] = new TextRenderData(value, style);
+                j++;
+            }
+            RowRenderData rowData = RowRenderData.build(row);
+            rowData.setStyle(tableStyle);
+            rowsList.add(rowData);
+        }
+
+        //合计项生成word格式
+        if(hasTotal) {
+            TextRenderData[] row = new TextRenderData[colSize.length];
+
+            int j = 0;
+            for (String column : cols.keySet()) {
+                String value = totalRow.get(column);
+                Style style = new Style();
+                style.setFontFamily("Times New Roman");
+                //style.setBold(true);
+                //对齐方式
+                if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)||ReportTypeCons.ROC_HY.equals(reportType)) {
+                    if ("sh_name".equals(column)) {
+                        style.setAlign(STJc.LEFT);
+                    } else if ("contribution".equals(column) || "money".equals(column)) {
+                        style.setAlign(STJc.RIGHT);
+                    }
+                }
+                //字体
+                if (ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+                    if ("sh_name".equals(column)) {
+                        style.setFontFamily("PMingLiU");
+                    }
+                    if("money".equals(column)){
+                        if(!(StringUtils.isEmpty(value)||"null".equals(value))){
+                            value += "%";
+                        }
+                    }
+                    style.setFontSize(11);
+
+                }else if(ReportTypeCons.ROC_HY.equals(reportType)){
+                    style.setBold(false);
+                    if ("sh_name".equals(column)) {
+                        style.setFontFamily("宋体");
+                    } else if ("contribution".equals(column) || "money".equals(column)) {
+                        style.setFontFamily("Times New Roman");
+                    }
+                    //4号字体
+                    style.setFontSize(14);
+                }
+                //针对不同模块中的不同字段的样式的特殊处理
+                style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
+
+                row[j] = new TextRenderData(value, style);
+                j++;
+            }
+            RowRenderData rowData = RowRenderData.build(row);
+            rowData.setStyle(tableStyle);
+            rowsList.add(rowData);
+        }
+        return new MiniTableRenderData(rowRenderData, rowsList);
+    }
+
+    /**
+     * 生成表格 - 竖表
+     * @param child
+     * @param rows
+     * @return
+     */
+    public static MiniTableRenderData createTableS(String moduleName,String reportType,  List<CreditReportModuleConf> child,
+                                                   List rows,String sysLanguage,String companyId,List<Object> appendRowsForInvestmentSituation){
+        List<RowRenderData> rowList = new ArrayList<RowRenderData>();
+        LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
+        Style style = new Style();
+        style.setColor("000000");
+        style.setFontFamily("宋体");
+        //取列值
+        for(int i=0;i< child.size();i++) {
+            CreditReportModuleConf module = child.get(i);
+            String column_name = module.getStr("column_name");
+            String temp_name = module.getStr("temp_name");
+            String field_type = module.getStr("field_type");
+            String word_key = module.getStr("word_key");
+            if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {
+            }else {
+                cols.put(column_name, temp_name + "|" + field_type);
+            }
+        }
+        List<String> mergeList = new ArrayList<>();
+        //取数据
+        for (int i = 0; i < rows.size(); i++) {
+            BaseProjectModel model = (BaseProjectModel) rows.get(i);
+            for (String column : cols.keySet()) {
+                String[] strs = cols.get(column).split("\\|");
+                String fieldType = strs.length == 2 ? strs[1] : "";
+             /*   String tempName = "";
+                try{
+                     tempName  = strs[0];
+                }catch ( Exception e){
+                    e.printStackTrace();
+                }*/
+
+
+                //int tempNameLength = tempName.length();
+                String value = "";
+
+                //特殊处理
+                /*if("name_en".equals(column)) {
+                	if("name_en".equals(column)&&(tempName.replace("英文", "").length()<tempNameLength ||
+                            tempName.replace("ENGLISH", "").length()<tempNameLength||tempName.replace("English", "").length()<tempNameLength)) {
+                         	value = detailByColumn(companyId);
+                         }
+                }else {
+                 	value = model.get(column) != null ? model.get(column) + "" : "";
+                 }*/
+                value = model.get(column) != null ? model.get(column) + "" : "";
+
+                if ("select".equals(fieldType)) {
+                    if("国籍".equals(strs[0])||"国家".equals(strs[0])){
+                        value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
+                    }else{
+                        value = !"".equals(value) ? new ReportInfoGetDataController().dictIdToString(value,reportType,sysLanguage) : "N/A";
+                    }
+                }
+                //下拉多选
+                else if("select2".equals(fieldType)){
+                    String[] vals = value.split("\\$");
+                    String selName = "";
+                    for(String val : vals){
+                        selName += ReportInfoGetDataController.dictIdToString(val, reportType, sysLanguage) + ",";
+                    }
+                    if(selName.contains(",")) {
+                        selName = selName.substring(0, selName.length() - 1);
+                    }
+                    value = selName;
+                }
+                else if ("country".equals(fieldType)) {
+                    value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
+                }else  if("date".equals(fieldType)&&!StrUtils.isEmpty(value)){
+                    try {
+                        value = detailDate(sdf.parse(value),reportType);
+                    } catch (ParseException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }else {
+                    value = !"".equals(value) ? value : "N/A";
+                }
+
+                //针对不同模块中的不同字段的样式的特殊处理
+                style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
+                //二合一的特殊处理
+                if(merger(value,column,reportType,mergeList,rowList,style)) {
+                    rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
+                }
+
+            }
+
+
+            //特殊处理
+            if(appendRowsForInvestmentSituation!=null){
+                try{
+                    //Investment--投资情况 Company Name--公司名称 Shareholding(%)--投资比例
+                    generatedInvestmentSituationConfHead(rowList,reportType,style);
+                    String appendRowsStr =  (String)appendRowsForInvestmentSituation.get(i);
+                    if(appendRowsStr!=null){
+                        //格式:	腾讯:20;百度:30
+                        List<String> tempList = Arrays.asList( appendRowsStr.split(";") );
+                        for (String  tempStr: tempList) {
+                            String[] temp_ = tempStr.split(":");
+                            rowList.add(RowRenderData.build(new TextRenderData(temp_[0], style), new TextRenderData(temp_[1], style)));
+                        }
+                    }
+                    rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
+            }else{
+                //每一个实体之间空一行
+                if(i!=rows.size()-1) {rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));}
+            }
+        }
+        return new MiniTableRenderData(rowList);
+    }
+
+    //Investment--投资情况 Company Name--公司名称 Shareholding(%)--投资比例
+    static  String[] InvestmentSituationTempName = new String[]{"","","Investment","投资情况","Company Name","公司名称"};
+    static  String[] InvestmentSituationValue= new String[]{"","","","","Shareholding(%)","投资比例(%)"};
+    static void generatedInvestmentSituationConfHead(List<RowRenderData> rowList,String reportType ,Style style ){
+        for (int i=0 ;i<InvestmentSituationTempName.length/2;i++) {
+            rowList.add(RowRenderData.build(
+                    new TextRenderData(ReportTypeCons.BUSI_ZH.equals(reportType)?InvestmentSituationTempName[2*i+1]:InvestmentSituationTempName[2*i], style),
+                    new TextRenderData(ReportTypeCons.BUSI_ZH.equals(reportType)?InvestmentSituationValue[2*i+1]:InvestmentSituationValue[2*i], style)));
+
+        }
+
+    }
 }
