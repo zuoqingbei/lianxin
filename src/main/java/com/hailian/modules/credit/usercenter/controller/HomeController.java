@@ -2,6 +2,7 @@
 
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -595,6 +596,8 @@ public class HomeController extends BaseProjectController {
 						String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 						String now=UUID.randomUUID().toString().replaceAll("-", "");
 						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
+						originalFileName=URLEncoder.encode(originalFileName, "UTF-8");
+						originalFileName="";
 						String FTPfileName=now+"."+ext;
 						String fileName=originalFileName+now;
 						String pdf_FTPfileName="";
@@ -612,9 +615,10 @@ public class HomeController extends BaseProjectController {
 							pdf_FTPfileName=FTPfileName;
 						}
 						//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
-						boolean storeFile = FtpUploadFileUtils.storeFtpFile(now, ftpfileList,storePath,ip,port,userName,password);//上传
+						boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile2(now, ftpfileList,storePath,ip,port,userName,password);//上传
 						if(storeFile){
-							String factpath=storePath+"/"+FTPfileName;
+							String ftpName=originalFileName+now+"."+ext;
+							String factpath=storePath+"/"+ftpName;
 							String pdfFactpath=storePath+"/"+pdf_FTPfileName;
 							String url= storePath+"/"+FTPfileName;
 							userid = getSessionUser().getUserid();
