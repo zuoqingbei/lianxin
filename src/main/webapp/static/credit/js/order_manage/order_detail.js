@@ -1070,7 +1070,7 @@ let OrderDetail = {
                         });
                         $wrap.find('tbody').append($tr);
                     });
-                    // //股东信息表格加合计功能
+                    // //股东信息表格加合计功能  //废弃
                     // if (['股东信息', 'Shareholding'].includes(item.title.temp_name)) {
                     //     let $sumTr = $('<tr class="tableSum font-weight-bold" style="background-color: var(--bg-thead);"></tr>');
                     //     $wrap.find('thead th').each(function (index, elem) {
