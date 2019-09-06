@@ -304,9 +304,9 @@ let ReportConfig = {
                                 })
                                 if(typeof total === 'number'){
                                     total = total.toFixed(2)
-                                    if (total === '99.99' || total === '100.01') {
+                                    /*if (total === '99.99' || total === '100.01') {
                 						 total = '100.00'
-                                    }
+                                    }*/
                                 }
                                 if(total === 'NaN'){
                                     return
@@ -2191,7 +2191,13 @@ let ReportConfig = {
             let dataJson = []
             //点击翻译按钮
             $(".position-fixed").on("click","#translateBtn",(e)=>{
-            	
+            	setTimeout(()=>{
+                	//如果表格也翻译完成
+        			Public.message("success","表单翻译完成！")
+        			$("body").mLoading("hide")
+        			this.isTableTranslated = false;
+            		this.isFormTranslated=false;
+                },20000);
                 //表格翻译
                 let oneTableData = []
                 $("body").mLoading("show")
@@ -2238,14 +2244,16 @@ let ReportConfig = {
                             this.numCop++;
                             oneTableData[i] = data
                             allTableData[index] = oneTableData
-//	   						console.log(index,this.numCop,this.total,data)
                             if(this.numCop === this.total){
                                 //如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
                             	this.isTableTranslated = true;
+                            	console.log(this.isTableTranslated,this.isFormTranslated)
                             	if (this.isFormTranslated ) {
 									//如果表单也翻译完成
                             		Public.message("success","表格翻译完成！")
                             		$("body").mLoading("hide")
+                            		this.isTableTranslated = false;
+                            		this.isFormTranslated=false;
 								}
                                 this.numCop = 0
 //	   							console.log(allTableData)
@@ -2406,7 +2414,6 @@ let ReportConfig = {
             let formTitlesEn = this.formTitleEn;
             let formIndexEn = this.formIndexEn;
             //_this.formDataArr
-            
             formIndexEn.forEach((item,index)=>{
                 let alterSource = formTitlesEn[index]["alter_source"];
 //    		console.log(alterSource)
@@ -2468,6 +2475,8 @@ let ReportConfig = {
                     					//如果表格也翻译完成
                     					Public.message("success","表单翻译完成！")
                     					$("body").mLoading("hide")
+                    					this.isTableTranslated = false;
+                                		this.isFormTranslated=false;
                     				}
                     				
                     			}
@@ -2637,7 +2646,6 @@ let ReportConfig = {
                 })
             })
         },1500)
-         
     },
     showTranslateMadal(){
         let _this = this

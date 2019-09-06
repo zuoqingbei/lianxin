@@ -126,7 +126,7 @@ let ReportConfig = {
         				})
         				$table.bootstrapTable("load",rows)
         				
-        				/*$(".monyCol").each((index,item)=>{
+        				$(".monyCol").each((index,item)=>{
         					if(!$(item).attr("data-field")){
         						//不是表头
         						$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
@@ -135,7 +135,7 @@ let ReportConfig = {
         					if($(item).text() === 'NaN') {
         						$(item).text('')
         					}
-        				})*/
+        				})
         				setTimeout(() => {
         					let height = $table.parents(".fixed-table-body").siblings(".fixed-table-header").height();
     	    				if(rows.length < 1) {
@@ -1546,7 +1546,7 @@ let ReportConfig = {
     		$("#modal_save"+item).unbind().click(()=>{
     			let dataJson = []
     			let dataJsonObj = {}
-    			let formArr = Array.from($("#modal"+item).find(".form-inline"))
+    			let formArr = Array.from($("#modal"+item).find(".form-inline"));
 				formArr.forEach((item,index)=>{
 					let id = $(item).children("label").next().attr("id");
 					//锟э窖拷锟锟斤拷锟斤拷*锟斤拷
@@ -1610,6 +1610,13 @@ let ReportConfig = {
             				Public.message("success",this.isAdd?'新增成功！':'修改成功！')
             				//刷新数据
         					_this.refreshTable($("#table"+item));
+            				let formArr = Array.from($("#modal"+item).find(".monyCol"));
+            				//console.log(formArr)
+            				formArr.forEach((item,index)=>{
+            					let name = $(item).text();
+            					if(name!=""&&name!=undefined)
+            					$(item).text(format(name));
+            				});
             			}else {
             				Public.message("error",data.message)
             			}
@@ -1620,7 +1627,7 @@ let ReportConfig = {
     },
     refreshTable(ele){
     	//刷新表格中的数据
-    	$(ele).bootstrapTable("refresh")
+    	$(ele).bootstrapTable("refresh");
     },
     getFormData(form) {
     	//序列化
@@ -1871,7 +1878,9 @@ let ReportConfig = {
     	
     },
 }
-
+function format (num) {
+    return (num.toFixed() + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
+}
 ReportConfig.init();
 $('.return_back').on('click',function () {
     layer.confirm('是否保存已录入信息？', {

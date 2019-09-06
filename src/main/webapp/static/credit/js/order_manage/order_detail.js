@@ -1,6 +1,7 @@
 let OrderDetail = {
     init: function () {
         this.row = JSON.parse(localStorage.getItem("row"));
+        console.log('~~row：', this.row);
         this.isQuality = !!this.row.quality_type;//是否质检页面
         this.quality_deal = ''; //订单处理阶段 0-完成，1-退回/修改
         this.qualityOpinionId = '';
@@ -100,6 +101,7 @@ let OrderDetail = {
         let type = this.row.quality_type ? 3 : 2;// 质检页面type传'',详情页面type传0
         $.get(`${this.BASE_PATH}getmodule/list/`, {id, reportType, type}, (data) => {
             setTimeout(() => {
+                console.log('~~~详情data.modules：', data.modules);
                 if (!data.defaultModule) {
                     console.error(`--本页面接口故障：
                         ${this.BASE_PATH}getmodule/detail/?id=${id}&reportType=${reportType}&type=0`);
@@ -116,6 +118,7 @@ let OrderDetail = {
     setContent: function () {
         let $moduleWrap = $('<div class="module-wrap bg-f company-info px-4 mb-4"></div>');
         let $moduleTitle = $('<h3 class="l-title"></h3>');
+
         //获取将数字转换成汉字的selectInfo
         let selectInfoObj = {};
         this.data.modules.forEach((item, index) => {
@@ -130,6 +133,7 @@ let OrderDetail = {
         });
         this.selectInfo = '[' + JSON.stringify(selectInfoObj) + ']';
         // console.log('~~this.selectInfo:', this.selectInfo);
+
         // smallModileType数据类型：0-表单，1-表格，11-带饼图的表格，2-附件，4-流程进度，6-信用等级，7-多行文本框
         this.data.modules.forEach((item, index, items) => {
             let smallModuleType = item.smallModileType;
@@ -167,20 +171,11 @@ let OrderDetail = {
                                 </span>
                             </div>`;
                         } else {
-                        	if (item.field_type === 'select') {
-                        		 formHtml += `
-                                     <div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money' ? 'moneyCol' : ''}">
-                                         <span>${item.temp_name}：</span>
-                                         <span data-column_name="${item.column_name}" data-select-url=${item.get_source}></span>
-                                     </div>`
-							}else {
-								// 对行业情况下面的行业代码和行业名称进行dom结构布局
-								formHtml += `
-									<div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money' ? 'moneyCol' : ''}">
-									<span>${item.temp_name}：</span>
-									<span data-column_name="${item.column_name}"></span>
-									</div>`
-							}
+                            formHtml += `
+                            <div class="col-md-4 mt-2 mb-2 ${item.field_type === 'money' ? 'moneyCol' : ''}">
+                                <span>${item.temp_name}：</span>
+                                <span data-column_name="${item.column_name}"></span>
+                            </div>`
                         }
                     });
                     $wrap.append(`
@@ -188,7 +183,7 @@ let OrderDetail = {
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
                     //绑数
-                    if (false) { //表单头部取数于本地存储
+                    if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
                             let text = _this.row[$(this).data('column_name')];
                             $(this).text(Public.textFilter(text, 'null'));
@@ -204,27 +199,7 @@ let OrderDetail = {
                                     if ($(this).hasClass('radioBox')) {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
-                                    	if ($(this).data("select-url") && !isNaN(data.rows[0][column_name])) {
-											let url = $(this).data("select-url")
-											let val = data.rows[0][column_name]
-											let that = this
-											$.ajax({
-												url:BASE_PATH + `credit/front/ReportGetData/` + url,
-												type:'GET',
-												success:data=>{
-													let str = data.selectStr;
-													let strArr = str.split('</option>')
-													strArr.slice(0,strArr.length-1).forEach(item=>{
-														if (item.includes(val)) {
-															$(that).text(item.slice(item.search(/>/)+1));
-														}
-													})
-												}
-											})
-										}else {
-											$(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
-											//console.log("data.rows[0][column_name],",data.rows[0])
-										}
+                                        $(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
                                     }
                                 });
                                 $wrap.find('div.moneyCol [data-column_name]').text(function () {
@@ -498,7 +473,6 @@ let OrderDetail = {
                                 // data.message = "报告生成或者发送失败！请联系管理员！";
                                 // data.statusCode = 0;
                                 if (param === 'update' || param2 === 'submit') {
-                                	  $("body").mLoading("hide")
                                     if (data.statusCode === 0) {
                                         Public.message('error', data.message)
                                     } else {
@@ -561,7 +535,6 @@ let OrderDetail = {
 
                     });
                     $("#submit").click(function () {
-                    	 $("body").mLoading("show")
                         $("#save").trigger('click', 'submit');
                     });
                     break;
@@ -620,7 +593,7 @@ let OrderDetail = {
                         });
                         objArr.push(obj)
                     });
-                    //console.log("~~~对象数组：", objArr);
+                    console.log("~~~对象数组：", objArr);
 
                     //递归初始化
                     let [targetPosition, currPosition] = ['', ''];
@@ -654,7 +627,7 @@ let OrderDetail = {
                     }
                 }
 
-                    //console.log("~~~targetObj：", JSON.stringify(targetObj, undefined, 2));
+                    console.log("~~~targetObj：", JSON.stringify(targetObj, undefined, 2));
                     let myChart = echarts.init($("#ec04_tree")[0]);
                     myChart.setOption(option = {
                         tooltip: {
@@ -796,6 +769,7 @@ let OrderDetail = {
         if (!type9MulText.contents) {
             return
         }
+        console.log('~~type9MulText.contents',type9MulText.contents);
         type9MulText.contents.forEach(function (content, index) {// 多行文本框
             if (index < 10) {
                 return
@@ -982,13 +956,9 @@ let OrderDetail = {
     },
     // 设置头部信息
     setHeader() {
-    	this.data.defaultModule.forEach(item=>{
-    		if (item.node_level === '1') {
-    			$("#orderName").text(item.temp_name + " :");
-			}
-    	})
+        $("#orderName").text(this.data.defaultModule[0].temp_name + " :");
         $("#orderNum").text(this.row.num);
-        $("#status_js").html(this.row.statusName);
+        $("#status").text(this.row.statusName);
     },
     initProcess() {
         let $li = $(`<li>
@@ -1042,7 +1012,6 @@ let OrderDetail = {
         }
         // 绑数
         $.post(this.getUrl(item, otherProperty), {selectInfo: this.selectInfo}, (data) => {
-        	//console.log("data====:",data)
                 if (data.rows) {
                     if (data.rows.length === 0) {
                         $wrap.find('tbody').append(`<tr><td class="text-center pt-3" colspan="${item.contents.length}">${this.english ? 'No matching records were found' : '没有找到匹配的记录'}</td></tr>`);
@@ -1101,31 +1070,56 @@ let OrderDetail = {
                         });
                         $wrap.find('tbody').append($tr);
                     });
-                    //股东信息表格加合计功能
-                    if (['股东信息', 'Shareholding'].includes(item.title.temp_name)) {
-                        let $sumTr = $('<tr class="tableSum font-weight-bold" style="background-color: var(--bg-thead);"></tr>');
-                        $wrap.find('thead th').each(function (index, elem) {
-                            let tdHtml = '';
-                            if (index === 0) {
-                                tdHtml = item.title.temp_name === '股东信息' ? '<td>合计</td>' : '<td>total</td>';
-                            } else if (['出资金额', 'Amount', '出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
-                                let sum = 0;
-                                $(this).parents('table').find('tbody>tr').each(function (i, tr) {
-                                    sum += ($(tr).find("td").eq(index).text().replace(/[,]/g, "") - 0.0)
-                                });
-                                if (['出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
-                                    sum = sum.toFixed(2);
-                                    if (sum === '99.99' || sum === '100.01') {
-                                        sum = '100.00'
+                    // //股东信息表格加合计功能  //废弃
+                    // if (['股东信息', 'Shareholding'].includes(item.title.temp_name)) {
+                    //     let $sumTr = $('<tr class="tableSum font-weight-bold" style="background-color: var(--bg-thead);"></tr>');
+                    //     $wrap.find('thead th').each(function (index, elem) {
+                    //         let tdHtml = '';
+                    //         if (index === 0) {
+                    //             tdHtml = item.title.temp_name === '股东信息' ? '<td>合计</td>' : '<td>total</td>';
+                    //         } else if (['出资金额', 'Amount', '出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
+                    //             let sum = 0;
+                    //             $(this).parents('table').find('tbody>tr').each(function (i, tr) {
+                    //                 sum += ($(tr).find("td").eq(index).text().replace(/[,]/g, "") - 0.0)
+                    //             });
+                    //             if (['出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
+                    //                 sum = sum.toFixed(2);
+                    //                 if (sum === '99.99') {
+                    //                     sum = '100.00'
+                    //                 }
+                    //             }
+                    //             tdHtml = `<td>${sum}</td>`;
+                    //         } else {
+                    //             tdHtml = '<td></td>';
+                    //         }
+                    //         $sumTr.append(tdHtml)
+                    //     });
+                    //     $wrap.find('tbody').append($sumTr);
+                    // }
+                    //出资情况/股东信息添加合计
+                    if(this.getUrl(item, otherProperty).indexOf('getBootStrapTable?tableName=credit_company_shareholder&className=CreditCompanyShareholder')!==-1 ){
+                            let $sumTr = $('<tr class="tableSum font-weight-bold" style="background-color: var(--bg-thead);"></tr>');
+                            $wrap.find('thead th').each(function (index, elem) {
+                                let tdHtml = '';
+                                if (index === 0) {
+                                    // tdHtml = item.title.temp_name === '股东信息' ? '<td>合计</td>' : '<td>total</td>';
+                                    tdHtml = '<td>合计</td>';
+                                } else  {
+                                    let sum = 0;
+                                    $(this).parents('table').find('tbody>tr').each(function (i, tr) {
+                                        sum += ($(tr).find("td").eq(index).text().replace(/[,]/g, "") - 0.0)
+                                    });
+                                    if (['出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
+                                        sum = sum.toFixed(2);
+                                        if (sum === '99.99') {
+                                            sum = '100.00'
+                                        }
                                     }
+                                    tdHtml = `<td>${sum}</td>`;
                                 }
-                                tdHtml = `<td>${sum}</td>`;
-                            } else {
-                                tdHtml = '<td></td>';
-                            }
-                            $sumTr.append(tdHtml)
-                        });
-                        $wrap.find('tbody').append($sumTr);
+                                $sumTr.append(tdHtml)
+                            });
+                            $wrap.find('tbody').append($sumTr);
                     }
                     // 设置千分位
                     let index = $wrap.find('table th.moneyCol').index();
