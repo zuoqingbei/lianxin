@@ -42,7 +42,42 @@ public class FtpUploadFileUtils {
 					String filename=file.getName();
 					String type = FileTypeUtils.getFileType(filename);
 					String name = FileTypeUtils.getName(filename);
+					name=URLEncoder.encode(name, "UTF-8");
 					String ftpName=name+now+"."+type;
+					String s=uploadFile(file, ftpName);
+					if(!"success".equals(s)){
+						result=false;
+						return result;
+					}
+				}
+			} catch (Exception e) {
+				 e.printStackTrace();
+				 throw new RuntimeException(e);
+			} finally {
+				try {
+					// 判断输入流是否存在
+					if (null != fis) {
+						// 关闭输入流
+						fis.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return result;
+		}
+	  
+	  public static boolean storeMoreFtpFile2(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException  {
+			FileInputStream fis = null;
+			boolean result = true;
+			try {
+				for(File file:filelist){
+					fis = new FileInputStream(file);
+					String filename=file.getName();
+					String type = FileTypeUtils.getFileType(filename);
+					String name = FileTypeUtils.getName(filename);
+					name=URLEncoder.encode(name, "UTF-8");
+					String ftpName=now+"."+type;
 					String s=uploadFile(file, ftpName);
 					if(!"success".equals(s)){
 						result=false;
