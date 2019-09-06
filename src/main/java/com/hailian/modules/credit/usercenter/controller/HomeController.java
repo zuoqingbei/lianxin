@@ -14,12 +14,15 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.hailian.modules.admin.ordermanager.model.*;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.annotation.ApiOperation;
 import com.feizhou.swagger.annotation.Param;
 import com.feizhou.swagger.annotation.Params;
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.api.constant.RoleCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.base.Paginator;
@@ -44,6 +47,8 @@ import com.hailian.system.user.UserSvc;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
+import com.hailian.util.word.BaseBusiCrdt;
+import com.hailian.util.word.Roc102;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
@@ -69,6 +74,7 @@ public class HomeController extends BaseProjectController {
 	public static final String password = Config.getStr("ftp_password");//域用户密码
 	public static final String searver_port = Config.getStr("searver_port");//端口号
 	public static final String ftp_store = Config.getStr("ftp_store");//存储目录
+	public static Logger log = Logger.getLogger(HomeController.class);
 
 	public void index() {
 		List<SysDictDetail> country=	SysDictDetail.dao.find("select * from sys_dict_detail where dict_type=?","country");
@@ -498,15 +504,17 @@ public class HomeController extends BaseProjectController {
 		boolean isagent=false;//自动分配是否成功
 		if(!countryId.equals("106") && !countryId.equals("61") && !countryId.equals("62") && !countryId.equals("92")){
 			isNeedAgent=true;
-			  //代理自动分配
-			  AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroad(countryId,model.get("speed"));
-			  if(agentPrice!=null){
-				  model.set("status", "295");
-				  model.set("agent_id", agentPrice.get("agent_id"));
-				  model.set("agent_priceId", agentPrice.get("id"));
-				  isagent=true;
-			  }
+			//代理自动分配
+			AgentPriceModel agentPrice = AgentPriceService.service.getAgentAbroad(countryId,model.get("speed"));
+			if(agentPrice!=null){
+				model.set("status", "295");
+				model.set("agent_id", agentPrice.get("agent_id"));
+				model.set("agent_priceId", agentPrice.get("id"));
+				isagent=true;
+			}
 		}
+		boolean isFastsubmmit=false;
+		isFastsubmmit=(!is_fastsubmmit.equals("-1"));
 		//获取订单记录
 		CreditOrderFlow cof=new CreditOrderFlow();
 		//订单号
@@ -533,9 +541,24 @@ public class HomeController extends BaseProjectController {
 			renderJson(new ResultType(0,"订单创建失败!"));
 			return;
 		}//保存订单
-		
-		//非快速递交时创建报告
-		if(is_fastsubmmit.equals("-1")){
+		//查询到有相同公司报告直接提交
+		if(isFastsubmmit){
+			int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
+			theSameOrder = OrderManagerService.service.getTheSameOrder(right_company_name_en,model.get("report_type")+"",model.get("report_language")+"", this);
+			CreditOrderInfo order = new CreditOrderInfo();
+			order.set("company_id",companInfoId);
+			order.set("is_fastsubmmit", theSameOrder.get("id"));
+			order.set("status", "311");
+			if(null!=theSameOrder) {
+				order.set("company_by_report",theSameOrder.get("company_by_report"));
+			}
+			order.set("id",id);
+			order.update();
+			isNeedAgent=false;//是否需要自动分配
+			isagent=true;
+			model=CreditOrderInfo.dao.findById(id);
+		}else{
+			//非快速递交时创建报告
 			//System.out.println(model.get("id"));
 			if(modelid==null){
 				int companInfoId = crateReportByOrder(userid, model, id);//根据新订单创建报告
@@ -623,6 +646,13 @@ public class HomeController extends BaseProjectController {
 		try {
 			ResultType resultType = new ResultType(1,"操作成功");
 			if(!isNeedAgent){
+				//快速递交的直接发送报告
+				if(isFastsubmmit){
+					String result=reSendReport(model.getStr("is_fastsubmmit"), model.getStr("num"),getSessionUser().getUserid());
+					if(!"success".equals(result)){
+						resultType = new ResultType(0,"递交订单失败！");
+					}
+				}
 				renderJson(resultType); return;
 			}
 			if(!isagent){
@@ -639,6 +669,101 @@ public class HomeController extends BaseProjectController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	public  String reSendReport(String oldOrderId,String newOrderNum,Integer userid){
+		CreditOrderInfo m = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", oldOrderId);
+		if(m==null){
+			return "failure";
+		}
+		String orderNum=m.getStr("num");
+		String errorMessage = "";
+        Record record = new Record();
+        record.set("statusCode", 1);
+        record.set("message", "发送成功!");
+        CreditOrderInfo newOrder = CreditOrderInfo.dao.findFirst("select * from credit_order_info where num=?", newOrderNum);
+        String newOrderId = newOrder.get("id")+"";
+        CreditOrderInfo model = CreditOrderInfo.dao.findFirst("select * from credit_order_info where num=?", orderNum);
+        String orderId = model.get("id")+"";
+        try{
+            String speedLanguage = "s1.detail_name";
+            String meataSql = "select report_type,report_language from credit_order_info  where num = ?";
+            CreditOrderInfo metaOrder = CreditOrderInfo.dao.findFirst(meataSql, orderNum);
+            String reportType = metaOrder.getStr("report_type");
+            String report_language = metaOrder.getStr("report_language");
+            if("EN".equals(ReportTypeCons.whichLanguage(reportType))) {
+                speedLanguage += "_en";
+            }
+            //业务sql
+            String sql = "select t.*,"+speedLanguage+" as speedName from credit_order_info t left join sys_dict_detail s1 on t.speed = s1.detail_id  where t.id = ?";
+            CreditOrderInfo order = CreditOrderInfo.dao.findFirst(sql, orderId);
+            //做新旧转化
+            order.set("custom_id", newOrder.get("custom_id"));
+            order.set("reference_num", newOrder.get("reference_num"));
+            Map<String,Object> extend=new HashMap<String, Object>();
+            extend.put("order_code", newOrderNum);
+            if (ReportTypeCons.ROC_HY.equals(reportType) || ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
+                //中文繁体+英文
+                if ("217".equals(report_language)) {
+                    if ("12".equals(reportType) || "14".equals(reportType)) {
+                        Roc102.reportTable(order, reportType, "613", userid,extend);
+                    }
+                } else {
+                    Roc102.reportTable(order, reportType, "612", userid,extend);
+                }
+            } else {
+                if ("213".equals(report_language)) {
+                    BaseBusiCrdt.reportTable(order, reportType, "612", userid,extend);
+                } else if ("215".equals(report_language)) {
+                    //英文
+                    BaseBusiCrdt.reportTable(order, reportType, "613", userid,extend);
+                } else if ("216".equals(report_language)) {
+                    //中文简体+英文
+                    if ("1".equals(reportType)) {
+                        BaseBusiCrdt.reportTable(order, "1", "612", userid,extend);
+                        BaseBusiCrdt.reportTable(order, "7", "613", userid,extend);
+                    } else if ("8".equals(reportType)) {
+                        BaseBusiCrdt.reportTable(order, "8", "612", userid,extend);
+                        BaseBusiCrdt.reportTable(order, "9", "613", userid,extend);
+                    } else if ("10".equals(reportType)) {
+                        BaseBusiCrdt.reportTable(order, "10", "612", userid,extend);
+                        BaseBusiCrdt.reportTable(order, "11", "613", userid,extend);
+                    } else {
+                        BaseBusiCrdt.reportTable(order, reportType, "", userid,extend);
+                    }
+                }
+            }
+            //计算绩效
+            try{
+                OrderProcessController op = new OrderProcessController();
+                op.getKpi(model,userid);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }catch(Exception e){
+                //日志输出
+                e.printStackTrace();
+                errorMessage = ReportInfoGetData.outPutErroLog(log, e);
+                //报告发送失败,改变状态
+                CreditOrderInfo tempModel = new CreditOrderInfo();
+                int statusCode = 999;
+                tempModel.set("id", orderId).set("status", statusCode).update();
+                model.set("status", statusCode);
+                record.clear().set("statusCode", 0).set("message", "递交订单发送报告时失败!请联系管理员或者再次发送!");
+                CreditOrderFlow.addOneEntry(this, model.set("status",statusCode),errorMessage,true);
+                //增加站内信
+                ReportInfoGetData.sendErrMsg(model, userid,  "递交订单时失败!请联系管理员或者再次发送!");
+                return "failure";
+        }
+        //发送成功修改状态
+        //增加跟踪记录
+      //报告发送成功,改变状态
+        /*CreditOrderInfo tempModel = new CreditOrderInfo();
+        int statusCode = 311;
+        tempModel.set("id", orderId).set("status", statusCode).update();
+        CreditOrderFlow.addOneEntry(this, model.set("status",statusCode),errorMessage,true);
+        CreditOperationLog.dao.addOneEntry(userid, model, "订单递交/", "/credit/front/home/saveOrder");//操作日志记录
+*/        return "success";
 	}
 	public int crateReportByOrder(Integer userid, CreditOrderInfo model,
 			String id) {
