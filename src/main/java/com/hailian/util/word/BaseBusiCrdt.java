@@ -80,6 +80,9 @@ public class BaseBusiCrdt extends BaseWord{
      * @throws Exception
      */
     public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) throws Exception {
+    	reportTable(order, reportType, sysLanguage, userid, null);
+    }
+    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid,Map<String,Object> extend) throws Exception {
         HashMap<String, Object> map = new HashMap<String, Object>();
         //报告名称
         String reportNameCh = Db.query("select name from credit_report_type where del_flag=0 and id=?",reportType)+"";
@@ -495,6 +498,9 @@ public class BaseBusiCrdt extends BaseWord{
             map.put("bigFinancial", new MiniTableRenderData(null));
         }
         map = (HashMap<String, Object>) dealDataMapByreportType(reportType,map);
+        if(extend!=null){
+        	map.put("order_code", extend.get("order_code"));
+        }
         //在指定路径生成word
         synchronized (o){
             BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");

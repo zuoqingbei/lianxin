@@ -456,23 +456,23 @@ $(document).ready(function () {
 	        dataType:"json",
 	        success: function(data) {
 	        	console.log(data)
-	        	/*if(data.flag.statusCode===1){
+	        	if(data.flag.statusCode===1){
 	        		$("#reporttime").html(data.result.receiver_date);
 	        		$("#isfinance").html(data.result.is_hava_finance);
 	        		$("#lastFiscalYear").html(data.result.last_fiscal_year);
 	        		$("#is_fastsubmit").val(data.result.id);
 	        		//弹出提示
 	        		$("#show_checked_modal").trigger("click")
-           		 }else{*/
+           		 }else{
 //           			 Public.message(data.flag.message)
            			tableSubmit();
-           		 /*}*/
+           		 }
 	        	
 	        },
 	    });
 }
  $("#modal_checked_submit").click(function(){
-		 
+	 $("#is_fastsubmit").val("0");
 		  tableSubmit();
  })
  $("#modal_checked_create").click(function(){

@@ -27,7 +27,31 @@ public class GoogleTranslationApi {
 	    	}
 	    	if(StringUtils.isBlank(value)){
 	    		 try {
-		                Thread.sleep(RandomUtil.randomLong(500,5000));
+		                Thread.sleep(RandomUtil.randomLong(500,2000));
+		                value=detectLanguage(LANG.EN, text);
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+	    	}
+	    	if(StringUtils.isBlank(value)){
+	    		 try {
+		                Thread.sleep(RandomUtil.randomLong(1000,3000));
+		                value=detectLanguage(LANG.EN, text);
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+	    	}
+	    	if(StringUtils.isBlank(value)){
+	    		 try {
+		                Thread.sleep(RandomUtil.randomLong(1000,4000));
+		                value=detectLanguage(LANG.EN, text);
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+	    	}
+	    	if(StringUtils.isBlank(value)){
+	    		 try {
+		                Thread.sleep(RandomUtil.randomLong(1000,5000));
 		                value=detectLanguage(LANG.EN, text);
 		            } catch (InterruptedException e) {
 		                e.printStackTrace();
@@ -52,7 +76,31 @@ public class GoogleTranslationApi {
 	    	}
 	    	if(StringUtils.isBlank(value)){
 	    		 try {
-		                Thread.sleep(RandomUtil.randomLong(500,5000));
+		                Thread.sleep(RandomUtil.randomLong(500,2000));
+		                value=detectLanguage(LANG.ZHTW, text);
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+	    	}
+	    	if(StringUtils.isBlank(value)){
+	    		 try {
+		                Thread.sleep(RandomUtil.randomLong(1000,3000));
+		                value=detectLanguage(LANG.ZHTW, text);
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+	    	}
+	    	if(StringUtils.isBlank(value)){
+	    		 try {
+		                Thread.sleep(RandomUtil.randomLong(1000,4000));
+		                value=detectLanguage(LANG.ZHTW, text);
+		            } catch (InterruptedException e) {
+		                e.printStackTrace();
+		            }
+	    	}
+	    	if(StringUtils.isBlank(value)){
+	    		 try {
+		                Thread.sleep(RandomUtil.randomLong(1000,5000));
 		                value=detectLanguage(LANG.ZHTW, text);
 		            } catch (InterruptedException e) {
 		                e.printStackTrace();

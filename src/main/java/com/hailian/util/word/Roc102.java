@@ -25,6 +25,7 @@ import com.jfinal.plugin.activerecord.Db;
 import org.apache.commons.lang.StringUtils;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
+
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.HttpURLConnection;
@@ -74,8 +75,8 @@ public class Roc102 extends BaseWord{
      * @param sysLanguage 报告内容语言
      * @param userid 当前登录人
      */
-    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) throws Exception{
-        //项目路劲
+    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid,Map<String,Object> extend) throws Exception{
+    	 //项目路劲
         String webRoot = PathKit.getWebRootPath();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         HashMap<String, Object> map = new HashMap<String, Object>();
@@ -143,8 +144,8 @@ public class Roc102 extends BaseWord{
                     String reportCompanyName = order.getStr("right_company_name_en");//创建订单时候用的公司名
                     if (!StrUtils.isEmpty(translatedName)) {
                         if (translatedName.equals(reportCompanyName)) {
-                            map.put("as_registered_zh", "與註冊記錄同");
-                            map.put("as_registered_en", "as registered");
+                            map.put("as_registered_zh", "(與註冊記錄同)");
+                            map.put("as_registered_en", "(as registered)");
                         }
                     }
                 }
@@ -366,7 +367,7 @@ public class Roc102 extends BaseWord{
                 //取列值
                 LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 if((ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType))
-                		&&("credit_company_subtables".equals(tableName)||"credit_company_branches".equals(tableName))){
+                		&&("credit_company_subtables".equals(tableName)||"credit_company_branches".equals(tableName))&&rows.size()>0){
                 	 //取列值
                     for (int i = 0; i < child.size(); i++) {
                         CreditReportModuleConf module = child.get(i);
@@ -525,7 +526,9 @@ public class Roc102 extends BaseWord{
             //财务-评价
             map.put("financial_eval", financialEval(statementsConf,reportType,sysLanguage));
         }
-
+        if(extend!=null){
+        	map.put("order_code", extend.get("order_code"));
+        }
         //生成word
        synchronized(o){
            BaseWord.buildNetWord(map, tplPath, _prePath + "_p.docx");
@@ -568,6 +571,9 @@ public class Roc102 extends BaseWord{
 
 
         }
+    }
+    public static void reportTable(CreditOrderInfo order,String reportType,String sysLanguage,Integer userid) throws Exception{
+    	reportTable(order, reportType, sysLanguage, userid, null);
     }
 
     /**
