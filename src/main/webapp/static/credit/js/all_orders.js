@@ -439,6 +439,7 @@ let Index = {
                             $('#client_country').append(`<option selected value="${row.countryId}">${row.country}</option>`)
                             $('#createBy').val(row.create_by);
                             $('#myId').val(row.id);
+							
                             layui.use('form', function () {
                                 var form = layui.form;
                                 $('#client_area').val(row.continent);
@@ -458,7 +459,40 @@ let Index = {
                                 $('#client_email').val(row.email);
                                 $('#remakes').val(row.remarks);
                                 $('#myId').val(row.id);
-                                console.log('gngixn')
+                                console.log(row.files)
+                                var h='';
+								for(var x=0;x<row.files.length;x++){
+								      let filetype=row.files[x].ext;
+									  let filename = row.files[x].originalname + '.' +filetype
+									  let fileicon = '';
+									  if(filetype === 'doc' || filetype === 'docx') {
+										fileicon = '/static/credit/imgs/order/word.png'
+									  }else if(filetype === 'xlsx' || filetype === 'xls') {
+										fileicon = '/static/credit/imgs/order/Excel.png'
+									  }else if(filetype === 'png') {
+										fileicon = '/static/credit/imgs/order/PNG.png'
+									  }else if(filetype === 'jpg') {
+										fileicon = '/static/credit/imgs/order/JPG.png'
+									  }else if(filetype === 'pdf') {
+										fileicon = '/static/credit/imgs/order/PDF.png'
+									  }else if(filetype === 'html') {
+										fileicon = '/static/credit/imgs/order/html.png'
+									  }
+									
+									h+=`<div class="uploadFile mt-3 mr-4 upload-over">
+									<input type="file" name="Files_${x+1}" id="upload_file" value="" class="file-input" style="visibility: hidden;"/>`;
+									h+=`<div class="over-box"><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p></div>`;
+									
+								}
+								$(".file-upload").html(`<label class=" ml-3">上传相关资料：</label>`+h);
+								 $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
+                                        <input type="file" name="Files_${row.files.length+1}" id="upload_file" value="" class="file-input" />
+                                        <div class="over-box">
+                                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+                                          <p class="mt-2">上传附件</p>
+                                        </div>
+                                    </div>`);
+								fileNum=row.files.length;
                                 form.render('select');
 
                                 //各种基于事件的操作，下面会有进一步介绍

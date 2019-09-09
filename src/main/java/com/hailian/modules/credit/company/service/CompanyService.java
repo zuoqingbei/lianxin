@@ -695,8 +695,13 @@ public class CompanyService {
 						model.set("category", Category);
 						String PublishedDate = CourtAnnouncement.getString("PublishedDate");//刊登日期
 						model.set("publisheddate", dateFormat(PublishedDate));
-						String PublishedPage = CourtAnnouncement.getString("PublishedPage");
-						model.set("publishedpage", PublishedPage);
+						/*String PublishedPage = CourtAnnouncement.getString("PublishedPage");
+						model.set("publishedpage", PublishedPage);*/
+						JSONArray a=CourtAnnouncement.getJSONArray("ProsecutorList");
+						if(a.size()>0){
+							String PublishedPage = a.getJSONObject(0).getString("Name");
+							model.set("publishedpage", PublishedPage);
+						}
 						String UploadDate = CourtAnnouncement.getString("UploadDate");//上传日期
 						model.set("uploaddate", dateFormat(UploadDate));
 						String Court = CourtAnnouncement.getString("Court");

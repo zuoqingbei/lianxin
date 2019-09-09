@@ -297,6 +297,17 @@ public class HomeController extends BaseProjectController {
 //		List<CreditOrderInfo> result=OrderManagerService.service.getOrdersService(status,model, user);
 		int total= page.getTotalRow();
 		List<CreditOrderInfo> rows=page.getList();
+		for(CreditOrderInfo order:rows){
+			//获取附件
+			List<CreditUploadFileModel> files=CreditUploadFileModel.dao.getFile(order.get("id")+"");//修改关联关系
+			for(CreditUploadFileModel file:files) {
+				String view_url=file.get("view_url");
+				String url=file.get("url");
+				file.set("view_url",  "http://"+ip+":"+searver_port+"/"+view_url);
+				file.set("url", "http://"+ip+":"+searver_port+"/"+url);	
+			}
+			order.put("files", files);
+		}
 		ResultType resultType=new ResultType(total,rows);
 		renderJson(resultType);
 	}

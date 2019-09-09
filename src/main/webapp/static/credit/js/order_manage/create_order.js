@@ -357,14 +357,13 @@ let
 			  }, 200);
 		  },
 		  fileEvent(){
-    	this.fileNum = 0;
-    	let that = this;
+    	fileNum= 0;
     	$(".close").click(function(){
-    		that.fileNum = 0;
+    		fileNum = 0;
     	});
       /**文件上传事件 */
       $(".file-upload").on('change','.uploadFile .file-input',function(){
-    	  that.fileNum = that.fileNum+1;
+    	  fileNum = fileNum+1;
           /**如果上传成功 */
           let filename = $(this).val().replace("C:\\fakepath\\","");
           let num = filename.split(".").length;
@@ -396,11 +395,12 @@ let
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
           $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-          if($(".uploadFile").length>4) {
+         
+		 if($("#orderForm").find(".uploadFile").length>4) {
             return;
           }
           $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-                                        <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
+                                        <input type="file" name="Files_${fileNum}" id="upload_file" value="" class="file-input" />
                                         <div class="over-box">
                                           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
                                           <p class="mt-2">上传附件</p>
@@ -425,9 +425,11 @@ let
 
     },
 	};
+var fileNum=0;
 $(document).ready(function () {
     Page.init();
 });
+
  function reste(){
  	$(".upload-over").remove()
  	$(".reste").val("");
