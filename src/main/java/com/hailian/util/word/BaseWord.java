@@ -480,25 +480,6 @@ public class BaseWord {
                             totalRow.put(column, val);
                         } else {
                             String val = totalRow.get(column);
-                            /*if(!("合计".equals(val)||"合計".equals(val))){
-                                val = "-";
-                            }*/
-                           /* 这段代码是对
-                            String v = totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val)||"合計".equals(val) ? val : "-";
-                           的分解
-                           String v = "-";
-                            if(totalRow.keySet().size()==0){
-                                v = "合计";
-                            }else{
-                                if(!("合计".equals(val)||"合計".equals(val))){
-                                    v = "-";
-                                }else{
-                                    v = val;
-                                }
-                                if("合计".equals(v)){
-                                v="合計";
-                            }
-                            }*/
                            if(ReportTypeCons.ROC_HY.equals(reportType)){//红印
                                val = "合计";
                            }else  if(ReportTypeCons.ROC_ZH.equals(reportType)){//ROC Chinese
@@ -574,8 +555,26 @@ public class BaseWord {
               
                 row.put(column,value);
             }
+            if("partner".equals(moduleName)&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))){
+        		//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
+            	String n="";
+            	if(row.get("currency")!=null&&StringUtils.isNotBlank(row.get("currency"))){
+            		n=row.get("contribution")+"("+row.get("currency")+")";
+            	}else{
+            		n=row.get("contribution");
+            	}
+            	row.remove("currency");
+            	row.put("contribution", n);
+        	};
             datas.add(row);
         }
+        if("partner".equals(moduleName)&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))){
+    		//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
+        	 Map<String, String> colMap = cols.get("contribution");
+        	 cols.remove("currency");
+        	 colMap.put("temp_name", "出资金额 （币种）");
+        	 cols.put("contribution", colMap);
+    	};
         //居中对齐
         TableStyle tableStyle = new TableStyle();
         tableStyle.setAlign(STJc.LEFT);

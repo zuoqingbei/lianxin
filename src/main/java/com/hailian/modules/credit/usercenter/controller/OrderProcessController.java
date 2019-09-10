@@ -945,7 +945,11 @@ public class OrderProcessController extends BaseProjectController{
                     File pdf = null;
                     //如果上传文档不是pdf或者图片或者则转化为pdf，以作预览
                     if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)&&!ext.equalsIgnoreCase("html")){
-                        pdf = Office2PDF.toPdf(uploadFile);
+                       try {
+                    	   pdf = Office2PDF.toPdf(uploadFile);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
                     }
                     commonFiles.add(uploadFile.getFile());
                     if(pdf!=null)
@@ -954,9 +958,9 @@ public class OrderProcessController extends BaseProjectController{
                 //将文件上传到服务器
                 boolean storePdfFile = true;
                 if(pdfFiles.size()>0) {
-                    storePdfFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",pdfFiles,storePath,ip,port,userName,password);
+                    storePdfFile = FtpUploadFileUtils.storeMoreFtpFile2(now+"",pdfFiles,storePath,ip,port,userName,password);
                 }
-                boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile(now+"",commonFiles,storePath,ip,port,userName,password);
+                boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile2(now+"",commonFiles,storePath,ip,port,userName,password);
                 if(!storePdfFile){
                     return new ResultType(0, "预览文件生成异常!");
                 }
@@ -971,6 +975,7 @@ public class OrderProcessController extends BaseProjectController{
                     String originalFile = upFileList.get(i).getFileName();
                     //不带后缀的文件名
                     String originalFileName = FileTypeUtils.getName(originalFile);
+                    originalFileName="";
                     //根据文件后缀名判断文件类型
                     String ext = FileTypeUtils.getFileType(originalFile);
                     //上传到服务器时的文件名
