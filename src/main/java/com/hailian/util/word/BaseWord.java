@@ -1651,7 +1651,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                  }*/
                 value = model.get(column) != null ? model.get(column) + "" : "";
 
-                if ("select".equals(fieldType)) {
+                if ("select".equals(fieldType)&&!("company_type".equals(column)&&"regist".equals(moduleName))) {
                     if("国籍".equals(strs[0])||"国家".equals(strs[0])){
                         value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
                     }else{

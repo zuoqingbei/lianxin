@@ -212,6 +212,21 @@ public class BaseBusiCrdt extends BaseWord{
                 	System.out.println(1);
                 }
                 List<BaseProjectModel> rows = (List<BaseProjectModel>)(report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType));
+                //公司性质和企业类型注释的合并
+                try{
+                    if("credit_company_info".equals(tableName)&&"regist".equals(key)){
+                        String companyType = rows.get(0).getInt("company_type")+"";//公司性质
+                        companyType = getValue(reportType, sysLanguage,
+                                sdf, "select", companyType+"");
+                        List<String> targetList = Db.query("select type_of_enterprise_remark from credit_company_info where id=?",new String[]{companyId});
+                        String comMark = targetList.get(0);//企业类型注释
+                        for (BaseProjectModel row  : rows) {
+                            row.set("company_type",StringUtils.isEmpty(comMark)?companyType:companyType+"\n"+comMark);
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
 
                 MiniTableRenderData table = null;
                 if ("s".equals(tableType)) {
@@ -260,6 +275,9 @@ public class BaseBusiCrdt extends BaseWord{
                 String ci = conf.getInt("id") + "";
                 String s = conf.getStr("get_source");
                 String columnName = conf.getStr("column_name");
+               /* if("credit_company_info".equals(tableName)&&"company_type".equals(columnName)){
+                    continue;
+                }*/
                 String fieldType = conf.get("field_type");
                 if("business_date_end".equals(columnName)){
                 	System.out.println(111);
@@ -499,7 +517,6 @@ public class BaseBusiCrdt extends BaseWord{
                 map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
             }
         }
-
         //财务模块生成
         List<String> excelPath = new ArrayList<>();
         List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
