@@ -928,6 +928,20 @@ public class BaseWord {
                         style.setFontFamily("宋体");
                     }
                 }
+                //订单公司名称和报告公司名称相同，则显示“與註冊記錄同”
+                if("name".equals(column)&&ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)){
+                    try {
+                        String reportCompanyName = ((BaseProjectModel)(rows.get(0))).getStr("right_company_name_en");//创建订单时候用的公司名
+                        if (!StrUtils.isEmpty(reportCompanyName)&&!StrUtils.isEmpty(value)) {
+                            if (reportCompanyName.trim().equals(value.trim())) {
+                                map.put("as_registered_zh", "(與註冊記錄同)");
+                                map.put("as_registered_en", "(as registered)");
+                            }
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
                 map.put(column, new TextRenderData(value, style));
             }
         }
