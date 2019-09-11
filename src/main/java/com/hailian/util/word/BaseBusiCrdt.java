@@ -229,6 +229,9 @@ public class BaseBusiCrdt extends BaseWord{
                 }
 
                 MiniTableRenderData table = null;
+                specialHandlingForTable(key,child,rows,reportType) ;
+
+
                 if ("s".equals(tableType)) {
 
                     //如果是法人股东详情或者是自热人股东详情做特殊解析
@@ -238,6 +241,7 @@ public class BaseBusiCrdt extends BaseWord{
                             for (int i=0;i<child.size();i++) {
                                 if ("investment_situation".equals(child.get(i).get("column_name"))){
                                     child.remove(i);
+                                    break;
                                 }
                             }
                             //加上一些默认的字段
@@ -609,7 +613,54 @@ public class BaseBusiCrdt extends BaseWord{
             sendMail(reportName,customId, fileList);
         }*/
     }
-	private static String getValue(String reportType, String sysLanguage,
+
+    /**
+     * 针对表格数据的特殊处理
+     * @param key
+     * @param child
+     * @param rows
+     * @param reportType
+     */
+    private static void specialHandlingForTable(String key, List<CreditReportModuleConf> child, List<BaseProjectModel> rows, String reportType) {
+        //合并员工人数和员工统计时间
+        try{
+            //移除统计时间
+            if("zhaiyao".equals(key)){
+                for (int i=0;i<child.size();i++) {
+                    if ("emp_num_date".equals(child.get(i).get("column_name"))){
+                        child.remove(i);
+                        break;
+                    }
+                }
+
+            }
+            //合并数据
+            String empNum = null;
+            if(rows.get(0).get("emp_num")!=null){
+                empNum = rows.get(0).get("emp_num")+"";
+            }
+            String empNumDate =  String.valueOf(rows.get(0).get("emp_num_date"));
+            for (BaseProjectModel  model: rows) {
+                if(!StringUtils.isEmpty(empNum)){
+                    if(!StringUtils.isEmpty(empNumDate)){
+                        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                            model.set("emp_num",empNum+" ("+empNumDate+")");
+                        }else{
+                            model.set("emp_num","("+empNumDate+") "+empNum);
+                        }
+                    }else{
+                        model.set("emp_num",empNum);
+                    }
+                }
+            }
+           }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private static String getValue(String reportType, String sysLanguage,
 			SimpleDateFormat sdf, String fieldType, String value) {
 		//下拉选择
 		if ("select".equals(fieldType)) {
