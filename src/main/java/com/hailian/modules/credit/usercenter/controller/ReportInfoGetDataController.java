@@ -210,6 +210,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		if("CreditCompanyInfo".equals(className)){
 			System.out.println(1);
 		}
+
 		if(companyId==null||"".equals(companyId)) {
 			 companyId = getPara("company_id","");
 		}
@@ -219,6 +220,13 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		// 获取关联字典表需要转义的下拉选
 		String selectInfo = getPara("selectInfo");
         List rows = getTableData(isCompanyMainTable,companyId,tableName,className,confId,selectInfo,type);
+        if("CreditCompanySubtables".equals(className)){
+            for (Object row  : rows) {
+                if(((BaseProjectModel)(row)).get("date")==null){
+                    ((BaseProjectModel)(row)).set("date","");
+                }
+            }
+        }
 		renderJson(record.set("rows", rows).set("total", rows!=null?rows.size():null));
 	}
 
