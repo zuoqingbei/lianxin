@@ -1109,12 +1109,12 @@ let OrderDetail = {
                                     $(this).parents('table').find('tbody>tr').each(function (i, tr) {
                                         sum += ($(tr).find("td").eq(index).text().replace(/[,]/g, "") - 0.0)
                                     });
-                                    if (['出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
+                                    //if (['出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
                                         sum = sum.toFixed(2);
                                         if (sum === '99.99') {
                                             sum = '100.00'
                                         }
-                                    }
+                                    //}
                                     tdHtml = `<td>${sum}</td>`;
                                 }
                                 $sumTr.append(tdHtml)

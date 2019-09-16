@@ -53,6 +53,7 @@ public class BaseBusiCrdt extends BaseWord{
     private static Object o = new Object();
     public static void main(String []args){
         try {
+            System.out.println(timeRangeHandling("2019-09-13 - 2019-10-09", " - ", "yyyy-mm-dd","yyyy年MM月dd日"));
             /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
             URL url = new URL(urlStr);
             HttpURLConnection uc = (HttpURLConnection) url.openConnection();
@@ -229,8 +230,9 @@ public class BaseBusiCrdt extends BaseWord{
                 }
 
                 MiniTableRenderData table = null;
-                specialHandlingForTable(key,child,rows,reportType) ;
-
+                if("zhaiyao".equals(key)){
+                    specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
+                }
 
                 if ("s".equals(tableType)) {
 
@@ -621,36 +623,28 @@ public class BaseBusiCrdt extends BaseWord{
      * @param rows
      * @param reportType
      */
-    private static void specialHandlingForTable(String key, List<CreditReportModuleConf> child, List<BaseProjectModel> rows, String reportType) {
+    private static void specialHandlingForTable(String key, List<CreditReportModuleConf> child, List<BaseProjectModel> rows, String reportType,String sysLanguage) {
+        BaseProjectModel model = rows.get(0);
         //合并员工人数和员工统计时间
         try{
             //移除统计时间
-            if("zhaiyao".equals(key)){
-                for (int i=0;i<child.size();i++) {
-                    if ("emp_num_date".equals(child.get(i).get("column_name"))){
-                        child.remove(i);
-                        break;
-                    }
-                }
-
-            }
+            removeConf(key,"zhaiyao",child,  "emp_num_date");
             //合并数据
             String empNum = null;
-            if(rows.get(0).get("emp_num")!=null){
-                empNum = rows.get(0).get("emp_num")+"";
+            if(model.get("emp_num")!=null){
+                empNum = model.get("emp_num")+"";
             }
-            String empNumDate =  String.valueOf(rows.get(0).get("emp_num_date"));
-            for (BaseProjectModel  model: rows) {
-                if(!StringUtils.isEmpty(empNum)){
-                    if(!StringUtils.isEmpty(empNumDate)){
-                        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
-                            model.set("emp_num",empNum+" ("+empNumDate+")");
-                        }else{
-                            model.set("emp_num","("+empNumDate+") "+empNum);
-                        }
+            String empNumDate =  String.valueOf(model.get("emp_num_date"));
+            empNumDate = timeRangeHandling(empNumDate, "", "yyyy-mm-dd","yyyy年MM月dd日");
+            if(!StringUtils.isEmpty(empNum)){
+                if(!StringUtils.isEmpty(empNumDate)){
+                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                        model.set("emp_num",empNum+" ("+empNumDate+")");
                     }else{
-                        model.set("emp_num",empNum);
+                        model.set("emp_num","("+empNumDate+") "+empNum);
                     }
+                }else{
+                    model.set("emp_num",empNum);
                 }
             }
            }catch (Exception e){
@@ -658,6 +652,166 @@ public class BaseBusiCrdt extends BaseWord{
         }
 
 
+        //合并 注册资本类型、注册资本、注册资本币种
+        try{
+            //删除模板中的注册资本币种、注册资本类型
+            removeConf(key,"zhaiyao",child,"currency","capital_type");
+            //获取注册资本、注册资本币种、注册资本类型的具体值
+            String registeredCapital = model.get("registered_capital")+"";
+            String currency = model.get("currency")+"";
+            String capitalType = model.get("capital_type")+"";
+            //修改注册资本的temp_name
+            if(isNotNull(capitalType)){
+                alertConf("registered_capital",capitalType,child,true,sysLanguage,reportType);
+            }
+            //修改值 合并值
+            if(isNotNull(registeredCapital)){
+                if(isNotNull(currency)){
+                    currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
+                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                        model.set("registered_capital",registeredCapital+" "+currency);
+                    }else{
+                        model.set("registered_capital",currency+" "+registeredCapital);
+                    }
+                }else{
+                    model.set("registered_capital",registeredCapital);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        //钱、币种、日期 类型的合并处理
+        try{
+            mergerHandling(  key,   child,   model,   reportType,  sysLanguage,"business_income","businessincome_type","time_period_for_business_income_statistics");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+           mergerHandling(  key,   child,   model,   reportType,  sysLanguage,"total_assets","totalassets_type","time_period_for_total_assets");
+        }catch (Exception e){
+           e.printStackTrace();
+        }
+
+        try {
+            mergerHandling(  key,   child,   model,   reportType,  sysLanguage,"period_for_equity_of_stockholder","periodofstockholder_type","time_period_for_equity_of_stockholder");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        rows.clear();
+        rows.add(model);
+    }
+
+    private static String timeRangeHandling(String dateStr, String separater, String sourceFormat,String targetFormat) {
+        try{
+            if(!isNotNull(dateStr)){
+                return  null;
+            }
+            SimpleDateFormat sourcesdf = new SimpleDateFormat(sourceFormat);
+            SimpleDateFormat targetSdf = new SimpleDateFormat(targetFormat);
+            if(isNotNull(separater)){
+                Date date1 = sourcesdf.parse( dateStr.split(separater)[0].trim());
+                Date date2 = sourcesdf.parse( dateStr.split(separater)[1].trim());
+                return targetSdf.format(date1)+separater+targetSdf.format(date2);
+            }else{
+                Date date1 = sourcesdf.parse(dateStr);
+                return  targetSdf.format(date1);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    /**
+     *  //钱、币种、日期 类型的合并处理
+     * @param key
+     * @param child
+     * @param model
+     * @param reportType
+     * @param sysLanguage
+     * @param requiredColumns
+     * @param removeColumns
+     */
+    private static void mergerHandling(String key, List<CreditReportModuleConf> child, BaseProjectModel model, String reportType, String sysLanguage,String requiredColumns,String ...removeColumns) {
+        for (String column  : removeColumns) {
+            removeConf(key,"zhaiyao",child,column);
+        }
+        String money = model.get(requiredColumns)+"";//钱
+        String currency = model.get(removeColumns[0])+"";//币种类型
+        String date = model.get(removeColumns[1])+"";//统计时间
+        //格式化日期
+        date = timeRangeHandling(date, " - ", "yyyy-mm-dd","yyyy年MM月dd日");
+        String targetStr = "";
+
+        if(isNotNull(money)){
+            if(isNotNull(currency)){
+                currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
+                if(isNotNull(currency)){
+                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                        targetStr = money+" "+currency;
+                    }else{
+                        targetStr = currency+" "+money;
+                    }
+                }else{
+                    targetStr = money;
+                }
+                if(isNotNull(date)){
+                     targetStr = targetStr+" ("+date+")";
+                }
+            }else{
+                model.set("registered_capital",money);
+            }
+        }
+        model.set(requiredColumns,targetStr);
+    }
+
+    /**
+     * 修改配置
+     * @param sourceField
+     * @param targetName
+     * @param confs
+     * @param isSelect
+     */
+    private static void alertConf(String sourceField, String targetName, List<CreditReportModuleConf> confs, boolean isSelect,String sysLanguage,String reportType) {
+        if(confs!=null){
+            for (CreditReportModuleConf conf : confs) {
+              if(isNotNull(sourceField)&&sourceField.equals(conf.get("column_name"))){
+                  if(isSelect){
+                      targetName = ReportInfoGetDataController.dictIdToString(targetName, reportType, sysLanguage);
+                  }
+                  conf.set("temp_name",targetName);
+              }
+            }
+        }
+    }
+
+    private static boolean isNotNull(String str) {
+        return StringUtils.isNotEmpty(str)&&!"null".equals(str);
+    }
+
+    /**
+     * 根据字段名移除conf配置
+     * @param key
+     * @param targetKey
+     * @param child
+     * @param columns
+     */
+    private static void removeConf(String key,String targetKey ,List<CreditReportModuleConf> child, String ...columns) {
+        if(targetKey.equals(key)){
+            for (int j=0;j<columns.length;j++) {
+                if(StringUtils.isNotEmpty(columns[j])){
+                    for (int i=0;i<child.size();i++) {
+                        if (columns[j].equals(child.get(i).get("column_name"))){
+                            child.remove(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private static String getValue(String reportType, String sysLanguage,
