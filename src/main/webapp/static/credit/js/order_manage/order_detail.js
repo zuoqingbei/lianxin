@@ -372,6 +372,9 @@ let OrderDetail = {
                                     (['15'].includes(_this.row.report_type) && item0.title.temp_name === '股东信息')) {
                                     $.get(this.getUrl(item), (data) => {
                                         let date = data.rows && data.rows.length > 0 ? data.rows[0].date : '';
+                                        if(date === null){
+                                            date = '';
+                                        }
                                         $("#" + item0.title.id + " .module-content").prepend(`<h4>截止日期：${date}</h4>`);
                                     })
                                 }
@@ -1111,8 +1114,10 @@ let OrderDetail = {
                                     });
                                     //if (['出资比例（%）', '% of Shareholding'].includes($(elem).text())) {
                                         sum = sum.toFixed(2);
-                                        if (sum === '99.99') {
+                                        if (sum === '99.99'||sum === '100.01') {
                                             sum = '100.00'
+                                        }else if(sum === 'NaN'){
+                                            sum = '';
                                         }
                                     //}
                                     tdHtml = `<td>${sum}</td>`;

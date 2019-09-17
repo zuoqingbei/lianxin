@@ -59,6 +59,7 @@ let ReportConfig = {
             $table.bootstrapTable({
                 height: 300,
                 columns: _this.tableColumns(contents, 'ch'),
+                showFooter:true,
                 url: urlCH, // 请求后台的URL（*）
                 method: 'post', // 请求方式（*）post/get
                 queryParams: function (param) {
@@ -85,7 +86,8 @@ let ReportConfig = {
                     $(".monyCol").each((index, item) => {
                         if (!$(item).attr("data-field")) {
                             //不是表头
-                            $(item).text(Number($(item).text().replace(/,/g, "")).toLocaleString('en-US'))
+                            // $(item).text(Number($(item).text().replace(/,/g, "")).toLocaleString('en-US'))
+
                         }
                     })
 
@@ -105,6 +107,7 @@ let ReportConfig = {
             $tableEn.bootstrapTable({
                 height: 300,
                 columns: _this.tableColumns(contentsEn, 'en', index, _this.idArrEn[index]),
+                showFooter:true,
                 url: urlEN, // 请求后台的URL（*）
                 method: 'post', // 请求方式（*）post/get
                 queryParams: function (param) {
@@ -156,13 +159,69 @@ let ReportConfig = {
                         title: ele.temp_name,
                         field: ele.column_name,
                         class: 'monyCol',
-                        width: (1 / a.length) * 100 + '%'
+                        width: (1 / a.length) * 100 + '%',
+                        footerFormatter:(a)=>{
+                            if(a&&a.length>0){
+                                let arr = []
+                                let total = 0 ;
+                                a.forEach((item,index)=>{
+                                    if(item[ele.column_name]){
+                                        total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                                    }
+                                })
+                                if(typeof total === 'number'){
+                                    total = total.toFixed(2)
+                                    /*if (total === '99.99' || total === '100.01') {
+                						 total = '100.00'
+                                    }*/
+                                }
+                                if(total === 'NaN'){
+                                    return ''
+                                }
+                                return total
+                            }else{
+                                return ''
+                            }
+                        },
                     })
                 } else {
                     arr.push({
                         title: ele.temp_name,
                         field: ele.column_name,
-                        width: (1 / a.length) * 100 + '%'
+                        width: (1 / a.length) * 100 + '%',
+                        footerFormatter:(a)=>{
+                            if(a&&a.length>0){
+                                let arr = []
+                                let total = 0 ;
+                                a.forEach((item,index)=>{
+                                    if(ele.column_name === 'order_num'){
+                                        if(lang=="ch"){
+                                            total = '合计'
+                                        }else{
+                                            total = '合计'
+                                        }
+
+                                    }else if(ele.column_name !== 'sh_name') {
+                                        if(item[ele.column_name]){
+                                            total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                                        }
+                                    }
+                                })
+                                if(typeof total === 'number'){
+                                    if(total!==0){
+                                        total = total.toFixed(2)
+                                    }else{
+                                        total = ''
+                                    }
+                                }
+                                if(total === 'NaN'){
+                                    return
+                                }
+                                return total
+                            }else{
+                                return
+                            }
+                        },
                     })
                 }
 
@@ -200,7 +259,6 @@ let ReportConfig = {
                 })
             }*/
         })
-
         return arr
     },
     initmodal() {
