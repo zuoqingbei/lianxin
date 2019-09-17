@@ -239,9 +239,37 @@ public class HttpTest {
 
 		return json;
 	}
+	//企业专利 
+	public static JSONObject getPatent(String conpanyName,String pageIndex,String pageSize) throws Exception{
+		if(StringUtils.isBlank(pageIndex)){
+			pageIndex="1";
+		}
+		HttpGet get = new HttpGet("http://api.qichacha.com/PatentV4/SearchPatents?key="+qichacha_key+"&pageSize="+pageSize+"&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+			System.out.println(json);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return json;
+	}
 	public static void main(String[] args) throws Exception {
 		//getSubsidiaries("大连万达集团股份有限公司","1","31");
-		 searchWide("中国沈阳国际经济技术合作公司和平分公司","1","1","");
+		//searchWide("中国沈阳国际经济技术合作公司和平分公司","1","1","");
+		getPatent("华为技术有限公司","1","5");
 	}
 
 	public static void getSaicUrl(){

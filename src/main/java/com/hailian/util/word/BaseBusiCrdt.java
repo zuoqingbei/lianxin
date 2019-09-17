@@ -1,5 +1,30 @@
 package com.hailian.util.word;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
+
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.PictureRenderData;
 import com.deepoove.poi.data.RowRenderData;
@@ -8,37 +33,25 @@ import com.deepoove.poi.data.style.Style;
 import com.deepoove.poi.data.style.TableStyle;
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.jfinal.base.BaseModel;
-import com.hailian.modules.admin.ordermanager.model.*;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyIndustryInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyIndustrySituationTitleDict;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
-import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
-import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.template.ext.directive.Str;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * 基本信息报告样本
@@ -150,6 +163,9 @@ public class BaseBusiCrdt extends BaseWord{
         List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
         for (CreditReportModuleConf crmc : crmcs) {
             //找到当前父节点下的子节点  type=2表示详情
+        	if("10582".equals(crmc.get("id").toString())){
+        		System.out.println(1);
+        	}
             List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(), reportType, "4");
 
             String source = crmc.getStr("get_source");
@@ -207,9 +223,12 @@ public class BaseBusiCrdt extends BaseWord{
 
             List<Object> appendRowsForInvestmentSituation = null;
             //1：表格
-            if (tableType != null && !"".equals(tableType)) {
+            if (tableType != null && !"".equals(tableType)&&StringUtils.isNotBlank(key)) {
                 String selectInfo = "";
-                if("credit_company_shareholder".equals(tableName)){
+                if("credit_company_management".equals(tableName)){
+                	System.out.println(1);
+                }
+                if("leader".equals(key)){
                 	System.out.println(1);
                 }
                 List<BaseProjectModel> rows = (List<BaseProjectModel>)(report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType));
@@ -521,6 +540,50 @@ public class BaseBusiCrdt extends BaseWord{
                 }
                 BaseWord.createBarChart(title,barDataSet,lineDataSet, _prePath + "bar.jpg");
                 map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
+            }
+            
+          //行业情况-GDP-柱图/线图
+            if("10353".equals(tableId)){
+            	 String gdpPic = webRoot + "/upload/tmp/" + orderCode;
+                 if(!new File(gdpPic).exists()){
+                     new File(gdpPic).mkdir();
+                 }
+                 gdpPic = gdpPic + "/" + referenceNum+"gdp";
+                //取行业情况
+            	CreditCompanyIndustrySituationTitleDict industryInfo = CreditCompanyIndustrySituationTitleDict.dao.findFirst("select * from credit_company_industry_situation_title_dict t where  t.del_flag=0");
+                String title = "";
+                if(industryInfo!=null){
+                     title = industryInfo.getStr("title");
+                }
+                map.put("hangyexinxi_title", title);
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
+                List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
+                //准备图形数据
+                DefaultCategoryDataset barDataSet = new DefaultCategoryDataset();
+                DefaultCategoryDataset lineDataSet = new DefaultCategoryDataset();
+                for (LinkedHashMap<String, String> m : datas) {
+                    Object[] keys = m.keySet().toArray();
+                    String n = m.get(keys[0]);
+                    String v1 = m.get(keys[1]);
+                    String v2 = m.get(keys[2]);
+                    Double value1 = 0d , value2=0d;
+                    try {
+                        if (v1 != null && !"".equals(v1)) {
+                            v1 = m.get(keys[1]);
+                            value1 = Double.parseDouble(v1);
+                        }
+                        if (v2 != null && !"".equals(v2)) {
+                            v2 = m.get(keys[2]);
+                            value2 = Double.parseDouble(v2);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    barDataSet.addValue(value1, "GDP（Unit Billon Yuan）", n);
+                    lineDataSet.addValue(value2,"Growth Rate(%）",n);
+                }
+                BaseWord.createBarChart(title,barDataSet,lineDataSet, gdpPic + "bar.jpg");
+                map.put("bar_gdp", new PictureRenderData(600, 300, gdpPic + "bar.jpg"));
             }
         }
         //财务模块生成
@@ -1314,8 +1377,8 @@ public class BaseBusiCrdt extends BaseWord{
         str.append(leverDetail);
         str.append("\n");
         str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,reportType,sysLanguage) : ""));
-        str.append("\n");
-        str.append(overDetail);
+        /*str.append("\n");
+        str.append(overDetail);*/
         return str.toString();
     }
 

@@ -866,8 +866,9 @@ let ReportConfig = {
 								<div class="cw-bottom p-4">
 								<label class="control-label">${this_content[16].temp_name}</label>
 								<select class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" >${options4}</select>
-								<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
+								
 								</div></div>`
+								//<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
 						})
     		}else {
     			let addtext = cw_title[1].place_hold
