@@ -186,14 +186,16 @@ let ReportConfig = {
                         				let arr = []
                         				let total = 0;
                         				a.forEach((item,index)=>{
-                        					console.log(ele.column_name)
+                        					// console.log(ele.column_name)
                         					if(ele.column_name === 'order_num'){
                         						total = '合计'
-                        					}else {
+                        					}else if(ele.column_name !== 'currency') {
                         						if(item[ele.column_name]){
                         							total += Number(item[ele.column_name].toString().replace(/,/g,''))
                         						}
-                        					}
+                        					}else if(ele.column_name === 'currency'){//出资币种不加合计
+                        						total = 'NaN';
+											}
                         					
                         				})
                         				if(typeof total === 'number'){
