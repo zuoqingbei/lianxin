@@ -792,6 +792,23 @@ public class CompanyService {
 			    }
 		//	}
 		}
+		
+		
+		JSONObject patent = HttpTest.getPatent(companyName,"1",PAGESIZE);//企业专利
+		String patentstatus = patent.getString("Status");
+		if(patentstatus.equals("200")){
+			
+			CreditCompanyPatent.dao.deleteBycomIdAndLanguage(companyId, sys_language);//
+			JSONArray jsonArray = patent.getJSONArray("Result");
+			if(jsonArray !=null && jsonArray.size()>0){
+				List<CreditCompanyPatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyPatent.class);
+				for(CreditCompanyPatent model:list){
+					model.set("company_id", companyId);
+					model.set("sys_language", sys_language);
+				}
+				Db.batchSave(list, list.size());
+		    }
+		}
 	}
 	class threadEnterpriseGrabOther implements Runnable{
 		String companyId = "";

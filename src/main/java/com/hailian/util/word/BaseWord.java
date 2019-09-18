@@ -1732,17 +1732,19 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
             }else{
                 //每一个实体之间空一行
                 if(i!=rows.size()-1) {
-                    if(i!=rows.size()-2) {
-                        boldRowIndexs.add(i+1);
+                    if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
+                        if(i!=rows.size()-2){
+                            boldRowIndexs.add(rowList.size());
+                        }
                     }
                     rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));
                 }
             }
         }
         try {
-            for (Integer rowIndex  : boldRowIndexs) {
-                if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
-                    setRowBoldTrue(moduleName, rowList.get(rowIndex));
+            if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
+                for (Integer rowIndex  : boldRowIndexs) {
+                        setRowBoldTrue( rowList.get(rowIndex));
                 }
             }
         }catch (Exception e){
@@ -1752,8 +1754,9 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
         return new MiniTableRenderData(rowList);
     }
 
-    public static  void setRowBoldTrue(String moduleName,RowRenderData rowData){
+    public static  void setRowBoldTrue(RowRenderData rowData){
                 for (TextRenderData cell  : rowData.getRowData()) {
+                    System.out.println(cell.getText()+":"+cell.getStyle());
                     cell.getStyle().setBold(true);
             }
     }

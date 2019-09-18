@@ -25,7 +25,6 @@ import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.template.ext.directive.Str;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -279,7 +278,6 @@ public class BaseBusiCrdt extends BaseWord{
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
-              //  createTableHandling(table,tableName);
                 map.put(key, table);
             }
 
@@ -621,35 +619,6 @@ public class BaseBusiCrdt extends BaseWord{
             fileList.add(fileMap);
             sendMail(reportName,customId, fileList);
         }*/
-    }
-
-    private static void createTableHandling(MiniTableRenderData table, String tableName) {
-        if(table==null||table.getDatas().size()<1){
-            return;
-        }
-        if("credit_company_management".equals(tableName)||"credit_company_legal_shareholder_detail".equals(tableName)||"credit_company_naturalperson_shareholder_detail".equals(tableName)){
-            int i=0;
-            Boolean isNextBold = false;
-            for (RowRenderData rowData: table.getDatas()) {
-                if(rowData!=null){
-                    int flag = 0;
-                    for (TextRenderData cell  : rowData.getRowData()) {
-                        if(!isNotNull(cell.getText())){
-                            flag++;
-                        }else{
-                            if(i++==0||isNextBold){
-                                cell.getStyle().setBold(true);
-                            }
-                        }
-                    }
-                    if(flag==0){
-                        isNextBold = true;
-                    }else{
-                        isNextBold = false;
-                    }
-                }
-            }
-        }
     }
 
     /**

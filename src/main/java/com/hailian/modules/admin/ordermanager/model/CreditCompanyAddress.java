@@ -3,7 +3,11 @@ package com.hailian.modules.admin.ordermanager.model;
 
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ModelBind;
-
+/**
+ * 生产地址
+ * @author Administrator
+ *
+ */
 @ModelBind(table = "credit_company_address")
 //此标签用于模型与数据库表的连接
 public class CreditCompanyAddress extends BaseProjectModel<CreditCompanyAddress> {
