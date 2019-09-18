@@ -34,6 +34,7 @@ import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
 
+import com.mysql.jdbc.RowData;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -639,6 +640,7 @@ public class BaseWord {
             RowRenderData rowData = RowRenderData.build(row);
             rowData.setStyle(tableStyle);
             rowsList.add(rowData);
+
         }
 
         //合计项生成word格式
@@ -1636,6 +1638,8 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
             }
         }
         List<String> mergeList = new ArrayList<>();
+        List<Integer> boldRowIndexs = new ArrayList<>();
+        boldRowIndexs.add(0);
         //取数据
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
@@ -1727,12 +1731,32 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
 
             }else{
                 //每一个实体之间空一行
-                if(i!=rows.size()-1) {rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));}
+                if(i!=rows.size()-1) {
+                    if(i!=rows.size()-2) {
+                        boldRowIndexs.add(i+1);
+                    }
+                    rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));
+                }
             }
         }
+        try {
+            for (Integer rowIndex  : boldRowIndexs) {
+                if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
+                    setRowBoldTrue(moduleName, rowList.get(rowIndex));
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return new MiniTableRenderData(rowList);
     }
 
+    public static  void setRowBoldTrue(String moduleName,RowRenderData rowData){
+                for (TextRenderData cell  : rowData.getRowData()) {
+                    cell.getStyle().setBold(true);
+            }
+    }
     //Investment--投资情况 Company Name--公司名称 Shareholding(%)--投资比例
     static  String[] InvestmentSituationTempName = new String[]{"","","Investment","投资情况","Company Name","公司名称"};
     static  String[] InvestmentSituationValue= new String[]{"","","","","Shareholding(%)","投资比例(%)"};
