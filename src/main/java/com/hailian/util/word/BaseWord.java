@@ -452,18 +452,7 @@ public class BaseWord {
                 String wordDefault = colMap.get("word_default");
                 Integer id = model.getInt("id");
                 String value = "";
-                /*//不同字段的特殊处理
-                if("name_en".equals(column)) {
-                	value = detailByColumn(companyId);
-                }else {
-                	value = model.get(column) != null ? model.get(column) + "" : "";
-                }*/
                 value = model.get(column) != null ? model.get(column) + "" : "";
-                /*if("变更前".equals(tempName)||"变更后".equals(tempName)){
-                	if(StringUtils.isNotBlank(value))
-                	//value=StrUtils.toJoinString(value, 10);
-                		value=SplitString.str_split(value, 9, "\n");
-                }*/
                 //合计项计算
                 if(hasTotal) {
                     try {
@@ -553,25 +542,20 @@ public class BaseWord {
                     value = "{{@img" + id + "}}";
                 }
               
+                if("contribution".equals(column)&&"partner".equals(moduleName)&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))){
+                	//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
+                	String currency=CreditCompanyInfo.dao.findCompanyCurrency(companyId, sysLanguage, reportType);
+                	if(StringUtils.isNotBlank(currency)){
+                		value=value+"("+currency+")";
+                	}
+                };
                 row.put(column,value);
             }
-            if("partner".equals(moduleName)&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))){
-        		//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
-            	String n="";
-            	if(row.get("currency")!=null&&StringUtils.isNotBlank(row.get("currency"))){
-            		n=row.get("contribution")+"("+row.get("currency")+")";
-            	}else{
-            		n=row.get("contribution");
-            	}
-            	row.remove("currency");
-            	row.put("contribution", n);
-        	};
             datas.add(row);
         }
         if("partner".equals(moduleName)&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))){
     		//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
         	 Map<String, String> colMap = cols.get("contribution");
-        	 cols.remove("currency");
         	 colMap.put("temp_name", "出资金额 （币种）");
         	 cols.put("contribution", colMap);
     	};

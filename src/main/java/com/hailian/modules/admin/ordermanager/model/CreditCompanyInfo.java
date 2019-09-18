@@ -2,8 +2,11 @@ package com.hailian.modules.admin.ordermanager.model;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ModelBind;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 @ModelBind(table="credit_company_info")
 public class CreditCompanyInfo extends BaseProjectModel<CreditCompanyInfo>{
 
@@ -42,5 +45,15 @@ public class CreditCompanyInfo extends BaseProjectModel<CreditCompanyInfo>{
 		// TODO Auto-generated method stub
 		String englishName=right_company_name_en.trim();
 		return dao.findFirst("select * from credit_company_info t where t.name_en=? and t.del_flag=0 and t.sys_language=612 order by t.create_date desc ",englishName);
+	}
+	public String findCompanyCurrency(String companyId,String sysLanguage,String reportType) {
+		// TODO Auto-generated method stub
+		CreditCompanyInfo info=dao.findFirst("SELECT * FROM `credit_company_info` where id=? and del_flag=0 and sys_language=? ",companyId,sysLanguage);
+		if(info!=null&&StringUtils.isNotBlank(info.getStr("currency"))){
+			String value=info.getStr("currency");
+			value = !"".equals(value) ? ReportInfoGetDataController.dictIdToString(value, reportType, sysLanguage) : "";
+			return value;
+		}
+		return "";
 	}
 }
