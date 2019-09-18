@@ -1606,10 +1606,8 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                                                    List rows,String sysLanguage,String companyId,List<Object> appendRowsForInvestmentSituation){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
-        Style style = new Style();
-        style.setColor("000000");
-        style.setFontFamily("宋体");
-        //取列值
+
+    	//取列值
         for(int i=0;i< child.size();i++) {
             CreditReportModuleConf module = child.get(i);
             String column_name = module.getStr("column_name");
@@ -1621,35 +1619,24 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 cols.put(column_name, temp_name + "|" + field_type);
             }
         }
+        if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
+          System.out.println(1);
+        }
         List<String> mergeList = new ArrayList<>();
         List<Integer> boldRowIndexs = new ArrayList<>();
         boldRowIndexs.add(0);
         //取数据
         for (int i = 0; i < rows.size(); i++) {
             BaseProjectModel model = (BaseProjectModel) rows.get(i);
+            int num=0;
             for (String column : cols.keySet()) {
+            	Style style = new Style();
+            	style.setColor("000000");
+            	style.setFontFamily("宋体");
                 String[] strs = cols.get(column).split("\\|");
                 String fieldType = strs.length == 2 ? strs[1] : "";
-             /*   String tempName = "";
-                try{
-                     tempName  = strs[0];
-                }catch ( Exception e){
-                    e.printStackTrace();
-                }*/
-
-
-                //int tempNameLength = tempName.length();
                 String value = "";
-
-                //特殊处理
-                /*if("name_en".equals(column)) {
-                	if("name_en".equals(column)&&(tempName.replace("英文", "").length()<tempNameLength ||
-                            tempName.replace("ENGLISH", "").length()<tempNameLength||tempName.replace("English", "").length()<tempNameLength)) {
-                         	value = detailByColumn(companyId);
-                         }
-                }else {
-                 	value = model.get(column) != null ? model.get(column) + "" : "";
-                 }*/
+                num++;
                 value = model.get(column) != null ? model.get(column) + "" : "";
 
                 if ("select".equals(fieldType)&&!("company_type".equals(column)&&"regist".equals(moduleName))) {
@@ -1688,6 +1675,11 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
                 //二合一的特殊处理
                 if(merger(value,column,reportType,mergeList,rowList,style)) {
+                	if((num==1)&&("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName))) {
+                		style.setBold(true);
+                    }else{
+                    	style.setBold(false);
+                    }
                     rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
                 }
 
@@ -1698,17 +1690,23 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
             if(appendRowsForInvestmentSituation!=null){
                 try{
                     //Investment--投资情况 Company Name--公司名称 Shareholding(%)--投资比例
-                    generatedInvestmentSituationConfHead(rowList,reportType,style);
+                	//style.setBold(false);
+                    generatedInvestmentSituationConfHead(rowList,reportType,null);
                     String appendRowsStr =  (String)appendRowsForInvestmentSituation.get(i);
                     if(appendRowsStr!=null){
                         //格式:	腾讯:20;百度:30
                         List<String> tempList = Arrays.asList( appendRowsStr.split(";") );
                         for (String  tempStr: tempList) {
                             String[] temp_ = tempStr.split(":");
-                            rowList.add(RowRenderData.build(new TextRenderData(temp_[0], style), new TextRenderData(temp_[1], style)));
+                            if(temp_.length>1){
+                            	rowList.add(RowRenderData.build(new TextRenderData(temp_[0]), new TextRenderData(temp_[1])));
+                            }else{
+                            	rowList.add(RowRenderData.build(new TextRenderData(temp_[0]), new TextRenderData("")));
+                            }
+                            
                         }
                     }
-                    rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));
+                    rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData("")));
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -1716,39 +1714,23 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
             }else{
                 //每一个实体之间空一行
                 if(i!=rows.size()-1) {
-                    if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
-                        if(i!=rows.size()-2){
-                            boldRowIndexs.add(rowList.size());
-                        }
-                    }
-                    rowList.add(RowRenderData.build(new TextRenderData("", style), new TextRenderData("", style)));
+                    rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData("")));
                 }
             }
         }
-        try {
-            if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
-                for (Integer rowIndex  : boldRowIndexs) {
-                        setRowBoldTrue( rowList.get(rowIndex));
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
         return new MiniTableRenderData(rowList);
     }
 
-    public static  void setRowBoldTrue(RowRenderData rowData){
-                for (TextRenderData cell  : rowData.getRowData()) {
-                    System.out.println(cell.getText()+":"+cell.getStyle());
-                    cell.getStyle().setBold(true);
-            }
-    }
     //Investment--投资情况 Company Name--公司名称 Shareholding(%)--投资比例
     static  String[] InvestmentSituationTempName = new String[]{"","","Investment","投资情况","Company Name","公司名称"};
     static  String[] InvestmentSituationValue= new String[]{"","","","","Shareholding(%)","投资比例(%)"};
     static void generatedInvestmentSituationConfHead(List<RowRenderData> rowList,String reportType ,Style style ){
         for (int i=0 ;i<InvestmentSituationTempName.length/2;i++) {
+        	if(i==0){
+        		style.setBold(true);
+        	}else{
+        		style.setBold(false);
+        	}
             rowList.add(RowRenderData.build(
                     new TextRenderData(ReportTypeCons.BUSI_ZH.equals(reportType)?InvestmentSituationTempName[2*i+1]:InvestmentSituationTempName[2*i], style),
                     new TextRenderData(ReportTypeCons.BUSI_ZH.equals(reportType)?InvestmentSituationValue[2*i+1]:InvestmentSituationValue[2*i], style)));
