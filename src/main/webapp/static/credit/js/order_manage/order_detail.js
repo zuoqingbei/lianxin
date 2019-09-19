@@ -703,9 +703,10 @@ let OrderDetail = {
                                 })
                             } else if (i === 1) {
                                 remark = content.temp_name;
-                                $.get(url, data => {
+                                /**$.get(url, data => {
                                     $wrap.find('.multiText').text(data.rows[0][content.column_name])
-                                })
+                                })**/
+								$wrap.find('.multiText').remove();
                             } else {
                                 let arr = ['xAxis', 'y1', 'y2'];
                                 chartData[arr[i - 2] + 'Name'] = content.temp_name;
@@ -961,7 +962,7 @@ let OrderDetail = {
     setHeader() {
         $("#orderName").text(this.data.defaultModule[0].temp_name + " :");
         $("#orderNum").text(this.row.num);
-        $("#status").text(this.row.statusName);
+        $("#status_js").text(this.row.statusName);
     },
     initProcess() {
         let $li = $(`<li>
@@ -1064,7 +1065,7 @@ let OrderDetail = {
                         columnNameArr.forEach((columnName, index) => {
                             //商标和专利部分需要显示缩略图
                             let [isBrand, aHref] = [false, ''];
-                            if (item.title.temp_name === '商标和专利' && index === 2) {
+                            if (item.title.temp_name === '商标' && index === 2) {
                                 isBrand = true;
                                 aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
                             }
