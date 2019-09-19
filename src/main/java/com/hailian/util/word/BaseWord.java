@@ -383,9 +383,17 @@ public class BaseWord {
     	if("partner".equals(moduleName)) {
     		switch(columnName) {
     			//出资金额
-    			case "contribution" : style.setAlign(STJc.RIGHT);
+    			case "contribution" : 
+    				style.setAlign(STJc.RIGHT);
+    				if(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType)){
+    					style.setFontFamily("Calibri");
+    	            }
     			//出资比例
-    			case "money" : style.setAlign(STJc.RIGHT);
+    			case "money" : 
+    				style.setAlign(STJc.RIGHT);
+    				if(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType)){
+    					style.setFontFamily("Calibri");
+    	            }
     			default : break;
     		}
     		
@@ -542,38 +550,25 @@ public class BaseWord {
                 else if ("file".equals(fieldType)) {
                     value = "{{@img" + id + "}}";
                 }
-              
-                if("contribution".equals(column)&&"partner".equals(moduleName)&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))){
-                	//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
-                	String currency=CreditCompanyInfo.dao.findCompanyCurrency(companyId, sysLanguage, reportType);
-                	if(StringUtils.isNotBlank(currency)){
-                		value=value+"("+currency+")";
-                	}
-                };
                 row.put(column,value);
             }
             datas.add(row);
         }
-        if("partner".equals(moduleName)&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))){
-    		//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
-        	 Map<String, String> colMap = cols.get("contribution");
-        	 colMap.put("temp_name", "出资金额 （币种）");
-        	 cols.put("contribution", colMap);
-    	};
         //居中对齐
         TableStyle tableStyle = new TableStyle();
         tableStyle.setAlign(STJc.LEFT);
+        if("partner".equals(moduleName)&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))){
+        	//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
+        	String currency=CreditCompanyInfo.dao.findCompanyCurrency(companyId, sysLanguage, reportType);
+        	Map<String, String> colMap = cols.get("contribution");
+        	colMap.put("temp_name", "出资金额"+"("+currency+")");
+        	cols.put("contribution", colMap);
+        };
         //表格边框
         if(ReportTypeCons.ROC_HY.equals(reportType)){
             //红印的表格不显示边框
             tableStyle.setHasBorder(false);
         }
-        //102模板，出资情况列表中的币种不展示
-        /*if(ReportTypeCons.ROC_ZH.equals(reportType) || ReportTypeCons.ROC_EN.equals(reportType)) {
-            if(cols.containsKey("contribution")&&cols.containsKey("currency")){
-                cols.remove("currency");
-            }
-        }*/
         Object[] colSize = cols.keySet().toArray();
 
         //组装表格-表头
@@ -617,6 +612,9 @@ public class BaseWord {
                     if("money".equals(column)){
                         value += "%";
                     }
+                }else if (("contribution".equals(column) || "money".equals(column))&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))) {
+                	style.setBold(false);
+                	style.setAlign(STJc.RIGHT);
                 }
                 row[j] = new TextRenderData(value, style);
                 j++;
@@ -669,7 +667,6 @@ public class BaseWord {
                 }
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
-                
                 row[j] = new TextRenderData(value, style);
                 j++;
             }
@@ -758,6 +755,9 @@ public class BaseWord {
                 }else if("contribution".equals(column)||"money".equals(column)){
                     style.setAlign(STJc.RIGHT);
                 }
+            }else if (("contribution".equals(column) || "money".equals(column))&&(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType))) {
+            	style.setBold(false);
+            	style.setAlign(STJc.RIGHT);
             }
             header[i] = new TextRenderData(temp_name, style);
             i++;
@@ -1337,18 +1337,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 String wordDefault = colMap.get("word_default");
                 Integer id = model.getInt("id");
                 String value = "";
-                /*//不同字段的特殊处理
-                if("name_en".equals(column)) {
-                	value = detailByColumn(companyId);
-                }else {
-                	value = model.get(column) != null ? model.get(column) + "" : "";
-                }*/
                 value = model.get(column) != null ? model.get(column) + "" : "";
-                /*if("变更前".equals(tempName)||"变更后".equals(tempName)){
-                	if(StringUtils.isNotBlank(value))
-                	//value=StrUtils.toJoinString(value, 10);
-                		value=SplitString.str_split(value, 9, "\n");
-                }*/
                 //合计项计算
                 if(hasTotal) {
                     try {
@@ -1365,25 +1354,6 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                             totalRow.put(column, val);
                         } else {
                             String val = totalRow.get(column);
-                            /*if(!("合计".equals(val)||"合計".equals(val))){
-                                val = "-";
-                            }*/
-                           /* 这段代码是对
-                            String v = totalRow.keySet().size() == 0 ? "合计" : "合计".equals(val)||"合計".equals(val) ? val : "-";
-                           的分解
-                           String v = "-";
-                            if(totalRow.keySet().size()==0){
-                                v = "合计";
-                            }else{
-                                if(!("合计".equals(val)||"合計".equals(val))){
-                                    v = "-";
-                                }else{
-                                    v = val;
-                                }
-                                if("合计".equals(v)){
-                                v="合計";
-                            }
-                            }*/
                             if(ReportTypeCons.ROC_HY.equals(reportType)){//红印
                                 val = "合计";
                             }else  if(ReportTypeCons.ROC_ZH.equals(reportType)){//ROC Chinese
@@ -1619,9 +1589,6 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 cols.put(column_name, temp_name + "|" + field_type);
             }
         }
-        if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
-          System.out.println(1);
-        }
         List<String> mergeList = new ArrayList<>();
         List<Integer> boldRowIndexs = new ArrayList<>();
         boldRowIndexs.add(0);
@@ -1691,7 +1658,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 try{
                     //Investment--投资情况 Company Name--公司名称 Shareholding(%)--投资比例
                 	//style.setBold(false);
-                    generatedInvestmentSituationConfHead(rowList,reportType,null);
+                    generatedInvestmentSituationConfHead(rowList,reportType);
                     String appendRowsStr =  (String)appendRowsForInvestmentSituation.get(i);
                     if(appendRowsStr!=null){
                         //格式:	腾讯:20;百度:30
@@ -1706,17 +1673,22 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                             
                         }
                     }
-                    rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData("")));
+                    if(i<rows.size()-1) {
+                    	rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData("")));
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                 }
 
             }else{
                 //每一个实体之间空一行
-                if(i!=rows.size()-1) {
+                if(i<rows.size()-1) {
                     rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData("")));
                 }
             }
+          /*  if("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName)) {
+            	rowList.add(RowRenderData.build(new TextRenderData(""), new TextRenderData("")));
+            }*/
         }
         return new MiniTableRenderData(rowList);
     }
@@ -1724,9 +1696,12 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
     //Investment--投资情况 Company Name--公司名称 Shareholding(%)--投资比例
     static  String[] InvestmentSituationTempName = new String[]{"","","Investment","投资情况","Company Name","公司名称"};
     static  String[] InvestmentSituationValue= new String[]{"","","","","Shareholding(%)","投资比例(%)"};
-    static void generatedInvestmentSituationConfHead(List<RowRenderData> rowList,String reportType ,Style style ){
-        for (int i=0 ;i<InvestmentSituationTempName.length/2;i++) {
-        	if(i==0){
+    static void generatedInvestmentSituationConfHead(List<RowRenderData> rowList,String reportType ){
+    	for (int i=0 ;i<InvestmentSituationTempName.length/2;i++) {
+    		Style style = new Style();
+    		style.setColor("000000");
+    		style.setFontFamily("宋体");
+        	if(i==1){
         		style.setBold(true);
         	}else{
         		style.setBold(false);

@@ -316,10 +316,18 @@ let ReportConfig = {
     			}
     			
     			if(!ele.field_type || ele.field_type === 'text') {
-    				modalBody += ` <div class="form-inline justify-content-center my-3">
+					if(ele.place_hold==null||ele.place_hold=='null'){
+						modalBody += ` <div class="form-inline justify-content-center my-3">
 									<label for="" class="control-label" >${ele.temp_name}：</label>
-									<input type="text" class="form-control" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+									<input type="text" class="form-control"  id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
 	    						</div>`
+					}else{
+						modalBody += ` <div class="form-inline justify-content-center my-3">
+									<label for="" class="control-label" >${ele.temp_name}：</label>
+									<input type="text" class="form-control" placeholder ="${ele.place_hold}" id="${ele.column_name + '_' + myIndex}" name="${ele.column_name}" >
+	    						</div>`
+					}
+    				
     			}
     			switch(ele.field_type) {
     				case 'date':

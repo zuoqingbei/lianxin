@@ -200,18 +200,10 @@ public class BaseBusiCrdt extends BaseWord{
                     }
                 }
             }
-            System.out.print(key);
-            if("partner".equals(key)) {
-                 System.out.print("开始解析股东信息!");
-            }
-
             List<Object> appendRowsForInvestmentSituation = null;
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
-                if("credit_company_shareholder".equals(tableName)){
-                	System.out.println(1);
-                }
                 List<BaseProjectModel> rows = (List<BaseProjectModel>)(report.getTableData(sysLanguage, companyId, tableName, className, confId, selectInfo,reportType));
                 //公司性质和企业类型注释的合并
                 try{
@@ -271,10 +263,7 @@ public class BaseBusiCrdt extends BaseWord{
                 } else if ("h".equals(tableType)) {
                     //"出资情况"需要增加合计项
                     boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
-
-
                     table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,"",companyId);
-
                 }else if("z".equals(tableType)){
                     BaseWord.createTableZ(child,rows,map,reportType,sysLanguage);
                 }
@@ -306,10 +295,6 @@ public class BaseBusiCrdt extends BaseWord{
                 //主表
                 if ("credit_company_info".equals(t)) {
                     String word_key = conf.get("word_key") + "";
-                    if("credit_company_subtables".equals(word_key)){
-                        System.out.println("dddddd");
-                    }
-                    System.out.println("word_key===="+word_key);
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         List rs = report.getTableData(true,  companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
@@ -330,16 +315,12 @@ public class BaseBusiCrdt extends BaseWord{
                 } else {
                     //取word里配置的关键词
                     String word_key = conf.get("word_key") + "";
-                    if("credit_company_subtables".equals(t)){
-                    	System.out.println("dddddd");
-                    }
                     if (word_key != null && !"".equals(word_key) && !"null".equals(word_key)) {
                         //取数据
                         List rs = report.getTableData(false, companyId, t, cn, ci, "",reportType);
                         if (rs != null && rs.size() > 0) {
                             BaseProjectModel model = (BaseProjectModel) rs.get(0);
                             for (Object key23 : model.getAttrs().keySet()) {
-                                System.out.println(key23+"================="+model.get(key23+""));
                                 if(key23.equals(columnName)){
                                 	String value= model.get(key23+"")+"";
                                	 value = getValue(reportType, sysLanguage,
@@ -527,7 +508,51 @@ public class BaseBusiCrdt extends BaseWord{
                 BaseWord.createBarChart(title,barDataSet,lineDataSet, _prePath + "bar.jpg");
                 map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
             }
+            //行业情况-GDP-柱图/线图
+            if("10353".equals(tableId)){
+            	 String gdpPic = webRoot + "/upload/tmp/" + orderCode;
+                 if(!new File(gdpPic).exists()){
+                     new File(gdpPic).mkdir();
+                 }
+                 gdpPic = gdpPic + "/" + referenceNum+"gdp";
+                //取行业情况
+            	CreditCompanyIndustrySituationTitleDict industryInfo = CreditCompanyIndustrySituationTitleDict.dao.findFirst("select * from credit_company_industry_situation_title_dict t where  t.del_flag=0");
+                String title = "";
+                if(industryInfo!=null){
+                     title = industryInfo.getStr("title");
+                }
+                map.put("hangyexinxi_title", title);
+                List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
+                List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
+                //准备图形数据
+                DefaultCategoryDataset barDataSet = new DefaultCategoryDataset();
+                DefaultCategoryDataset lineDataSet = new DefaultCategoryDataset();
+                for (LinkedHashMap<String, String> m : datas) {
+                    Object[] keys = m.keySet().toArray();
+                    String n = m.get(keys[0]);
+                    String v1 = m.get(keys[1]);
+                    String v2 = m.get(keys[2]);
+                    Double value1 = 0d , value2=0d;
+                    try {
+                        if (v1 != null && !"".equals(v1)) {
+                            v1 = m.get(keys[1]);
+                            value1 = Double.parseDouble(v1);
+                        }
+                        if (v2 != null && !"".equals(v2)) {
+                            v2 = m.get(keys[2]);
+                            value2 = Double.parseDouble(v2);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    barDataSet.addValue(value1, "GDP（Unit Billon Yuan）", n);
+                    lineDataSet.addValue(value2,"Growth Rate(%）",n);
+                }
+                BaseWord.createBarChart(title,barDataSet,lineDataSet, gdpPic + "bar.jpg");
+                map.put("bar_gdp", new PictureRenderData(600, 300, gdpPic + "bar.jpg"));
+            }
         }
+        
         //财务模块生成
         List<String> excelPath = new ArrayList<>();
         List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
@@ -1385,8 +1410,8 @@ public class BaseBusiCrdt extends BaseWord{
         str.append(leverDetail);
         str.append("\n");
         str.append("目标公司的总体财务状况：" + (!"".equals(overSumup) ? reportInfoGetDataController.dictIdToString(overSumup,reportType,sysLanguage) : ""));
-        str.append("\n");
-        str.append(overDetail);
+      /*  str.append("\n");
+        str.append(overDetail);*/
         return str.toString();
     }
 
