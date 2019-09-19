@@ -53,7 +53,6 @@ public class BaseBusiCrdt extends BaseWord{
     private static Object o = new Object();
     public static void main(String []args){
         try {
-            System.out.println(timeRangeHandling("2019-09-13 - 2019-10-09", " - ", "yyyy-mm-dd","yyyy年MM月dd日"));
             /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
             URL url = new URL(urlStr);
             HttpURLConnection uc = (HttpURLConnection) url.openConnection();
@@ -239,7 +238,16 @@ public class BaseBusiCrdt extends BaseWord{
                 if("regist".equals(key)){
                     specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
                 }
-                if ("s".equals(tableType)) {
+                if("leader".equals(key)){
+                    specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
+                }
+                if("naturalDetails".equals(key)){
+                    specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
+                }
+                if("legalDetails".equals(key)){
+                    specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
+                }
+                    if ("s".equals(tableType)) {
 
                     //如果是法人股东详情或者是自热人股东详情做特殊解析
                     try{
@@ -642,7 +650,7 @@ public class BaseBusiCrdt extends BaseWord{
                     empNum = model.get("emp_num")+"";
                 }
                 String empNumDate =  String.valueOf(model.get("emp_num_date"));
-                empNumDate = timeRangeHandling(empNumDate, "", "yyyy-mm-dd","yyyy年MM月dd日");
+                empNumDate = timeRangeHandling(empNumDate, "","", "yyyy-mm-dd","yyyy年MM月dd日");
                 if(!StringUtils.isEmpty(empNum)){
                     if(!StringUtils.isEmpty(empNumDate)){
                         if(ReportTypeCons.BUSI_ZH.equals(reportType)){
@@ -660,28 +668,6 @@ public class BaseBusiCrdt extends BaseWord{
             //合并 注册资本类型、注册资本、注册资本币种
             try{
                 mergerHandling2( child,   model, "registered_capital", reportType,  sysLanguage,"registered_capital","currency","capital_type","currency","capital_type");
-               /* //删除模板中的注册资本币种、注册资本类型
-                removeConf(child,"currency","capital_type");
-                String money = model.get("registered_capital")+"";//注册资本
-                String currency = model.get("currency")+"";//注册资本币种
-                String capitalType = model.get("capital_type")+"";//注册资本类型
-                //修改注册资本的temp_name
-                if(isNotNull(capitalType)){
-                    alertConf("registered_capital",capitalType,child,true,sysLanguage,reportType);
-                }
-                //修改值 合并值
-                if(isNotNull(money)){
-                    if(isNotNull(currency)){
-                        currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
-                        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
-                            model.set("registered_capital",money+" "+currency);
-                        }else{
-                            model.set("registered_capital",currency+" "+money);
-                        }
-                    }else{
-                        model.set("registered_capital",money);
-                    }
-                }*/
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -715,7 +701,29 @@ public class BaseBusiCrdt extends BaseWord{
             }catch (Exception e){
                 e.printStackTrace();
             }
+        }else if("leader".equals(key)){ //管理层模块
+            try {
+                //证件类型和证件号码合并
+                mergerHandling3( child, model,  reportType,  sysLanguage,"id_card","id_type","id_card");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else if("naturalDetails".equals(key)){ //自然人股东详情模块
+            try {
+                ///证件类型和证件号码合并
+                mergerHandling3( child, model,  reportType,  sysLanguage,"id_no","id_type","id_no");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else if("legalDetails".equals(key)){//法人股东详情模块
+            try {
+                //注册资本、注册币种处理
+                mergerHandling(  child,   model,   reportType,  sysLanguage,"registered_capital","currency");
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
+
         rows.clear();
         rows.add(model);
     }
@@ -741,7 +749,7 @@ public class BaseBusiCrdt extends BaseWord{
             dateStr = "";
         }
         //格式化日期
-        dateStr = timeRangeHandling(dateStr, " - ", "yyyy-mm-dd","yyyy年MM月dd日");
+        dateStr = timeRangeHandling(dateStr, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
         String targetStr = "";
 
         if(isNotNull(money)){
@@ -813,15 +821,45 @@ public class BaseBusiCrdt extends BaseWord{
             e.printStackTrace();
         }
     }
+
+    /**
+     * 证件类型和号码的合并
+     * @param child
+     * @param model
+     * @param reportType
+     * @param sysLanguage
+     * @param idColumn
+     * @param idTypeColumn
+     * @param removeColumns
+     */
+    private static void mergerHandling3(List<CreditReportModuleConf> child, BaseProjectModel model, String reportType, String sysLanguage,String idColumn,String idTypeColumn,String ...removeColumns) {
+        removeConf(child,removeColumns);
+        String idNum = model.get(idColumn)+"";
+        String idType = model.get(idTypeColumn)+"";
+        boolean targetFieldIsSelect = true;
+        if(!isNotNull(idType)){
+            targetFieldIsSelect = false;
+            if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                idType = "身份证号码";
+            }else{
+                idType = "IDCard";
+            }
+        }
+        alertConf(idTypeColumn,idType,child,targetFieldIsSelect,sysLanguage,reportType);
+        //合并值
+        model.set(idTypeColumn,isNotNull(idNum)?idNum:"");
+
+    }
     /**
      * 时间范围格式化处理
      * @param dateStr
      * @param separater
+     * @param targetSeparater
      * @param sourceFormat
      * @param targetFormat
      * @return
      */
-    private static String timeRangeHandling(String dateStr, String separater, String sourceFormat,String targetFormat) {
+    private static String timeRangeHandling(String dateStr, String separater,String targetSeparater, String sourceFormat,String targetFormat) {
         try{
             if(!isNotNull(dateStr)){
                 return  null;
@@ -831,7 +869,10 @@ public class BaseBusiCrdt extends BaseWord{
             if(isNotNull(separater)){
                 Date date1 = sourcesdf.parse( dateStr.split(separater)[0].trim());
                 Date date2 = sourcesdf.parse( dateStr.split(separater)[1].trim());
-                return targetSdf.format(date1)+separater+targetSdf.format(date2);
+                if("至".equals(targetSeparater)){
+                    return "从"+targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
+                }
+                return targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
             }else{
                 Date date1 = sourcesdf.parse(dateStr);
                 return  targetSdf.format(date1);
@@ -849,7 +890,7 @@ public class BaseBusiCrdt extends BaseWord{
      * @param confs
      * @param isSelect
      */
-    private static void alertConf(String sourceField, String targetName, List<CreditReportModuleConf> confs, boolean isSelect,String sysLanguage,String reportType) {
+    private static String alertConf(String sourceField, String targetName, List<CreditReportModuleConf> confs, boolean isSelect,String sysLanguage,String reportType) {
         if(confs!=null){
             for (CreditReportModuleConf conf : confs) {
               if(isNotNull(sourceField)&&sourceField.equals(conf.get("column_name"))){
@@ -861,6 +902,7 @@ public class BaseBusiCrdt extends BaseWord{
               }
             }
         }
+        return  targetName;
     }
 
     private static boolean isNotNull(String str) {
