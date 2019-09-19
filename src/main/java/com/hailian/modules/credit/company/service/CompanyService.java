@@ -122,12 +122,33 @@ public class CompanyService {
 				companyinfoModel.set("registration_num", No);
 				//companyinfoModel.set("naem_en", englishName);
 				String typeFlagStr = "";
+				List<SysDictDetail> companytype = new ArrayList<>();
 				if(ReportTypeCons.isRoc102(reporttype)) {
 					typeFlagStr = "companyType102";
 				}else {
 					typeFlagStr = "companyType"; 
 				}
-				List<SysDictDetail> companytype = SysDictDetail.dao.getDictDetailBy(EconKind.trim(),typeFlagStr);
+				if("companyType".equals(typeFlagStr)){
+					String sql="select * from sys_dict_detail where del_flag=0 and dict_type='companyType'";
+					List<SysDictDetail> companyTypeList =  SysDictDetail.dao.find(sql);
+					if(StringUtils.isNotEmpty(EconKind)){
+						for (SysDictDetail  temp: companyTypeList) {
+							if(temp==null||StringUtils.isEmpty(temp.getStr("detail_name"))){
+								continue;
+							}
+							String tempStr =   temp.getStr("detail_name").replace("(","").replace("（","").replace(")","").replace("）","").trim().replaceAll("\\s*","")	;
+
+							String tempFlagStr = EconKind		 			   .replace("(","").replace("（","").replace(")","").replace("）","").trim().replaceAll("\\s*","")	;
+							if(tempFlagStr.equals(tempStr)){
+								companytype.add(temp);
+								break;
+							}
+						}
+					}
+
+				}else{
+					companytype = SysDictDetail.dao.getDictDetailBy(EconKind.trim(),typeFlagStr);
+				}
 				if(companytype !=null && CollectionUtils.isNotEmpty(companytype)){
 					companyinfoModel.set("company_type", companytype.get(0).get("detail_id"));
 				}else{

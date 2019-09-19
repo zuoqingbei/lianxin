@@ -637,95 +637,93 @@ public class BaseBusiCrdt extends BaseWord{
      * @param reportType
      */
     private static void specialHandlingForTable(String key, List<CreditReportModuleConf> child, List<BaseProjectModel> rows, String reportType,String sysLanguage) {
-        BaseProjectModel model = rows.get(0);
-        //报告摘要模块处理
-        if("zhaiyao".equals(key)){
-            //合并员工人数和员工统计时间
-            try{
-                //移除统计时间
-                removeConf(child,  "emp_num_date");
-                //合并数据
-                String empNum = null;
-                if(model.get("emp_num")!=null){
-                    empNum = model.get("emp_num")+"";
-                }
-                String empNumDate =  String.valueOf(model.get("emp_num_date"));
-                empNumDate = timeRangeHandling(empNumDate, "","", "yyyy-mm-dd","yyyy年MM月dd日");
-                if(!StringUtils.isEmpty(empNum)){
-                    if(!StringUtils.isEmpty(empNumDate)){
-                        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
-                            model.set("emp_num",empNum+" ("+empNumDate+")");
-                        }else{
-                            model.set("emp_num","("+empNumDate+") "+empNum);
-                        }
-                    }else{
-                        model.set("emp_num",empNum);
+        for (BaseProjectModel  model: rows) {
+            //报告摘要模块处理
+            if("zhaiyao".equals(key)){
+                //合并员工人数和员工统计时间
+                try{
+                    //移除统计时间
+                    removeConf(child,  "emp_num_date");
+                    //合并数据
+                    String empNum = null;
+                    if(model.get("emp_num")!=null){
+                        empNum = model.get("emp_num")+"";
                     }
+                    String empNumDate =  String.valueOf(model.get("emp_num_date"));
+                    empNumDate = timeRangeHandling(empNumDate, "","", "yyyy-mm-dd","yyyy年MM月dd日");
+                    if(!StringUtils.isEmpty(empNum)){
+                        if(!StringUtils.isEmpty(empNumDate)){
+                            if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                                model.set("emp_num",empNum+" ("+empNumDate+")");
+                            }else{
+                                model.set("emp_num","("+empNumDate+") "+empNum);
+                            }
+                        }else{
+                            model.set("emp_num",empNum);
+                        }
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            //合并 注册资本类型、注册资本、注册资本币种
-            try{
-                mergerHandling2( child,   model, "registered_capital", reportType,  sysLanguage,"registered_capital","currency","capital_type","currency","capital_type");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            //钱、币种、日期 类型的合并处理
-            try{
-                mergerHandling( child,   model,   reportType,  sysLanguage,"business_income","businessincome_type","time_period_for_business_income_statistics");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            try {
-                mergerHandling(   child,   model,   reportType,  sysLanguage,"total_assets","totalassets_type","time_period_for_total_assets");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-            try {
-                mergerHandling(  child,   model,   reportType,  sysLanguage,"period_for_equity_of_stockholder","periodofstockholder_type","time_period_for_equity_of_stockholder");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }else if("creditanalysis".equals(key)){ //信用分析模块处理
-            try {
-                //信用额度、信用额度币种处理
-                mergerHandling(  child,   model,   reportType,  sysLanguage,"amount","currency");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }else if("regist".equals(key)){ //注册信息模块处理
-            try {
-                //注册资本处理
-                mergerHandling2( child, model, "capital_type", reportType,  sysLanguage,"registered_capital","currency","capital_type","currency","registered_capital");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }else if("leader".equals(key)){ //管理层模块
-            try {
-                //证件类型和证件号码合并
-                mergerHandling3( child, model,  reportType,  sysLanguage,"id_card","id_type","id_card");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }else if("naturalDetails".equals(key)){ //自然人股东详情模块
-            try {
-                ///证件类型和证件号码合并
-                mergerHandling3( child, model,  reportType,  sysLanguage,"id_no","id_type","id_no");
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }else if("legalDetails".equals(key)){//法人股东详情模块
-            try {
-                //注册资本、注册币种处理
-                mergerHandling(  child,   model,   reportType,  sysLanguage,"registered_capital","currency");
-            }catch (Exception e){
-                e.printStackTrace();
+                //合并 注册资本类型、注册资本、注册资本币种
+                try{
+                    mergerHandling2( child,   model, "registered_capital", reportType,  sysLanguage,"registered_capital","currency","capital_type","currency","capital_type");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                //钱、币种、日期 类型的合并处理
+                try{
+                    mergerHandling( child,   model,   reportType,  sysLanguage,"business_income","businessincome_type","time_period_for_business_income_statistics");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                try {
+                    mergerHandling(   child,   model,   reportType,  sysLanguage,"total_assets","totalassets_type","time_period_for_total_assets");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+                try {
+                    mergerHandling(  child,   model,   reportType,  sysLanguage,"period_for_equity_of_stockholder","periodofstockholder_type","time_period_for_equity_of_stockholder");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else if("creditanalysis".equals(key)){ //信用分析模块处理
+                try {
+                    //信用额度、信用额度币种处理
+                    mergerHandling(  child,   model,   reportType,  sysLanguage,"amount","currency");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else if("regist".equals(key)){ //注册信息模块处理
+                try {
+                    //注册资本处理
+                    mergerHandling2( child, model, "capital_type", reportType,  sysLanguage,"registered_capital","currency","capital_type","currency","registered_capital");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else if("leader".equals(key)){ //管理层模块
+                try {
+                    //证件类型和证件号码合并
+                    mergerHandling3( child, model,  reportType,  sysLanguage,"id_card","id_type","id_card");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else if("naturalDetails".equals(key)){ //自然人股东详情模块
+                try {
+                    ///证件类型和证件号码合并
+                    mergerHandling3( child, model,  reportType,  sysLanguage,"id_no","id_type","id_no");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }else if("legalDetails".equals(key)){//法人股东详情模块
+                try {
+                    //注册资本、注册币种处理
+                    mergerHandling(  child,   model,   reportType,  sysLanguage,"registered_capital","currency");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
-
-        rows.clear();
-        rows.add(model);
     }
 
     /**
