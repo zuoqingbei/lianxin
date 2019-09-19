@@ -882,7 +882,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			return;
 		}
 		//Integer type = getFinanceDictByReportType(reportType);
-		String type = getPara("type"); 
+		String type = getPara("type");
 		if(StrUtils.isEmpty(type)) {
 			renderJson(new ResultType(0, "缺少财务类型参数!"));
 			return;
@@ -893,13 +893,41 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			ops = response.getOutputStream();response.reset();
 		} catch (IOException e) {
 			e.printStackTrace();
-			renderJson(new ResultType(0, "导入出现未知异常!"));
+			renderJson(new ResultType(0, "导出现未知异常!"));
 			return;
 		}
 		ExcelModule.exportExcel(response,ops, Integer.parseInt(type));
-		renderJson(new ResultType(0, "导入成功!"));
+		renderJson(new ResultType(0, "导出成功!"));
 	}
-	
+
+    /**
+     *下载财务模板和数据
+     *lzg 2019/09/18
+     */
+    public void getFinanceExcelWithDataExport() {
+        String confId = getPara("financeConfId");
+        if(StrUtils.isEmpty(confId)) {
+            renderJson(new ResultType(0, "配置id不能为空!"));
+            return;
+    }
+        String type = getPara("type");
+        if(StrUtils.isEmpty(type)) {
+            renderJson(new ResultType(0, "缺少财务类型参数!"));
+            return;
+        }
+        ServletOutputStream ops = null;
+        HttpServletResponse response = this.getResponse();
+        try {
+            ops = response.getOutputStream();response.reset();
+        } catch (IOException e) {
+            e.printStackTrace();
+            renderJson(new ResultType(0, "导出现未知异常!"));
+            return;
+        }
+        ExcelModule.exportExcelWithData(response,ops, Integer.parseInt(type),confId);
+        renderJson(new ResultType(0, "导出成功!"));
+    }
+
 	/**
 	 * 增加或修改财务实体信息
 	 * lzg 2018/11/24

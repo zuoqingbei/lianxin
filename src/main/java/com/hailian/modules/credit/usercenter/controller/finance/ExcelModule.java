@@ -14,6 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -87,7 +88,6 @@ public class ExcelModule extends BaseProjectController  {
 	 * 导出财务模板
 	 * @param response
 	 * @param ops
-	 * @param int (模板类型)
 	 */
 	public  static void  exportExcel(HttpServletResponse response, OutputStream ops,int type) {
 		
@@ -504,7 +504,6 @@ public class ExcelModule extends BaseProjectController  {
 	/**
 	 * 解析子模块获取子模块下标与对应合计项下标集合的映射
 	 * 财务子板块
-	 * @param sonSectorList
 	 * @return 子模块下标与对应合计项下标集合的映射,
 	 */
 	public static Map<Integer,List<Integer>> getSumOption(int type){
@@ -527,18 +526,197 @@ public class ExcelModule extends BaseProjectController  {
 	/**
 	 *判断是否是合计项 
 	 * @param sumOptionMap 子模块下标与对应合计项下标集合的映射,
-	 * @param sonSectorCode 子模块下标
-	 * @param index 实体下标
 	 * @return
 	 */
 	public static boolean isSumOption(Map<Integer,List<Integer>> sumOptionMap,Integer sonSectorIndex,Integer entryIndex) {
 		if(sumOptionMap.get(sonSectorIndex).contains(entryIndex)) {return true; }return false;
 	}
-	
-	
-	
-	
-	
-	
-	
+	public static List<CreditCompanyFinancialEntry> getEntries(String confId, int selector){
+		List<CreditCompanyFinancialEntry> list = CreditCompanyFinancialEntry.dao.find("select * from  credit_company_financial_entry where conf_id=? and son_sector=? and del_flag=0",new String[]{confId,selector+""});
+		return list;
+	}
+	//HSSFCell cellItemName = rowBody.createCell(left+j*smallModuleColSpacing);
+
+	public static HSSFCell createCell(HSSFRow row,String value,HSSFCellStyle style,int multiple,int offset ){
+		HSSFCell cell = row.createCell(left+offset+multiple*smallModuleColSpacing);
+		try {
+			cell.setCellType(CellType.NUMERIC);
+			cell.setCellValue(Double.parseDouble(value));
+		}catch (Exception e){
+			e.printStackTrace();
+			cell.setCellType(CellType.STRING);
+			cell.setCellValue(value);
+		}
+
+		cell.setCellStyle(style);
+		return  cell;
+	}
+	public static void exportExcelWithData(HttpServletResponse response, ServletOutputStream ops, int type, String confId) {
+
+		if(type==1) {
+			smallModuleColSpacing = 5;
+			colWidthOffSet = 620;
+			firstRow = new String[] {
+					"科目",
+					"初始日期值",
+					"结束日期值"
+			};
+			fileName = "ChineseFinancialTemplate";
+		}else if(type==2){
+			smallModuleColSpacing = 9;
+			colWidthOffSet = 345;
+			firstRow = new String[] {
+					"itemName",
+					"beginValue",
+					"endValue"
+			};
+			fileName = "EnglishFinancialTemplate";
+		}else if(type==3){
+			smallModuleColSpacing = 9;
+			colWidthOffSet = 345;
+			firstRow = new String[] {
+					"itemName",
+					"beginValue",
+					"endValue"
+			};
+			fileName = "FinancialModuleFor396";
+		}
+
+		Map<Integer,List<List<CreditCompanyFinancialEntry>>> pageNumToList = new LinkedHashMap<>();
+		/**
+		 * 父模块 1-合计表(子模块1) 2-资产负债表(子模块 2-6) 3-利润表(子模块 7-10) 4-重要比率表(子模块11)
+		 */
+		/**
+		 *	财务子板块
+		 *  1-合计 2-流动资产 3-非流动资产(固定资产)
+		 *  4-流动负债 5-非流动负债(长期负债)
+		 *  6-负债及所有者权益 7-毛利润
+		 *  8-营业利润 9-税前利润
+		 *   10-所得税费用 11-重要比率表 ',
+		 */
+
+		if(type==1||type==2) {
+			List<List<CreditCompanyFinancialEntry>> tempFatherList1 = new ArrayList<>();
+			tempFatherList1.add(getEntries(confId,1));
+			List<List<CreditCompanyFinancialEntry>> tempFatherList2 = new ArrayList<>();
+			tempFatherList2.add(getEntries(confId,2));tempFatherList2.add(getEntries(confId,3)); tempFatherList2.add(getEntries(confId,4));
+			tempFatherList2.add(getEntries(confId,5)); tempFatherList2.add(getEntries(confId,6));
+			List<List<CreditCompanyFinancialEntry>> tempFatherList3 = new ArrayList<>();
+			tempFatherList3.add(getEntries(confId,7));tempFatherList3.add(getEntries(confId,8));tempFatherList3.add(getEntries(confId,9));
+			tempFatherList3.add(getEntries(confId,10));
+			List<List<CreditCompanyFinancialEntry>> tempFatherList4 = new ArrayList<>();
+			tempFatherList4.add(getEntries(confId,11));
+			pageNumToList.put(0, tempFatherList2);
+			pageNumToList.put(1, tempFatherList3);
+			pageNumToList.put(2, tempFatherList4);
+			pageNumToList.put(3, tempFatherList1);
+		}else if(type==3){
+			List<List<CreditCompanyFinancialEntry>> tempFatherList1 = new ArrayList<>();
+			tempFatherList1.add(getEntries(confId,0));
+			pageNumToList.put(3, tempFatherList1);
+		}
+
+		try {
+			fileName = new String(fileName.getBytes("UTF-8"),"ISO-8859-1" );
+			response.setHeader("Content-Disposition","attachment;filename="+fileName+".xls");//指定下载的文件名
+			response.setContentType("multipart/form-data");
+			response.setCharacterEncoding("utf-8");
+		} catch (UnsupportedEncodingException e) {
+			fileName = "warning!";
+			e.printStackTrace();
+		}
+		HSSFWorkbook wb = new HSSFWorkbook();
+		int currentPage = 0 ;
+		//插入数据
+		for (Integer pageNum : pageNumToList.keySet()) {
+			//按照规定的顺序创建sheet页
+			wb.createSheet(moduleOrderMapping.get(pageNum));
+			HSSFSheet sheet = wb.getSheetAt(currentPage);
+
+			//本页数据
+			List<List<CreditCompanyFinancialEntry>> pageData = pageNumToList.get(pageNum);
+			//列宽度映射
+			Map<Integer,Integer> cellNumToCellWidth = new HashMap<>();
+
+			//设置头
+			HSSFRow rowHead = sheet.createRow(top);
+			HSSFCellStyle rowHeadStyle = ExcelUtils.getDefaultStyle(wb,true,false);
+			HSSFCellStyle rowHeadStyle2 = ExcelUtils.getDefaultStyle(wb,false,false);
+
+			// 创建HSSFPatriarch对象,HSSFPatriarch是所有注释的容器.
+			HSSFPatriarch patr = sheet.createDrawingPatriarch();
+
+
+			int a = 0;//列位置系数
+			for (int j = 0; j < pageData.size(); j++) {
+				for (int k = 0; k < firstRow.length; k++) {
+					String value = firstRow[k];
+					int valueLength = value.length();
+					HSSFCell cell = rowHead.createCell(left + k + a*smallModuleColSpacing);
+					cell.setCellValue(value);
+					cell.setCellStyle(rowHeadStyle);
+					sheet.setColumnWidth(left + k + a*smallModuleColSpacing, valueLength * colWidthOffSet);
+					if(k == 0) {
+						cellNumToCellWidth.put(j, valueLength);
+					}
+				}
+				a++;
+			}
+
+			//设置body
+			for (int j = 0;j < pageData.size(); j++) {
+				List<CreditCompanyFinancialEntry> son_sector = pageData.get(j);
+				for (int k = 0;k < son_sector.size(); k++) {
+					HSSFRow rowBody = sheet.getRow(top+1+k);
+					if(rowBody==null) {
+						rowBody = sheet.createRow(top+1+k);
+					}
+
+					String itemName = son_sector.get(k).get("item_name");
+					String begainValue = son_sector.get(k).get("begin_date_value")+"";
+					String endValue = son_sector.get(k).get("end_date_value")+"";
+
+					int currentLength = itemName.length();
+					if(currentLength > (cellNumToCellWidth.get(j)==null?0:cellNumToCellWidth.get(j))) {
+						cellNumToCellWidth.put(j, currentLength);
+					}
+					HSSFCell cellItemName = createCell(rowBody,itemName,rowHeadStyle2,j,0);
+					createCell(rowBody,begainValue,rowHeadStyle2,j,1);
+					createCell(rowBody,endValue,rowHeadStyle2,j,2);
+					// 定义注释的大小和位置,详见文档
+					HSSFComment comment = patr.createComment(new HSSFClientAnchor(0, 0, 0, 0, (short)3, 5, (short) 3, 5));
+					// 设置注释内容
+					comment.setString(new HSSFRichTextString("该单元格是默认项,禁止修改!"));
+					// 设置注释作者. 当鼠标移动到单元格上是可以在状态栏中看到该内容.
+					comment.setAuthor("lzg");
+					//如果是合计项
+					if ("1".equals(son_sector.get(k).get("is_default")+"")){
+						cellItemName.setCellComment(comment);
+					}
+				}
+			}
+
+			for (Integer key : cellNumToCellWidth.keySet()) {
+				sheet.setColumnWidth(key*smallModuleColSpacing+left, cellNumToCellWidth.get(key)*colWidthOffSet);
+				System.out.println("第"+currentPage+"个sheet页,"+"第"+(key*smallModuleColSpacing+left)+"列,宽:"+cellNumToCellWidth.get(key)*colWidthOffSet);
+			}
+			currentPage++;
+		}
+		try {
+
+			wb.write(ops);
+			wb.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			if(ops!=null) {
+				try {
+					ops.close();
+					ops = null;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }
