@@ -256,7 +256,12 @@ let ReportConfig = {
         if(!a){return}
         let _this = this
         let arr = []
-        a.unshift({temp_name: "序号",column_name:"order_num"})
+		if(lang === 'en'){
+			a.unshift({temp_name: "Num",column_name:"order_num"})
+		}else{
+			a.unshift({temp_name: "序号",column_name:"order_num"})
+		}
+        
         a.forEach((ele,index)=>{
             if(ele.temp_name !== '操作' && ele.temp_name !== 'Operation'){
                 if(ele.field_type === 'money') {

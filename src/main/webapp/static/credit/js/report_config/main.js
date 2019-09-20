@@ -797,6 +797,7 @@ let ReportConfig = {
     									<!-- 上传下载按钮 -->
     									<div class="btn-group">
     										<button class="btn btn-default mr-3 cwDown" >${this_content[2].temp_name}</button>
+											<button class="btn btn-default mr-3 cwDownData" style="background-color: #37485a;color:#fff;">${this_content[17].temp_name}</button>
 						    				<button class="aa-btn btn btn-primary cwUp" style="position:relative">
 						    					<form class="uploadForm" enctype="multipart/form-data" action="" method="POST" >
 						    						<input style="opacity:0;cursor:pointer;width:100%;height:100%;position:absolute;left:0;top:0" type="file" name="file" class="fileInp">
@@ -805,6 +806,7 @@ let ReportConfig = {
 						    					</form>
 						    					${this_content[3].temp_name}
 						    				</button>
+											
     									</div>
     								</div>
     									<!-- 单位 -->
@@ -976,6 +978,7 @@ let ReportConfig = {
     		InitObj.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,_this.rows)
     		InitObj.cwModalCompute(_this.cwAlterSource)
     		InitObj.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
+			InitObj.downLoadCwData(cw_contents[0][17].alter_source,_this.rows);
 			InitObj.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
 			InitObj.addNewCwModal(_this.cwConfigAlterSource,_this.rows);
     	},0)

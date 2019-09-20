@@ -737,6 +737,27 @@ let InitObj = {
 			})
 		})
 	},
+	downLoadCwData(url,rows){
+		
+		/**
+		 * 财务下载数据
+		 * url:下载数据url
+		 */
+		$(document).on("click",'.cwDownData',()=>{
+			console.log(rows)
+			$.ajax({
+				url:BASE_PATH + `credit/front/ReportGetData/` +url,
+				type:'post',
+				data:{
+					"company_id":rows["company_id"]
+				},
+				success:(data)=>{
+					Public.message("success","下载成功！")
+					
+				}
+			})
+		})
+	},
 	upLoadCw(url,rows,getSource,alterSource,tableCwId){
 		/**
 		 * 财务上传模板
