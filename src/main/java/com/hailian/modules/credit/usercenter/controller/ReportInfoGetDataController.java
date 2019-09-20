@@ -334,6 +334,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             	targetStr+=" LEFT JOIN sys_dict_detail a4 on info.status=a4.detail_id ";
             	targetStr += "LEFT JOIN credit_report_type t ON t.id = info.report_type WHERE 	c." + sqlSuf + " 1=1 ";
             }
+            if("credit_transaction_payment".equals(tableName)&&"CreditTransactionPayment".equals(className)){
+            	targetStr="SELECT * FROM `credit_transaction_payment` WHERE del_flag=0";
+            }
             rows = model.find(targetStr);
             //处理联信编码 lianxin_id 若“徐州开达精细化工有限公司”之前有创建过商业报告订单，则将之前订单号作为联信编码，若有多个，取最新的订单号
             if(StringUtils.isNotBlank(companyId)&&"credit_company_info".equals(tableName)&&"CreditCompanyInfo".equals(className)){
