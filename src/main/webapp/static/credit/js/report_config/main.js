@@ -927,7 +927,7 @@ let ReportConfig = {
     				break;
     				case 3:
     					//资产负债表
-    					for(let i=0;i<5;i++){
+    					for(let i=0;i<4;i++){
     						cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
     							<table id="tableCwFz${i}"
     							data-toggle="table"
@@ -941,7 +941,7 @@ let ReportConfig = {
     				break;	
     				case 4:
     					//利润表
-    					for(let i=0;i<4;i++){
+    					for(let i=0;i<2;i++){
     						cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
     							<table id="tableCwLr${i}"
     							data-toggle="table"
