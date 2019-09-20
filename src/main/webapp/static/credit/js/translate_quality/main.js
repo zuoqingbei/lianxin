@@ -58,7 +58,7 @@ let ReportConfig = {
             let tempRows = []
             $table.bootstrapTable({
                 height: 300,
-                columns: _this.tableColumns(contents, 'ch'),
+                columns: _this.tableColumns(contents, 'ch',index),
                 showFooter:true,
                 url: urlCH, // 请求后台的URL（*）
                 method: 'post', // 请求方式（*）post/get
@@ -194,18 +194,21 @@ let ReportConfig = {
                                 let arr = []
                                 let total = 0 ;
                                 a.forEach((item,index)=>{
-                                    if(ele.column_name === 'order_num'){
-                                        if(lang=="ch"){
-                                            total = '合计'
-                                        }else{
-                                            total = '合计'
-                                        }
+                                    if( this.title[tempI].get_source.split("*")[0].indexOf('getBootStrapTable?tableName=credit_company_shareholder')!==-1){
+                                        if(ele.column_name === 'order_num'){
+                                            if(lang=="ch"){
+                                                total = '合计'
+                                            }else{
+                                                total = '合计'
+                                            }
 
-                                    }else if(ele.column_name !== 'sh_name') {
-                                        if(item[ele.column_name]){
-                                            total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                                        }else if(ele.column_name !== 'sh_name') {
+                                            if(item[ele.column_name]){
+                                                total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                                            }
                                         }
                                     }
+
                                 })
                                 if(typeof total === 'number'){
                                     if(total!==0){
