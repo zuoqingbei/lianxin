@@ -330,7 +330,7 @@ public class ExcelModule extends BaseProjectController  {
 					//解析资产负债表
 				case 1:
 					model.set("parent_sector", 2);
-					for (int j = 1; j < 6; j++) {
+					for (int j = 1; j < 5; j++) {
 						int targetSonSector = j+1;
 						model.set("son_sector", targetSonSector);
 						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
@@ -344,7 +344,7 @@ public class ExcelModule extends BaseProjectController  {
 				case 2:
 					k = 0;
 					model.set("parent_sector", 3);
-					for (int j = 6; j < 10; j++) {
+					for (int j = 5; j < 7; j++) {
 						int targetSonSector = j+1;
 						model.set("son_sector", targetSonSector);
 						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
@@ -358,7 +358,7 @@ public class ExcelModule extends BaseProjectController  {
 				case 3:
 					k = 0;
 					model.set("parent_sector", 4);
-					for (int j = 10; j < 11; j++) {
+					for (int j = 7; j < 9; j++) {
 						int targetSonSector = j+1;
 						model.set("son_sector", targetSonSector);
 						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
