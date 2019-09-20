@@ -907,11 +907,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      *lzg 2019/09/18
      */
     public void getFinanceExcelWithDataExport() {
-        String confId = getPara("financeConfId");
-        if(StrUtils.isEmpty(confId)) {
-            renderJson(new ResultType(0, "配置id不能为空!"));
+        String companyId = getPara("company_id");
+        if(StrUtils.isEmpty(companyId)) {
+            renderJson(new ResultType(0, "公司ID不能为空!"));
             return;
-    }
+        }
+
         String type = getPara("type");
         if(StrUtils.isEmpty(type)) {
             renderJson(new ResultType(0, "缺少财务类型参数!"));
@@ -926,7 +927,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             renderJson(new ResultType(0, "导出现未知异常!"));
             return;
         }
-        ExcelModule.exportExcelWithData(response,ops, Integer.parseInt(type),confId);
+        ExcelModule.exportExcelWithData(response,ops, Integer.parseInt(type),companyId);
         renderJson(new ResultType(0, "导出成功!"));
     }
 

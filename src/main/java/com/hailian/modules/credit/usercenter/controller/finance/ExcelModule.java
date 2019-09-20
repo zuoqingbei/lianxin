@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
@@ -139,12 +140,13 @@ public class ExcelModule extends BaseProjectController  {
 			tempFatherList1.add(sonSectorList.get(0));
 		List<List<CreditCompanyFinancialDict>> tempFatherList2 = new ArrayList<>();
 			tempFatherList2.add(sonSectorList.get(1));tempFatherList2.add(sonSectorList.get(2)); tempFatherList2.add(sonSectorList.get(3)); 
-			tempFatherList2.add(sonSectorList.get(4)); tempFatherList2.add(sonSectorList.get(5));  
+			tempFatherList2.add(sonSectorList.get(4)); //tempFatherList2.add(sonSectorList.get(5));
 		List<List<CreditCompanyFinancialDict>> tempFatherList3 = new ArrayList<>();
-			tempFatherList3.add(sonSectorList.get(6));tempFatherList3.add(sonSectorList.get(7));tempFatherList3.add(sonSectorList.get(8));
-			tempFatherList3.add(sonSectorList.get(9));
+			tempFatherList3.add(sonSectorList.get(6));tempFatherList3.add(sonSectorList.get(7));
+			//tempFatherList3.add(sonSectorList.get(8));
+			//tempFatherList3.add(sonSectorList.get(9));
 		List<List<CreditCompanyFinancialDict>> tempFatherList4 = new ArrayList<>();
-			tempFatherList4.add(sonSectorList.get(10));
+			tempFatherList4.add(sonSectorList.get(7));
 		pageNumToList.put(0, tempFatherList2);
 		pageNumToList.put(1, tempFatherList3);
 		pageNumToList.put(2, tempFatherList4);
@@ -531,10 +533,16 @@ public class ExcelModule extends BaseProjectController  {
 	public static boolean isSumOption(Map<Integer,List<Integer>> sumOptionMap,Integer sonSectorIndex,Integer entryIndex) {
 		if(sumOptionMap.get(sonSectorIndex).contains(entryIndex)) {return true; }return false;
 	}
-	public static List<CreditCompanyFinancialEntry> getEntries(String confId, int selector){
-		List<CreditCompanyFinancialEntry> list = CreditCompanyFinancialEntry.dao.find("select * from  credit_company_financial_entry where conf_id=? and son_sector=? and del_flag=0",new String[]{confId,selector+""});
-		return list;
+	public static List<CreditCompanyFinancialEntry> getEntries( List<CreditCompanyFinancialEntry> list, int selector){
+		List<CreditCompanyFinancialEntry> tempList = new ArrayList<>();
+		for (CreditCompanyFinancialEntry   temp: list) {
+		  if((selector+"").equals(temp.get("son_sector")+"")){
+			  tempList.add(temp);
+		  }
+		}
+		return tempList;
 	}
+
 	//HSSFCell cellItemName = rowBody.createCell(left+j*smallModuleColSpacing);
 
 	public static HSSFCell createCell(HSSFRow row,String value,HSSFCellStyle style,int multiple,int offset ){
@@ -551,8 +559,9 @@ public class ExcelModule extends BaseProjectController  {
 		cell.setCellStyle(style);
 		return  cell;
 	}
-	public static void exportExcelWithData(HttpServletResponse response, ServletOutputStream ops, int type, String confId) {
-
+	public static void exportExcelWithData(HttpServletResponse response, ServletOutputStream ops, int type, String companyId) {
+		CreditCompanyFinancialStatementsConf conf = CreditCompanyFinancialStatementsConf.dao.findFirst("select *  from credit_company_financial_statements_conf where del_flag=0 and type=?  and company_id=?",new String[]{type+"",companyId});
+		List<CreditCompanyFinancialEntry> list = CreditCompanyFinancialEntry.dao.find("select * from  credit_company_financial_entry where conf_id=? and del_flag=0",new String[]{conf.get("id")+""});
 		if(type==1) {
 			smallModuleColSpacing = 5;
 			colWidthOffSet = 620;
@@ -597,22 +606,22 @@ public class ExcelModule extends BaseProjectController  {
 
 		if(type==1||type==2) {
 			List<List<CreditCompanyFinancialEntry>> tempFatherList1 = new ArrayList<>();
-			tempFatherList1.add(getEntries(confId,1));
+			tempFatherList1.add(getEntries(list,1));
 			List<List<CreditCompanyFinancialEntry>> tempFatherList2 = new ArrayList<>();
-			tempFatherList2.add(getEntries(confId,2));tempFatherList2.add(getEntries(confId,3)); tempFatherList2.add(getEntries(confId,4));
-			tempFatherList2.add(getEntries(confId,5)); tempFatherList2.add(getEntries(confId,6));
+			tempFatherList2.add(getEntries(list,2));tempFatherList2.add(getEntries(list,3)); tempFatherList2.add(getEntries(list,4));
+			tempFatherList2.add(getEntries(list,5)); //tempFatherList2.add(getEntries(list,6));
 			List<List<CreditCompanyFinancialEntry>> tempFatherList3 = new ArrayList<>();
-			tempFatherList3.add(getEntries(confId,7));tempFatherList3.add(getEntries(confId,8));tempFatherList3.add(getEntries(confId,9));
-			tempFatherList3.add(getEntries(confId,10));
+			tempFatherList3.add(getEntries(list,6));tempFatherList3.add(getEntries(list,7));
+			//tempFatherList3.add(getEntries(list,9)); tempFatherList3.add(getEntries(list,10));
 			List<List<CreditCompanyFinancialEntry>> tempFatherList4 = new ArrayList<>();
-			tempFatherList4.add(getEntries(confId,11));
+			tempFatherList4.add(getEntries(list,8));
 			pageNumToList.put(0, tempFatherList2);
 			pageNumToList.put(1, tempFatherList3);
 			pageNumToList.put(2, tempFatherList4);
 			pageNumToList.put(3, tempFatherList1);
 		}else if(type==3){
 			List<List<CreditCompanyFinancialEntry>> tempFatherList1 = new ArrayList<>();
-			tempFatherList1.add(getEntries(confId,0));
+			tempFatherList1.add(getEntries(list,0));
 			pageNumToList.put(3, tempFatherList1);
 		}
 
