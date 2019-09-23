@@ -322,9 +322,9 @@ public class ExcelModule extends BaseProjectController  {
 					for (int j = 0; j < 1; j++) {
 						int targetSonSector = j+1;
 						model.set("son_sector", targetSonSector);
-						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
-						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=?",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
-						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=?",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=? and del_flag=0 ",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? and del_flag=0 ",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
 						allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j),className1,className2,isDefault));
 						k++;
 					}
@@ -335,9 +335,9 @@ public class ExcelModule extends BaseProjectController  {
 					for (int j = 1; j < 5; j++) {
 						int targetSonSector = j+1;
 						model.set("son_sector", targetSonSector);
-						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
-						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
-						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
 						allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j),className1,className2,isDefault)); 
 						k++;
 					}
@@ -349,9 +349,9 @@ public class ExcelModule extends BaseProjectController  {
 					for (int j = 5; j < 7; j++) {
 						int targetSonSector = j+1;
 						model.set("son_sector", targetSonSector);
-						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
-						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
-						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className1 = Db.query("select class_name1 from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
 						allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j),className1,className2,isDefault)); 
 						k++;
 					}
@@ -363,10 +363,10 @@ public class ExcelModule extends BaseProjectController  {
 					for (int j = 7; j < 9; j++) {
 						int targetSonSector = j+1;
 						model.set("son_sector", targetSonSector);
-						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> isDefault = Db.query("select is_default from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
 						List<String> className1 = Db.query("select class_name1"
-								+ " from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
-						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+								+ " from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
+						List<String> className2 = Db.query("select class_name2 from credit_company_financial_dict where son_sector=? and type=? and del_flag=0  order by sort_no,id",Arrays.asList(new String[] {targetSonSector+"",type+""}).toArray());
 						allModel.addAll(parseSonSector(model, left+k*smallModuleColSpacing, top+1, sheet,sumOptionMap.get(j),className1,className2,isDefault)); 
 						k++;
 					}
@@ -406,7 +406,7 @@ public class ExcelModule extends BaseProjectController  {
 			//设置字典表已有的className
 			if(i-rowStart<className1.size()) {
 				 tempModel.set("class_name1", className1.get(i-rowStart));
-			 }else {//设置新增的className
+			 }/*else {//设置新增的className
 				 if((int)model.get("son_sector")==7) {
 						tempModel.set("class_name1", className1.get(2));
 						tempModel.set("class_name2", className2.get(2));
@@ -415,7 +415,7 @@ public class ExcelModule extends BaseProjectController  {
 						tempModel.set("class_name2", className2.get(0));	
 					}
 					
-			 }
+			 }*/
 			
 			 if(i-rowStart<className2.size()) {
 				 tempModel.set("class_name2", className2.get(i-rowStart));
