@@ -35,6 +35,8 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
 public class ExcelModule extends BaseProjectController  {
+
+
 	/**
 	 * 列宽系数
 	 */
@@ -142,7 +144,7 @@ public class ExcelModule extends BaseProjectController  {
 			tempFatherList2.add(sonSectorList.get(1));tempFatherList2.add(sonSectorList.get(2)); tempFatherList2.add(sonSectorList.get(3)); 
 			tempFatherList2.add(sonSectorList.get(4)); //tempFatherList2.add(sonSectorList.get(5));
 		List<List<CreditCompanyFinancialDict>> tempFatherList3 = new ArrayList<>();
-			tempFatherList3.add(sonSectorList.get(6));tempFatherList3.add(sonSectorList.get(7));
+			tempFatherList3.add(sonSectorList.get(5));tempFatherList3.add(sonSectorList.get(6));
 			//tempFatherList3.add(sonSectorList.get(8));
 			//tempFatherList3.add(sonSectorList.get(9));
 		List<List<CreditCompanyFinancialDict>> tempFatherList4 = new ArrayList<>();
