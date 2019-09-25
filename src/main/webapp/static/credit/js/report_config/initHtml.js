@@ -128,7 +128,7 @@ let InitObj = {
 				async:false,
 				data:paramObj,
 				success:(data)=>{
-					console.log(data)
+					// console.log(data)
 					$(".gjds").attr("dsConfigid",data["rows"][0]["id"])
 					data.rows.forEach((item,index)=>{
 						$(".ds-date").each((index,ele)=>{
@@ -232,7 +232,7 @@ let InitObj = {
 					})
 				}
 			})
-			console.log(tableTitles)
+			// console.log(tableTitles)
 			let tables = Array.from($(".table-title"))
 			tables.forEach((item,i)=>{
 				$(tables[i]).html(radioVal==="1"?tableTitles[i][1]:tableTitles[i][0])
@@ -266,7 +266,8 @@ let InitObj = {
 			//财务计算
 			let _this = this
 			cwModals.forEach((seft,i)=>{
-				$(seft).find("table").on("blur","input",(e)=>{
+				$(seft).find("table").on("blur","input[type='number']",(e)=>{
+					// console.log('计算开始-----------------')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")
 					let val = $(e.target).val()
@@ -292,159 +293,192 @@ let InitObj = {
 						success:(data)=>{
 							if(data.statusCode === 1) {
 								//保存合计项
-								_this.saveCwSummation(alterSource)
-								_this.saveCwEveryTableSUmmation(alterSource)
+								// _this.saveCwSummation(alterSource)
+								// _this.saveCwEveryTableSUmmation(alterSource)
 							}
 						}
 					})
-					console.log(className)
-					if(className.split("-")[1] || className === 'amount1'|| className === 'amount2'){
-						//减法
-						this.hjArr.forEach((item,index)=>{
-							if(item !== null && item.split("-")[item.split("-").length-1] === 'sub'){
-								//减法的合计
-								let total1 = $(seft).find(".amount1").val()
-								let total2 = $(seft).find(".amount2").val()
-								let arr = item.split("-");
-								console.log(arr);
-								if(arr.length === 2) {
-									//毛利润
-									let temp1 = 0
-									let doms1 = Array.from($(seft).find("."+arr[0]+"-son"));
-									console.log(doms1)
-									doms1.forEach((item,index)=>{
-										temp1 += +$(item).val()
-									})
-									total1 -= temp1;
-									let temp2 = 0
-									let doms2 = Array.from($(seft).find("."+arr[0].replace("1","2")+"-son"));
-									console.log(doms2)
-									doms2.forEach((item,index)=>{
-										temp2 += +$(item).val()
-									})
-									total2 -= temp2;
-								}else if(arr.length === 3) {
-									//非毛利润表
-									let sub1 = $(seft).find("."+arr[0]+"-sub").length===0?$(seft).find("."+this.hjArr[index-1].split("-")[0]+'-'+arr[0]+"-sub").val():$(seft).find("."+arr[0]+"-sub").val();
-									let sub2 = $(seft).find("."+arr[0].replace("1","2")+"-sub").length===0?$(seft).find("."+this.hjArr[index-1].split("-")[0].replace("1","2")+'-'+arr[0].replace("1","2")+"-sub").val():$(seft).find("."+arr[0].replace("1","2")+"-sub").val();
-									let temp1 = 0;
-									let temp2 = 0;
-									let doms1 = Array.from($(seft).find(`.${arr[1]}-son`));
-									console.log(doms1)
-									doms1.forEach((item,index)=>{
-										temp1 += +$(item).val()
-									})
-									total1 -= (total1-sub1);
-									total1 -= temp1;
-									let doms2 = Array.from($(seft).find(`.${arr[1].replace("1","2")}-son`));
-									console.log(doms2)
-									doms2.forEach((item,index)=>{
-										temp2 += +$(item).val()
-									})
-									total2 -= (total2-sub2);
-									total2 -= temp2;
-								}
-
-								$(seft).find("."+item).val(total1)
-								$(seft).find("."+item.replace(/1/g,'2')).val(total2)
-							}
-						})
-					}else {
-						//加法
-						this.hjArr.forEach((item,index)=>{
-							if(item !== null && item.split("-")[item.split("-").length-1] !== 'sub'){
-								//加法的合计
-								let num1 = 0
-								let num2 = 0
-								let arr = item.split("-");
-								arr.forEach((item,index)=>{
-									let str = arr[arr.length-1];
-									if(index<arr.length-1){
-										let doms1 = Array.from($(seft).find("."+item))
-										console.log(doms1)
-										doms1.forEach((item,index)=>{
-											console.log(item)
-											num1 += +$(item).val()
-										})
-										let doms2 = Array.from($(seft).find("."+item.replace("1","2")))
-										console.log(doms2)
-										doms2.forEach((item,index)=>{
-											console.log(item)
-											num2 += +$(item).val()
-										})
-									}
-								})
-								$(seft).find("."+item).val(num1)
-								$(seft).find("."+item.replace(/1/g,'2')).val(num2)
-							}
-						})
-					}
+					// if(className.split("-")[1] || className === 'amount1'|| className === 'amount2'){
+					// 	//减法
+					// 	this.hjArr.forEach((item,index)=>{
+					// 		if(item !== null && item.split("-")[item.split("-").length-1] === 'sub'){
+					// 			//减法的合计
+					// 			let total1 = $(seft).find(".amount1").val()
+					// 			let total2 = $(seft).find(".amount2").val()
+					// 			let arr = item.split("-");
+					// 			console.log(arr);
+					// 			if(arr.length === 2) {
+					// 				//毛利润
+					// 				let temp1 = 0
+					// 				let doms1 = Array.from($(seft).find("."+arr[0]+"-son"));
+					// 				console.log(doms1)
+					// 				doms1.forEach((item,index)=>{
+					// 					temp1 += +$(item).val()
+					// 				})
+					// 				total1 -= temp1;
+					// 				let temp2 = 0
+					// 				let doms2 = Array.from($(seft).find("."+arr[0].replace("1","2")+"-son"));
+					// 				console.log(doms2)
+					// 				doms2.forEach((item,index)=>{
+					// 					temp2 += +$(item).val()
+					// 				})
+					// 				total2 -= temp2;
+					// 			}else if(arr.length === 3) {
+					// 				//非毛利润表
+					// 				let sub1 = $(seft).find("."+arr[0]+"-sub").length===0?$(seft).find("."+this.hjArr[index-1].split("-")[0]+'-'+arr[0]+"-sub").val():$(seft).find("."+arr[0]+"-sub").val();
+					// 				let sub2 = $(seft).find("."+arr[0].replace("1","2")+"-sub").length===0?$(seft).find("."+this.hjArr[index-1].split("-")[0].replace("1","2")+'-'+arr[0].replace("1","2")+"-sub").val():$(seft).find("."+arr[0].replace("1","2")+"-sub").val();
+					// 				let temp1 = 0;
+					// 				let temp2 = 0;
+					// 				let doms1 = Array.from($(seft).find(`.${arr[1]}-son`));
+					// 				console.log(doms1)
+					// 				doms1.forEach((item,index)=>{
+					// 					temp1 += +$(item).val()
+					// 				})
+					// 				total1 -= (total1-sub1);
+					// 				total1 -= temp1;
+					// 				let doms2 = Array.from($(seft).find(`.${arr[1].replace("1","2")}-son`));
+					// 				console.log(doms2)
+					// 				doms2.forEach((item,index)=>{
+					// 					temp2 += +$(item).val()
+					// 				})
+					// 				total2 -= (total2-sub2);
+					// 				total2 -= temp2;
+					// 			}
+					//
+					// 			$(seft).find("."+item).val(total1)
+					// 			$(seft).find("."+item.replace(/1/g,'2')).val(total2)
+					// 		}
+					// 	})
+					// }else {
+					// 	//加法
+					// 	this.hjArr.forEach((item,index)=>{
+					// 		if(item !== null && item.split("-")[item.split("-").length-1] !== 'sub'){
+					// 			//加法的合计
+					// 			let num1 = 0
+					// 			let num2 = 0
+					// 			let arr = item.split("-");
+					// 			arr.forEach((item,index)=>{
+					// 				let str = arr[arr.length-1];
+					// 				if(index<arr.length-1){
+					// 					let doms1 = Array.from($(seft).find("."+item))
+					// 					console.log(doms1)
+					// 					doms1.forEach((item,index)=>{
+					// 						console.log(item)
+					// 						num1 += +$(item).val()
+					// 					})
+					// 					let doms2 = Array.from($(seft).find("."+item.replace("1","2")))
+					// 					console.log(doms2)
+					// 					doms2.forEach((item,index)=>{
+					// 						console.log(item)
+					// 						num2 += +$(item).val()
+					// 					})
+					// 				}
+					// 			})
+					// 			$(seft).find("."+item).val(num1)
+					// 			$(seft).find("."+item.replace(/1/g,'2')).val(num2)
+					// 		}
+					// 	})
+					// }
 					//固定资产
 					$(seft).find(".gdzcje1-copy").val($(seft).find(".gdzcje1").val())
 					$(seft).find(".gdzcje2-copy").val($(seft).find(".gdzcje2").val())
 
 					//重要比率表
-					let ldzc1 =$(seft).find(`.ldzc1-add`).val()//流动资产
-					let ldzc2 = $(seft).find(`.ldzc2-add`).val()//
-					let ldfz1 = $(seft).find(`.ldfz1-add`).val()//流动负债
-					let ldfz2 = $(seft).find(`.ldfz2-add`).val()//
-					let ch1 = $(seft).find(`.ch1`).val()//存货
-					let ch2 = $(seft).find(`.ch2`).val()//
-					let fzze1 = $(seft).find(`.ldfz1-qtfz1-total`).val()//负债总额
-					let fzze2 = $(seft).find(`.ldfz2-qtfz2-total`).val()//
-					let zcze1 = $(seft).find(`.ldzc1-qtzc1-total`).val()//资产总额
-					let zcze2 = $(seft).find(`.ldzc2-qtzc2-total`).val()//
-					let yysr1 = $(seft).find(`.amount1`).val()//营业收入
-					let yysr2 = $(seft).find(`.amount2`).val()//
-					let jlr1 = $(seft).find(`.sq1-jlr1-sub`).val()//净利润
-					let jlr2 = $(seft).find(`.sq2-jlr2-sub`).val()//
-					let yycb1 = $(seft).find(`.yycb1`).val()//营业成本
-					let yycb2 = $(seft).find(`.yycb2`).val()//
-					let yszk1 = $(seft).find(`.yszk1`).val()//应收账款
-					let yszk2 = $(seft).find(`.yszk2`).val()//
-					let yfzk1 = $(seft).find(`.yfzk1`).val()//应付账款
-					let yfzk2 = $(seft).find(`.yfzk2`).val()//
+					let zcze1 = Number($(seft).find(`.class42_num`).val())//资产总额
+					let zcze2 = Number($(seft).find(`.classa42_num`).val())//
+					let yysr1 = Number($(seft).find(`.class64_num`).val())//营业收入
+					let yysr2 = Number($(seft).find(`.classa64_num`).val())//
+					let yszk1 = Number($(seft).find(`.class15_num`).val())//应收账款
+					let yszk2 = Number($(seft).find(`.classa15_num`).val())//
+					let ch1 = Number($(seft).find(`.class21_num`).val())//存货
+					let ch2 = Number($(seft).find(`.classa21_num`).val())//
+					let ldzc1 =Number($(seft).find(`.class25_num`).val())//流动资产
+					let ldzc2 = Number($(seft).find(`.classa25_num`).val())//
+					let yfzk1 = Number($(seft).find(`.class47_num`).val())//应付账款
+					let yfzk2 = Number($(seft).find(`.classa47_num`).val())//
+					let ldfz1 = Number($(seft).find(`.class59_num`).val())//流动负债
+					let ldfz2 = Number($(seft).find(`.classa59_num`).val())//
+					let fzze1 = Number($(seft).find(`.class61_num`).val())//负债总额
+					let fzze2 = Number($(seft).find(`.classa61_num`).val())//
+					let yycb1 = Number($(seft).find(`.class65_num`).val())//营业成本
+					let yycb2 = Number($(seft).find(`.classa65_num`).val())//
 
+					let jlr1 = Number($(seft).find(`.class82_num`).val())//净利润
+					let jlr2 = Number($(seft).find(`.classa82_num`).val())//
 					//流动比率
-					$(seft).find(`.ldbl1`).val(+ldfz1 === 0?0:ldzc1/ldfz1)
-					$(seft).find(`.ldbl2`).val(+ldfz2 === 0?0:ldzc2/ldfz2)
+					$(seft).find(`.class83`).val(+ldzc1=== 0?0:(ldzc1/ldfz1).toFixed(2))
+					$(seft).find(`.classa83`).val(+ldzc2=== 0?0:(ldzc2/ldfz2).toFixed(2))
 					//速动比率
-					$(seft).find(`.sdbl1`).val(+ldfz1 === 0?0:ldzc1-ch1/ldfz1)
-					$(seft).find(`.sdbl2`).val(+ldfz2 === 0?0:ldzc2-ch2/ldfz2)
+					$(seft).find(`.class84`).val(+ldfz1 === 0?0:(ldzc1-ch1/ldfz1).toFixed(2))
+					$(seft).find(`.classa84`).val(+ldfz2 === 0?0:(ldzc2-ch2/ldfz2).toFixed(2))
 					//资产负债率
-					$(seft).find(`.zcfzl1`).val(+zcze1 === 0?0:fzze1/zcze1)
-					$(seft).find(`.zcfzl2`).val(+zcze2 === 0?0:fzze2/zcze2)
+					$(seft).find(`.class85`).val(+zcze1 === 0?0:(fzze1/zcze1).toFixed(2))
+					$(seft).find(`.classa85`).val(+zcze2 === 0?0:(fzze2/zcze2).toFixed(2))
 					//净利润率
-					$(seft).find(`.jlrl1`).val(+yysr1 === 0?0:jlr1/yysr1)
-					$(seft).find(`.jlrl2`).val(+yysr2 === 0?0:jlr2/yysr2)
+					$(seft).find(`.class86`).val(+yysr1 === 0?0:(jlr1/yysr1).toFixed(2))
+					$(seft).find(`.classa86`).val(+yysr2 === 0?0:(jlr2/yysr2).toFixed(2))
 					//资产回报率
-					$(seft).find(`.zchb1`).val(+zcze1 === 0?0:jlr1/zcze1)
-					$(seft).find(`.zchb2`).val(+zcze2 === 0?0:jlr2/zcze2)
+					$(seft).find(`.class87`).val(+zcze1 === 0?0:(jlr1/zcze1).toFixed(2))
+					$(seft).find(`.classa87`).val(+zcze2 === 0?0:(jlr2/zcze2).toFixed(2))
+					//存货周转天数
+					$(seft).find(`.class88`).val(+yysr1 === 0?0:(ch1/yysr1*365).toFixed(2))
+					$(seft).find(`.classa88`).val(+yysr2 === 0?0:(ch2/yysr2*365).toFixed(2))
+					//应收账款周转天数
+					$(seft).find(`.class89`).val(+yysr1 === 0?0:(yszk1/yysr1*365).toFixed(2))
+					$(seft).find(`.classa89`).val(+yysr2 === 0?0:(yszk2/yysr2*365).toFixed(2))
+					//应付账款周转天数
+					$(seft).find(`.class90`).val(+yycb1 === 0?0:(yfzk1/yycb1*365).toFixed(2))
+					$(seft).find(`.classa91`).val(+yycb2 === 0?0:(yfzk2/yycb2*365).toFixed(2))
 					//营业总额/资产总额
-					$(seft).find(`.yy-zc1`).val(+zcze1 === 0?0:yysr1/zcze1)
-					$(seft).find(`.yy-zc2`).val(+zcze2 === 0?0:yysr2/zcze2)
+					$(seft).find(`.class91`).val(+zcze1 === 0?0:(yysr1/zcze1).toFixed(2))
+					$(seft).find(`.classa91`).val(+zcze2 === 0?0:(yysr2/zcze2).toFixed(2))
 					//营业成本/营业总额
-					$(seft).find(`.yy-yy1`).val(+yysr1 === 0?0:yycb1/yysr1)
-					$(seft).find(`.yy-yy2`).val(+yysr2 === 0?0:yycb2/yysr2)
+					$(seft).find(`.class92`).val(+yysr1 === 0?0:(yycb1/yysr1).toFixed(2))
+					$(seft).find(`.classa92`).val(+yysr2 === 0?0:(yycb2/yysr2).toFixed(2))
 
-					let cw_range1 = $($(seft).find(`.cw-range`).find("input")[0]).val()
-					let cw_range2 = $($(seft).find(`.cw-range`).find("input")[1]).val()
-					if(cw_range1.split("-")[1] && cw_range1.split("-")[0].trim() === cw_range1.split("-")[1].trim()) {
-						//存货周转天数
-						$(seft).find(`.chzzts1`).val(+yysr1 === 0?0:ch1/yysr1*365)
-						//应收账款周转天数
-						$(seft).find(`.yszkzzts1`).val(+yysr1 === 0?0:yszk1/yysr1*365)
-						//应付账款周转天数
-						$(seft).find(`.yfzkzzts1`).val(+yycb1 === 0?0:yfzk1/yycb1*365)
-					}
-					if(cw_range2.split("-")[1] && cw_range2.split("-")[0].trim() === cw_range2.split("-")[1].trim()) {
-						//存货周转天数
-						$(seft).find(`.chzzts2`).val(+yysr2 === 0?0:ch2/yysr2*365)
-						//应收账款周转天数
-						$(seft).find(`.yszkzzts2`).val(+yysr2 === 0?0:yszk2/yysr2*365)
-						//应付账款周转天数
-						$(seft).find(`.yfzkzzts2`).val(+yycb2 === 0?0:yfzk2/yycb2*365)
-					}
+
+					// let cw_range1 = $($(seft).find(`.cw-range`).find("input")[0]).val()
+					// let cw_range2 = $($(seft).find(`.cw-range`).find("input")[1]).val()
+					// if(cw_range1.split("-")[1] && cw_range1.split("-")[0].trim() === cw_range1.split("-")[1].trim()) {
+					//
+					//
+					//
+					// }
+					// if(cw_range2.split("-")[1] && cw_range2.split("-")[0].trim() === cw_range2.split("-")[1].trim()) {
+					//
+					// }
+				})
+				$(seft).find("table").on("blur","input[type='text']",(e)=>{
+					// console.log('调用接口修改数据')
+					let className = $(e.target).attr("class")
+					let entityid = $(e.target).attr("entityid")
+					let val = $(e.target).val()
+					//配数据的时候加减法的calssname一定要配置在最后面
+					// className = className.split(" ")[className.split(" ").length-1]
+					//调用修改接口
+					let $oT_td = $(e.target).parent("td")
+					let $oT_tr = $(e.target).parents("tr")
+					let $trs = $oT_tr.children("td")
+					let td_index = $.inArray($oT_td[0],Array.from($trs))
+					let str = _this.tableColumnNameArr[td_index]
+					let url = BASE_PATH + 'credit/front/ReportGetData/' + alterSource;
+					let dataJson = []
+					let dataObj = {}
+					dataObj[str] = val;
+					dataObj["id"] = entityid;
+					dataJson.push(dataObj)
+					$.ajax({
+						url,
+						data:{dataJson:JSON.stringify(dataJson)},
+						type:'post',
+						success:(data)=>{
+							if(data.statusCode === 1) {
+								//保存合计项
+								// _this.saveCwSummation(alterSource)
+								// _this.saveCwEveryTableSUmmation(alterSource)
+							}
+						}
+					})
 				})
 			})
 		},
@@ -556,7 +590,7 @@ let InitObj = {
 			returnData['rows'].sort((a,b)=>{
 				return a["son_sector"]-b["son_sector"]
 			});
-			console.log(returnData)
+			// console.log(returnData)
 			returnData['rows'].forEach((item,index)=>{
 				if(item.is_sum_option) {
 					//合计项
@@ -573,17 +607,17 @@ let InitObj = {
 					if(!item.is_default){
 						item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
 					}
-					// if((item.class_name1.hasOwnProperty('_sum')!==-1)&&(item.class_name2.hasOwnProperty('_sum')!==-1)){
-					// 	//计算比率表的项是数值类型
-					// 	item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-					// 	item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
-					// }else{
-					// 	//不参与比率表计算的项是文本类型
-					// 	item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-					// 	item["end_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
-					// }
-					item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-					item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+					if(item.class_name1&&(item.class_name1.indexOf('_num')!==-1)){
+						//计算比率表的项是数值类型
+						item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+						item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+					}else{
+						//不参与比率表计算的项是文本类型
+						item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+						item["end_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+					}
+					// item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+					// item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 
 				}
 
@@ -597,7 +631,7 @@ let InitObj = {
 
 			})
 			tempArr.push(tempRows);
-			console.log(tempArr)
+			// console.log(tempArr)
 			//合计项放在最后
 
 			//不知道为什么要进行此操作=========注释了
@@ -682,31 +716,31 @@ let InitObj = {
 				//初始化完表格之后自动计算
 				//自动计算合计
 				const $table_a = $('#'+tableCwIds[1]);
-//			console.log($table_a.find("input")[0])
-				$($table_a.find("input")[0]).trigger("blur")
+				$($table_a.find("input[type=number]")[0]).trigger("blur")
 				$(".bg-gray").parent("td").parent("tr").css("background","#fafafa")
 
 				//点击新增一行按钮
 				$(".addBtn").unbind().click((e)=>{
 					let $input = $($(e.target).siblings(".bootstrap-table").find("input")[0])
 					let $input2 = $($(e.target).siblings(".bootstrap-table").find("input")[2])
-					let class_name1 = $input.attr("class").split(" ")[$input.attr("class").split(" ").length-1];
-					let class_name2 = $input.attr("class").split(" ")[$input.attr("class").split(" ").length-1].replace("1","2");
-					if(class_name1 === '.amount1'){
-						class_name1 = $input2.attr("class").split(" ")[$input2.attr("class").split(" ").length-1];
-						class_name2 = $input2.attr("class").split(" ")[$input2.attr("class").split(" ").length-1].replace("1","2");
-					}
+					// let class_name1 = $input.attr("class").split(" ")[$input.attr("class").split(" ").length-1];
+					// let class_name2 = $input.attr("class").split(" ")[$input.attr("class").split(" ").length-1].replace("1","2");
+					// if(class_name1 === '.amount1'){
+					// 	class_name1 = $input2.attr("class").split(" ")[$input2.attr("class").split(" ").length-1];
+					// 	class_name2 = $input2.attr("class").split(" ")[$input2.attr("class").split(" ").length-1].replace("1","2");
+					// }
 					let son_sector = $input.attr("sonsector")
 					let parent_sector = $input.attr("parentsector")
 					let dataJson = []
 
 					tempObj["son_sector"] = son_sector
 					tempObj["parent_sector"] = parent_sector
-					tempObj["class_name1"] = class_name1
-					tempObj["class_name2"] = class_name2
+					tempObj["class_name1"] = 'add1'
+					tempObj["class_name2"] = 'add2'
 					tempObj["type"] = _this.cwType
 					tempObj["conf_id"] = id
 					dataJson.push(tempObj)
+					// console.log(dataJson);
 					$.ajax({
 						url:BASE_PATH + 'credit/front/ReportGetData/' + alterSource,
 						type:'post',
@@ -715,7 +749,7 @@ let InitObj = {
 						},
 						success:(data)=>{
 							///新增一行成功
-							console.log(data)
+							// console.log(data)
 							if(data.statusCode === 1) {
 								_this.refreshCwModal(tableCwIds,getSource,id,rows)
 							}else {
@@ -727,7 +761,7 @@ let InitObj = {
 
 				//处理默认项的删除A标签
 				let tables = Array.from($(".cw-table").find(".table.table-hover"));
-				console.log(tables)
+				// console.log(tables)
 				tables.forEach((item,index)=>{
 					let trs = Array.from($(item).find("tbody tr"));
 
@@ -767,7 +801,7 @@ let InitObj = {
 
 
 
-	downLoadCwData(url,rows){
+downLoadCwData(url,rows){
 	/**
 	 * 财务下载数据
 	 * url:下载数据url
@@ -815,8 +849,8 @@ upLoadCw(url,rows,getSource,alterSource,tableCwId){
 					Public.message("success",data.message)
 					_this.refreshCwModal(tableCwId,getSource,id,rows)
 					$(e.target).val("")
-					_this.saveCwSummation(alterSource)
-					_this.saveCwEveryTableSUmmation(alterSource)
+					// _this.saveCwSummation(alterSource)
+					// _this.saveCwEveryTableSUmmation(alterSource)
 				}
 			}
 		})
@@ -928,7 +962,7 @@ refreshCwModal(tableCwIds,getSource,id,rows){
 	 * 刷新表格数据
 	 * id:财务模板id
 	 */
-	console.log(rows)
+	// console.log(rows)
 	let returnData;
 	let symbol =  getSource.includes("?")?'&':'?'
 	$.ajax({
@@ -959,8 +993,17 @@ refreshCwModal(tableCwIds,getSource,id,rows){
 			if(!item.is_default){
 				item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
 			}
-			item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-			item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+			if(item.class_name1&&(item.class_name1.indexOf('_num')!==-1)){
+				//计算比率表的项是数值类型
+				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+			}else{
+				//不参与比率表计算的项是文本类型
+				item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["end_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+			}
+			// item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+			// item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 		}
 		if(returnData['rows'][index-1] && item.son_sector !== returnData['rows'][index-1]["son_sector"]) {
 			if(tempRows.length !== 0){
@@ -998,7 +1041,7 @@ refreshCwModal(tableCwIds,getSource,id,rows){
 	})
 	//自动计算合计
 	const $table = $('#'+tableCwIds[1]);
-	$($table.find("input")[0]).trigger("blur")
+	$($table.find("input[type=number]")[0]).trigger("blur")
 },
 dateInit(){
 	/**
@@ -1054,7 +1097,26 @@ dateInit(){
 				cw_date.forEach((item,index)=>{
 					laydate.render({
 						elem: item,
-						range:true
+						range:true,
+						change: function(value,date){
+							if($(item).attr('id') === 'date3cw'){
+								$('#time_period_for_business_income_statistics_8').val(value)
+							}else if($(item).attr('id') === 'date4cw'){
+								if($('#date3cw').val()){
+									if($('#time_period_for_business_income_statistics_8')){
+										$('#time_period_for_business_income_statistics_8').val($('#date3cw').val()) //中文模板
+									}else if($('#time_period_for_business_income_statistics_9')){
+										$('#time_period_for_business_income_statistics_9').val($('#date3cw').val()) //英文模板
+									}
+								}else{
+									if($('#time_period_for_business_income_statistics_8')){
+										$('#time_period_for_business_income_statistics_8').val(value) //中文模板
+									}else if($('#time_period_for_business_income_statistics_9')){
+										$('#time_period_for_business_income_statistics_9').val(value) //英文模板
+									}
+								}
+							}
+						}
 					});
 				})
 			}else {
@@ -1068,17 +1130,43 @@ dateInit(){
 								dateInps1.forEach((item,index)=>{
 									$(item).val(value);
 								})
+								if($('#time_period_for_total_assets_8')&&$('#time_period_for_equity_of_stockholder_8')){
+									$('#time_period_for_total_assets_8').val(value) //报告摘要的资产总额统计时间段取合计表的时间
+									$('#time_period_for_equity_of_stockholder_8').val(value) //报告摘要的资产总额统计时间段取合计表的时间
+								}else if($('#time_period_for_total_assets_9')&&$('#time_period_for_equity_of_stockholder_9')){
+									$('#time_period_for_total_assets_9').val(value) //报告摘要的资产总额统计时间段取合计表的时间
+									$('#time_period_for_equity_of_stockholder_9').val(value) //报告摘要的资产总额统计时间段取合计表的时间
+								}
 							}else if($(item).hasClass("dateInp2")){
 								let dateInps2 = Array.from($(".dateInp2"))
 								dateInps2.forEach((item,index)=>{
 									$(item).val(value);
 								})
+								//先看dateInput1是否有数据，如果有的话，就用dateInput1的数据，没有的话用value
+								if($($('.dateInp1')[0]).val()){
+									if(($('#time_period_for_total_assets_8'))&&($('#time_period_for_equity_of_stockholder_8'))){
+										$('#time_period_for_total_assets_8').val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
+										$('#time_period_for_equity_of_stockholder_8').val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
+									}else if(($('#time_period_for_total_assets_9'))&&($('#time_period_for_equity_of_stockholder_9'))){
+										$('#time_period_for_total_assets_9').val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
+										$('#time_period_for_equity_of_stockholder_9').val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
+									}
+								}else{
+									if(($('#time_period_for_total_assets_8'))&&($('#time_period_for_equity_of_stockholder_8'))){
+										$('#time_period_for_total_assets_8').val(value) //报告摘要的资产总额统计时间段取合计表的时间
+										$('#time_period_for_equity_of_stockholder_8').val(value) //报告摘要的资产总额统计时间段取合计表的时间
+									}else if(($('#time_period_for_total_assets_9'))&&($('#time_period_for_equity_of_stockholder_9'))){
+										$('#time_period_for_total_assets_9').val(value) //报告摘要的资产总额统计时间段取合计表的时间
+										$('#time_period_for_equity_of_stockholder_9').val(value) //报告摘要的资产总额统计时间段取合计表的时间
+									}
+								}
 							}
 						}
 					});
 				})
 			}
 		})
+
 	});
 },
 addressInit(){
