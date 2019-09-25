@@ -668,7 +668,6 @@ let ReportConfig = {
     			}
     		})
     	})
-    	console.log(cw_title,cw_contents,ds_cw_title,ds_cw_contents)
     	//大数财务逻辑
     	let ds_top_html = ''
 		let ds_table_html = ''
@@ -775,7 +774,6 @@ let ReportConfig = {
 			})
     		if(item.sort === 1) {
     			//财务模块杂七腊八的配置
-    			console.log(this_content)
     			let radioArr = this_content[1]["get_source"].split("&");
     			cw_top_html += `<div class="top-html mx-4">
     								<div class="cw-box d-flex justify-content-between align-items-center mt-4">
@@ -1177,7 +1175,7 @@ let ReportConfig = {
 		                        		if(!field_type) {
 		                        			formGroup += `<div class="form-group">
 		        						            		<label for="" class="mb-2">${item.temp_name}</label>
-		        						            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		        						            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		        						            		<p class="errorInfo">${item.error_msg}</p>
 		        					            		</div>`
 		                        		}else {
@@ -1186,7 +1184,7 @@ let ReportConfig = {
 		                        				case 'text':
 		                        					formGroup += `<div class="form-group">
 	        						            		<label for="" class="mb-2">${item.temp_name}</label>
-	        						            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+	        						            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 	        						            		<p class="errorInfo">${item.error_msg}</p>
 	        					            		</div>`
 	                        						break;
@@ -1225,7 +1223,7 @@ let ReportConfig = {
 							            		case 'address':
 							            			formGroup += ` <div class="form-group address-form"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
+									                                    <input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''}  ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} type="text" class="form-control"  style="width: 100%" name=${item.column_name} id="${item.column_name}_${ind}">
 									                                </div>`
 							            			break;
 							            		case 'select':
@@ -1601,7 +1599,7 @@ let ReportConfig = {
     			
     			let urlTemp = this.title[index].alter_source
     			if(!urlTemp){return}
-    			let url = BASE_PATH  + 'credit/front/ReportGetData/' + urlTemp.split("*")[0] 
+    			let url = BASE_PATH  + 'credit/front/ReportGetData/' + urlTemp.split("*")[0]
     			if(!this.isAdd){
     				//是修改保存
     				dataJsonObj["id"] = this.rowId
@@ -1612,8 +1610,12 @@ let ReportConfig = {
             		dataJsonObj[item] = this.rows[item]
     			 })
     			 dataJson.push(dataJsonObj)
-    			 console.log(dataJson)
+				//设置经营地址接口
+				if(urlTemp.split("*")[0].indexOf('className=CreditCompanyBussinessAddress')!==-1){
+					$('#company_address_8').val(dataJson[0]['business_address']) //报告摘要的经营地址为新增的经营地址
+				}
             	paramObj["dataJson"] = JSON.stringify(dataJson)
+
             	//调用新增修改接口
             	$.ajax({
             		url,
