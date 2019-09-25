@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.hailian.modules.admin.ordermanager.model.*;
+import com.hailian.util.http.showapi.pachongproxy.IHttpTest;
+import com.hailian.util.http.showapi.pachongproxy.ProxyHandler;
 import com.jfinal.plugin.activerecord.Model;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -37,7 +39,9 @@ import com.jfinal.plugin.activerecord.Page;
 */
 public class CompanyService {
 	public static CompanyService service = new CompanyService();
-
+	HttpTest httpTest = new HttpTest();
+	ProxyHandler proxy = new ProxyHandler();
+	IHttpTest iHttpTest = ((IHttpTest)proxy.newProxyInstance(httpTest));
 	/**
 	 * 
 	 * @time   2018年9月10日 下午5:32:12
@@ -86,7 +90,7 @@ public class CompanyService {
 		boolean flag=false;
 		String status;
 		try {
-			JSONObject json = HttpTest.getYjapi(companyName.trim());//获取api企业信息数据
+			JSONObject json = iHttpTest.getYjapi(companyName.trim());//获取api企业信息数据
 			JSONArray branches = null;
 			status = json.getString("Status");
 			System.out.println(status);
@@ -525,7 +529,8 @@ public class CompanyService {
 
 			//爬取 企业对外投资
 				try{
-					JSONObject subsidiariesJson = HttpTest.getSubsidiaries(companyName,"1",PAGESIZE);
+
+					JSONObject subsidiariesJson = iHttpTest.getSubsidiaries(companyName,"1",PAGESIZE);
 					String caipanstatus = subsidiariesJson.getString("Status");
 					if("200".equals(caipanstatus)){
 						CreditCompanySubsidiaries.dao.deleteBycomIdAndLanguage(companyId,sys_language);//删除
@@ -631,7 +636,7 @@ public class CompanyService {
 
 	public void enterpriseGrabOther(String companyId,String companyName,String sys_language) throws Exception{
 
-		JSONObject caipanjson = HttpTest.getJudgmentDoc(companyName,"1",PAGESIZE);//裁判文书
+		JSONObject caipanjson = iHttpTest.getJudgmentDoc(companyName,"1",PAGESIZE);//裁判文书
 		String caipanstatus = caipanjson.getString("Status");
 		if("200".equals(caipanstatus)){
 			/*JSONObject Paging = caipanjson.getJSONObject("Paging");
@@ -675,7 +680,7 @@ public class CompanyService {
 						model.set("caserole", value);
 						model.set("company_id", companyId);
 						model.set("sys_language", sys_language);
-						JSONObject judgmentdocdetail = HttpTest.getJudgmentDocDetail(Id);//鑾峰彇api浼佷笟瑁佸垽鏂囦功璇︽儏
+						JSONObject judgmentdocdetail = iHttpTest.getJudgmentDocDetail(Id);//鑾峰彇api浼佷笟瑁佸垽鏂囦功璇︽儏
 						if(judgmentdocdetail.getString("Status").equals("200")){
 						String CaseReason=judgmentdocdetail.getJSONObject("Result").getString("CaseReason");//妗堢敱
 							model.set("casereason", CaseReason);//案由
@@ -688,7 +693,7 @@ public class CompanyService {
 				Db.batchSave(judgmentdoclist, judgmentdoclist.size());
 			}
 		}
-		JSONObject courtannouncement = HttpTest.getCourtAnnouncement(companyName,"1",PAGESIZE);//法院公告
+		JSONObject courtannouncement = iHttpTest.getCourtAnnouncement(companyName,"1",PAGESIZE);//法院公告
 		String courtannouncementstatus = courtannouncement.getString("Status");
 		if(courtannouncementstatus.equals("200")){
 		/*	JSONObject Paging = courtannouncement.getJSONObject("Paging");
@@ -741,7 +746,7 @@ public class CompanyService {
 		}
 		
 		
-		JSONObject courtnotice = HttpTest.getCourtNotice(companyName,"1",PAGESIZE);//开庭公告
+		JSONObject courtnotice = iHttpTest.getCourtNotice(companyName,"1",PAGESIZE);//开庭公告
 		String courtnoticestatus = courtnotice.getString("Status");
 		if(courtnoticestatus.equals("200")){
 			/*JSONObject Paging = courtnotice.getJSONObject("Paging");
@@ -783,7 +788,7 @@ public class CompanyService {
 				Db.batchSave(list, list.size());
 			}
 		}
-		JSONObject brandandpatent = HttpTest.getBrandandpatent(companyName,"1",PAGESIZE);//企业图标
+		JSONObject brandandpatent = iHttpTest.getBrandandpatent(companyName,"1",PAGESIZE);//企业图标
 		String brandandpatentstatus = brandandpatent.getString("Status");
 		if(brandandpatentstatus.equals("200")){
 			//JSONObject Paging = brandandpatent.getJSONObject("Paging");
@@ -815,7 +820,7 @@ public class CompanyService {
 		}
 		
 		
-		JSONObject patent = HttpTest.getPatent(companyName,"1",PAGESIZE);//企业专利
+		JSONObject patent = iHttpTest.getPatent(companyName,"1",PAGESIZE);//企业专利
 		String patentstatus = patent.getString("Status");
 		if(patentstatus.equals("200")){
 			
@@ -961,8 +966,12 @@ public class CompanyService {
         }
 	}
 	public static void main(String[] args) {
-		BigDecimal a = new BigDecimal("652");
-		BigDecimal b = new BigDecimal("10000");
-		System.out.println( a.multiply(b));
+		CompanyService c = new CompanyService();
+		 try{
+			c.iHttpTest.getCourtAnnouncement("ddss",1+"","2");
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
 	}
 }

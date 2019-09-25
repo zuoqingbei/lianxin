@@ -538,6 +538,14 @@ public class OrderProcessController extends BaseProjectController{
                     //使用线程调用爬虫接口
                     Thread td = new Thread(new CrawlerThreed(reportType,companyId,getPara("model.company_by_report"),orderInfo));
                     td.start();
+                    try {
+                        //增加跟踪记录
+                      CreditOrderInfo tempModel = model;
+                      tempModel.set("status","-596");
+                      CreditOrderFlow.addOneEntry(this, model,"说明:此处记录爬取公司名称"+getPara("model.company_by_report"));
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
                 addNoice(code,"");
             }

@@ -15,6 +15,8 @@ import javax.net.ssl.X509TrustManager;
 
 import com.alibaba.fastjson.JSON;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
+import com.hailian.util.http.showapi.pachongproxy.IHttpTest;
+import com.hailian.util.http.showapi.pachongproxy.URLAnnotation;
 import com.jfinal.plugin.activerecord.Db;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -59,13 +61,12 @@ import org.jsoup.select.Elements;
 
 import com.hailian.util.Config;
 
-
-public class HttpTest {
+public class HttpTest implements IHttpTest {
 	public static final String qichacha_key = Config.getStr("qichacha_key");//百度翻译appid
 	public static final String qichacha_secretkey = Config.getStr("qichacha_secretkey");//百度翻译秘钥
 
 	//企业基本信息
-	public static JSONObject getYjapi(String conpanyName) throws Exception{
+	public  JSONObject getYjapi(String conpanyName) throws Exception{
 //		HttpGet get = new HttpGet("http://api.qichacha.com/ECIV4/Search?key=791f4eb3af844c53a6bba25f80f033b7&keyword=小桔科技");
 		String url="http://api.qichacha.com/ECIV4/GetDetailsByName?key="+qichacha_key+"&keyword="+conpanyName;
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
@@ -116,7 +117,7 @@ public class HttpTest {
 		return result;
 	}
 	//裁判文书
-	public static JSONObject getJudgmentDoc(String conpanyName,String pageIndex,String pageSize) throws Exception{
+	public  JSONObject getJudgmentDoc(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
@@ -142,7 +143,7 @@ public class HttpTest {
 		return json;
 	}
 	//裁判文书详情
-	public static JSONObject getJudgmentDocDetail(String id) throws Exception{
+	public  JSONObject getJudgmentDocDetail(String id) throws Exception{
 		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/GetJudgementDetail?key="+qichacha_key+"&id="+id);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
@@ -164,7 +165,7 @@ public class HttpTest {
 		return json;
 	}
 	//法院公告
-	public static JSONObject getCourtAnnouncement(String conpanyName,String pageIndex,String pageSize) throws Exception{
+	public  JSONObject getCourtAnnouncement(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
@@ -189,7 +190,7 @@ public class HttpTest {
 		return json;
 	}
 	//开庭公告
-	public static JSONObject getCourtNotice(String conpanyName,String pageIndex,String pageSize) throws Exception{
+	public  JSONObject getCourtNotice(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
@@ -214,7 +215,7 @@ public class HttpTest {
 		return json;
 	}
 		//企业商标 
-	public static JSONObject getBrandandpatent(String conpanyName,String pageIndex,String pageSize) throws Exception{
+	public  JSONObject getBrandandpatent(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
@@ -240,7 +241,7 @@ public class HttpTest {
 		return json;
 	}
 	//企业专利 
-	public static JSONObject getPatent(String conpanyName,String pageIndex,String pageSize) throws Exception{
+	public  JSONObject getPatent(String conpanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
@@ -269,7 +270,7 @@ public class HttpTest {
 	public static void main(String[] args) throws Exception {
 		//getSubsidiaries("大连万达集团股份有限公司","1","31");
 		//searchWide("中国沈阳国际经济技术合作公司和平分公司","1","1","");
-		getPatent("华为技术有限公司","1","5");
+		//getPatent("华为技术有限公司","1","5");
 	}
 
 	public static void getSaicUrl(){
@@ -827,7 +828,7 @@ public class HttpTest {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONObject getSubsidiaries(String CompanyName,String pageIndex,String pageSize) throws Exception{
+	public  JSONObject getSubsidiaries(String CompanyName,String pageIndex,String pageSize) throws Exception{
 		if(StringUtils.isEmpty(pageIndex)){
 			pageIndex="1";
 		}
@@ -864,7 +865,7 @@ public class HttpTest {
 	 * @return
 	 * @throws Exception
 	 */
-	public static JSONObject searchWide(String CompanyName,String pageIndex,String pageSize,String type) throws Exception{
+	public  JSONObject searchWide(String CompanyName,String pageIndex,String pageSize,String type) throws Exception{
 		if(StringUtils.isEmpty(pageIndex)){
 			pageIndex="1";
 		}
