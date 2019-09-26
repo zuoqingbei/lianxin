@@ -1,22 +1,16 @@
 package com.hailian.util.http.showapi.pachongproxy;
 
 
-import com.hailian.modules.admin.ordermanager.model.PachongLog;
-import com.hailian.util.http.HttpTest;
-import com.sun.javadoc.ClassDoc;
-import com.sun.javadoc.MethodDoc;
-import com.sun.javadoc.RootDoc;
-import org.apache.commons.lang.StringUtils;
-
-import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
+
+import com.hailian.modules.admin.ordermanager.model.PachongLog;
+
 public class ProxyHandler implements InvocationHandler {
-    private static RootDoc rootDoc;
     private Object targetObject;//被代理的对象
     public  Object newProxyInstance(Object targetObject){
         this.targetObject = targetObject;

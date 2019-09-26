@@ -1004,12 +1004,16 @@ let OrderDetail = {
         }
         let $table = $('<table class="table table-hover"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
-
+        //表格添加序号
+        if(item.contents.length>0){
+            item.contents.unshift({temp_name: "序号",column_name:"order_num"});
+        }
         item.contents.forEach((item) => {
             // 带日期的单元格加宽
             $table.children('thead').append(`<th class="${item.field_type === 'money' ? 'moneyCol' : ''}" ${['日期', '成立日期', '注册日期', '合作时间', '操作时间'].includes(item.temp_name) ? ' style=min-width:10rem' : ''}>${item.temp_name}</th>`);
             columnNameArr.push(item.column_name);
         });
+
         $wrap.find(".module-content").append(`${$table[0].outerHTML}`);
         if (item.title.small_module_type !== '21') {
             $(".main .table-content").append($wrap);
@@ -1023,7 +1027,9 @@ let OrderDetail = {
                     }
                     let chartData = chartType === 'pie' ? [] : {xAxisData: [], y1Data: [], y2Data: []};
                     let arr = ['xAxis', 'y1', 'y2'];
-                    data.rows.forEach((row) => {
+
+                    data.rows.forEach((row,index) => {
+                        row["order_num"] = index+1
                         // 封装图表数据
                         switch (item.smallModileType) {
                             //饼图

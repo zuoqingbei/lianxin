@@ -716,6 +716,8 @@ public class BaseBusiCrdt extends BaseWord{
                 try {
                     //信用额度、信用额度币种处理
                     mergerHandling(  child,   model,   reportType,  sysLanguage,"amount","currency");
+                    //汇率记录时间和汇率合并
+                	mergerHandling4( child, model,  reportType,  sysLanguage);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -871,6 +873,39 @@ public class BaseBusiCrdt extends BaseWord{
         alertConf(idTypeColumn,idType,child,targetFieldIsSelect,sysLanguage,reportType);
         //合并值
         model.set(idTypeColumn,isNotNull(idNum)?idNum:"");
+
+    }
+    /**
+     * 汇率记录时间和汇率
+     * @param child
+     * @param model
+     * @param reportType
+     * @param sysLanguage
+     * @param idColumn
+     * @param idTypeColumn
+     * @param removeColumns
+     */
+    private static void mergerHandling4(List<CreditReportModuleConf> child, BaseProjectModel model, String reportType, String sysLanguage) {
+        String setKey="parities";
+        String removeKey="parities_date";
+    	String parities = model.get(setKey)+"";
+        String parities_date = model.get(removeKey)+"";
+        removeConf(child,removeKey);
+        boolean targetFieldIsSelect = false;
+        String paritiesName="";
+        if(isNotNull(parities)){
+            if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+            	paritiesName = "汇率";
+            }else{
+            	paritiesName = "ExchangeRate";
+            }
+        }
+        alertConf(setKey,paritiesName,child,targetFieldIsSelect,sysLanguage,reportType);
+        if(isNotNull(parities_date)){
+        	parities+="("+parities_date+")";
+        }
+        //合并值
+        model.set(setKey,parities);
 
     }
     /**
