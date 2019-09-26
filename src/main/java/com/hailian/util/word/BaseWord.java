@@ -1642,7 +1642,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
                 //二合一的特殊处理
                 if(merger(value,column,reportType,mergeList,rowList,style)) {
-                	if((num==1)&&("legalDetails".equals(moduleName)||"naturalDetails".equals(moduleName)||"leader".equals(moduleName))) {
+                	if((num==1)&&("legalDetails".equals(moduleName)||"leader".equals(moduleName))) {
                 		style.setBold(true);
                     }else{
                     	style.setBold(false);
@@ -1701,11 +1701,11 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
     		Style style = new Style();
     		style.setColor("000000");
     		style.setFontFamily("宋体");
-        	if(i==1){
+        	/*if(i==1){
         		style.setBold(true);
         	}else{
         		style.setBold(false);
-        	}
+        	}*/
             rowList.add(RowRenderData.build(
                     new TextRenderData(ReportTypeCons.BUSI_ZH.equals(reportType)?InvestmentSituationTempName[2*i+1]:InvestmentSituationTempName[2*i], style),
                     new TextRenderData(ReportTypeCons.BUSI_ZH.equals(reportType)?InvestmentSituationValue[2*i+1]:InvestmentSituationValue[2*i], style)));

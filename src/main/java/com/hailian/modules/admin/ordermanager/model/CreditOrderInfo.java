@@ -14,7 +14,9 @@ import java.util.List;
 
 import com.hailian.api.constant.RoleCons;
 import com.hailian.modules.credit.settle.SettleController;
+import com.hailian.system.rolemenu.SysRoleMenu;
 import com.hailian.system.userrole.SysUserRole;
+
 import org.apache.commons.lang.StringUtils;
 
 import ch.qos.logback.core.status.Status;
@@ -472,7 +474,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" LEFT JOIN credit_report_usetime s10 ON t.user_time_id = s10.id ");
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null and t.status is not null ");
-		if (!"1".equals(user.getInt("usertype").toString())) {
+		//判断是否是客服 服权限登录，全部订单、订单分配显示全部订单
+		SysUserRole roleMenu=SysUserRole.dao.findFirst(" select * from sys_user_role where userid=? and roleid=3",user.get("userid"));
+		if (roleMenu==null&&!"1".equals(user.getInt("usertype").toString())) {
 			String userId = user.get("userid")+"";
 			//sql.append(" and t.create_by=? ");
 			//params.add(user.get("userid").toString());
@@ -1132,7 +1136,9 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" and c.create_by=? ");
 			params.add(c.getSessionUser().getUserid());//传入的参数
 		}*/
-		if(!c.isAdmin(c.getSessionUser())&&!(searchType.equals("-7")||searchType.equals("-3"))){//国内查档质检员不受权限控制,订单核实客服不受权限控制
+		//判断是否是客服 服权限登录，全部订单、订单分配显示全部订单
+		SysUserRole roleMenu=SysUserRole.dao.findFirst(" select * from sys_user_role where userid=? and roleid=3",c.getSessionUser().get("userid"));
+		if(roleMenu==null&&!c.isAdmin(c.getSessionUser())&&!(searchType.equals("-7")||searchType.equals("-3"))){//国内查档质检员不受权限控制,订单核实客服不受权限控制
 			//fromSql.append(authority);
 			fromSql.append(" and (c.create_by="+userId+" or c.report_user="+userId+" or c.analyze_user= "+userId+" or c.IQC= "+userId+" or c.translate_user= "+userId+")");
 		}
