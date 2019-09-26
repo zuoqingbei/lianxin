@@ -50,7 +50,7 @@ let Index = {
                     }
                 })
             }
-        }),
+        })
             $("#exampleModalCenter33").click(function () {
                 let ids = _this.numarr;
                 console.log(ids + "=====");
@@ -81,16 +81,94 @@ let Index = {
                     });
                 }
             })
+        //内容更新
+        $("#btn_submit").click(function () {
+            console.log('提交订单123')
+            let that = null,
+                formSelect = formInput = true;
+
+            $("#orderForm .formSelect").each(function(){
+                that = $(this);
+                if(that.find("option:selected").val() == 0){
+                    formSelect = false;
+                    $(that).addClass("active");
+                    $(that).siblings(".errorInfo").show();
+                    return;
+                }
+            });
+            $("#orderForm .formSelect").change(function(){
+                that = $(this);
+                $(that).removeClass("active");
+                $(that).siblings(".errorInfo").hide();
+            });
+            $("#orderForm .formInput").each(function(){
+                that = $(this);
+                if(that.val() == 0){
+                    formInput = false;
+                    $(that).addClass("active");
+                    $(that).siblings(".errorInfo").show();
+                    return;
+                }
+            });
+            $("#orderForm .formInput").keyup(function(){
+                that = $(this);
+                if(that.val() == 0){
+                    $(that).addClass("active");
+                    $(that).siblings(".errorInfo").show();
+                }
+                else{
+                    $(that).removeClass("active");
+                    $(that).siblings(".errorInfo").hide();
+                }
+            });
+            //表单验证成功，请求后台接口
+            if(formSelect && formInput){
+                var value=$("#priceid").val();
+                if(value==0){
+                    Public.message("error","未发现该报告价格,请联系管理员");
+                    return;
+                }
+                //isTheSameCompany();//暂时取消快速递交报告的功能
+                $("input[name='attr.status']").val("291");
+                $("body").mLoading("show");//显示loading组件
+                $("#orderForm").ajaxSubmit({
+                    success:function(data){
+                        $("body").mLoading("hide");
+                        $("#checkedModal .close").trigger("click")
+                        if(data.statusCode===1){
+                            Public.message("success",data.message);
+                            //Public.goList();
+                        }else if(data.statusCode===3){
+                            Public.message("info",data.message);
+                            //Public.goList();
+                        }
+                        else{
+                            Public.message("error",data.message);
+                            //Public.goList();
+                        }
+                        $("#btn_query").click();
+
+                    },
+                    error:function(data){
+                        $("body").mLoading("hide");//显示loading组件
+                        Public.message("error",data.message);
+                        //Public.goList();
+                        reste();
+                    }
+                });
+                $("#exampleModalCenter3 .close_modal").trigger('click');
+            }
+        });
     },
     fileEvent() {
         this.fileNum = 0;
         let that = this;
-        $(".close").click(function () {
-            that.fileNum = 0;
-        });
+        // $(".close").click(function () {
+        //    fileNum = 0;
+        // });
         /**文件上传事件 */
-        $("#exampleModalCenter3 .file-upload2").on('change', '.uploadFile .file-input', function () {
-            that.fileNum = that.fileNum + 1;
+        $(".file-upload").on('change', '.uploadFile .file-input', function () {
+            that.fileNum = that.fileNum+1;
             /**如果上传成功 */
             let filename = $(this).val().replace("C:\\fakepath\\", "");
             let num = filename.split(".").length;
@@ -126,7 +204,7 @@ let Index = {
             if ($("#exampleModalCenter3 .uploadFile").length > 4) {
                 return;
             }
-            $("#exampleModalCenter3 .file-upload2").append(`<div class="uploadFile mt-3 mr-4">
+            $("#exampleModalCenter3 .file-upload").append(`<div class="uploadFile mt-3 mr-4">
                                         <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
                                         <div class="over-box">
                                           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
@@ -136,16 +214,51 @@ let Index = {
         });
 
         /**附件删除 */
-        $("#exampleModalCenter3 .file-upload2").on('click', '.uploadFile .close', function () {
-            $(this).parents(".uploadFile").remove()
-
-            if ($("#exampleModalCenter3 .upload-over").length < 5 && $("[class='uploadFile mt-3 mr-4']").length < 1) {
-                $("#exampleModalCenter3 .file-upload2").append(`<div class="uploadFile mt-3 mr-4">
-                <input type="file" name="" id="upload_file" value="" class="file-input" />
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-                <p class="mt-2">上传附件</p>
-            </div>`);
+        $(".file-upload").on('click', '.uploadFile .close', function () {
+            console.log($(this).parents(".uploadFile").attr("fileId"))
+            if($(this).parents(".uploadFile").attr("fileId")){
+                var dom = $(this);
+                $.ajax({
+                    type:"post",
+                    url:BASE_PATH+"credit/front/orderProcess/deleteFile",
+                    data:"model.id="+$(this).parents(".uploadFile").attr("fileId"),
+                    dataType:"json",
+                    success:function(obj){
+                        dom.parents(".uploadFile").remove()
+                        // if($("#exampleModalCenter3 .upload-over").length<5 && $("[class='uploadFile mt-3 mr-4 ']").length<1 ){
+                        //     $("#exampleModalCenter3 .file-upload").append(`<div class="uploadFile mt-3 mr-4 mb-5">
+	        	        //         <input type="file" name="Files_${fileNum}" id="upload_file" value="" class="file-input" />
+        	            //     	  <div class="over-box">
+	        	        //         	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+	        	        //         	<p class="mt-2">上传附件</p>
+	        	        //           </div>
+	        	        //         </div>`);
+                        // }
+                        $('#table').bootstrapTable("refresh")
+                    }
+                })
+            }else{
+                $(this).parents(".uploadFile").remove()
+                // if($("#exampleModalCenter3 .upload-over").length<5 && $("[class='uploadFile mt-3 mr-4 ']").length<1 ){
+                //     $("#exampleModalCenter3 .file-upload").append(`<div class="uploadFile mt-3 mr-4 ">
+	        	//                 <input type="file" name="Files_${fileNum}" id="upload_file" value="" class="file-input" />
+        	    //             	  <div class="over-box">
+	        	//                 	<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+	        	//                 	<p class="mt-2">上传附件</p>
+	        	//                   </div>
+	        	//                 </div>`);
+                // }
             }
+            // $(this).parents(".uploadFile").remove()
+            //
+            // if ($("#exampleModalCenter3 .upload-over").length < 5 && $("[class='uploadFile mt-3 mr-4']").length < 1) {
+            //     $("#exampleModalCenter3 .file-upload").append(`<div class="uploadFile mt-3 mr-4">
+            //     <input type="file" name="" id="upload_file" value="" class="file-input" />
+            //     <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
+            //     <p class="mt-2">上传附件</p>
+            // </div>`);
+            // }
+
         })
 
     },
@@ -460,39 +573,81 @@ let Index = {
                                 $('#remakes').val(row.remarks);
                                 $('#myId').val(row.id);
                                 console.log(row.files)
-                                var h='';
-								for(var x=0;x<row.files.length;x++){
-								      let filetype=row.files[x].ext;
-									  let filename = row.files[x].originalname + '.' +filetype
-									  let fileicon = '';
-									  if(filetype === 'doc' || filetype === 'docx') {
-										fileicon = '/static/credit/imgs/order/word.png'
-									  }else if(filetype === 'xlsx' || filetype === 'xls') {
-										fileicon = '/static/credit/imgs/order/Excel.png'
-									  }else if(filetype === 'png') {
-										fileicon = '/static/credit/imgs/order/PNG.png'
-									  }else if(filetype === 'jpg') {
-										fileicon = '/static/credit/imgs/order/JPG.png'
-									  }else if(filetype === 'pdf') {
-										fileicon = '/static/credit/imgs/order/PDF.png'
-									  }else if(filetype === 'html') {
-										fileicon = '/static/credit/imgs/order/html.png'
-									  }
-									
-									h+=`<div class="uploadFile mt-3 mr-4 upload-over">
-									<input type="file" name="Files_${x+1}" id="upload_file" value="" class="file-input" style="visibility: hidden;"/>`;
-									h+=`<div class="over-box"><button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p></div>`;
-									
-								}
-								$(".file-upload").html(`<label class=" ml-3">上传相关资料：</label>`+h);
-								 $(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-                                        <input type="file" name="Files_${row.files.length+1}" id="upload_file" value="" class="file-input" />
-                                        <div class="over-box">
-                                          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
-                                          <p class="mt-2">上传附件</p>
-                                        </div>
-                                    </div>`);
-								fileNum=row.files.length;
+                                $("#exampleModalCenter3 .file-upload").html('<label class=" ml-3">上传相关资料：</label>\n' +
+                                    '                                <div class="uploadFile mr-3 mt-3">\n' +
+                                    '                                    <input type="file" name="Files_0" id="upload_file" value=""\n' +
+                                    '                                           class="file-input" />\n' +
+                                    '                                    <div class="over-box">\n' +
+                                    '                                        <img\n' +
+                                    '                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">\n' +
+                                    '                                        <p class="mt-2">上传附件</p>\n' +
+                                    '                                    </div>\n' +
+                                    '                                </div>')
+                                let fileArr = ''
+                                if(row.files&&row.files.length>0){
+                                    for (var i in row.files){
+                                        let filetype = row.files[i].ext.toLowerCase()
+                                        let fileicon = ''
+                                        if(filetype === 'doc' || filetype === 'docx') {
+                                            fileicon = '/static/credit/imgs/order/word.png'
+                                        }else if(filetype === 'xlsx' || filetype === 'xls') {
+                                            fileicon = '/static/credit/imgs/order/Excel.png'
+                                        }else if(filetype === 'png') {
+                                            fileicon = '/static/credit/imgs/order/PNG.png'
+                                        }else if(filetype === 'jpg') {
+                                            fileicon = '/static/credit/imgs/order/JPG.png'
+                                        }else if(filetype === 'pdf') {
+                                            fileicon = '/static/credit/imgs/order/PDF.png'
+                                        }
+
+                                        let filename = row.files[i].originalname
+                                        let all_name = filename + filetype
+                                        let num = filename.split(".").length;
+                                        let filename_qz = []
+                                        for(let i=0;i<num;i++){
+                                            filename_qz =  filename_qz.concat(filename.split(".")[i])
+                                        }
+                                        filename_qz_str = filename_qz.join('.')
+                                        if(filename_qz_str.length>4) {
+                                            filename_qz_str = filename_qz_str.substr(0,2) + '..' + filename_qz_str.substr(filename_qz_str.length-2,2)
+                                        }
+
+                                        filename = filename_qz_str + '.' +filetype
+                                        fileArr += '<div class="uploadFile mt-3 mr-3  upload-over" fileId="'+row.files[i].id+'" url="'+row.files[i].url+'" style="cursor:pointer">'+
+                                            '<div class="over-box">'+
+                                            '<button type="button" class="close" aria-label="Close">'+
+                                            '<span aria-hidden="true">&times;</span>'+
+                                            '</button>'+
+                                            '<img src="'+fileicon+'" />'+
+                                            '<p class="filename" title="'+all_name+'" >'+filename+'</p>'+
+                                            '</div>'+
+                                            '</div>'
+                                    }
+                                    $(".file-upload>label").after(fileArr)
+
+                                }else{
+                                    $("#exampleModalCenter3 .file-upload").html('<label class=" ml-3">上传相关资料：</label>\n' +
+                                        '                                <div class="uploadFile mr-3 mt-3">\n' +
+                                        '                                    <input type="file" name="Files_0" id="upload_file" value=""\n' +
+                                        '                                           class="file-input" />\n' +
+                                        '                                    <div class="over-box">\n' +
+                                        '                                        <img\n' +
+                                        '                                                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">\n' +
+                                        '                                        <p class="mt-2">上传附件</p>\n' +
+                                        '                                    </div>\n' +
+                                        '                                </div>')
+
+                                }
+
+
+                                $(".upload-over").click(function(e){
+                                    console.log($(e.target))
+                                    if($(e.target).parent().attr("class") === 'close') {
+                                        return
+                                    }
+                                    window.open($(this).attr("url"))
+
+                                })
                                 form.render('select');
 
                                 //各种基于事件的操作，下面会有进一步介绍

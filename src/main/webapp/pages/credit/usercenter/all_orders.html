@@ -534,7 +534,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
                     <span>订单号：</span>
                     <span id="orderNum3">0001288784932</span>
                 </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <button type="button" class="close close_modal" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -542,7 +542,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
                 <div class="table-content" style="background-color: transparent">
                     <form id="orderForm" class="form-inline layui-form "
                           enctype="multipart/form-data" action="/credit/front/home/saveOrder"
-                          method="post" lay-filter="myForm">
+                          method="post" >
                         <div class="form-group row d-flex justify-content-around mb-3">
                             <div class="input-group mt-2 col-md-6">
                                 <label class="control-label col-md-4" for=""><span>*</span>客户ID：</label>
@@ -704,7 +704,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
                             <div class="file-upload">
                                 <label class=" ml-3">上传相关资料：</label>
                                 <div class="uploadFile mr-3 mt-3">
-                                    <input type="file" name="file_url" id="upload_file" value=""
+                                    <input type="file" name="Files_0" id="upload_file" value=""
                                            class="file-input" />
                                     <div class="over-box">
                                         <img
@@ -747,7 +747,7 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 </div>
 <script src="${BASE_PATH }static/credit/assets/layui/layui.all.js"></script>
 <script src="${BASE_PATH }static/credit/js/all_orders.js"></script>
-<script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>
+<!--<script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>-->
 <script type="text/javascript">
 $(function(){
 	$.get('/credit/front/home/getMessage',function(data){
