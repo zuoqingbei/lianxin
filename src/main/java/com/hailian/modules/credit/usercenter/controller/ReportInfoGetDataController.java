@@ -901,7 +901,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 			renderJson(new ResultType(0, "导出现未知异常!"));
 			return;
 		}
-		ExcelModule.exportExcel(response,ops, Integer.parseInt(type));
+        new ExcelModule().exportExcel(response,ops, Integer.parseInt(type));
 		renderJson(new ResultType(0, "导出成功!"));
 	}
 
@@ -930,7 +930,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             renderJson(new ResultType(0, "导出现未知异常!"));
             return;
         }
-        ExcelModule.exportExcelWithData(response,ops, Integer.parseInt(type),companyId);
+        new ExcelModule().exportExcelWithData(response,ops, Integer.parseInt(type),companyId);
         renderJson(new ResultType(0, "导出成功!"));
     }
 

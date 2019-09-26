@@ -45,9 +45,7 @@ public class FinanceService {
 	 
 	/**
 	 * 增加或者修改财务配置信息(包含在实体表里克隆一份默认的)
-	 * @param dataJson
 	 * @param type
-	 * @param financialConfigId
 	 * @param userId
 	 * @param now
 	 */
@@ -170,7 +168,6 @@ public class FinanceService {
 	/**
 	 * 获取财务实体表信息
  	 *@author  lzg
-	 * @param  String financialConfId,
 	 * @param type 财务类型
 	 */
 	public static List<CreditCompanyFinancialEntry> getFinancialEntryList(String financialConfId, String type ) {
@@ -214,10 +211,8 @@ public class FinanceService {
 	
 	/**
 	 * 增加或者修改财务实体表信息(页面触发)
-	 * @param dataJson 数据源字符串
 	 * @param userId 用户id
 	 * @param now 当前时间
-	 * @param financialConfId 财务配置id
 	 */
 	public  static void alterFinancialEntryList(List<Map<Object, Object>> entrys,String userId,String now ) {
 		boolean exitsId = true;
@@ -254,7 +249,7 @@ public class FinanceService {
 	 */
 	public static String alterFinancialEntryListForUpload(File file,int type,String financeConfigId,String userId, String now) {
 		//解析excel,获取财务实体对象	
-		 List<CreditCompanyFinancialEntry> modelList = ExcelModule.parseExcel(file, type, financeConfigId, userId, now);
+		 List<CreditCompanyFinancialEntry> modelList = new ExcelModule().parseExcel(file, type, financeConfigId, userId, now);
 		 if(modelList==null||modelList.size()==0) {
 			 return "数据量为0,导入失败!";
 		 }

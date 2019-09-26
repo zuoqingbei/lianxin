@@ -40,11 +40,11 @@ public class ExcelModule extends BaseProjectController  {
 	/**
 	 * 列宽系数
 	 */
-	private static int colWidthOffSet = 621;
+	private  int colWidthOffSet = 621;
 	/**
 	 * excel首行值
 	 */
-	private static String[] firstRow = new String[] {
+	private  String[] firstRow = new String[] {
 			"科目",
 			"初始日期值",
 			"结束日期值"
@@ -52,22 +52,22 @@ public class ExcelModule extends BaseProjectController  {
 	/**
 	 * 数据开始的行号
 	 */
-	private static int top = 0;
+	private  int top = 0;
 	
 	/**
 	 * 数据开始的列号
 	 */
-	private static int left = 0;
+	private  int left = 0;
 	
 	/**
 	 * 小模块列间距(包含本身列数)
 	 */
-	private static int smallModuleColSpacing = 5;
+	private  int smallModuleColSpacing = 5;
 	
 	/**
 	 * 文件名称
 	 */
-	private static String fileName = "FinancialModule";
+	private  String fileName = "FinancialModule";
 	
 	/**
 	 * sheet页名称
@@ -92,7 +92,7 @@ public class ExcelModule extends BaseProjectController  {
 	 * @param response
 	 * @param ops
 	 */
-	public  static void  exportExcel(HttpServletResponse response, OutputStream ops,int type) {
+	public   void  exportExcel(HttpServletResponse response, OutputStream ops,int type) {
 		
 		if(type==1) {
 			smallModuleColSpacing = 5;
@@ -264,7 +264,7 @@ public class ExcelModule extends BaseProjectController  {
 	 * @param financeConfigId
 	 * @return 上传结果
 	 */
-	public  static List<CreditCompanyFinancialEntry>  parseExcel(File file,int type,String financeConfigId,String userId, String now) {
+	public   List<CreditCompanyFinancialEntry>  parseExcel(File file,int type,String financeConfigId,String userId, String now) {
 		if(type==1) {
 			smallModuleColSpacing = 5;
 			colWidthOffSet = 620;
@@ -547,7 +547,7 @@ public class ExcelModule extends BaseProjectController  {
 
 	//HSSFCell cellItemName = rowBody.createCell(left+j*smallModuleColSpacing);
 
-	public static HSSFCell createCell(HSSFRow row,String value,HSSFCellStyle style,int multiple,int offset ){
+	public  HSSFCell createCell(HSSFRow row,String value,HSSFCellStyle style,int multiple,int offset ){
 		HSSFCell cell = row.createCell(left+offset+multiple*smallModuleColSpacing);
 		try {
 			cell.setCellType(CellType.NUMERIC);
@@ -561,7 +561,7 @@ public class ExcelModule extends BaseProjectController  {
 		cell.setCellStyle(style);
 		return  cell;
 	}
-	public static void exportExcelWithData(HttpServletResponse response, ServletOutputStream ops, int type, String companyId) {
+	public  void exportExcelWithData(HttpServletResponse response, ServletOutputStream ops, int type, String companyId) {
 		CreditCompanyFinancialStatementsConf conf = CreditCompanyFinancialStatementsConf.dao.findFirst("select *  from credit_company_financial_statements_conf where del_flag=0 and type=?  and company_id=?",new String[]{type+"",companyId});
 		List<CreditCompanyFinancialEntry> list = CreditCompanyFinancialEntry.dao.find("select * from  credit_company_financial_entry where conf_id=? and del_flag=0",new String[]{conf.get("id")+""});
 		if(type==1) {
