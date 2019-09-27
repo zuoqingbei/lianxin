@@ -31,7 +31,6 @@ let ReportConfig = {
         this.tableDataArr = []
         this.tableDataArrEn = []
         let tableNum = 0;//计数器
-        console.log(this.rows)
         console.log(this.rows["company_id"])
         console.log(this.rows["company_id_en"])
         this.idArr.forEach((item,index)=>{
@@ -52,7 +51,7 @@ let ReportConfig = {
                 console.log(tempParam)
                 tempParam.forEach((item,index)=>{
                     if(item === 'company_id') {
-                        let val = this.rows["company_id_en"]
+                        let val = this.rows[item]
                         urlEN += `&${item}=${val}`
                     }else {
                         urlEN += `&${item}=${this.rows[item]}`
@@ -261,11 +260,7 @@ let ReportConfig = {
         if(!a){return}
         let _this = this
         let arr = []
-		if(lang === 'en'){
-			a.unshift({temp_name: "Num",column_name:"order_num"})
-		}else{
-			a.unshift({temp_name: "序号",column_name:"order_num"})
-		}
+		a.unshift({temp_name: "序号",column_name:"order_num"})
         
         a.forEach((ele,index)=>{
             if(ele.temp_name !== '操作' && ele.temp_name !== 'Operation'){
