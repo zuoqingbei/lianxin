@@ -31,6 +31,8 @@ let ReportConfig = {
         this.tableDataArr = []
         this.tableDataArrEn = []
         let tableNum = 0;//计数器
+        console.log(this.rows["company_id"])
+        console.log(this.rows["company_id_en"])
         this.idArr.forEach((item,index)=>{
             const $table = $("#table"+item);
             const $tableEn = $("#table"+item+"En");
@@ -43,11 +45,13 @@ let ReportConfig = {
 //        	if(!urlTemp){return}
             let urlCH = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
             let urlEN = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
+            console.log(urlTemp)
             if(urlTemp.split("*")[1]){
                 let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
+                console.log(tempParam)
                 tempParam.forEach((item,index)=>{
                     if(item === 'company_id') {
-                        let val = this.rows["company_id_en"]
+                        let val = this.rows[item]
                         urlEN += `&${item}=${val}`
                     }else {
                         urlEN += `&${item}=${this.rows[item]}`
@@ -678,7 +682,7 @@ let ReportConfig = {
                 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
                     //信用等级
                     let name =$(item).next().find("select").attr("name")
-                    $(item).next().find("select").val(tempData.rows[0][name])
+                    $(item).next().find("select").val(tempData.rows.length>0?tempData.rows[0][name]:'')
                     return;
                 }
                 if($(item).next().hasClass("textarea-module")) {
@@ -715,7 +719,7 @@ let ReportConfig = {
                     	 }else  if("14"==reportType) {//ROC English
                     		 type="en";
                     	}else if("8"==reportType||"9"==reportType){//商业报告
-                    		    if(!"612".equals(sysLanguage)){
+                    		    if(!("612"!=reportLanguage)){
                     		    	type="en";
                     		    }
                     	}
@@ -919,7 +923,7 @@ let ReportConfig = {
                         if(_this.entityTitle[i]["get_source"].includes("type=3")||_this.entityTitle[i]["get_source"].includes("type=4")){
                             //大数财务模块浮动
                             ds_cw_title.push(this.floatTitle[index])
-                            console.assert(!(ds_cw_contents.length===0 && !this.floatContents[0].get_source),this.floatContents)
+                            // console.assert(!(ds_cw_contents.length===0 && !this.floatContents[0].get_source),this.floatContents)
                             ds_cw_contents.push(this.floatContents[index])
                             ds_dom = $("#titleDs"+i)
                         }else {
@@ -942,7 +946,7 @@ let ReportConfig = {
                 let this_content = ds_cw_contents[index];
                 console.log("this_content---->",this_content)
                 let moneySource = ds_cw_contents[0][0].get_source;
-                console.assert(moneySource,ds_cw_contents)
+                // console.assert(moneySource,ds_cw_contents)
                 let moneyStr = ''
                 let unitSource = ds_cw_contents[0][1].get_source;
                 let unitStr = ''
@@ -2184,15 +2188,22 @@ let ReportConfig = {
         this.isTableTranslated = false;
         this.isFormTranslated = false;
         let allTableData = [] //存放翻译过所有表格数据
-       
+        console.log(12121212121212)
+        console.log(tableTitlesEn)
         tableTitlesEn.forEach((item,index)=>{
-            let tableTitleSourceClassName = '' 
-            if(item.alter_source.split('?')[1]){
+            let tableTitleSourceClassName = ''
+            if(item.alter_source&&item.alter_source.split('?')[1]){
                 tableTitleSourceClassName = item.alter_source.split('?')[1].split("*")[0]
             }
             //循环表格表头
             let alterSource = item["alter_source"];
-            let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
+            let url;
+            if(alterSource){
+                url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
+            }else{
+                url = '';
+            }
+
             let dataJson = []
             //点击翻译按钮
             $(".position-fixed").on("click","#translateBtn",(e)=>{
@@ -2423,7 +2434,7 @@ let ReportConfig = {
                 let alterSource = formTitlesEn[index]["alter_source"];
 //    		console.log(alterSource)
                 let formTitleSourceClassName  = ''
-                if(alterSource.split('?')[1]){
+                if(alterSource&&alterSource.split('?')[1]){
                     formTitleSourceClassName = alterSource.split('?')[1].split("*")[0]
 
                 }
