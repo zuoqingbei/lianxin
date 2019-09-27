@@ -19,9 +19,10 @@ let OrderDetail = {
          * @return {string}
          */
         this.getUrl = (item, otherProperty, paramObj, fromContents) => {
-            let urlArr = (otherProperty ? item.title[otherProperty] : item.title.get_source).split("*");
+            let totalUrl = otherProperty ? item.title[otherProperty] : item.title.get_source;
+            let urlArr = (totalUrl ? totalUrl.split("*") : []);
             urlArr = fromContents === 'fromContents' ? item.contents[0].get_source.split("*") : urlArr;
-            if (urlArr[0] === '') {
+            if (urlArr[0] === '' || urlArr.length ===0) {
                 return '';
             }
             let url = '';
@@ -1004,7 +1005,7 @@ let OrderDetail = {
         }
         let $table = $('<table class="table table-hover"><thead></thead><tbody></tbody></table>');
         let columnNameArr = [];
-        //表格添加序号
+        // //表格添加序号
         if(item.contents.length>0){
             item.contents.unshift({temp_name: "序号",column_name:"order_num"});
         }
@@ -1071,7 +1072,7 @@ let OrderDetail = {
                         columnNameArr.forEach((columnName, index) => {
                             //商标和专利部分需要显示缩略图
                             let [isBrand, aHref] = [false, ''];
-                            if (item.title.temp_name === '商标' && index === 2) {
+                            if (item.title.temp_name === '商标' && index === 3) {
                                 isBrand = true;
                                 aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
                             }
