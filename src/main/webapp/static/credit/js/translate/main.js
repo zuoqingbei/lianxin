@@ -128,7 +128,7 @@ let ReportConfig = {
                         var lis=$(".l-title");
                         for(var x=0;x<lis.length;x++){
                         	var item=lis[x];
-							console.log($(item).text())
+							//console.log($(item).text())
                         	if($(item).text()=='股东信息'){
                         		var id=$(item).attr("id");
                         		if(id.indexOf("title")!=-1&&id.indexOf("En")==-1){
@@ -138,7 +138,7 @@ let ReportConfig = {
 								break;
                         	}
                         }
-                        console.log(mId)
+                        //console.log(mId)
                         var h=$("#table"+mId).parent().parent().find(".fixed-table-footer").html();
                         h=h.replace(/<td/g,"<td style='border:none!important'")
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").html(h);
@@ -2169,6 +2169,7 @@ let ReportConfig = {
 
         return indexed_array;
     },
+	
     bottomBtnEvent(){
         /**
          * 底部按钮点击事件
@@ -2303,6 +2304,7 @@ let ReportConfig = {
 
             })
             //点击保存按钮
+			
 
             $(".position-fixed").on("click","#save",(e)=>{
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
@@ -2313,9 +2315,7 @@ let ReportConfig = {
                     delete ele["create_date"]
                     delete ele["update_date"]
                     delete ele["order_num"]
-                    if(ele.id === ''){
-                        delete ele["id"]
-                    }
+					_this.deleteEmptyProperty(ele);
                     // console.log(alterSource)
                     if(alterSource.split("*")[1]) {
                         let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
@@ -2375,9 +2375,7 @@ let ReportConfig = {
                     delete ele["create_date"]
                     delete ele["update_date"]
                     delete ele["order_num"]
-                    if(ele.id === ''){
-                        delete ele["id"]
-                    }
+                    _this.deleteEmptyProperty(ele);
                     if(alterSource.split("*")[1]) {
                         let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
                         tempParam.forEach((item,index)=>{
@@ -2661,6 +2659,36 @@ let ReportConfig = {
             })
         },1500)
     },
+	 deleteEmptyProperty(object){
+	  for (var i in object) {
+		var value = object[i];
+		if (typeof value === 'object') {
+		  if (Array.isArray(value)) {
+			if (value.length == 0) {
+			  delete object[i];
+			  continue;
+			}
+		  }
+		  this.deleteEmptyProperty(value);
+		  if (this.isEmpty(value)) {
+			delete object[i];
+		  }
+		} else {
+		  if (value === '' || value === null || value === undefined) {
+			delete object[i];
+		  } else {
+		  }
+		}
+	  }
+	},
+
+
+	 isEmpty(object) {
+	  for (var name in object) {
+		return false;
+	  }
+	  return true;
+	},
     showTranslateMadal(){
         let _this = this
         //翻译校正模态窗

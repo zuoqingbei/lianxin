@@ -8,6 +8,8 @@ import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.notice.model.NoticeLogModel;
 import com.hailian.modules.credit.notice.model.NoticeModel;
 import com.hailian.util.DateUtils;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.hailian.component.base.BaseProjectController;
@@ -15,6 +17,7 @@ import com.hailian.component.base.BaseProjectModel;
 import com.hailian.system.dict.DictCache;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
+
 import net.sf.json.JSONArray;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
@@ -231,25 +234,27 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 				}
 				Map b = new HashMap<>();
 				for (Object key : entry.keySet()) {
-					if("com.hailian.modules.admin.ordermanager.model.CreditCompanyHis".equals(className)){
-						if(!"company_type".equals(key.toString())&&
-								!"currency".equals(key.toString())&&
-								!"roc_registration_status".equals(key.toString())&&
-								!"register_code_type".equals(key.toString())&&
-								!"year_result".equals(key.toString())&&
-								!"capital_type".equals(key.toString()))
-						model.set((""+key).trim(), (""+(entry.get(key))).trim());
-					}else if("com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder".equals(className)&&!"8".equals(reportType)&&!"10".equals(reportType)){
-						if(!"company_type".equals(key.toString())&&
-								!"currency".equals(key.toString())&&
-								!"roc_registration_status".equals(key.toString())&&
-								!"register_code_type".equals(key.toString())&&
-								!"year_result".equals(key.toString())&&
-								!"capital_type".equals(key.toString())&&
-								!"order_num".equals(key.toString()))
-						model.set((""+key).trim(), (""+(entry.get(key))).trim());
-					}else{
-						model.set((""+key).trim(), (""+(entry.get(key))).trim());
+					if(key!=null&&StringUtils.isNotBlank(key+"")&&!"''".equals(key)){
+						if("com.hailian.modules.admin.ordermanager.model.CreditCompanyHis".equals(className)){
+							if(!"company_type".equals(key.toString())&&
+									!"currency".equals(key.toString())&&
+									!"roc_registration_status".equals(key.toString())&&
+									!"register_code_type".equals(key.toString())&&
+									!"year_result".equals(key.toString())&&
+									!"capital_type".equals(key.toString()))
+								model.set((""+key).trim(), (""+(entry.get(key))).trim());
+						}else if("com.hailian.modules.admin.ordermanager.model.CreditCompanyShareholder".equals(className)&&!"8".equals(reportType)&&!"10".equals(reportType)){
+							if(!"company_type".equals(key.toString())&&
+									!"currency".equals(key.toString())&&
+									!"roc_registration_status".equals(key.toString())&&
+									!"register_code_type".equals(key.toString())&&
+									!"year_result".equals(key.toString())&&
+									!"capital_type".equals(key.toString())&&
+									!"order_num".equals(key.toString()))
+								model.set((""+key).trim(), (""+(entry.get(key))).trim());
+						}else{
+							model.set((""+key).trim(), (""+(entry.get(key))).trim());
+						}
 					}
 				}
 				if(!exit){
