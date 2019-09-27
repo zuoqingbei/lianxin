@@ -31,6 +31,7 @@ let ReportConfig = {
         this.tableDataArr = []
         this.tableDataArrEn = []
         let tableNum = 0;//计数器
+        console.log(this.rows)
         console.log(this.rows["company_id"])
         console.log(this.rows["company_id_en"])
         this.idArr.forEach((item,index)=>{
@@ -51,7 +52,7 @@ let ReportConfig = {
                 console.log(tempParam)
                 tempParam.forEach((item,index)=>{
                     if(item === 'company_id') {
-                        let val = this.rows[item]
+                        let val = this.rows["company_id_en"]
                         urlEN += `&${item}=${val}`
                     }else {
                         urlEN += `&${item}=${this.rows[item]}`
