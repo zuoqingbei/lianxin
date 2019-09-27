@@ -51,7 +51,7 @@ let ReportConfig = {
                 console.log(tempParam)
                 tempParam.forEach((item,index)=>{
                     if(item === 'company_id') {
-                        let val = this.rows[item]
+                        let val = this.rows["company_id_en"]
                         urlEN += `&${item}=${val}`
                     }else {
                         urlEN += `&${item}=${this.rows[item]}`
@@ -128,12 +128,14 @@ let ReportConfig = {
                         var lis=$(".l-title");
                         for(var x=0;x<lis.length;x++){
                         	var item=lis[x];
-                        	if($(item).text()=='出资情况'){
+							console.log($(item).text())
+                        	if($(item).text()=='股东信息'){
                         		var id=$(item).attr("id");
                         		if(id.indexOf("title")!=-1&&id.indexOf("En")==-1){
                         			mId=id.replace("title","");
                         			mId=mId.replace("En","");
                         		}
+								break;
                         	}
                         }
                         console.log(mId)
