@@ -1044,8 +1044,12 @@ let OrderDetail = {
                             //柱线组合图(行业GDP)
                             case '22':
                                 item.contents.forEach((content, i) => {
-                                    chartData[arr[i] + 'Name'] = content.temp_name;
-                                    chartData[arr[i] + 'Data'].push(row[content.column_name])
+									if(i>0){
+                                    chartData[arr[i-1] + 'Name'] = content.temp_name;
+                                    chartData[arr[i-1] + 'Data'].push(row[content.column_name])
+									}
+									
+									
                                 });
                                 //猜测数据结构
                                /* let contents = [

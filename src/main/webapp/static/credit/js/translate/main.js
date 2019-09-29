@@ -45,10 +45,10 @@ let ReportConfig = {
 //        	if(!urlTemp){return}
             let urlCH = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
             let urlEN = BASE_PATH  + 'credit/front/ReportGetData/'+ urlTemp.split("*")[0] + `&conf_id=${conf_id}`
-            console.log(urlTemp)
+            
+		
             if(urlTemp.split("*")[1]){
                 let tempParam = urlTemp.split("*")[1].split("$");//必要参数数组
-                console.log(tempParam)
                 tempParam.forEach((item,index)=>{
                     if(item === 'company_id') {
                         let val = this.rows["company_id_en"]
@@ -71,6 +71,11 @@ let ReportConfig = {
              selectInfo.push(_this.selectInfoObj)
                //}
             let tempRows = []
+			if(urlTemp=='getBootStrapTable?tableName=credit_company_naturalperson_shareholder_detail&className=CreditCompanyNaturalpersonShareholderDetail*company_id'){
+			console.log(urlEN)
+			console.log($tableEn)
+			//debugger;
+		}
             //合计
             if(titles[index]["get_source"].includes("credit_company_shareholder")) {
                 $table.bootstrapTable({
@@ -129,7 +134,7 @@ let ReportConfig = {
                         for(var x=0;x<lis.length;x++){
                         	var item=lis[x];
 							//console.log($(item).text())
-                        	if($(item).text()=='股东信息'){
+                        	if($(item).text()=='股东信息'||$(item).text()=='Shareholders'){
                         		var id=$(item).attr("id");
                         		if(id.indexOf("title")!=-1&&id.indexOf("En")==-1){
                         			mId=id.replace("title","");
@@ -262,7 +267,12 @@ let ReportConfig = {
         if(!a){return}
         let _this = this
         let arr = []
-		a.unshift({temp_name: "序号",column_name:"order_num"})
+		if(lang=='en'){
+			a.unshift({temp_name: "Num",column_name:"order_num"})
+		}else{
+			a.unshift({temp_name: "序号",column_name:"order_num"})
+		}
+		
         
         a.forEach((ele,index)=>{
             if(ele.temp_name !== '操作' && ele.temp_name !== 'Operation'){
