@@ -1169,7 +1169,7 @@ let ReportConfig = {
                         break;
                     case 3:
                         //资产负债表
-                        for(let i=0;i<5;i++){
+                        for(let i=0;i<4;i++){
                             cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
     							<table id="tableCwFz${i}"
     							data-toggle="table"
@@ -1182,7 +1182,7 @@ let ReportConfig = {
                         break;
                     case 4:
                         //利润表
-                        for(let i=0;i<4;i++){
+                        for(let i=0;i<2;i++){
                             cw_table_html += `<div class="table-content1 cw-table" style="background:#fff">
     							<table id="tableCwLr${i}"
     							data-toggle="table"
@@ -1375,7 +1375,7 @@ let ReportConfig = {
                         contentHtml +=  `<div class="bg-f mb-3"  ><a style="display:none"  class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
                     }else if(smallModileType === '10'){
                         //财务模块
-                        if(item["title"]["get_source"].includes("type=3")||item["title"]["get_source"].includes("type=3")){
+                        if(item["title"]["get_source"].includes("type=3")||item["title"]["get_source"].includes("type=4")){
                             //大数
                             _this.dsGetSource = item.title.get_source;
                             _this.dsAlterSource = item.title.alter_source;
