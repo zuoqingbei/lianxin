@@ -193,7 +193,10 @@ let OrderDetail = {
                             return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');
                         });
                     } else {
+						 
+						
                         $.post(this.getUrl(item), {selectInfo: this.selectInfo}, (data) => {
+							 
                             if (data.rows && data.rows.length > 0) {
                                 $wrap.find('span[data-column_name]').each(function (index, dom) {
                                     let column_name = $(this).data('column_name');
@@ -206,6 +209,13 @@ let OrderDetail = {
                                 $wrap.find('div.moneyCol [data-column_name]').text(function () {
                                     return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');
                                 });
+								if(item.title.temp_name=='交易付款情况'){
+								 $("span[data-column_name='transaction_payment']").text(Public.textFilter(data.rows[0]["transaction_payment"], 'null'));
+								 $("span[data-column_name='transaction_payment']").prev().text('');
+								 $("span[data-column_name='transaction_payment_default']").prev().text('');
+								 $("span[data-column_name='transaction_payment_default']").parent().removeClass("col-md-4");
+								 
+								}
                             } else {
                                 console.warn(item.title.temp_name + '-表单-没有返回数据！')
                             }
@@ -294,7 +304,19 @@ let OrderDetail = {
                             return `${prev} <li><input type="radio" name="${item.title.id}_zongtipingjia">${cur}</li>`
                         });
                     });
-                    $wrap.append(`
+					$wrap.append(`
+                            <div class="module-content type8-content pt-4">
+                                <h4>${item.contents[0].temp_name}</h4>
+                                ${$type8_ul[0].outerHTML}
+                            </div>`);
+					$.get(`${this.getUrl(item)}&order_num=${this.row.num}`, (data) => {
+                        if (data.rows && data.rows.length > 0) {
+                            $wrap.find('ul>li').eq(data.rows[0][item.contents[0].column_name] - 1).find('[type=radio]').prop('checked', true)
+                        } else {
+                            console.warn(item.title.temp_name + '-总体评价-没有返回数据！')
+                        }
+                    });
+                    /**$wrap.append(`
                             <div class="module-content type8-content pt-4">
                                 <h4>${item.contents[0].temp_name}</h4>
                                 ${$type8_ul[0].outerHTML}
@@ -312,7 +334,7 @@ let OrderDetail = {
                         } else {
                             console.warn(item.title.temp_name + '-总体评价-没有返回数据！')
                         }
-                    });
+                    });**/
                     break;
                 // 9-财务模块结构和多行文本框数据
                 /*case '9':

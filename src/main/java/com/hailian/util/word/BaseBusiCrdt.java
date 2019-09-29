@@ -765,6 +765,8 @@ public class BaseBusiCrdt extends BaseWord{
                 try {
                     //注册资本处理
                     mergerHandling2( child, model, "capital_type", reportType,  sysLanguage,"registered_capital","currency","capital_type","currency","registered_capital");
+                    //处理营业期限格式
+                    mergerHandling5(child, model, reportType, sysLanguage);
                 }catch (Exception e){
                     e.printStackTrace();
                 }
@@ -939,7 +941,31 @@ public class BaseBusiCrdt extends BaseWord{
         }
         alertConf(setKey,paritiesName,child,targetFieldIsSelect,sysLanguage,reportType);
         if(isNotNull(parities_date)){
-        	parities+="("+parities_date+")";
+        	String dateStr;//统计时间
+            //格式化日期
+            dateStr = timeRangeHandling(parities_date, null,ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
+        	parities+="("+dateStr+")";
+        }
+        //合并值
+        model.set(setKey,parities);
+
+    }
+    /**
+     * 处理营业期限
+     * @param child
+     * @param model
+     * @param reportType
+     * @param sysLanguage
+     */
+    private static void mergerHandling5(List<CreditReportModuleConf> child, BaseProjectModel model, String reportType, String sysLanguage) {
+        String setKey="business_date_end";
+    	String parities = model.get(setKey)+"";
+        if(isNotNull(parities)){
+        	String dateStr=null;//统计时间
+            //格式化日期
+            dateStr = timeRangeHandling(parities, "至",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
+        	if(dateStr!=null)
+            parities=dateStr;
         }
         //合并值
         model.set(setKey,parities);
@@ -1001,7 +1027,7 @@ public class BaseBusiCrdt extends BaseWord{
     }
 
     private static boolean isNotNull(String str) {
-        return StringUtils.isNotEmpty(str)&&!"null".equals(str);
+        return StringUtils.isNotEmpty(str)&&!"null".equals(str)&&str!=null;
     }
 
     /**

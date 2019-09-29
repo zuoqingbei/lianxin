@@ -517,7 +517,7 @@ let InitObjTrans = {
 				item["begin_date_value"] = `<input disabled="disabled"  type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
-			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] ) {
 				if(tempRows.length !== 0){
 					tempArr.push(tempRows)
 					tempRows = []
@@ -525,15 +525,17 @@ let InitObjTrans = {
 			}
 			tempRows.push(item)
 		})
+		console.log(tempRows)
+		tempArr.push(tempRows);
 		//合计项放在最后
-		tempArr.forEach((item,index)=>{
-			item.forEach((ele,index)=> {
-				if(ele.is_sum_option === 1) {
-					item.splice($.inArray(ele,item),1)
-					item.push(ele)
-				}
-			})
-		})
+		// tempArr.forEach((item,index)=>{
+		// 	item.forEach((ele,index)=> {
+		// 		if(ele.is_sum_option === 1) {
+		// 			item.splice($.inArray(ele,item),1)
+		// 			item.push(ele)
+		// 		}
+		// 	})
+		// })
 		let tempObj ={}
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
@@ -553,7 +555,7 @@ let InitObjTrans = {
         			if(ele.column_name !== null && ele.column_name !== ''){
         				index === 0?tempObj[ele.column_name] = '':tempObj[ele.column_name] = 0
         			}
-        			ele.column_name = ele.column_name&&ele.column_name === "item_name"? ele.column_name+'_en':ele.column_name
+        			ele.column_name = ele.column_name&&ele.column_name === "item_name"? ele.column_name:ele.column_name
 	    			if(ele.temp_name !== '删除'){
 	    				arr.push({
 	    					title:ele.temp_name,
@@ -801,7 +803,7 @@ let InitObjTrans = {
 				item["begin_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
-			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] ) {
 				if(tempRows.length !== 0){
 					tempArr.push(tempRows)
 					tempRows = []
@@ -809,15 +811,16 @@ let InitObjTrans = {
 			}
 			tempRows.push(item)
 		})
+		tempArr.push(tempRows);
 			//合计项放在最后
-		tempArr.forEach((item,index)=>{
-			item.forEach((ele,index)=> {
-				if(ele.is_sum_option === 1) {
-					item.splice($.inArray(ele,item),1)
-					item.push(ele)
-				}
-			})
-		})
+		// tempArr.forEach((item,index)=>{
+		// 	item.forEach((ele,index)=> {
+		// 		if(ele.is_sum_option === 1) {
+		// 			item.splice($.inArray(ele,item),1)
+		// 			item.push(ele)
+		// 		}
+		// 	})
+		// })
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
 			$table.bootstrapTable("load",tempArr[index])
