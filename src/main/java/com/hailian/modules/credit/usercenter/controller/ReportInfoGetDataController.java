@@ -207,7 +207,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 		Record record = new Record();
 		String tableName = getPara("tableName", "");
 		String className = getPara("className");
-		if("CreditCompanyInfo".equals(className)){
+		if("credit_company_naturalperson_shareholder_detail".equals(tableName)){
 			System.out.println(1);
 		}
 
