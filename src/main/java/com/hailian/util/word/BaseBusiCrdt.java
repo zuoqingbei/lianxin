@@ -19,6 +19,7 @@ import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
+import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.PathKit;
@@ -122,8 +123,9 @@ public class BaseBusiCrdt extends BaseWord{
         //客户参考号
         map.put("reference_num",referenceNum);
         //订单公司名称
-        if(ReportTypeCons.ROC_EN.equals(reportType)){
-            map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
+        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+          //  map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
+            map.put("company", order.getStr("right_company_name_en"));
         }else{
             map.put("company", companyInfo.getStr("name_en"));
         }
@@ -200,6 +202,44 @@ public class BaseBusiCrdt extends BaseWord{
                 }
             }
             List<Object> appendRowsForInvestmentSituation = null;
+            //取股东信息下的截止时间
+           try{
+               if("partner".equals(key)){
+                   List<CreditReportModuleConf> floatModule = CreditReportModuleConf.dao.findSon3(crmc.get("id").toString(), reportType, "4");
+                   for(CreditReportModuleConf _conf : floatModule){
+                       String _confId = _conf.getInt("id") + "";
+                       String _source = _conf.getStr("get_source");
+                       //无url的跳过取数
+                       if (StringUtils.isEmpty(_source)) {
+                           continue;
+                       }
+                       Map<String, String> _params = BaseWord.parseUrl(_source);
+                       String _tableName = _params.get("tableName");
+                       String _clName = _params.get("className");
+                       if(StringUtils.isEmpty(_tableName) || StringUtils.isEmpty(_clName)){
+                           continue;
+                       }
+                       String[] _requireds = _clName.split("\\*");
+                       String _className = _requireds.length > 0 ? _requireds[0] : "";
+                       List rows = report.getTableData(sysLanguage, companyId, _tableName, _className, _confId, "",reportType);
+                       for (int i = 0; i < rows.size(); i++) {
+                           //取一行数据
+                           BaseProjectModel model = (BaseProjectModel) rows.get(i);
+                           if(model.get("date")!=null && !"".equals(model.get("date"))) {
+                               Style style = new Style();
+                               style.setFontFamily("Times New Roman");
+                               if(ReportTypeCons.BUSI_ZH.equals(reportType)) {
+                                   map.put("endDate",new TextRenderData(" (" + "截止至 " + DateUtils.getYmdHmsssZh(model.get("date")+"") + ")",style));
+                               }else{
+                                   map.put("endDate",new TextRenderData(" (" + "Until " + DateUtils.getYmdHmsssEn(model.get("date")+"") + ")",style));
+                               }
+                           }
+                       }
+                   }
+               }
+           }catch (Exception e){
+               e.printStackTrace();
+           }
             //1：表格
             if (tableType != null && !"".equals(tableType)) {
                 String selectInfo = "";
@@ -822,7 +862,7 @@ public class BaseBusiCrdt extends BaseWord{
             if(!isNotNull(capitalType)){
                 targetFieldIsSelect = false;
                 if(ReportTypeCons.BUSI_ZH.equals(reportType)){
-                    capitalType = "注册资本";
+                    capitalType = "注册资本(元)";
                 }else{
                     capitalType = "Registered Capital";
                 }
@@ -867,7 +907,7 @@ public class BaseBusiCrdt extends BaseWord{
             if(ReportTypeCons.BUSI_ZH.equals(reportType)){
                 idType = "身份证号码";
             }else{
-                idType = "IDCard";
+                idType = "ID No";
             }
         }
         alertConf(idTypeColumn,idType,child,targetFieldIsSelect,sysLanguage,reportType);
@@ -881,9 +921,6 @@ public class BaseBusiCrdt extends BaseWord{
      * @param model
      * @param reportType
      * @param sysLanguage
-     * @param idColumn
-     * @param idTypeColumn
-     * @param removeColumns
      */
     private static void mergerHandling4(List<CreditReportModuleConf> child, BaseProjectModel model, String reportType, String sysLanguage) {
         String setKey="parities";
