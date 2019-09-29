@@ -411,8 +411,8 @@ let InitObjTrans = {
 		let tempRows =  []
 		if(!returnData){return}
 		returnData['rows'].forEach((item,index)=>{ 
-			item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-			item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+			item["begin_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+			item["end_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			tempRows.push(item)
 		})
 		const $table = $('#tableDs');

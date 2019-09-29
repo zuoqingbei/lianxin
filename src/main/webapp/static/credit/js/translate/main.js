@@ -993,16 +993,16 @@ let ReportConfig = {
 							<div class="ds-unit" style="width:100%">
 								<div class="form-inline my-3" >
 									<label style="font-weight:600;margin-left:60%" class="mr-3">${this_content[0].temp_name}</label>
-									<select class="form-control mr-3" id="${this_content[0].column_name}ds" style="width:10rem" name=${this_content[0].column_name}>${moneyStr}</select>
-									<select class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${unitStr}</select>
+									<select disabled = 'disabled' class="form-control mr-3" id="${this_content[0].column_name}ds" style="width:10rem" name=${this_content[0].column_name}>${moneyStr}</select>
+									<select disabled = 'disabled' class="form-control mr-3" id="${this_content[1].column_name}ds" style="width:10rem" name=${this_content[1].column_name}>${unitStr}</select>
 								</div>
 							</div>
 						</div>
 						<div class="d-flex justify-content-between align-items-center mt-4">
 							<!-- 日期 -->
 							<div class="ds-date form-inline" style="width:100%">
-								<input class="form-control  my-3" id="${this_content[2].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[2].column_name}  placeholder=${this_content[2].place_hold} />
-								<input class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
+								<input disabled = 'disabled' class="form-control  my-3" id="${this_content[2].column_name}ds" style="margin-left:44%;margin-right:20%" type="text" name=${this_content[2].column_name}  placeholder=${this_content[2].place_hold} />
+								<input disabled = 'disabled' class="form-control"  id="${this_content[3].column_name}ds" type="text" name=${this_content[3].column_name}  placeholder=${this_content[3].place_hold} />
 							</div>
 						</div>`
                 }else {
