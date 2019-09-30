@@ -279,6 +279,9 @@ public class BaseBusiCrdt extends BaseWord{
                 if("legalDetails".equals(key)){
                     specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
                 }
+                if("Subsidiaries_key".equals(key)||"Associations_key".equals(key)){
+                	specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
+                }
                     if ("s".equals(tableType)) {
 
                     //如果是法人股东详情或者是自热人股东详情做特殊解析
@@ -791,6 +794,13 @@ public class BaseBusiCrdt extends BaseWord{
                 }catch (Exception e){
                     e.printStackTrace();
                 }
+            }else if("Subsidiaries_key".equals(key)||"Associations_key".equals(key)){
+                try {
+                	//子公司、联营公司模块
+                	mergerHandling6( child, model, "registered_capital", reportType,  sysLanguage,"registered_capital","registered_capital_currency","registered_capital_currency");
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -970,6 +980,57 @@ public class BaseBusiCrdt extends BaseWord{
         //合并值
         model.set(setKey,parities);
 
+    }
+    /**
+     * 子公司 联营公司注册币种 注册日期
+     * @param child
+     * @param model
+     * @param sourceField
+     * @param reportType
+     * @param sysLanguage
+     * @param moneyColumn
+     * @param currencyColumn
+     * @param capitalTypeColumn
+     * @param removeColumns
+     */
+    private static void mergerHandling6(List<CreditReportModuleConf> child, BaseProjectModel model, String sourceField,String reportType, String sysLanguage,String moneyColumn,String currencyColumn,String ...removeColumns) {
+        try {
+            //删除模板中的注册资本币种、注册资本类型
+            removeConf(child,removeColumns);
+            String money = model.get(moneyColumn)+"";//注册资本
+            String currency = model.get(currencyColumn)+"";//注册资本币种
+            for (int i=0;i<child.size();i++) {
+                if ("money".equals(child.get(i).get("field_type"))){
+                	child.get(i).set("field_type", "text");
+                    break;
+                }
+            }
+            //处理千位符号
+            try {
+                DecimalFormat df = new DecimalFormat("###,###.##");
+                NumberFormat nf = NumberFormat.getInstance();
+                if(!StrUtils.isEmpty(money)) {
+                	money = df.format(nf.parse(money));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            //修改值 合并值
+            if(isNotNull(money)){
+                if(isNotNull(currency)){
+                    currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
+                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                        model.set(sourceField,money+" "+currency);
+                    }else{
+                        model.set(sourceField,currency+" "+money);
+                    }
+                }else{
+                    model.set(sourceField,money);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     /**
      * 时间范围格式化处理
