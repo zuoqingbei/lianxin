@@ -2209,7 +2209,6 @@ let ReportConfig = {
         this.isTableTranslated = false;
         this.isFormTranslated = false;
         let allTableData = [] //存放翻译过所有表格数据
-        console.log(12121212121212)
         console.log(tableTitlesEn)
         tableTitlesEn.forEach((item,index)=>{
             let tableTitleSourceClassName = ''
@@ -2339,7 +2338,7 @@ let ReportConfig = {
                     delete ele["order_num"]
 					_this.deleteEmptyProperty(ele);
                     // console.log(alterSource)
-                    if(alterSource.split("*")[1]) {
+                    if(alterSource&&alterSource.split("*")[1]) {
                         let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
                         tempParam.forEach((item,index)=>{
                             if(item === 'company_id') {
@@ -2369,12 +2368,14 @@ let ReportConfig = {
                         }
                     })
                 })
-                 pa.dataJson=JSON.stringify(data);
+                pa.dataJson=JSON.stringify(data);
                 pa.className=url.split("*")[0].split("=")[1];
                 pa.isTranslate=true;
-//    			 console.log(url,data)
-                url+="&isTranslate=true";
-                $.ajax({
+				$("body").mLoading("show")
+				if(url==null||url.indexOf("null")!=-1){
+					this.numCom++;
+				}else{
+					$.ajax({
                 	 url:url,
                      type:'post',
                      contentType: "application/json", //必须有
@@ -2382,9 +2383,12 @@ let ReportConfig = {
                      data:JSON.stringify(pa),
                     type:'post',
                     success:(data)=>{
+						this.numCom++;
                         //console.log(data)
                     }
                 })
+				}
+                
             })
             //点击提交按钮
 
@@ -2398,7 +2402,7 @@ let ReportConfig = {
                     delete ele["update_date"]
                     delete ele["order_num"]
                     _this.deleteEmptyProperty(ele);
-                    if(alterSource.split("*")[1]) {
+                    if(alterSource&&alterSource.split("*")[1]) {
                         let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
                         tempParam.forEach((item,index)=>{
                             if(item === 'company_id') {
@@ -2430,17 +2434,18 @@ let ReportConfig = {
                 pa.dataJson=JSON.stringify(data);
                 pa.className=url.split("*")[0].split("=")[1];
                 pa.isTranslate=true;
-                url+="&isTranslate=true";
-                $.ajax({
+				$.ajax({
                 	 url:url,
                 	 type:'post',
                      contentType: "application/json", //必须有
                      dataType: "json", //表示返回值类型，不必须
                      data:JSON.stringify(pa),
                     success:(data)=>{
+						this.numCom++;
                         // console.log(data)
                     }
                 })
+                
             })
         })
         this.formTotal = this.formIndexEn.length;
@@ -2460,7 +2465,7 @@ let ReportConfig = {
                 let url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
                 let dataJson = []
                 let dataJsonObj = {}
-                if(alterSource.split("*")[1]) {
+                if(alterSource&&alterSource.split("*")[1]) {
 
                     let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
                     tempParam.forEach((item,index)=>{
@@ -2580,7 +2585,7 @@ let ReportConfig = {
                     dataJson[0] = dataJsonObj
                     pa.dataJson=JSON.stringify(dataJson);
                     pa.isTranslate=true;
-                    url+="&isTranslate=true";
+					$("body").mLoading("show")
                     $.ajax({
                     	url:url,
                         contentType: "application/json", //必须有
@@ -2588,9 +2593,15 @@ let ReportConfig = {
                         data:JSON.stringify(pa),
                         type:'post',
                         success:(data)=>{
-                            $("body").mLoading("hide")
-                            //console.log(index)
-                            Public.message("success",data.message)
+                            //$("body").mLoading("hide")
+                            //console.log(data)
+                            //Public.message("success",data.message)
+							this.numCom++;
+                            console.log(this.numCom,index,this.formIndexEn.length)
+                            if (this.numCom %this.formIndexEn.length==0) {
+                            	  $("body").mLoading("hide")
+                            	  this.numCom = 0
+							}
                         }
                     })
                 })
@@ -2646,12 +2657,13 @@ let ReportConfig = {
                         }
                     })
                     dataJson[0] = dataJsonObj
-                     $("body").mLoading("show")
-                      var pa={"dataJson":"","sys_language":"","className":""};
+                    $("body").mLoading("show")
+                    var pa={"dataJson":"","sys_language":"","className":""};
+					
 	                pa.className=url.split("*")[0].split("=")[1];
                     pa.dataJson=JSON.stringify(dataJson);
                     pa.isTranslate=true;
-                    url+="&isTranslate=true";
+					//console.log(url)
                     $.ajax({
                     	url:url,
                         contentType: "application/json", //必须有
@@ -2660,8 +2672,8 @@ let ReportConfig = {
                         type:'post',
                         success:(data)=>{
                         	this.numCom++;
-                          //  console.log(index,this.formIndexEn.length)
-                            if (this.numCom === this.formIndexEn.length) {
+                            console.log(this.numCom,index,this.formIndexEn.length)
+                            if (this.numCom %this.formIndexEn.length==0) {
                             	  $("body").mLoading("hide")
                             	  this.numCom = 0
                             	 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;

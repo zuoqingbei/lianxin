@@ -179,10 +179,13 @@ let OrderDetail = {
                             </div>`
                         }
                     });
+					
                     $wrap.append(`
                         <div class="type1-content module-content">
                             <div class="row mt-2 mb-2">${formHtml}</div>
                         </div>`);
+					$("span[data-column_name='remarks']").prev().text('');
+					$("span[data-column_name='remarks']").parent().removeClass("col-md-4");
                     //绑数
                     if (item.title.temp_name === '基本信息') { //表单头部取数于本地存储
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
@@ -214,7 +217,6 @@ let OrderDetail = {
 								 $("span[data-column_name='transaction_payment']").prev().text('');
 								 $("span[data-column_name='transaction_payment_default']").prev().text('');
 								 $("span[data-column_name='transaction_payment_default']").parent().removeClass("col-md-4");
-								 
 								}
                             } else {
                                 console.warn(item.title.temp_name + '-表单-没有返回数据！')

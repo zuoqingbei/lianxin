@@ -151,7 +151,23 @@ let ReportConfig = {
     tableColumns(a, lang, tempI, tempId) {
         let _this = this
         let arr = []
-        a.unshift({temp_name: "序号", column_name: "order_num"})
+        var reportType=_this.rows['report_type'];
+		var reportLanguage=_this.rows['report_language'];
+		var type="";
+		if("12"==reportType){//ROC Chinese
+			type="tw";
+		 }else  if("14"==reportType) {//ROC English
+			 type="en";
+		}else if("8"==reportType||"9"==reportType){//商业报告
+				if(!("612"!=reportLanguage)){
+					type="en";
+				}
+		}
+		if(("8"==reportType||"9"==reportType)&&lang=='en'){
+			a.unshift({temp_name: "Num",column_name:"order_num"})
+		}else{
+			a.unshift({temp_name: "序号",column_name:"order_num"})
+		}
         a.forEach((ele, index) => {
             if (ele.temp_name !== '操作' && ele.temp_name !== 'Operation') {
                 if (ele.field_type === 'money') {
@@ -836,10 +852,11 @@ let ReportConfig = {
                     unitStr = data.selectStr
                 }
             })
-            if (item.sort === 1) {
+            if (item.sort === 1&&this_content.length>8) {
                 //财务模块杂七腊八的配置
                 let radioArr = this_content[1]["get_source"].split("&");
-                cw_top_html += `<div class="top-html mx-4">
+				console.log(this_content)
+               cw_top_html += `<div class="top-html mx-4">
     								<div class="cw-box d-flex justify-content-between align-items-center mt-4">
     									<div class="firm-name form-inline">
     										<label class="mr-3" style="font-weight:600">${this_content[0].temp_name}</label>
@@ -1834,11 +1851,12 @@ let ReportConfig = {
                                 $('#reportbusiness').click();//触发报告质检菜单跳转到列表
                             }, 1500);
                         }
-                        this.quality_deal = data.rows[0].quality_deal;
-                        if (this.quality_deal === '3') {
-                            $('.select2-container').addClass('disable');
-                        }
+                       
                         if (data.rows && data.rows.length > 0) {
+							 this.quality_deal = data.rows[0].quality_deal;
+							if (this.quality_deal === '3') {
+								$('.select2-container').addClass('disable');
+							}
                             $("#quality_opinion").val(data.rows[0].quality_opinion || '');
                             $("#grade").val(data.rows[0].grade);
                             $(".type23-content").find('.radio-box [type=radio]').eq(data.rows[0].quality_deal - 1).prop('checked', true);
@@ -1966,7 +1984,8 @@ let ReportConfig = {
         let dataEn = []
         tableTitlesEn.forEach((item, index) => {
             let alterSource = item["alter_source"];
-            let url = BASE_PATH + 'credit/front/ReportGetData/' + alterSource.split("*")[0];
+			if(alterSource!=null&&alterSource!=''){
+				 let url = BASE_PATH + 'credit/front/ReportGetData/' + alterSource.split("*")[0];
             let dataJson = []
             //点击翻译按钮
             $(".position-fixed").on("click", "#translateBtn", (e) => {
@@ -1999,6 +2018,8 @@ let ReportConfig = {
                 $("#table" + idArrEn[index] + 'En').bootstrapTable("append", temp);
 
             })
+			}
+           
 
             //点击保存按钮
 

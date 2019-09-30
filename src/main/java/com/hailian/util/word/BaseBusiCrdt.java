@@ -1049,12 +1049,24 @@ public class BaseBusiCrdt extends BaseWord{
             SimpleDateFormat sourcesdf = new SimpleDateFormat(sourceFormat);
             SimpleDateFormat targetSdf = new SimpleDateFormat(targetFormat);
             if(isNotNull(separater)){
+            	Date date2=null;
                 Date date1 = sourcesdf.parse( dateStr.split(separater)[0].trim());
-                Date date2 = sourcesdf.parse( dateStr.split(separater)[1].trim());
-                if("至".equals(targetSeparater)){
-                    return "从"+targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
+                if(separater.length()>1){
+                	date2 = sourcesdf.parse( dateStr.split(separater)[1].trim());
                 }
-                return targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
+                if("至".equals(targetSeparater)){
+                	if(date2==null){
+                		return targetSdf.format(date1);
+                	}else{
+                		return "从"+targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
+                	}
+                    
+                }
+                if(date2==null){
+            		return targetSdf.format(date1);
+            	}else{
+            		return targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
+            	}
             }else{
                 Date date1 = sourcesdf.parse(dateStr);
                 return  targetSdf.format(date1);

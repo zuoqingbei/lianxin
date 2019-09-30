@@ -1643,7 +1643,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 //二合一的特殊处理
                 if(merger(value,column,reportType,mergeList,rowList,style)) {
                 	if((num==1)&&("legalDetails".equals(moduleName)||"leader".equals(moduleName))) {
-                		style.setBold(true);
+                		style.setBold(false);
                     }else{
                     	style.setBold(false);
                     }
