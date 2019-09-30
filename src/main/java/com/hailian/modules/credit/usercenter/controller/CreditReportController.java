@@ -132,10 +132,13 @@ public class CreditReportController extends BaseProjectController{
         				if ("1".equals(reportType)) {
         					BaseBusiCrdt.reportTable(order, "1", "612", userid);
         					BaseBusiCrdt.reportTable(order, "7", "613", userid);
-        				} else if ("8".equals(reportType)) {
-        					BaseBusiCrdt.reportTable(order, "8", "612", userid);
-        					BaseBusiCrdt.reportTable(order, "9", "613", userid);
-        				} else if ("10".equals(reportType)) {
+        				}  else if ("8".equals(reportType)) {
+							BaseBusiCrdt.reportTable(order, "8", "612", userid);
+							//BaseBusiCrdt.reportTable(order, "9", "613", userid);
+						} else if ("9".equals(reportType)) {
+							// BaseBusiCrdt.reportTable(order, "8", "612", userid);
+							BaseBusiCrdt.reportTable(order, "9", "613", userid);
+						} else if ("10".equals(reportType)) {
         					BaseBusiCrdt.reportTable(order, "10", "612", userid);
         					BaseBusiCrdt.reportTable(order, "11", "613", userid);
         				} else {

@@ -60,6 +60,9 @@ public class ModuleController extends BaseProjectController{
 		CreditCompanyInfo cci = CreditCompanyInfo.dao.findById(Arrays.asList(new String[]{coi.get("company_id")}));
 		//找到当前报告类型下的父节点
 	//	List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByReport(reportType);
+		if(ReportTypeCons.BUSI_EN.equals(reportType)){
+			reportType = ReportTypeCons.BUSI_ZH;
+		}
 		List<CreditReportModuleConf> crmcs = CreditReportModuleConf.dao.findByType(reportType,tyep);
 
 		List<ModuleJsonData> list = new ArrayList<ModuleJsonData>();
@@ -76,6 +79,7 @@ public class ModuleController extends BaseProjectController{
 		for(CreditReportModuleConf crmc:crmcs) {
 			//找到当前父节点下的子节点
 		//	List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon(crmc.get("id").toString(),reportType);
+
 			List<CreditReportModuleConf> child = CreditReportModuleConf.dao.findSon2(crmc.get("id").toString(),reportType,tyep);
 
 			list.add(new ModuleJsonData(crmc,child,crmc.getStr("small_module_type")));

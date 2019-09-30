@@ -363,14 +363,17 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 	   		form.on('select(reportTypeChange)',function(data){
 	   			var html="";
 	   	        var report_id=data.value   
-	    		if(report_id==='1'||report_id==='8'||report_id==='10'){
+	    		if(report_id==='1'||report_id==='10'){
 					html+="<option  m-type='' value='213'>中文简体 </option>";	
 					html+="<option  m-type='' value='216'>中文简体+英文 </option>";	        	
 	    		}
-	    		else if(report_id==='7'||report_id==='9'||report_id==='11'){
+	    		else if(report_id==='7'||report_id==='11'){
 					html+="<option  m-type='' value='215'>英文 </option>";	
 					html+="<option  m-type='' value='216'>中文简体+英文 </option>";	        	
 	    		}
+	    		else if(report_id==='9'||report_id==='8'){
+					html+="<option  m-type='' value='216'>中文简体+英文 </option>";
+				}
 	    		else if(report_id==='12'||report_id==='14'||report_id==='11'){
 					html+="<option  m-type='' value='217'>中文繁体+英文 </option>";	
 					       	
