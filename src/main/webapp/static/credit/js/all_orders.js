@@ -2,6 +2,36 @@ let Index = {
     init() {
         this.num = "";
         this.numarr = [];
+        var that = this;
+        $.get('/credit/front/home/getMessage',function(data){
+            getCustoms(data.customs);
+            getCountry(data.country);
+            // that.initTable();
+        })	;
+        function getCustoms(data){
+            console.log(data);
+            var html=""
+            for(var item in data){
+                html+="<option  value='"+data[item].id+"'>"+data[item].id+"</option>";
+            }
+            $("select[name='attr.custom_id']").append(html);
+        };
+        function getCountry(data){
+            console.log(data);
+            var html=""
+            html+=html+="<option  value=''>请选择</option>";
+
+            for(var item in data){
+                html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
+            }
+            $("select[name='attr.country']").html(html);
+            //重新渲染 否则option不能显示
+            layui.use('form', function(){
+                var form = layui.form;
+                form.render(); //更新全部
+            });
+
+        }
         this.initTable();
         this.dateForm();
         this.popperFilter();
@@ -549,7 +579,8 @@ let Index = {
                             $('#client_contact').val(row.contacts);
                             $('#client_fax').val(row.fax);
                             $('#client_email').val(row.email);
-                            $('#client_country').append(`<option selected value="${row.countryId}">${row.country}</option>`)
+                            // $('#client_country').append(`<option selected value="${row.countryId}">${row.country}</option>`)
+                            $('#client_country').val(row.countryId)
                             $('#createBy').val(row.create_by);
                             $('#myId').val(row.id);
 							

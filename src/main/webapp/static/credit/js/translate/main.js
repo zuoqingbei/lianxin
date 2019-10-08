@@ -702,7 +702,8 @@ let ReportConfig = {
                 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
                     //信用等级
                     let name =$(item).next().find("select").attr("name")
-                    $(item).next().find("select").val(tempData.rows.length>0?tempData.rows[0][name]:'')
+                    console.log(tempData.rows)
+                    $(item).next().find("select").val((tempData.rows&&tempData.rows.length>0)?tempData.rows[0][name]:'')
                     return;
                 }
                 if($(item).next().hasClass("textarea-module")) {
@@ -2209,8 +2210,7 @@ let ReportConfig = {
         this.isTableTranslated = false;
         this.isFormTranslated = false;
         let allTableData = [] //存放翻译过所有表格数据
-        console.log(12121212121212)
-        console.log(tableTitlesEn)
+        // console.log(12121212121212)
         tableTitlesEn.forEach((item,index)=>{
             let tableTitleSourceClassName = ''
             if(item.alter_source&&item.alter_source.split('?')[1]){
@@ -2329,6 +2329,7 @@ let ReportConfig = {
 			
 
             $(".position-fixed").on("click","#save",(e)=>{
+                console.log('保存1')
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
                 var pa={"dataJson":"","sys_language":"","className":""};
                 if(data.length === 0 || !Array.isArray(data)){return}
@@ -2339,7 +2340,7 @@ let ReportConfig = {
                     delete ele["order_num"]
 					_this.deleteEmptyProperty(ele);
                     // console.log(alterSource)
-                    if(alterSource.split("*")[1]) {
+                    if(alterSource&&alterSource.split("*")[1]) {
                         let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
                         tempParam.forEach((item,index)=>{
                             if(item === 'company_id') {
@@ -2524,6 +2525,7 @@ let ReportConfig = {
                 //点击保存按钮
 
                 $(".position-fixed").on("click","#save",(e)=>{
+                    console.log('保存2')
 //    			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
                     let arr = Array.from($("#titleEn"+item))
                     arr.forEach((item,index)=>{
