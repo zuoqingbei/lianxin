@@ -221,177 +221,177 @@ let InitObjTransQua = {
 		let cwModals = Array.from($(".gjcw"));
 		//财务计算
 		let _this = this
-		cwModals.forEach((seft,i)=>{
-			$(seft).find("table").on("blur","input",(e)=>{
-				let className = $(e.target).attr("class")
-				let entityid = $(e.target).attr("entityid")
-				let val = $(e.target).val()
-				//配数据的时候加减法的calssname一定要配置在最后面
-				className = className.split(" ")[className.split(" ").length-1]
-				//调用修改接口
-				let $oT_td = $(e.target).parent("td")
-				let $oT_tr = $(e.target).parents("tr")
-				let $trs = $oT_tr.children("td")
-				let td_index = $.inArray($oT_td[0],Array.from($trs))
-				let str = _this.tableColumnNameArr[td_index]
-				let url = BASE_PATH + 'credit/front/ReportGetData/' + alterSource;
-				let dataJson = []
-				let dataObj = {}
-				dataObj[str] = val;
-				dataObj["id"] = entityid;
-				dataJson.push(dataObj)
-				$.ajax({
-					url,
-					data:{dataJson:JSON.stringify(dataJson)},
-					type:'post',
-					success:(data)=>{
-						if(data.statusCode === 1) {
-							//保存合计项
-							_this.saveCwSummation(alterSource)
-						}
-					}
-				})
-				
-				if(className.split("-")[1] || className === 'amount1'|| className === 'amount2'){
-					//减法
-					this.hjArr.forEach((item,index)=>{
-						if(item !== null && item.split("-")[item.split("-").length-1] === 'sub'){
-							//减法的合计
-							let total1 = $(seft).find(".amount1").val()
-							let total2 = $(seft).find(".amount2").val()
-							let arr = item.split("-");
-							if(arr.length === 2) {
-								//毛利润
-								let temp1 = 0
-								let doms1 = Array.from($(seft).find("."+arr[0]+"-son"));
-								doms1.forEach((item,index)=>{
-									temp1 += +$(item).val()
-								})
-								total1 -= temp1;
-								let temp2 = 0
-								let doms2 = Array.from($(seft).find("."+arr[0].replace("1","2")+"-son"));
-								doms2.forEach((item,index)=>{
-									temp2 += +$(item).val()
-								})
-								total2 -= temp2;
-							}else if(arr.length === 3) {
-								//非毛利润表
-								let sub1 = $(seft).find("."+arr[0]+"-sub").length===0?$(seft).find("."+this.hjArr[index-1].split("-")[0]+'-'+arr[0]+"-sub").val():$(seft).find("."+arr[0]+"-sub").val();
-								let sub2 = $(seft).find("."+arr[0].replace("1","2")+"-sub").length===0?$(seft).find("."+this.hjArr[index-1].split("-")[0].replace("1","2")+'-'+arr[0].replace("1","2")+"-sub").val():$(seft).find("."+arr[0].replace("1","2")+"-sub").val();
-								let temp1 = 0;
-								let temp2 = 0;
-								let doms1 = Array.from($(seft).find(`.${arr[1]}-son`));
-								doms1.forEach((item,index)=>{
-									temp1 += +$(item).val()
-								})
-								total1 -= (total1-sub1);
-								total1 -= temp1;
-								let doms2 = Array.from($(seft).find(`.${arr[1].replace("1","2")}-son`));
-								doms2.forEach((item,index)=>{
-									temp2 += +$(item).val()
-								})
-								total2 -= (total2-sub2);
-								total2 -= temp2;
-							}
-							
-							$(seft).find("."+item).val(total1)
-							$(seft).find("."+item.replace(/1/g,'2')).val(total2)
-						}
-					})
-				}else {
-					//加法
-					this.hjArr.forEach((item,index)=>{
-						if(item !== null && item.split("-")[item.split("-").length-1] !== 'sub'){
-							//加法的合计
-							let num1 = 0
-							let num2 = 0
-							let arr = item.split("-");
-							arr.forEach((item,index)=>{
-								let str = arr[arr.length-1];
-								if(index<arr.length-1){
-									let doms1 = Array.from($(seft).find("."+item))
-									doms1.forEach((item,index)=>{
-										num1 += +$(item).val()
-									})
-									let doms2 = Array.from($(seft).find("."+item.replace("1","2")))
-									doms2.forEach((item,index)=>{
-										num2 += +$(item).val()
-									})
-								}
-							})
-							$(seft).find("."+item).val(num1)
-							$(seft).find("."+item.replace(/1/g,'2')).val(num2)
-						}
-					})
-				}
-				//固定资产
-				$(seft).find(".gdzcje1-copy").val($(seft).find(".gdzcje1").val())
-				$(seft).find(".gdzcje2-copy").val($(seft).find(".gdzcje2").val())
-				
-				//重要比率表
-				let ldzc1 =$(seft).find(`.ldzc1-add`).val()//流动资产 
-				let ldzc2 = $(seft).find(`.ldzc2-add`).val()// 
-				let ldfz1 = $(seft).find(`.ldfz1-add`).val()//流动负债
-				let ldfz2 = $(seft).find(`.ldfz2-add`).val()//
-				let ch1 = $(seft).find(`.ch1`).val()//存货
-				let ch2 = $(seft).find(`.ch2`).val()//
-				let fzze1 = $(seft).find(`.ldfz1-qtfz1-total`).val()//负债总额
-				let fzze2 = $(seft).find(`.ldfz2-qtfz2-total`).val()//
-				let zcze1 = $(seft).find(`.ldzc1-qtzc1-total`).val()//资产总额
-				let zcze2 = $(seft).find(`.ldzc2-qtzc2-total`).val()//
-				let yysr1 = $(seft).find(`.amount1`).val()//营业收入
-				let yysr2 = $(seft).find(`.amount2`).val()//
-				let jlr1 = $(seft).find(`.sq1-jlr1-sub`).val()//净利润
-				let jlr2 = $(seft).find(`.sq2-jlr2-sub`).val()//
-				let yycb1 = $(seft).find(`.yycb1`).val()//营业成本
-				let yycb2 = $(seft).find(`.yycb2`).val()//
-				let yszk1 = $(seft).find(`.yszk1`).val()//应收账款
-				let yszk2 = $(seft).find(`.yszk2`).val()//
-				let yfzk1 = $(seft).find(`.yfzk1`).val()//应付账款
-				let yfzk2 = $(seft).find(`.yfzk2`).val()//
-				
-				//流动比率
-				$(seft).find(`.ldbl1`).val(+ldfz1 === 0?0:ldzc1/ldfz1)
-				$(seft).find(`.ldbl2`).val(+ldfz2 === 0?0:ldzc2/ldfz2)
-				//速动比率
-				$(seft).find(`.sdbl1`).val(+ldfz1 === 0?0:ldzc1-ch1/ldfz1)
-				$(seft).find(`.sdbl2`).val(+ldfz2 === 0?0:ldzc2-ch2/ldfz2)
-				//资产负债率
-				$(seft).find(`.zcfzl1`).val(+zcze1 === 0?0:fzze1/zcze1)
-				$(seft).find(`.zcfzl2`).val(+zcze2 === 0?0:fzze2/zcze2)
-				//净利润率
-				$(seft).find(`.jlrl1`).val(+yysr1 === 0?0:jlr1/yysr1)
-				$(seft).find(`.jlrl2`).val(+yysr2 === 0?0:jlr2/yysr2)
-				//资产回报率
-				$(seft).find(`.zchb1`).val(+zcze1 === 0?0:jlr1/zcze1)
-				$(seft).find(`.zchb2`).val(+zcze2 === 0?0:jlr2/zcze2)
-				//营业总额/资产总额
-				$(seft).find(`.yy-zc1`).val(+zcze1 === 0?0:yysr1/zcze1)
-				$(seft).find(`.yy-zc2`).val(+zcze2 === 0?0:yysr2/zcze2)
-				//营业成本/营业总额
-				$(seft).find(`.yy-yy1`).val(+yysr1 === 0?0:yycb1/yysr1)
-				$(seft).find(`.yy-yy2`).val(+yysr2 === 0?0:yycb2/yysr2)
-				
-				let cw_range1 = $($(seft).find(`.cw-range`).find("input")[0]).val()
-				let cw_range2 = $($(seft).find(`.cw-range`).find("input")[1]).val()
-				if(cw_range1.split("-")[1] && cw_range1.split("-")[0].trim() === cw_range1.split("-")[1].trim()) {
-					//存货周转天数
-					$(seft).find(`.chzzts1`).val(+yysr1 === 0?0:ch1/yysr1*365)
-					//应收账款周转天数
-					$(seft).find(`.yszkzzts1`).val(+yysr1 === 0?0:yszk1/yysr1*365)
-					//应付账款周转天数
-					$(seft).find(`.yfzkzzts1`).val(+yycb1 === 0?0:yfzk1/yycb1*365)
-				}
-				if(cw_range2.split("-")[1] && cw_range2.split("-")[0].trim() === cw_range2.split("-")[1].trim()) {
-					//存货周转天数
-					$(seft).find(`.chzzts2`).val(+yysr2 === 0?0:ch2/yysr2*365)
-					//应收账款周转天数
-					$(seft).find(`.yszkzzts2`).val(+yysr2 === 0?0:yszk2/yysr2*365)
-					//应付账款周转天数
-					$(seft).find(`.yfzkzzts2`).val(+yycb2 === 0?0:yfzk2/yycb2*365)
-				}
-			})
-		})
+		// cwModals.forEach((seft,i)=>{
+		// 	$(seft).find("table").on("blur","input",(e)=>{
+		// 		let className = $(e.target).attr("class")
+		// 		let entityid = $(e.target).attr("entityid")
+		// 		let val = $(e.target).val()
+		// 		//配数据的时候加减法的calssname一定要配置在最后面
+		// 		className = className.split(" ")[className.split(" ").length-1]
+		// 		//调用修改接口
+		// 		let $oT_td = $(e.target).parent("td")
+		// 		let $oT_tr = $(e.target).parents("tr")
+		// 		let $trs = $oT_tr.children("td")
+		// 		let td_index = $.inArray($oT_td[0],Array.from($trs))
+		// 		let str = _this.tableColumnNameArr[td_index]
+		// 		let url = BASE_PATH + 'credit/front/ReportGetData/' + alterSource;
+		// 		let dataJson = []
+		// 		let dataObj = {}
+		// 		dataObj[str] = val;
+		// 		dataObj["id"] = entityid;
+		// 		dataJson.push(dataObj)
+		// 		$.ajax({
+		// 			url,
+		// 			data:{dataJson:JSON.stringify(dataJson)},
+		// 			type:'post',
+		// 			success:(data)=>{
+		// 				if(data.statusCode === 1) {
+		// 					//保存合计项
+		// 					_this.saveCwSummation(alterSource)
+		// 				}
+		// 			}
+		// 		})
+		//
+		// 		if(className.split("-")[1] || className === 'amount1'|| className === 'amount2'){
+		// 			//减法
+		// 			this.hjArr.forEach((item,index)=>{
+		// 				if(item !== null && item.split("-")[item.split("-").length-1] === 'sub'){
+		// 					//减法的合计
+		// 					let total1 = $(seft).find(".amount1").val()
+		// 					let total2 = $(seft).find(".amount2").val()
+		// 					let arr = item.split("-");
+		// 					if(arr.length === 2) {
+		// 						//毛利润
+		// 						let temp1 = 0
+		// 						let doms1 = Array.from($(seft).find("."+arr[0]+"-son"));
+		// 						doms1.forEach((item,index)=>{
+		// 							temp1 += +$(item).val()
+		// 						})
+		// 						total1 -= temp1;
+		// 						let temp2 = 0
+		// 						let doms2 = Array.from($(seft).find("."+arr[0].replace("1","2")+"-son"));
+		// 						doms2.forEach((item,index)=>{
+		// 							temp2 += +$(item).val()
+		// 						})
+		// 						total2 -= temp2;
+		// 					}else if(arr.length === 3) {
+		// 						//非毛利润表
+		// 						let sub1 = $(seft).find("."+arr[0]+"-sub").length===0?$(seft).find("."+this.hjArr[index-1].split("-")[0]+'-'+arr[0]+"-sub").val():$(seft).find("."+arr[0]+"-sub").val();
+		// 						let sub2 = $(seft).find("."+arr[0].replace("1","2")+"-sub").length===0?$(seft).find("."+this.hjArr[index-1].split("-")[0].replace("1","2")+'-'+arr[0].replace("1","2")+"-sub").val():$(seft).find("."+arr[0].replace("1","2")+"-sub").val();
+		// 						let temp1 = 0;
+		// 						let temp2 = 0;
+		// 						let doms1 = Array.from($(seft).find(`.${arr[1]}-son`));
+		// 						doms1.forEach((item,index)=>{
+		// 							temp1 += +$(item).val()
+		// 						})
+		// 						total1 -= (total1-sub1);
+		// 						total1 -= temp1;
+		// 						let doms2 = Array.from($(seft).find(`.${arr[1].replace("1","2")}-son`));
+		// 						doms2.forEach((item,index)=>{
+		// 							temp2 += +$(item).val()
+		// 						})
+		// 						total2 -= (total2-sub2);
+		// 						total2 -= temp2;
+		// 					}
+		//
+		// 					$(seft).find("."+item).val(total1)
+		// 					$(seft).find("."+item.replace(/1/g,'2')).val(total2)
+		// 				}
+		// 			})
+		// 		}else {
+		// 			//加法
+		// 			this.hjArr.forEach((item,index)=>{
+		// 				if(item !== null && item.split("-")[item.split("-").length-1] !== 'sub'){
+		// 					//加法的合计
+		// 					let num1 = 0
+		// 					let num2 = 0
+		// 					let arr = item.split("-");
+		// 					arr.forEach((item,index)=>{
+		// 						let str = arr[arr.length-1];
+		// 						if(index<arr.length-1){
+		// 							let doms1 = Array.from($(seft).find("."+item))
+		// 							doms1.forEach((item,index)=>{
+		// 								num1 += +$(item).val()
+		// 							})
+		// 							let doms2 = Array.from($(seft).find("."+item.replace("1","2")))
+		// 							doms2.forEach((item,index)=>{
+		// 								num2 += +$(item).val()
+		// 							})
+		// 						}
+		// 					})
+		// 					$(seft).find("."+item).val(num1)
+		// 					$(seft).find("."+item.replace(/1/g,'2')).val(num2)
+		// 				}
+		// 			})
+		// 		}
+		// 		//固定资产
+		// 		$(seft).find(".gdzcje1-copy").val($(seft).find(".gdzcje1").val())
+		// 		$(seft).find(".gdzcje2-copy").val($(seft).find(".gdzcje2").val())
+		//
+		// 		//重要比率表
+		// 		let ldzc1 =$(seft).find(`.ldzc1-add`).val()//流动资产
+		// 		let ldzc2 = $(seft).find(`.ldzc2-add`).val()//
+		// 		let ldfz1 = $(seft).find(`.ldfz1-add`).val()//流动负债
+		// 		let ldfz2 = $(seft).find(`.ldfz2-add`).val()//
+		// 		let ch1 = $(seft).find(`.ch1`).val()//存货
+		// 		let ch2 = $(seft).find(`.ch2`).val()//
+		// 		let fzze1 = $(seft).find(`.ldfz1-qtfz1-total`).val()//负债总额
+		// 		let fzze2 = $(seft).find(`.ldfz2-qtfz2-total`).val()//
+		// 		let zcze1 = $(seft).find(`.ldzc1-qtzc1-total`).val()//资产总额
+		// 		let zcze2 = $(seft).find(`.ldzc2-qtzc2-total`).val()//
+		// 		let yysr1 = $(seft).find(`.amount1`).val()//营业收入
+		// 		let yysr2 = $(seft).find(`.amount2`).val()//
+		// 		let jlr1 = $(seft).find(`.sq1-jlr1-sub`).val()//净利润
+		// 		let jlr2 = $(seft).find(`.sq2-jlr2-sub`).val()//
+		// 		let yycb1 = $(seft).find(`.yycb1`).val()//营业成本
+		// 		let yycb2 = $(seft).find(`.yycb2`).val()//
+		// 		let yszk1 = $(seft).find(`.yszk1`).val()//应收账款
+		// 		let yszk2 = $(seft).find(`.yszk2`).val()//
+		// 		let yfzk1 = $(seft).find(`.yfzk1`).val()//应付账款
+		// 		let yfzk2 = $(seft).find(`.yfzk2`).val()//
+		//
+		// 		//流动比率
+		// 		$(seft).find(`.ldbl1`).val(+ldfz1 === 0?0:ldzc1/ldfz1)
+		// 		$(seft).find(`.ldbl2`).val(+ldfz2 === 0?0:ldzc2/ldfz2)
+		// 		//速动比率
+		// 		$(seft).find(`.sdbl1`).val(+ldfz1 === 0?0:ldzc1-ch1/ldfz1)
+		// 		$(seft).find(`.sdbl2`).val(+ldfz2 === 0?0:ldzc2-ch2/ldfz2)
+		// 		//资产负债率
+		// 		$(seft).find(`.zcfzl1`).val(+zcze1 === 0?0:fzze1/zcze1)
+		// 		$(seft).find(`.zcfzl2`).val(+zcze2 === 0?0:fzze2/zcze2)
+		// 		//净利润率
+		// 		$(seft).find(`.jlrl1`).val(+yysr1 === 0?0:jlr1/yysr1)
+		// 		$(seft).find(`.jlrl2`).val(+yysr2 === 0?0:jlr2/yysr2)
+		// 		//资产回报率
+		// 		$(seft).find(`.zchb1`).val(+zcze1 === 0?0:jlr1/zcze1)
+		// 		$(seft).find(`.zchb2`).val(+zcze2 === 0?0:jlr2/zcze2)
+		// 		//营业总额/资产总额
+		// 		$(seft).find(`.yy-zc1`).val(+zcze1 === 0?0:yysr1/zcze1)
+		// 		$(seft).find(`.yy-zc2`).val(+zcze2 === 0?0:yysr2/zcze2)
+		// 		//营业成本/营业总额
+		// 		$(seft).find(`.yy-yy1`).val(+yysr1 === 0?0:yycb1/yysr1)
+		// 		$(seft).find(`.yy-yy2`).val(+yysr2 === 0?0:yycb2/yysr2)
+		//
+		// 		let cw_range1 = $($(seft).find(`.cw-range`).find("input")[0]).val()
+		// 		let cw_range2 = $($(seft).find(`.cw-range`).find("input")[1]).val()
+		// 		if(cw_range1.split("-")[1] && cw_range1.split("-")[0].trim() === cw_range1.split("-")[1].trim()) {
+		// 			//存货周转天数
+		// 			$(seft).find(`.chzzts1`).val(+yysr1 === 0?0:ch1/yysr1*365)
+		// 			//应收账款周转天数
+		// 			$(seft).find(`.yszkzzts1`).val(+yysr1 === 0?0:yszk1/yysr1*365)
+		// 			//应付账款周转天数
+		// 			$(seft).find(`.yfzkzzts1`).val(+yycb1 === 0?0:yfzk1/yycb1*365)
+		// 		}
+		// 		if(cw_range2.split("-")[1] && cw_range2.split("-")[0].trim() === cw_range2.split("-")[1].trim()) {
+		// 			//存货周转天数
+		// 			$(seft).find(`.chzzts2`).val(+yysr2 === 0?0:ch2/yysr2*365)
+		// 			//应收账款周转天数
+		// 			$(seft).find(`.yszkzzts2`).val(+yysr2 === 0?0:yszk2/yysr2*365)
+		// 			//应付账款周转天数
+		// 			$(seft).find(`.yfzkzzts2`).val(+yycb2 === 0?0:yfzk2/yycb2*365)
+		// 		}
+		// 	})
+		// })
 	},
 	initDsTable(contents,getSource,alterSource,rows){
 		//大数财务模块表格初始化
@@ -414,8 +414,8 @@ let InitObjTransQua = {
 		})
 		let tempRows =  []
 		returnData['rows'].forEach((item,index)=>{ 
-			item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-			item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+			item["begin_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+			item["end_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			tempRows.push(item)
 		})
 		console.log(tempRows)
@@ -517,10 +517,10 @@ let InitObjTransQua = {
 				if(!item.is_default){
 					item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
 				}
-				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["end_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
-			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] ) {
 				if(tempRows.length !== 0){
 					tempArr.push(tempRows)
 					tempRows = []
@@ -528,15 +528,17 @@ let InitObjTransQua = {
 			}
 			tempRows.push(item)
 		})
+		tempArr.push(tempRows);
+		console.log(tempArr)
 		//合计项放在最后
-		tempArr.forEach((item,index)=>{
-			item.forEach((ele,index)=> {
-				if(ele.is_sum_option === 1) {
-					item.splice($.inArray(ele,item),1)
-					item.push(ele)
-				}
-			})
-		})
+		// tempArr.forEach((item,index)=>{
+		// 	item.forEach((ele,index)=> {
+		// 		if(ele.is_sum_option === 1) {
+		// 			item.splice($.inArray(ele,item),1)
+		// 			item.push(ele)
+		// 		}
+		// 	})
+		// })
 		let tempObj ={}
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
@@ -826,10 +828,10 @@ let InitObjTransQua = {
 				if(!item.is_default){
 					item["item_name"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value="${item['item_name'] === null?'':item['item_name']}" class="form-control" style="width:13.5rem"/>`
 				}
-				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
-				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["end_date_value"] = `<input disabled="disabled" type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
-			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] || (index+1) === returnData['rows'].length) {
+			if(!returnData['rows'][index-1] || item.son_sector !== returnData['rows'][index-1]["son_sector"] ) {
 				if(tempRows.length !== 0){
 					tempArr.push(tempRows)
 					tempRows = []
@@ -837,15 +839,16 @@ let InitObjTransQua = {
 			}
 			tempRows.push(item)
 		})
+		tempArr.push(tempRows);
 			//合计项放在最后
-		tempArr.forEach((item,index)=>{
-			item.forEach((ele,index)=> {
-				if(ele.is_sum_option === 1) {
-					item.splice($.inArray(ele,item),1)
-					item.push(ele)
-				}
-			})
-		})
+		// tempArr.forEach((item,index)=>{
+		// 	item.forEach((ele,index)=> {
+		// 		if(ele.is_sum_option === 1) {
+		// 			item.splice($.inArray(ele,item),1)
+		// 			item.push(ele)
+		// 		}
+		// 	})
+		// })
 		tableCwIds.forEach((item,index)=>{
 			const $table = $('#'+item);
 			$table.bootstrapTable("load",tempArr[index])
