@@ -1051,7 +1051,7 @@ public class BaseBusiCrdt extends BaseWord{
             if(isNotNull(separater)){
             	Date date2=null;
                 Date date1 = sourcesdf.parse( dateStr.split(separater)[0].trim());
-                if(separater.length()>1){
+                if(dateStr.split(separater).length>1){
                 	date2 = sourcesdf.parse( dateStr.split(separater)[1].trim());
                 }
                 if(date2==null){
