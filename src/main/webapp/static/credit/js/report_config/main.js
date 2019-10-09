@@ -1612,7 +1612,14 @@ let ReportConfig = {
     			 dataJson.push(dataJsonObj)
 				//设置经营地址接口
 				if(urlTemp.split("*")[0].indexOf('className=CreditCompanyBussinessAddress')!==-1){
-					$('#company_address_8').val(dataJson[0]['business_address']) //报告摘要的经营地址为新增的经营地址
+					let index = 0;
+					$('label').each(function () {
+						if($(this).text()==='营业收入统计时间段'){
+							// console.log($($(this).next('input')[0]).attr('id').split('_')[6])
+							index = $($(this).next('input')[0]).attr('id').split('_')[6];
+						}
+					})
+					$('#company_address_'+index).val(dataJson[0]['business_address']) //报告摘要的经营地址为新增的经营地址
 				}
             	paramObj["dataJson"] = JSON.stringify(dataJson)
 
