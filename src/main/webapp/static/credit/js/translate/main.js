@@ -2203,14 +2203,20 @@ let ReportConfig = {
         let tableDataArrEn = this.tableDataArrEn
         let idArrEn = this.idArrEn
         let dataEn  = []
-        this.numCop = 0   //翻译表格条数计数器
-        this.formNum = 0  //翻译表单条数计数器
-        
-        this.numCom = 0 //提交计数
-        this.isTableTranslated = false;
-        this.isFormTranslated = false;
+        this.tableTranlateNum = 0   //翻译表格条数计数器
+        this.formTranlateNum = 0  //翻译表单条数计数器
+        this.isTableTranslated = false;//表格是否翻译成功
+        this.isFormTranslated = false;//表单是否翻译成功
         let allTableData = [] //存放翻译过所有表格数据
-        console.log(tableTitlesEn)
+        this.isTableSaved = false;//表格是否保存成功
+        this.isFormSaved = false;//表单是否保存成功
+		this.tableSaveNum=0;//表格保存成功数量
+		this.formSaveNum=0;//表单保存成功数量
+		this.isTableCommited = false;//表格是否提交成功
+        this.isFormCommited = false;//表单是否提交成功
+		this.tableCommitNum=0;//表格提交成功数量
+		this.formCommitNum=0;//表单提交成功数量
+		this.tableTotal = tableTitlesEn.length;//表格数量
         tableTitlesEn.forEach((item,index)=>{
             let tableTitleSourceClassName = ''
             if(item.alter_source&&item.alter_source.split('?')[1]){
@@ -2218,6 +2224,7 @@ let ReportConfig = {
             }
             //循环表格表头
             let alterSource = item["alter_source"];
+			if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){this.tableTotal--;this.total--; return}
             let url;
             if(alterSource){
                 url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
@@ -2230,21 +2237,19 @@ let ReportConfig = {
             $(".position-fixed").on("click","#translateBtn",(e)=>{
             	setTimeout(()=>{
                 	//如果表格也翻译完成
-        			Public.message("success","表单翻译完成！")
+        			//Public.message("success","表单翻译完成！")
         			$("body").mLoading("hide")
         			this.isTableTranslated = false;
             		this.isFormTranslated=false;
-                },20000);
+                },30000);
                 //表格翻译
                 let oneTableData = []
                 $("body").mLoading("show")
 //                console.log(tableTitlesEn,index)
-                if(!_this.tableDataArr[index]){return}
+                if(!_this.tableDataArr[index]||!_this.tableDataArr[index]['rows']){this.tableTranlateNum++;return}
                 if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {
-                	setTimeout(function(){
-                		$("body").mLoading("hide")
-            		},2000);
-                	this.isTableTranslated = true;
+                	this.tableTranlateNum++;
+                	return;
                 }
                 _this.tableDataArr[index]['rows'].forEach((ele,i)=>{
                     //循环每个表格中的条数进行翻译
@@ -2264,6 +2269,7 @@ let ReportConfig = {
                     }else{
                     	 url += `?_random=${Math.random()}&isTranslate=true`
                     }
+					delete ele["null"]
                     pa.dataJson=JSON.stringify(ele);
                     $.ajax({
                        /* url,
@@ -2278,21 +2284,23 @@ let ReportConfig = {
                          data:JSON.stringify(pa),
                         success:(data)=>{
                             //index代表每个表格的索引
-                            this.numCop++;
+                            this.tableTranlateNum++;
                             oneTableData[i] = data
                             allTableData[index] = oneTableData
-                            if(this.numCop === this.total){
+							console.log(this.isTableTranslated,this.isFormTranslated,this.tableTranlateNum,this.total)
+                            if(this.tableTranlateNum === this.total){
                                 //如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
                             	this.isTableTranslated = true;
-                            	console.log(this.isTableTranslated,this.isFormTranslated)
+								this.tableTranlateNum = 0  
                             	if (this.isFormTranslated ) {
 									//如果表单也翻译完成
                             		Public.message("success","表格翻译完成！")
                             		$("body").mLoading("hide")
                             		this.isTableTranslated = false;
                             		this.isFormTranslated=false;
+									this.tableTranlateNum = 0   //翻译表格条数计数器
+									this.formTranlateNum = 0  //翻译表单条数计数器
 								}
-                                this.numCop = 0
 //	   							console.log(allTableData)
                                 tableTitlesEn.forEach((item,index)=>{
                                     if(allTableData[index]){
@@ -2326,14 +2334,12 @@ let ReportConfig = {
 
             })
             //点击保存按钮
-			
-
             $(".position-fixed").on("click","#save",(e)=>{
-                console.log('保存1')
-                $("body").mLoading("show");
+                console.log('保存1',this.tableTotal)
+				//console.log(tableTitlesEn)
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
                 var pa={"dataJson":"","sys_language":"","className":""};
-                if(data.length === 0 || !Array.isArray(data)){return}
+                if(data.length === 0 || !Array.isArray(data)){this.tableSaveNum++; return}
                 data.forEach((ele,i)=>{
                     delete ele["mySort"]
                     delete ele["create_date"]
@@ -2364,6 +2370,9 @@ let ReportConfig = {
                 // console.log(data)
                 $selects.each((index,item)=>{
                     let name = $(item).attr("name")
+					if(name==null||name=='null'){
+						return
+					}
                     let val = $("#"+$(item).attr("id")+' option:selected').val()
                     data.forEach((ele)=>{
                         if(ele[name]){
@@ -2371,12 +2380,25 @@ let ReportConfig = {
                         }
                     })
                 })
-                pa.dataJson=JSON.stringify(data);
+                 data.forEach((ele,i)=>{
+					delete ele["null"]
+				})
+				if(tableTitleSourceClassName=='className=CreditCompanyCreditanalysis'){
+					 data.forEach((ele,i)=>{
+						delete ele["null"]
+						delete ele["level"]
+						delete ele["describe"]
+						delete ele["amount"]
+						delete ele["sort_no"]
+						delete ele["risk_evaluation"]
+					})
+				}
+				pa.dataJson=JSON.stringify(data);
                 pa.className=url.split("*")[0].split("=")[1];
                 pa.isTranslate=true;
 				$("body").mLoading("show")
 				if(url==null||url.indexOf("null")!=-1){
-					this.numCom++;
+					this.tableSaveNum++;
 				}else{
 					$.ajax({
                 	 url:url,
@@ -2386,21 +2408,33 @@ let ReportConfig = {
                      data:JSON.stringify(pa),
                     type:'post',
                     success:(data)=>{
-						this.numCom++;
+						this.tableSaveNum++;
                         //console.log(data)
-                        $("body").mLoading("hide")
-                        Public.message("success",data.message)
+						if(this.tableSaveNum%this.tableTotal==0){
+							this.isTableSaved=true;
+							this.tableSaveNum=0;
+							if(this.isFormSaved){
+								$("body").mLoading("hide")
+								Public.message("success",data.message);
+								this.isTableSaved = false;
+								this.isFormSaved = false;
+								this.tableSaveNum=0;
+								this.formSaveNum=0;
+							}
+						}
+						 //console.log("table",this.tableSaveNum,this.isTableSaved,this.isFormSaved,this.tableTotal)
+                       
                     }
                 })
 				}
                 
             })
             //点击提交按钮
-
             $(".position-fixed").on("click","#commit",(e)=>{
+				$("body").mLoading("show");
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
                 var pa={"dataJson":"","sys_language":"","className":""};
-                if(data.length === 0 || !Array.isArray(data)){return}
+                if(data.length === 0 || !Array.isArray(data)){this.tableCommitNum++; return}
                 data.forEach((ele,i)=>{
                     delete ele["mySort"]
                     delete ele["create_date"]
@@ -2436,20 +2470,62 @@ let ReportConfig = {
                         }
                     })
                 })
+				 data.forEach((ele,i)=>{
+						delete ele["null"]
+				})
+				if(tableTitleSourceClassName=='className=CreditCompanyCreditanalysis'){
+					 data.forEach((ele,i)=>{
+						delete ele["null"]
+						delete ele["level"]
+						delete ele["describe"]
+						delete ele["amount"]
+						delete ele["sort_no"]
+						delete ele["risk_evaluation"]
+					})
+				}
                 pa.dataJson=JSON.stringify(data);
                 pa.className=url.split("*")[0].split("=")[1];
                 pa.isTranslate=true;
-				$.ajax({
+				$("body").mLoading("show")
+				if(url==null||url.indexOf("null")!=-1){
+					this.tableCommitNum++;
+				}else{
+					$.ajax({
                 	 url:url,
                 	 type:'post',
                      contentType: "application/json", //必须有
                      dataType: "json", //表示返回值类型，不必须
                      data:JSON.stringify(pa),
                     success:(data)=>{
-						this.numCom++;
                         // console.log(data)
+						this.tableCommitNum++;
+                        //console.log(data)
+						if(this.tableCommitNum%this.tableTotal==0){
+							this.isTableCommited =true;
+							this.tableCommitNum=0;
+							if(this.isFormCommited){
+								$("body").mLoading("hide")
+								Public.message("success",data.message);
+								this.isTableCommited = false;
+								this.isFormCommited = false;
+								this.tableCommitNum=0;
+								this.formCommitNum=0;
+								let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;
+									$.ajax({
+										url,
+										type:'post',
+										success:(data)=>{
+											Public.message("success",data.message)
+											Public.goToInfoImportPage();
+										}
+									})
+							}
+						}
+						 console.log("table",this.tableCommitNum,this.isTableCommited,this.isFormCommited,this.tableTotal)
                     }
                 })
+				}
+				
                 
             })
         })
@@ -2482,6 +2558,8 @@ let ReportConfig = {
                         }
                     })
                 }
+				if(!_this.formDataArr[index]){this.formTotal--;return}
+				if(dataJsonObj["company_id"] && !dataJsonObj["company_id"] || !_this.formDataArr[index]){return}
                 //点击翻译按钮
                 $(".position-fixed").on("click","#translateBtn",(e)=>{
                     $("body").mLoading("show")
@@ -2498,10 +2576,11 @@ let ReportConfig = {
                     }else{
                     	 url += `?_random=${Math.random()}&isTranslate=true`
                     }
+					delete _this.formDataArr[index]["null"]
                     pa.dataJson=JSON.stringify(_this.formDataArr[index]);
                     pa.isTranslate=true;
                     if(_this.formDataArr[index]==undefined){
-                    	this.formNum++;
+                    	this.formTranlateNum++;
                     }else{
                     	//console.log(_this.formDataArr,index)
                     	$.ajax({
@@ -2511,10 +2590,10 @@ let ReportConfig = {
                     		dataType: "json", //表示返回值类型，不必须
                     		data:JSON.stringify(pa),
                     		success:(data)=>{
-                    			this.formNum++;
-                    			console.log(this.formTotal,this.formNum,this.isFormTranslated,this.isTableTranslated)
-                    			if(this.formTotal === this.formNum) {
-                    				this.formNum = 0;
+                    			this.formTranlateNum++;
+                    			console.log(this.isTableTranslated,this.isFormTranslated,this.formTotal,this.formTranlateNum)
+                    			if(this.formTotal === this.formTranlateNum) {
+                    				this.formTranlateNum = 0;
                     				//表单翻译完成
                     				this.isFormTranslated= true;
                     				if (this.isTableTranslated ) {
@@ -2523,6 +2602,8 @@ let ReportConfig = {
                     					$("body").mLoading("hide")
                     					this.isTableTranslated = false;
                                 		this.isFormTranslated=false;
+										this.tableTranlateNum = 0 ;
+										this.formTranlateNum = 0;
                     				}
                     				
                     			}
@@ -2532,11 +2613,11 @@ let ReportConfig = {
                     }
 
                 })
-                if(dataJsonObj["company_id"] && !dataJsonObj["company_id"] || !_this.formDataArr[index]){return}
+                
                 //点击保存按钮
-
                 $(".position-fixed").on("click","#save",(e)=>{
-                    console.log('保存2')
+                    console.log('保存2',this.formTotal)
+					//console.log(formIndexEn)
 //    			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
                     let arr = Array.from($("#titleEn"+item))
                     arr.forEach((item,index)=>{
@@ -2590,6 +2671,15 @@ let ReportConfig = {
 
                     var pa={"dataJson":"","sys_language":"","className":""};
 	                pa.className=url.split("*")[0].split("=")[1];
+					delete dataJsonObj["null"]
+					if(formTitleSourceClassName=='className=CreditCompanyCreditanalysis'){
+						delete dataJsonObj["null"]
+						 delete dataJsonObj["level"]
+						delete dataJsonObj["describe"]
+						delete dataJsonObj["amount"]
+						delete dataJsonObj["sort_no"]
+						delete dataJsonObj["risk_evaluation"]
+					}
                     dataJson[0] = dataJsonObj
                     pa.dataJson=JSON.stringify(dataJson);
                     pa.isTranslate=true;
@@ -2601,15 +2691,22 @@ let ReportConfig = {
                         data:JSON.stringify(pa),
                         type:'post',
                         success:(data)=>{
-                            //$("body").mLoading("hide")
-                            //console.log(data)
-                            //Public.message("success",data.message)
-							this.numCom++;
-                            console.log(this.numCom,index,this.formIndexEn.length)
-                            if (this.numCom %this.formIndexEn.length==0) {
-                            	  $("body").mLoading("hide")
-                            	  this.numCom = 0
+							this.formSaveNum++;
+							this.formSaveNum=0;
+							//console.log(data)
+							if(this.formSaveNum%this.formTotal==0){
+								this.isFormSaved=true;
+								if(this.isTableSaved){
+									$("body").mLoading("hide")
+									Public.message("success",data.message);
+									this.isTableSaved = false;
+									this.isFormSaved = false;
+									this.tableSaveNum=0;
+									this.formSaveNum=0;
+								}
 							}
+                           // console.log(this.formSaveNum,this.isTableSaved,formIndexEn.length)
+                           
                         }
                     })
                 })
@@ -2667,10 +2764,18 @@ let ReportConfig = {
                     dataJson[0] = dataJsonObj
                     $("body").mLoading("show")
                     var pa={"dataJson":"","sys_language":"","className":""};
-					
+					delete dataJsonObj["null"]
+					if(formTitleSourceClassName=='className=CreditCompanyCreditanalysis'){
+						delete dataJsonObj["level"]
+						delete dataJsonObj["describe"]
+						delete dataJsonObj["amount"]
+						delete dataJsonObj["sort_no"]
+						delete dataJsonObj["risk_evaluation"]
+					}
 	                pa.className=url.split("*")[0].split("=")[1];
                     pa.dataJson=JSON.stringify(dataJson);
                     pa.isTranslate=true;
+					$("body").mLoading("show")
 					//console.log(url)
                     $.ajax({
                     	url:url,
@@ -2679,22 +2784,31 @@ let ReportConfig = {
                         data:JSON.stringify(pa),
                         type:'post',
                         success:(data)=>{
-                        	this.numCom++;
-                            console.log(this.numCom,index,this.formIndexEn.length)
-                            if (this.numCom %this.formIndexEn.length==0) {
-                            	  $("body").mLoading("hide")
-                            	  this.numCom = 0
-                            	 let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;
-	                            $.ajax({
-	                                url,
-	                                type:'post',
-	                                success:(data)=>{
-	                                	
-	                                    Public.message("success",data.message)
-	                                    Public.goToInfoImportPage();
-	                                }
-	                            })
+							this.formCommitNum++;
+							//console.log(data)
+							if(this.formCommitNum%this.formTotal==0){
+								this.isFormCommited =true;
+								this.formCommitNum=0;
+								if(this.isTableCommited){
+									$("body").mLoading("hide")
+									Public.message("success",data.message);
+									this.isTableCommited = false;
+									this.isFormCommited = false;
+									this.tableCommitNum=0;
+									this.formCommitNum=0;
+									let url = BASE_PATH + 'credit/front/orderProcess/' + _this.submitStatusUrl + `statusCode=308&model.id=${_this.rows["id"]}`;
+									$.ajax({
+										url,
+										type:'post',
+										success:(data)=>{
+											Public.message("success",data.message)
+											Public.goToInfoImportPage();
+										}
+									})
+								}
 							}
+                           // console.log(this.formSaveNum,this.isTableSaved,formIndexEn.length)
+							
                         }
                     })
                 })
