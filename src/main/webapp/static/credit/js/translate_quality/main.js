@@ -1812,7 +1812,7 @@ let ReportConfig = {
                 $('.type23-content').find('.my-1').css('white-space', 'nowrap');
                 $('.type23-content').addClass('px-3').find("[for=grade]").text('扣分：')
                     .end().find("[for=quality_opinion]").text('质检意见：');
-                let dealQualityData = (param, param2) => {
+                let dealQualityData = (param, param2,type) => {
                 	
                     let checkedIndex = $(".type23-content").find('.radio-box [type=radio]:checked').parent().index() + 1;
                     $.get(`${BASE_PATH}credit/front/ReportGetData/getOrsaveOpintion?className=CreditQualityOpintion
@@ -1847,9 +1847,13 @@ let ReportConfig = {
                             } else {
                                 Public.message('success', '保存成功！')
                             }
-                            setTimeout(function () {
-                                $('#reportbusiness').click();//触发报告质检菜单跳转到列表
-                            }, 1500);
+                        //提交按钮才跳转页面，保存不跳转
+                            if(type === 'isCommit'){
+                                setTimeout(function () {
+                                    $('#reportbusiness').click();//触发报告质检菜单跳转到列表
+                                }, 1500);
+                            }
+
                         }
                        
                         if (data.rows && data.rows.length > 0) {
@@ -1869,12 +1873,15 @@ let ReportConfig = {
                 dealQualityData();
                 $("#save").click(function (e, param) {
                     console.log(param);
+                    $("body").mLoading("show")
                     _this.getQualitySelectData('update'); //质检结果
-                    dealQualityData('update', param); //质检意见、分数等
+                    dealQualityData('update', param, 'isSave'); //质检意见、分数等
                 });
                 $("#commit").click(function () {
                 	 $("body").mLoading("show")
-                    $("#save").trigger('click', 'submit');
+                    // $("#save").trigger('click', 'submit');
+                    _this.getQualitySelectData('update'); //质检结果
+                    dealQualityData('update', param, 'isCommit'); //质检意见、分数等
                 });
 
                 // 质检结果下拉列表

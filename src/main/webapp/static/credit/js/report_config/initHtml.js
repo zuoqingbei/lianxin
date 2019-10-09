@@ -1099,21 +1099,20 @@ dateInit(){
 						elem: item,
 						range:true,
 						change: function(value,date){
+							let index = 0;
+							$('label').each(function () {
+								if($(this).text()==='营业收入统计时间段'){
+									// console.log($($(this).next('input')[0]).attr('id'))
+									index = $($(this).next('input')[0]).attr('id').split('_')[6];
+								}
+							})
 							if($(item).attr('id') === 'date3cw'){
-								$('#time_period_for_business_income_statistics_8').val(value)
+								$('#time_period_for_business_income_statistics_'+index).val(value)
 							}else if($(item).attr('id') === 'date4cw'){
 								if($('#date3cw').val()){
-									if($('#time_period_for_business_income_statistics_8')){
-										$('#time_period_for_business_income_statistics_8').val($('#date3cw').val()) //中文模板
-									}else if($('#time_period_for_business_income_statistics_9')){
-										$('#time_period_for_business_income_statistics_9').val($('#date3cw').val()) //英文模板
-									}
+									$('#time_period_for_business_income_statistics_'+index).val($('#date3cw').val())
 								}else{
-									if($('#time_period_for_business_income_statistics_8')){
-										$('#time_period_for_business_income_statistics_8').val(value) //中文模板
-									}else if($('#time_period_for_business_income_statistics_9')){
-										$('#time_period_for_business_income_statistics_9').val(value) //英文模板
-									}
+									$('#time_period_for_business_income_statistics_'+index).val(value)
 								}
 							}
 						}
@@ -1125,18 +1124,20 @@ dateInit(){
 					laydate.render({
 						elem: item,
 						done:function(value){
+							let index = 0;
+							$('label').each(function () {
+								if($(this).text()==='营业收入统计时间段'){
+									// console.log($($(this).next('input')[0]).attr('id').split('_')[6])
+									index = $($(this).next('input')[0]).attr('id').split('_')[6];
+								}
+							})
 							if($(item).hasClass("dateInp1")){
 								let dateInps1 = Array.from($(".dateInp1"))
 								dateInps1.forEach((item,index)=>{
 									$(item).val(value);
 								})
-								if($('#time_period_for_total_assets_8')&&$('#time_period_for_equity_of_stockholder_8')){
-									$('#time_period_for_total_assets_8').val(value) //报告摘要的资产总额统计时间段取合计表的时间
-									$('#time_period_for_equity_of_stockholder_8').val(value) //报告摘要的资产总额统计时间段取合计表的时间
-								}else if($('#time_period_for_total_assets_9')&&$('#time_period_for_equity_of_stockholder_9')){
-									$('#time_period_for_total_assets_9').val(value) //报告摘要的资产总额统计时间段取合计表的时间
-									$('#time_period_for_equity_of_stockholder_9').val(value) //报告摘要的资产总额统计时间段取合计表的时间
-								}
+								$('#time_period_for_total_assets_'+index).val(value) //报告摘要的资产总额统计时间段取合计表的时间
+								$('#time_period_for_equity_of_stockholder_'+index).val(value) //报告摘要的资产总额统计时间段取合计表的时间
 							}else if($(item).hasClass("dateInp2")){
 								let dateInps2 = Array.from($(".dateInp2"))
 								dateInps2.forEach((item,index)=>{
@@ -1144,21 +1145,11 @@ dateInit(){
 								})
 								//先看dateInput1是否有数据，如果有的话，就用dateInput1的数据，没有的话用value
 								if($($('.dateInp1')[0]).val()){
-									if(($('#time_period_for_total_assets_8'))&&($('#time_period_for_equity_of_stockholder_8'))){
-										$('#time_period_for_total_assets_8').val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
-										$('#time_period_for_equity_of_stockholder_8').val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
-									}else if(($('#time_period_for_total_assets_9'))&&($('#time_period_for_equity_of_stockholder_9'))){
-										$('#time_period_for_total_assets_9').val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
-										$('#time_period_for_equity_of_stockholder_9').val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
-									}
+									$('#time_period_for_total_assets_'+index).val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
+									$('#time_period_for_equity_of_stockholder_'+index).val($($('.dateInp1')[0]).val()) //报告摘要的资产总额统计时间段取合计表的时间
 								}else{
-									if(($('#time_period_for_total_assets_8'))&&($('#time_period_for_equity_of_stockholder_8'))){
-										$('#time_period_for_total_assets_8').val(value) //报告摘要的资产总额统计时间段取合计表的时间
-										$('#time_period_for_equity_of_stockholder_8').val(value) //报告摘要的资产总额统计时间段取合计表的时间
-									}else if(($('#time_period_for_total_assets_9'))&&($('#time_period_for_equity_of_stockholder_9'))){
-										$('#time_period_for_total_assets_9').val(value) //报告摘要的资产总额统计时间段取合计表的时间
-										$('#time_period_for_equity_of_stockholder_9').val(value) //报告摘要的资产总额统计时间段取合计表的时间
-									}
+									$('#time_period_for_total_assets_'+index).val(value) //报告摘要的资产总额统计时间段取合计表的时间
+									$('#time_period_for_equity_of_stockholder_'+index).val(value) //报告摘要的资产总额统计时间段取合计表的时间
 								}
 							}
 						}
