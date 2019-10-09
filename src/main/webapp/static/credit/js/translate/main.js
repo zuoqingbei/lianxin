@@ -702,7 +702,8 @@ let ReportConfig = {
                 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
                     //信用等级
                     let name =$(item).next().find("select").attr("name")
-                    $(item).next().find("select").val(tempData.rows.length>0?tempData.rows[0][name]:'')
+                    console.log(tempData.rows)
+                    $(item).next().find("select").val((tempData.rows&&tempData.rows.length>0)?tempData.rows[0][name]:'')
                     return;
                 }
                 if($(item).next().hasClass("textarea-module")) {
@@ -2328,6 +2329,8 @@ let ReportConfig = {
 			
 
             $(".position-fixed").on("click","#save",(e)=>{
+                console.log('保存1')
+                $("body").mLoading("show");
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
                 var pa={"dataJson":"","sys_language":"","className":""};
                 if(data.length === 0 || !Array.isArray(data)){return}
@@ -2385,6 +2388,8 @@ let ReportConfig = {
                     success:(data)=>{
 						this.numCom++;
                         //console.log(data)
+                        $("body").mLoading("hide")
+                        Public.message("success",data.message)
                     }
                 })
 				}
@@ -2450,6 +2455,7 @@ let ReportConfig = {
         })
         this.formTotal = this.formIndexEn.length;
         setTimeout(()=>{
+            console.log('延时ing')
             let formTitlesEn = this.formTitleEn;
             let formIndexEn = this.formIndexEn;
             //_this.formDataArr
@@ -2478,6 +2484,7 @@ let ReportConfig = {
                 }
                 //点击翻译按钮
                 $(".position-fixed").on("click","#translateBtn",(e)=>{
+                    $("body").mLoading("show")
                     //表单翻译
                     let url = BASE_PATH + `credit/ordertranslate/translate`;
                     var pa={targetlanguage:"",reportType:"","_random":"","className":"","dataJson":""};
@@ -2529,6 +2536,7 @@ let ReportConfig = {
                 //点击保存按钮
 
                 $(".position-fixed").on("click","#save",(e)=>{
+                    console.log('保存2')
 //    			InitObjTrans.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
                     let arr = Array.from($("#titleEn"+item))
                     arr.forEach((item,index)=>{

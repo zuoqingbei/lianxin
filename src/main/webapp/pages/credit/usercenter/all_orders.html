@@ -749,36 +749,37 @@ tempDict.getSysDictDetailString('upload_busType',model.business_type !);
 <script src="${BASE_PATH }static/credit/js/all_orders.js"></script>
 <!--<script src="${BASE_PATH }static/credit/js/order_manage/create_order.js"></script>-->
 <script type="text/javascript">
-$(function(){
-	$.get('/credit/front/home/getMessage',function(data){
-		getCustoms(data.customs);
-		getCountry(data.country);
-	})	;
-
-});
-function getCustoms(data){
-	console.log(data);
-	var html=""
-	for(item in data){
-		html+="<option  value='"+data[item].id+"'>"+data[item].id+"</option>";
-	}
-	$("select[name='attr.custom_id']").append(html);
-};
-function getCountry(data){
-	var html=""
-	html+=html+="<option  value=''>请选择</option>";
-	
-		for(item in data){
-			html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
-		}
-		$("select[name='attr.country']").html(html);
-		//重新渲染 否则option不能显示
-		layui.use('form', function(){
-			var form = layui.form;  
-			form.render(); //更新全部
-		});
-
-}
+// $(function(){
+// 	$.get('/credit/front/home/getMessage',function(data){
+// 		getCustoms(data.customs);
+// 		getCountry(data.country);
+// 	})	;
+//
+// });
+// function getCustoms(data){
+// 	console.log(data);
+// 	var html=""
+// 	for(item in data){
+// 		html+="<option  value='"+data[item].id+"'>"+data[item].id+"</option>";
+// 	}
+// 	$("select[name='attr.custom_id']").append(html);
+// };
+// function getCountry(data){
+//     console.log(data);
+// 	var html=""
+// 	html+=html+="<option  value=''>请选择</option>";
+//
+// 		for(item in data){
+// 			html+="<option  value='"+data[item].id+"'>"+data[item].name+"</option>";
+// 		}
+// 		$("select[name='attr.country']").html(html);
+// 		//重新渲染 否则option不能显示
+// 		layui.use('form', function(){
+// 			var form = layui.form;
+// 			form.render(); //更新全部
+// 		});
+//
+// }
 function orderinfo(id){
 	Public.goToOrderDetail(id)
 }

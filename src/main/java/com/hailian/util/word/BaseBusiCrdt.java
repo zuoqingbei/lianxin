@@ -1054,19 +1054,14 @@ public class BaseBusiCrdt extends BaseWord{
                 if(separater.length()>1){
                 	date2 = sourcesdf.parse( dateStr.split(separater)[1].trim());
                 }
-                if("至".equals(targetSeparater)){
-                	if(date2==null){
-                		return targetSdf.format(date1);
-                	}else{
+                if(date2==null){
+                	return targetSdf.format(date1);
+                }else{
+                	if("至".equals(targetSeparater)){
                 		return "从"+targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
                 	}
-                    
+                	return targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
                 }
-                if(date2==null){
-            		return targetSdf.format(date1);
-            	}else{
-            		return targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
-            	}
             }else{
                 Date date1 = sourcesdf.parse(dateStr);
                 return  targetSdf.format(date1);
