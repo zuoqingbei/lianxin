@@ -2240,8 +2240,10 @@ let ReportConfig = {
         			//Public.message("success","表单翻译完成！")
         			$("body").mLoading("hide")
         			this.isTableTranslated = false;
-            		this.isFormTranslated=false;
-                },30000);
+					this.isFormTranslated=false;
+					this.tableTranlateNum = 0   //翻译表格条数计数器
+					this.formTranlateNum = 0  //翻译表单条数计数器
+                },90000);
                 //表格翻译
                 let oneTableData = []
                 $("body").mLoading("show")
@@ -2335,6 +2337,13 @@ let ReportConfig = {
             })
             //点击保存按钮
             $(".position-fixed").on("click","#save",(e)=>{
+				setTimeout(()=>{
+        			$("body").mLoading("hide")
+        			this.isTableSaved = false;
+					this.isFormSaved = false;
+					this.tableSaveNum=0;
+					this.formSaveNum=0;
+                },90000);
                 console.log('保存1',this.tableTotal)
 				//console.log(tableTitlesEn)
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
@@ -2431,6 +2440,13 @@ let ReportConfig = {
             })
             //点击提交按钮
             $(".position-fixed").on("click","#commit",(e)=>{
+				setTimeout(()=>{
+        			$("body").mLoading("hide")
+        			this.isTableCommited = false;
+					this.isFormCommited = false;
+					this.tableCommitNum=0;
+					this.formCommitNum=0;
+                },90000);
 				$("body").mLoading("show");
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
                 var pa={"dataJson":"","sys_language":"","className":""};

@@ -484,7 +484,7 @@ let Index = {
                     valign: 'middle',
                 }, {
                     title: `处理状态 &nbsp;<i class="fa fa-filter"></i>`,
-                    field: 'statuName',
+                    field: 'statusName',
                     align: 'center',
                     valign: 'middle',
 
@@ -775,21 +775,25 @@ let Index = {
                     let dead_time = new Date(item.end_date).getTime();//截止日期
                     let now_time = new Date(new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate()).getTime();
                     let diffValue = now_time - dead_time; //差值
-                    if (diffValue > 0) {
-                        //已过期
-                        $("#table tr").eq(index + 1).addClass("order-dead")
-                        $(".fixed-table-body-columns .table tr").eq(index).addClass("order-dead")
-                    } else if (diffValue === 0) {
-                        //今天过期
-                        $("#table tr").eq(index + 1).addClass("order-ing")
-                        $(".fixed-table-body-columns .table tr").eq(index).addClass("order-ing")
-                    }
-                    let isAsk = item.is_ask;
-                    if (isAsk === '1') {
-                        //已催问
-                        $("#table tr").eq(index + 1).addClass("order-ask")
-                        $(".fixed-table-body-columns .table tr").eq(index).addClass("order-ask")
-                    }
+					let changeColor = ['311', '313'].includes(item.status);//客户撤销和报告完成状态时，不需要“过期”--（标红）“即将过期”--（标绿）的状态标注
+					if(!changeColor){
+						 if (diffValue > 0) {
+							//已过期
+							$("#table tr").eq(index + 1).addClass("order-dead")
+							$(".fixed-table-body-columns .table tr").eq(index).addClass("order-dead")
+						} else if (diffValue === 0) {
+							//今天过期
+							$("#table tr").eq(index + 1).addClass("order-ing")
+							$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ing")
+						}
+						let isAsk = item.is_ask;
+						if (isAsk === '1') {
+							//已催问
+							$("#table tr").eq(index + 1).addClass("order-ask")
+							$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ask")
+						}
+					}
+                   
                 })
             },
             onCheck: (row) => {
@@ -829,13 +833,25 @@ let Index = {
         // console.log('user:',user);
         // console.log('~row:',row);
         let enable = ['311', '999'].includes(row.status) && ((row.create_by === user.userId+'') || user.roleIds.includes(1));
-        return '<a href="javacript:;" class="ask" style="margin-right:.5rem">催问</a>' +
+		if(['313'].includes(row.status)){
+			//如果用户撤销订单 全部按钮禁用
+			 return '<a href="javacript:;" class="ask disabled" style="margin-right:.5rem">催问</a>' +
+            '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
+            '<a href="javacript:;" class="order-cancel disabled" style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' +
+            '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
+            '<a href="javacript:;" class="order-update disabled" data-toggle="modal" data-target="#exampleModalCenter3">内容更新</a>' +
+            '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
+            `<a href="javacript:;" class="order-resentEmail disabled" data-toggle="modal" data-target="#order-resentEmail">重新发送</a>`
+		}else{
+			 return '<a href="javacript:;" class="ask" style="margin-right:.5rem">催问</a>' +
             '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
             '<a href="javacript:;" class="order-cancel" style="margin-right:.5rem" data-toggle="modal" data-target="#exampleModalCenter1">订单撤销</a>' +
             '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
             '<a href="javacript:;" class="order-update" data-toggle="modal" data-target="#exampleModalCenter3">内容更新</a>' +
             '<span style="margin-right:.5rem;color: #1890ff">|</span>' +
             `<a href="javacript:;" class="order-resentEmail ${enable ? '' : 'disabled'}" data-toggle="modal" data-target="#order-resentEmail">重新发送</a>`
+		}
+       
     }
 }
 Index.init();
