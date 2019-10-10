@@ -273,6 +273,62 @@ let InitObj = {
 					let val = $(e.target).val()
 					//配数据的时候加减法的calssname一定要配置在最后面
 					className = className.split(" ")[className.split(" ").length-1]
+					//计算
+					$(seft).find(".gdzcje1-copy").val($(seft).find(".gdzcje1").val())
+					$(seft).find(".gdzcje2-copy").val($(seft).find(".gdzcje2").val())
+
+					//重要比率表
+					let zcze1 = Number($(seft).find(`.class42_num`).val())//资产总额
+					let zcze2 = Number($(seft).find(`.classa42_num`).val())//
+					let yysr1 = Number($(seft).find(`.class64_num`).val())//营业收入
+					let yysr2 = Number($(seft).find(`.classa64_num`).val())//
+					let yszk1 = Number($(seft).find(`.class15_num`).val())//应收账款
+					let yszk2 = Number($(seft).find(`.classa15_num`).val())//
+					let ch1 = Number($(seft).find(`.class21_num`).val())//存货
+					let ch2 = Number($(seft).find(`.classa21_num`).val())//
+					let ldzc1 =Number($(seft).find(`.class25_num`).val())//流动资产
+					let ldzc2 = Number($(seft).find(`.classa25_num`).val())//
+					let yfzk1 = Number($(seft).find(`.class47_num`).val())//应付账款
+					let yfzk2 = Number($(seft).find(`.classa47_num`).val())//
+					let ldfz1 = Number($(seft).find(`.class59_num`).val())//流动负债
+					let ldfz2 = Number($(seft).find(`.classa59_num`).val())//
+					let fzze1 = Number($(seft).find(`.class61_num`).val())//负债总额
+					let fzze2 = Number($(seft).find(`.classa61_num`).val())//
+					let yycb1 = Number($(seft).find(`.class65_num`).val())//营业成本
+					let yycb2 = Number($(seft).find(`.classa65_num`).val())//
+
+					let jlr1 = Number($(seft).find(`.class82_num`).val())//净利润
+					let jlr2 = Number($(seft).find(`.classa82_num`).val())//
+					//流动比率
+					$(seft).find(`.class83`).val(+ldzc1=== 0?0:(ldzc1/ldfz1).toFixed(2))
+					$(seft).find(`.classa83`).val(+ldzc2=== 0?0:(ldzc2/ldfz2).toFixed(2))
+					//速动比率
+					$(seft).find(`.class84`).val(+ldfz1 === 0?0:(ldzc1-ch1/ldfz1).toFixed(2))
+					$(seft).find(`.classa84`).val(+ldfz2 === 0?0:(ldzc2-ch2/ldfz2).toFixed(2))
+					//资产负债率
+					$(seft).find(`.class85`).val(+zcze1 === 0?0:(fzze1/zcze1).toFixed(2))
+					$(seft).find(`.classa85`).val(+zcze2 === 0?0:(fzze2/zcze2).toFixed(2))
+					//净利润率
+					$(seft).find(`.class86`).val(+yysr1 === 0?0:(jlr1/yysr1).toFixed(2))
+					$(seft).find(`.classa86`).val(+yysr2 === 0?0:(jlr2/yysr2).toFixed(2))
+					//资产回报率
+					$(seft).find(`.class87`).val(+zcze1 === 0?0:(jlr1/zcze1).toFixed(2))
+					$(seft).find(`.classa87`).val(+zcze2 === 0?0:(jlr2/zcze2).toFixed(2))
+					//存货周转天数
+					$(seft).find(`.class88`).val(+yysr1 === 0?0:(ch1/yysr1*365).toFixed(2))
+					$(seft).find(`.classa88`).val(+yysr2 === 0?0:(ch2/yysr2*365).toFixed(2))
+					//应收账款周转天数
+					$(seft).find(`.class89`).val(+yysr1 === 0?0:(yszk1/yysr1*365).toFixed(2))
+					$(seft).find(`.classa89`).val(+yysr2 === 0?0:(yszk2/yysr2*365).toFixed(2))
+					//应付账款周转天数
+					$(seft).find(`.class90`).val(+yycb1 === 0?0:(yfzk1/yycb1*365).toFixed(2))
+					$(seft).find(`.classa91`).val(+yycb2 === 0?0:(yfzk2/yycb2*365).toFixed(2))
+					//营业总额/资产总额
+					$(seft).find(`.class91`).val(+zcze1 === 0?0:(yysr1/zcze1).toFixed(2))
+					$(seft).find(`.classa91`).val(+zcze2 === 0?0:(yysr2/zcze2).toFixed(2))
+					//营业成本/营业总额
+					$(seft).find(`.class92`).val(+yysr1 === 0?0:(yycb1/yysr1).toFixed(2))
+					$(seft).find(`.classa92`).val(+yysr2 === 0?0:(yycb2/yysr2).toFixed(2))
 					//调用修改接口
 					let $oT_td = $(e.target).parent("td")
 					let $oT_tr = $(e.target).parents("tr")
@@ -293,7 +349,7 @@ let InitObj = {
 						success:(data)=>{
 							if(data.statusCode === 1) {
 								//保存合计项
-								// _this.saveCwSummation(alterSource)
+								_this.saveCwSummation(alterSource)
 								// _this.saveCwEveryTableSUmmation(alterSource)
 							}
 						}
@@ -380,61 +436,7 @@ let InitObj = {
 					// 	})
 					// }
 					//固定资产
-					$(seft).find(".gdzcje1-copy").val($(seft).find(".gdzcje1").val())
-					$(seft).find(".gdzcje2-copy").val($(seft).find(".gdzcje2").val())
 
-					//重要比率表
-					let zcze1 = Number($(seft).find(`.class42_num`).val())//资产总额
-					let zcze2 = Number($(seft).find(`.classa42_num`).val())//
-					let yysr1 = Number($(seft).find(`.class64_num`).val())//营业收入
-					let yysr2 = Number($(seft).find(`.classa64_num`).val())//
-					let yszk1 = Number($(seft).find(`.class15_num`).val())//应收账款
-					let yszk2 = Number($(seft).find(`.classa15_num`).val())//
-					let ch1 = Number($(seft).find(`.class21_num`).val())//存货
-					let ch2 = Number($(seft).find(`.classa21_num`).val())//
-					let ldzc1 =Number($(seft).find(`.class25_num`).val())//流动资产
-					let ldzc2 = Number($(seft).find(`.classa25_num`).val())//
-					let yfzk1 = Number($(seft).find(`.class47_num`).val())//应付账款
-					let yfzk2 = Number($(seft).find(`.classa47_num`).val())//
-					let ldfz1 = Number($(seft).find(`.class59_num`).val())//流动负债
-					let ldfz2 = Number($(seft).find(`.classa59_num`).val())//
-					let fzze1 = Number($(seft).find(`.class61_num`).val())//负债总额
-					let fzze2 = Number($(seft).find(`.classa61_num`).val())//
-					let yycb1 = Number($(seft).find(`.class65_num`).val())//营业成本
-					let yycb2 = Number($(seft).find(`.classa65_num`).val())//
-
-					let jlr1 = Number($(seft).find(`.class82_num`).val())//净利润
-					let jlr2 = Number($(seft).find(`.classa82_num`).val())//
-					//流动比率
-					$(seft).find(`.class83`).val(+ldzc1=== 0?0:(ldzc1/ldfz1).toFixed(2))
-					$(seft).find(`.classa83`).val(+ldzc2=== 0?0:(ldzc2/ldfz2).toFixed(2))
-					//速动比率
-					$(seft).find(`.class84`).val(+ldfz1 === 0?0:(ldzc1-ch1/ldfz1).toFixed(2))
-					$(seft).find(`.classa84`).val(+ldfz2 === 0?0:(ldzc2-ch2/ldfz2).toFixed(2))
-					//资产负债率
-					$(seft).find(`.class85`).val(+zcze1 === 0?0:(fzze1/zcze1).toFixed(2))
-					$(seft).find(`.classa85`).val(+zcze2 === 0?0:(fzze2/zcze2).toFixed(2))
-					//净利润率
-					$(seft).find(`.class86`).val(+yysr1 === 0?0:(jlr1/yysr1).toFixed(2))
-					$(seft).find(`.classa86`).val(+yysr2 === 0?0:(jlr2/yysr2).toFixed(2))
-					//资产回报率
-					$(seft).find(`.class87`).val(+zcze1 === 0?0:(jlr1/zcze1).toFixed(2))
-					$(seft).find(`.classa87`).val(+zcze2 === 0?0:(jlr2/zcze2).toFixed(2))
-					//存货周转天数
-					$(seft).find(`.class88`).val(+yysr1 === 0?0:(ch1/yysr1*365).toFixed(2))
-					$(seft).find(`.classa88`).val(+yysr2 === 0?0:(ch2/yysr2*365).toFixed(2))
-					//应收账款周转天数
-					$(seft).find(`.class89`).val(+yysr1 === 0?0:(yszk1/yysr1*365).toFixed(2))
-					$(seft).find(`.classa89`).val(+yysr2 === 0?0:(yszk2/yysr2*365).toFixed(2))
-					//应付账款周转天数
-					$(seft).find(`.class90`).val(+yycb1 === 0?0:(yfzk1/yycb1*365).toFixed(2))
-					$(seft).find(`.classa91`).val(+yycb2 === 0?0:(yfzk2/yycb2*365).toFixed(2))
-					//营业总额/资产总额
-					$(seft).find(`.class91`).val(+zcze1 === 0?0:(yysr1/zcze1).toFixed(2))
-					$(seft).find(`.classa91`).val(+zcze2 === 0?0:(yysr2/zcze2).toFixed(2))
-					//营业成本/营业总额
-					$(seft).find(`.class92`).val(+yysr1 === 0?0:(yycb1/yysr1).toFixed(2))
-					$(seft).find(`.classa92`).val(+yysr2 === 0?0:(yycb2/yysr2).toFixed(2))
 
 
 					// let cw_range1 = $($(seft).find(`.cw-range`).find("input")[0]).val()
@@ -474,7 +476,7 @@ let InitObj = {
 						success:(data)=>{
 							if(data.statusCode === 1) {
 								//保存合计项
-								// _this.saveCwSummation(alterSource)
+								_this.saveCwSummation(alterSource)
 								// _this.saveCwEveryTableSUmmation(alterSource)
 							}
 						}
@@ -849,7 +851,7 @@ upLoadCw(url,rows,getSource,alterSource,tableCwId){
 					Public.message("success",data.message)
 					_this.refreshCwModal(tableCwId,getSource,id,rows)
 					$(e.target).val("")
-					// _this.saveCwSummation(alterSource)
+					_this.saveCwSummation(alterSource)
 					// _this.saveCwEveryTableSUmmation(alterSource)
 				}
 			}
@@ -894,21 +896,21 @@ saveCwSummation(alterSource){
 	 */
 	let _this = this
 	let dataJson = [];
-	let $tableHj = $("#tableCwHj");
-	let HjTrs = Array.from($tableHj.find("tbody").find("tr"))
-	HjTrs.forEach((item,index)=>{
-		let tempObj = {};
-		let id = $(item).find("td:eq(1)").find("input").attr("entityid")
-		let tds = $(item).find("td")
-		let val1 = $(item).find("td:eq(1)").find("input").val()
-		let val2 = $(item).find("td:eq(2)").find("input").val()
-		let column_name1 = _this.tableColumnNameArr[1]
-		let column_name2 = _this.tableColumnNameArr[2]
-		tempObj[column_name1] = val1
-		tempObj[column_name2] = val2
-		tempObj["id"] = id
-		dataJson.push(tempObj)
-	})
+	// let $tableHj = $("#tableCwHj");
+	// let HjTrs = Array.from($tableHj.find("tbody").find("tr"))
+	// HjTrs.forEach((item,index)=>{
+	// 	let tempObj = {};
+	// 	let id = $(item).find("td:eq(1)").find("input").attr("entityid")
+	// 	let tds = $(item).find("td")
+	// 	let val1 = $(item).find("td:eq(1)").find("input").val()
+	// 	let val2 = $(item).find("td:eq(2)").find("input").val()
+	// 	let column_name1 = _this.tableColumnNameArr[1]
+	// 	let column_name2 = _this.tableColumnNameArr[2]
+	// 	tempObj[column_name1] = val1
+	// 	tempObj[column_name2] = val2
+	// 	tempObj["id"] = id
+	// 	dataJson.push(tempObj)
+	// })
 	let $tableBj = $("#tableCwBl");
 	let BlTrs = Array.from($tableBj.find("tbody").find("tr"))
 	BlTrs.forEach((item,index)=>{
