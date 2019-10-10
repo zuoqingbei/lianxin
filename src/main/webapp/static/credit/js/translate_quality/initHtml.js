@@ -432,6 +432,7 @@ let InitObjTransQua = {
     		let arr = []
     		contents.forEach((ele,index)=>{
     			_this.tableColumnNameArrDs.push(ele.column_name);
+				ele.column_name = ele.column_name&&ele.column_name === "item_name"? 'item_name_en':ele.column_name
     			if(ele.temp_name !== '删除'){
     				arr.push({
     					title:ele.temp_name,
@@ -558,6 +559,7 @@ let InitObjTransQua = {
         			if(ele.column_name !== null){
         				index === 0?tempObj[ele.column_name] = '':tempObj[ele.column_name] = 0
         			}
+					ele.column_name = ele.column_name&&ele.column_name === "item_name"? 'item_name_en':ele.column_name
 	    			if(ele.temp_name !== '删除'){
 	    				arr.push({
 	    					title:ele.temp_name,
