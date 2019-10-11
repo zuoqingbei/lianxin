@@ -1872,16 +1872,15 @@ let ReportConfig = {
                 };
                 dealQualityData();
                 $("#save").click(function (e, param) {
-                    console.log(param);
                     $("body").mLoading("show")
                     _this.getQualitySelectData('update'); //质检结果
                     dealQualityData('update', param, 'isSave'); //质检意见、分数等
                 });
-                $("#commit").click(function () {
+                $("#commit").click(function (e, param) {
                 	 $("body").mLoading("show")
                     // $("#save").trigger('click', 'submit');
                     _this.getQualitySelectData('update'); //质检结果
-                    dealQualityData('update', param, 'isCommit'); //质检意见、分数等
+                    dealQualityData('update', 'submit', 'isCommit'); //质检意见、分数等
                 });
 
                 // 质检结果下拉列表
