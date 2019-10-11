@@ -175,42 +175,47 @@ let ReportConfig = {
                         title: ele.temp_name,
                         field: ele.column_name,
                         class: 'monyCol',
-                        width: (1 / a.length) * 100 + '%',
+                        // width: (1 / a.length) * 100 + '%',
                         footerFormatter:(a)=>{
-                            if(a&&a.length>0){
-                                let arr = []
-                                let total = 0 ;
-                                a.forEach((item,index)=>{
-                                    if(item[ele.column_name]){
-                                        total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                            if( this.title[tempI].get_source.split("*")[0].indexOf('getBootStrapTable?tableName=credit_company_shareholder&')!==-1){
+                                if(a&&a.length>0){
+                                    let arr = []
+                                    let total = 0 ;
+                                    a.forEach((item,index)=>{
+                                        if(item[ele.column_name]){
+                                            total += Number(item[ele.column_name].toString().replace(/,/g,''))
+                                        }
+                                    })
+                                    if(typeof total === 'number'){
+                                        total = total.toFixed(2)
+                                        /*if (total === '99.99' || total === '100.01') {
+                                             total = '100.00'
+                                        }*/
                                     }
-                                })
-                                if(typeof total === 'number'){
-                                    total = total.toFixed(2)
-                                    /*if (total === '99.99' || total === '100.01') {
-                						 total = '100.00'
-                                    }*/
-                                }
-                                if(total === 'NaN'){
+                                    if(total === 'NaN'){
+                                        return ''
+                                    }
+                                    return total
+                                }else{
                                     return ''
                                 }
-                                return total
                             }else{
                                 return ''
                             }
+
                         },
                     })
                 } else {
                     arr.push({
                         title: ele.temp_name,
                         field: ele.column_name,
-                        width: (1 / a.length) * 100 + '%',
+                        // width: (1 / a.length) * 100 + '%',
                         footerFormatter:(a)=>{
                             if(a&&a.length>0){
                                 let arr = []
                                 let total = 0 ;
                                 a.forEach((item,index)=>{
-                                    if( this.title[tempI].get_source.split("*")[0].indexOf('getBootStrapTable?tableName=credit_company_shareholder')!==-1){
+                                    if( this.title[tempI].get_source.split("*")[0].indexOf('getBootStrapTable?tableName=credit_company_shareholder&')!==-1){
                                         if(ele.column_name === 'order_num'){
                                             if(lang=="ch"){
                                                 total = '合计'
