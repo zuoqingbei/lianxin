@@ -175,7 +175,7 @@ let ReportConfig = {
                         title: ele.temp_name,
                         field: ele.column_name,
                         class: 'monyCol',
-                        // width: (1 / a.length) * 100 + '%',
+                        width: ((1 / a.length) * 100 + '%'),
                         footerFormatter:(a)=>{
                             if( this.title[tempI].get_source.split("*")[0].indexOf('getBootStrapTable?tableName=credit_company_shareholder&')!==-1){
                                 if(a&&a.length>0){
@@ -209,7 +209,7 @@ let ReportConfig = {
                     arr.push({
                         title: ele.temp_name,
                         field: ele.column_name,
-                        // width: (1 / a.length) * 100 + '%',
+                        width: ((1 / a.length) * 100 + '%'),
                         footerFormatter:(a)=>{
                             if(a&&a.length>0){
                                 let arr = []
@@ -1354,7 +1354,7 @@ let ReportConfig = {
                             _this.idArr.push(index)
                             _this.contentsArr.push(item.contents)
                             _this.title.push(item.title)
-                            contentHtml += `<div class="table-content1" style="background:#fff">
+                            contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
 				                				<table id="table${index}"
 				                				data-toggle="table"
 				                				style="position: relative"
@@ -1655,7 +1655,7 @@ let ReportConfig = {
                             _this.idArrEn.push(index)
                             _this.contentsArrEn.push(item_en.contents)
                             _this.titleEn.push(item_en.title)
-                            contentHtml += `<div class="table-content1" style="background:#fff">
+                            contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
 			                				<table id="table${index}En"
 			                				data-toggle="table"
 			                				style="position: relative"
