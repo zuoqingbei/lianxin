@@ -2155,6 +2155,7 @@ let ReportConfig = {
                                 dataJsonObj[item] = this.rows[item]
                             }
                         })
+						 delete dataJsonObj['order_num'];
                          dataJson.push(dataJsonObj)
                         paramObj["dataJson"] = JSON.stringify(dataJson)
 
