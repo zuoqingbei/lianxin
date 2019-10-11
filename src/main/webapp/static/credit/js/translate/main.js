@@ -687,6 +687,8 @@ let ReportConfig = {
         let titlesEn = this.formTitleEn;
         let formIndexEn = this.formIndexEn;
         let _this = this
+		//debugger
+		//console.log(i,tempData)
         if(tempData ){
             let arr = Array.from($("#titleEn"+i))
             arr.forEach((item,index)=>{
@@ -2224,7 +2226,7 @@ let ReportConfig = {
             }
             //循环表格表头
             let alterSource = item["alter_source"];
-			if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){this.tableTotal--;this.total--; return}
+			if(alterSource === null || alterSource === '' || alterSource === "alterFinanceOneConfig"){this.tableTotal--;}
             let url;
             if(alterSource){
                 url = BASE_PATH +'credit/front/ReportGetData/'+ alterSource.split("*")[0] ;
@@ -2243,19 +2245,18 @@ let ReportConfig = {
 					this.isFormTranslated=false;
 					this.tableTranlateNum = 0   //翻译表格条数计数器
 					this.formTranlateNum = 0  //翻译表单条数计数器
-                },90000);
+                },60000);
                 //表格翻译
                 let oneTableData = []
                 $("body").mLoading("show")
 //                console.log(tableTitlesEn,index)
-                if(!_this.tableDataArr[index]||!_this.tableDataArr[index]['rows']){this.tableTranlateNum++;return}
+                if(!_this.tableDataArr[index]||!_this.tableDataArr[index]['rows']){return}
                 if(!tableTitlesEn[index+1] && _this.tableDataArr[index]["rows"].length === 0) {
-                	this.tableTranlateNum++;
+                	//this.tableTranlateNum++;
                 	return;
                 }
                 _this.tableDataArr[index]['rows'].forEach((ele,i)=>{
                     //循环每个表格中的条数进行翻译
-//	   				console.log(ele)
                     if(tableDataArrEn[index]){
                         ele["id"] = tableDataArrEn[index]['rows'].length!==0 && tableDataArrEn[index]['rows'][i]?tableDataArrEn[index]['rows'][i]["id"]:null;
                     }
@@ -2269,8 +2270,15 @@ let ReportConfig = {
                     	pa.className=tableTitleSourceClassName.split("=")[1];
                         url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${tableTitleSourceClassName}&isTranslate=true`
                     }else{
-                    	 url += `?_random=${Math.random()}&isTranslate=true`
+                    	pa.targetlanguage="en";
+                    	pa.reportType=_this.rows["report_type"];
+                    	pa.className=tableTitleSourceClassName.split("=")[1];
+                        url += `?targetlanguage=en&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${tableTitleSourceClassName}&isTranslate=true`
                     }
+					if(!pa.className){
+						this.tableTranlateNum++;
+						return;
+					}
 					delete ele["null"]
                     pa.dataJson=JSON.stringify(ele);
                     $.ajax({
@@ -2289,7 +2297,9 @@ let ReportConfig = {
                             this.tableTranlateNum++;
                             oneTableData[i] = data
                             allTableData[index] = oneTableData
+							//this.total表示所有表格多少行数据
 							console.log(this.isTableTranslated,this.isFormTranslated,this.tableTranlateNum,this.total)
+							this.setTranlateTableData(index,allTableData,idArrEn);
                             if(this.tableTranlateNum === this.total){
                                 //如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
                             	this.isTableTranslated = true;
@@ -2304,7 +2314,7 @@ let ReportConfig = {
 									this.formTranlateNum = 0  //翻译表单条数计数器
 								}
 //	   							console.log(allTableData)
-                                tableTitlesEn.forEach((item,index)=>{
+                                /*tableTitlesEn.forEach((item,index)=>{
                                     if(allTableData[index]){
                                         allTableData[index].forEach((e,i)=>{
                                             //循环表格中的数据，如果有select不翻译
@@ -2313,7 +2323,7 @@ let ReportConfig = {
                                                 e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
                                             }
                                         })
-
+										console.log("#table"+idArrEn[index] + 'En')
                                         $("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
                                         $("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
                                         $("#table"+idArrEn[index] + 'En').find(".moneyCol").each((index,item)=>{
@@ -2324,12 +2334,13 @@ let ReportConfig = {
                                             }
                                         })
                                     }
-                                })
+                                })*/
                                 addTable();
                             }
 //
                         }
-                    })
+						
+					})
 
                 })
 
@@ -2355,7 +2366,7 @@ let ReportConfig = {
                     delete ele["update_date"]
                     delete ele["order_num"]
 					_this.deleteEmptyProperty(ele);
-                    // console.log(alterSource)
+                    
                     if(alterSource&&alterSource.split("*")[1]) {
                         let tempParam = alterSource.split("*")[1].split("$");//必要参数数组
                         tempParam.forEach((item,index)=>{
@@ -2374,6 +2385,10 @@ let ReportConfig = {
                         ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
                     })
                 })
+				if(!data[0]['company_id']){
+					this.tableSaveNum++;
+					return;
+				}
                 let $modals = $("#modalEn"+idArrEn[index])
                 let $selects = $modals.find(".modal-body").find("select")
                 // console.log(data)
@@ -2418,7 +2433,7 @@ let ReportConfig = {
                     type:'post',
                     success:(data)=>{
 						this.tableSaveNum++;
-                        //console.log(data)
+                        console.log(this.tableSaveNum,this.tableTotal)
 						if(this.tableSaveNum%this.tableTotal==0){
 							this.isTableSaved=true;
 							this.tableSaveNum=0;
@@ -2469,12 +2484,15 @@ let ReportConfig = {
                             }
                         })
                     }
-
                     let arr = Object.keys(ele)
                     arr.forEach((item,index)=>{
                         ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
                     })
                 })
+				if(!data[0]['company_id']){
+					this.tableCommitNum++;
+					return;
+				}
                 let $modals = $("#modalEn"+idArrEn[index])
                 let $selects = $modals.find(".modal-body").find("select")
                 $selects.each((index,item)=>{
@@ -2515,7 +2533,7 @@ let ReportConfig = {
                     success:(data)=>{
                         // console.log(data)
 						this.tableCommitNum++;
-                        //console.log(data)
+                        console.log(this.tableCommitNum,this.tableTotal)
 						if(this.tableCommitNum%this.tableTotal==0){
 							this.isTableCommited =true;
 							this.tableCommitNum=0;
@@ -2547,9 +2565,9 @@ let ReportConfig = {
         })
         this.formTotal = this.formIndexEn.length;
         setTimeout(()=>{
-            console.log('延时ing')
             let formTitlesEn = this.formTitleEn;
             let formIndexEn = this.formIndexEn;
+			 //console.log('延时ing',formIndexEn,_this.formDataArr)
             //_this.formDataArr
             formIndexEn.forEach((item,index)=>{
                 let alterSource = formTitlesEn[index]["alter_source"];
@@ -2574,8 +2592,8 @@ let ReportConfig = {
                         }
                     })
                 }
-				if(!_this.formDataArr[index]){this.formTotal--;return}
-				if(dataJsonObj["company_id"] && !dataJsonObj["company_id"] || !_this.formDataArr[index]){return}
+				//if(!_this.formDataArr[index]){this.formTotal--;return}
+				//if(dataJsonObj["company_id"] && !dataJsonObj["company_id"] || !_this.formDataArr[index]){return}
                 //点击翻译按钮
                 $(".position-fixed").on("click","#translateBtn",(e)=>{
                     $("body").mLoading("show")
@@ -2590,7 +2608,10 @@ let ReportConfig = {
                     	pa.className=formTitleSourceClassName.split("=")[1];
                         url += `?targetlanguage=cht&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}&isTranslate=true`
                     }else{
-                    	 url += `?_random=${Math.random()}&isTranslate=true`
+                    	 pa.targetlanguage="en";
+                    	pa.reportType=_this.rows["report_type"];
+                    	pa.className=formTitleSourceClassName.split("=")[1];
+                        url += `?targetlanguage=en&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}&isTranslate=true`
                     }
 					delete _this.formDataArr[index]["null"]
                     pa.dataJson=JSON.stringify(_this.formDataArr[index]);
@@ -2696,6 +2717,10 @@ let ReportConfig = {
 						delete dataJsonObj["sort_no"]
 						delete dataJsonObj["risk_evaluation"]
 					}
+					if(!dataJsonObj['company_id']){
+						this.formSaveNum++;
+						return;
+					}
                     dataJson[0] = dataJsonObj
                     pa.dataJson=JSON.stringify(dataJson);
                     pa.isTranslate=true;
@@ -2708,10 +2733,10 @@ let ReportConfig = {
                         type:'post',
                         success:(data)=>{
 							this.formSaveNum++;
-							this.formSaveNum=0;
-							//console.log(data)
+							console.log(this.formSaveNum,this.formTotal)
 							if(this.formSaveNum%this.formTotal==0){
 								this.isFormSaved=true;
+								this.formSaveNum=0;
 								if(this.isTableSaved){
 									$("body").mLoading("hide")
 									Public.message("success",data.message);
@@ -2777,6 +2802,10 @@ let ReportConfig = {
                             })
                         }
                     })
+					if(!dataJsonObj['company_id']){
+						this.formCommitNum++;
+						return;
+					}
                     dataJson[0] = dataJsonObj
                     $("body").mLoading("show")
                     var pa={"dataJson":"","sys_language":"","className":""};
@@ -2802,6 +2831,7 @@ let ReportConfig = {
                         success:(data)=>{
 							this.formCommitNum++;
 							//console.log(data)
+							console.log(this.formCommitNum,this.formTotal)
 							if(this.formCommitNum%this.formTotal==0){
 								this.isFormCommited =true;
 								this.formCommitNum=0;
@@ -2831,6 +2861,27 @@ let ReportConfig = {
             })
         },1500)
     },
+	setTranlateTableData(index,allTableData,idArrEn){
+		if(allTableData[index]){
+			allTableData[index].forEach((e,i)=>{
+				//循环表格中的数据，如果有select不翻译
+				//币种不翻译
+				if(e["currency"]) {
+					e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
+				}
+			})
+			console.log("#table"+idArrEn[index] + 'En')
+			$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
+			$("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
+			$("#table"+idArrEn[index] + 'En').find(".moneyCol").each((index,item)=>{
+				if(!$(item).attr("data-field")){
+					//不是表头
+					//console.log($(item))
+					$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
+				}
+			})
+		}
+	},
 	 deleteEmptyProperty(object){
 	  for (var i in object) {
 		var value = object[i];

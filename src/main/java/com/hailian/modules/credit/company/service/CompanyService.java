@@ -373,14 +373,31 @@ public class CompanyService {
 				//股东信息
 				JSONArray partners = null;
 				try {
-                    CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录
+                    CreditCompanyShareholder.dao.deleteBycomIdAndLanguage(companyId, sys_language);//根据公司编码和报告类型删除记录  股东信息
+                    CreditCompanyLegalShareholderDetail.dao.deleteBycomIdAndLanguage(companyId, sys_language);//法人股东详情
+                    CreditCompanyNaturalpersonShareholderDetail.dao.deleteBycomIdAndLanguage(companyId, sys_language);//自然人股东详情
 					partners = json.getJSONObject("Result").getJSONArray("Partners");
 					if(partners !=null && partners.size()>0){
 						List<CreditCompanyShareholder> shareholderlist=new ArrayList<CreditCompanyShareholder>();
+						List<CreditCompanyLegalShareholderDetail> legalShareholderDetailList=new ArrayList<CreditCompanyLegalShareholderDetail>();
+						List<CreditCompanyNaturalpersonShareholderDetail> naturalpersonShareholderDetailList=new ArrayList<CreditCompanyNaturalpersonShareholderDetail>();
 						for(int i=0;i<partners.size();i++){
 							JSONObject partner = (JSONObject)partners.get(i);
 							String name = partner.getString("StockName");//股东
 							String StockType = partner.getString("StockType");//股东类型
+							if("自然人股东".equals(StockType)){
+								CreditCompanyNaturalpersonShareholderDetail natural=new CreditCompanyNaturalpersonShareholderDetail();
+								natural.set("company_id", companyId);
+								natural.set("sys_language", sys_language);
+								natural.set("name", name);
+								naturalpersonShareholderDetailList.add(natural);
+							}else if("法人股东".equals(StockType)){
+								CreditCompanyLegalShareholderDetail legal=new CreditCompanyLegalShareholderDetail();
+								legal.set("company_id", companyId);
+								legal.set("sys_language", sys_language);
+								legal.set("company_name", name);
+								legalShareholderDetailList.add(legal);
+							}
 							String Crawlername=name;
 							if(Crawlername.contains("港澳台") || Crawlername.contains("合资")){
 								try {
@@ -414,6 +431,8 @@ public class CompanyService {
 							shareholderlist.add(shareholderModel);
 						}
 						Db.batchSave(shareholderlist, shareholderlist.size());
+						Db.batchSave(naturalpersonShareholderDetailList, naturalpersonShareholderDetailList.size());
+						Db.batchSave(legalShareholderDetailList, legalShareholderDetailList.size());
 					}
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
