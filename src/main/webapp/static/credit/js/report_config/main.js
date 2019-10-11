@@ -1609,6 +1609,7 @@ let ReportConfig = {
             	tempParam.forEach((item,index)=>{
             		dataJsonObj[item] = this.rows[item]
     			 })
+				 delete dataJsonObj['order_num'];
     			 dataJson.push(dataJsonObj)
 				//设置经营地址接口
 				if(urlTemp.split("*")[0].indexOf('className=CreditCompanyBussinessAddress')!==-1){
