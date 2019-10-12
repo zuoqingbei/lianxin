@@ -205,7 +205,7 @@ let Verify = {
                 console.log('data.rows',data.rows)
                 rows.forEach((item, index) => {
                     //按鈕禁用
-                    if(item.status === '294' || item.status === '298') {
+                    if(item.status === '294' || item.status === '298' || item.status === '308') {
                         $(".analyze_quality").eq(index).addClass('disable');
                         $(".translate_quality").eq(index).addClass('disable');
                     }
