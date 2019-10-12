@@ -178,7 +178,7 @@ let Index = {
                   valign: 'middle',
                 },{
                   title: `处理状态 &nbsp;<i class="fa fa-filter"></i>`,
-                  field: 'statuName',
+                  field: 'statusName',
                   align: 'center',
                   valign: 'middle',
                 
