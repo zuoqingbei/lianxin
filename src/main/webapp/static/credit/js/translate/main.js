@@ -144,18 +144,15 @@ let ReportConfig = {
                         	}
                         }
                         //console.log(mId)
+						//$("#table"+mId).parent().parent().find(".fixed-table-footer").find(".th-inner").eq(2).html("");
                         var h=$("#table"+mId).parent().parent().find(".fixed-table-footer").html();
                         h=h.replace(/<td/g,"<td style='border:none!important'")
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").html(h);
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer")
                         .css({"margin-right":"0px"}).css({"position":"relative"}).css({"top":"-20px"})
                         .css({"display":"block"});
-                       /* var s=$("#table3En").parent().parent().find(".fixed-table-footer").find("td");
-                        $.each(s,function(index,item){
-                        	console.log($(item).html())
-                        })
-                       // console.log($("#table3En").parent().parent().find(".fixed-table-footer").find("td"))
-                        $("#table3En").parent().parent().find(".fixed-table-footer").find("td").css({"border":"none!important"});*/
+						$("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find("tr").eq(0).append('<td style=""><div class="th-inner"></div><div class="fht-cell" style=""></div></td>');
+                       
                         $("#table"+mId+"En").parent().css({"height":"90%"});
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計");
                     }
@@ -622,8 +619,17 @@ let ReportConfig = {
                         if($(item).next().attr("id") && $(item).next().attr("id") === 'xydj') {
                         	//信用等级
                             if(temp.rows.length === 0){return}
-                            let name =$(item).next().find("select").attr("name")
-                            $(item).next().find("select").val(temp.rows[0][name])
+                            let name =$(item).next().find("select").attr("name");
+							let v=temp.rows[0][name];
+                            $(item).next().find("select").val(v);
+							$("#xydjEn").find("select").val(v);
+							 var select = $("#xydjEn").find("select").get(0);  
+							for (var i = 0; i < select.options.length; i++){  
+								if (select.options[i].value == v){  
+									select.options[i].selected = true;  
+									break;  
+								}  
+							}  
                             return;
                         }
                         if($(item).next().hasClass("textarea-module")) {
@@ -703,10 +709,10 @@ let ReportConfig = {
                 }
                 if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
                     //信用等级
-                    let name =$(item).next().find("select").attr("name")
+                    /*let name =$(item).next().find("select").attr("name")
                     console.log(tempData.rows)
                     $(item).next().find("select").val((tempData.rows&&tempData.rows.length>0)?tempData.rows[0][name]:'')
-                    return;
+                    return;*/
                 }
                 if($(item).next().hasClass("textarea-module")) {
                     //无标题多行文本输入框
@@ -821,10 +827,10 @@ let ReportConfig = {
                             }
                             if($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
                                 //信用等级
-                                if(temp.rows.length === 0){return}
+                                /*if(temp.rows.length === 0){return}
                                 let name =$(item).next().find("select").attr("name")
                                 $(item).next().find("select").val(temp.rows[0][name])
-                                return;
+                                return;*/
                             }
                             if($(item).next().hasClass("textarea-module")) {
                                 //无标题多行文本输入框
@@ -2300,7 +2306,7 @@ let ReportConfig = {
                             allTableData[index] = oneTableData
 							//this.total表示所有表格多少行数据
 							console.log(this.isTableTranslated,this.isFormTranslated,this.tableTranlateNum,this.total)
-							this.setTranlateTableData(index,allTableData,idArrEn);
+							//this.setTranlateTableData(index,allTableData,idArrEn);
                             if(this.tableTranlateNum === this.total){
                                 //如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
                             	this.isTableTranslated = true;
@@ -2315,7 +2321,7 @@ let ReportConfig = {
 									this.formTranlateNum = 0  //翻译表单条数计数器
 								}
 //	   							console.log(allTableData)
-                                /*tableTitlesEn.forEach((item,index)=>{
+                                tableTitlesEn.forEach((item,index)=>{
                                     if(allTableData[index]){
                                         allTableData[index].forEach((e,i)=>{
                                             //循环表格中的数据，如果有select不翻译
@@ -2335,7 +2341,7 @@ let ReportConfig = {
                                             }
                                         })
                                     }
-                                })*/
+                                })
                                 addTable();
                             }
 //
@@ -2864,6 +2870,8 @@ let ReportConfig = {
     },
 	setTranlateTableData(index,allTableData,idArrEn){
 		if(allTableData[index]){
+			console.log("#table"+idArrEn[index] + 'En')
+			console.log(allTableData[index])
 			allTableData[index].forEach((e,i)=>{
 				//循环表格中的数据，如果有select不翻译
 				//币种不翻译
@@ -2871,7 +2879,7 @@ let ReportConfig = {
 					e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
 				}
 			})
-			console.log("#table"+idArrEn[index] + 'En')
+			
 			$("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
 			$("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
 			$("#table"+idArrEn[index] + 'En').find(".moneyCol").each((index,item)=>{

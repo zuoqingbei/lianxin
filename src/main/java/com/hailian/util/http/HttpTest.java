@@ -18,6 +18,7 @@ import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
 import com.hailian.util.http.showapi.pachongproxy.IHttpTest;
 import com.hailian.util.http.showapi.pachongproxy.URLAnnotation;
 import com.jfinal.plugin.activerecord.Db;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -270,7 +271,19 @@ public class HttpTest implements IHttpTest {
 	public static void main(String[] args) throws Exception {
 		//getSubsidiaries("大连万达集团股份有限公司","1","31");
 		//searchWide("中国沈阳国际经济技术合作公司和平分公司","1","1","");
-		//getPatent("华为技术有限公司","1","5");
+		try {
+			HttpTest t=new HttpTest();
+			String companyName="中信建设有限责任公司";
+			String PAGESIZE="5";
+			JSONObject courtnotice = t.getCourtNotice(companyName,"1",PAGESIZE);//开庭公告
+			String courtnoticestatus = courtnotice.getString("Result");
+			System.out.println(courtnoticestatus);
+			JSONObject brandandpatent = t.getBrandandpatent(companyName,"1",PAGESIZE);//企业图标
+			String brandandpatentstatus = brandandpatent.getString("Result");
+			System.out.println(brandandpatentstatus);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	public static void getSaicUrl(){

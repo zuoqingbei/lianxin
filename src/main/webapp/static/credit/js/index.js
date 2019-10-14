@@ -291,7 +291,9 @@ let Index = {
             		let now_time = new Date(new Date().getFullYear() + '-' + (new Date().getMonth()+1) + '-' + new Date().getDate()).getTime();
             		let diffValue = now_time - dead_time; //差值
 //            		console.log(diffValue)
-            		if(diffValue > 0) {
+					let changeColor = ['311', '313'].includes(item.status);//客户撤销和报告完成状态时，不需要“过期”--（标红）“即将过期”--（标绿）的状态标注
+					if(!changeColor){
+						if(diffValue > 0) {
             			//已过期
             			//console.log(index)
             			$("#table tr").eq(index+1).addClass("order-dead")
@@ -307,6 +309,8 @@ let Index = {
             			$("#table tr").eq(index+1).addClass("order-ask")
             			$(".fixed-table-body-columns .table tr").eq(index).addClass("order-ask")
             		}
+					}
+            		
             	})
             }
           });

@@ -494,6 +494,7 @@ let OrderDetail = {
                             }) + (param === 'update' ? '&update=true' : '')
                             + (param2 === 'submit' ? '&submit=true' : ''),
                             data => {
+								$("body").mLoading("hide")
                                 if (!data.rows || data.rows.length === 0) {
                                     return
                                 }
@@ -506,9 +507,12 @@ let OrderDetail = {
                                     } else {
                                         Public.message('success', '保存成功！')
                                     }
-                                    setTimeout(function () {
-                                        $('#reportbusiness').click();//触发报告质检菜单跳转到列表
-                                    }, 1500);
+									if (param2 === 'submit') {
+										 setTimeout(function () {
+											$('#reportbusiness').click();//触发报告质检菜单跳转到列表
+										}, 1500);
+									}
+                                   
                                 }
                                 // console.log('$wrap.find("#quality_opinion").val()2', $wrap.find("#quality_opinion").val());
                                 this.qualityOpinionId = data.rows.length > 0 && data.rows[0].id ? data.rows[0].id : '';
@@ -558,11 +562,13 @@ let OrderDetail = {
                     };
                     dealQualityData();
                     $("#save").click(function (e, param) {
+						$("body").mLoading("show")
                         _this.getQualitySelectData('update'); //质检结果
                         dealQualityData('update', param); //质检意见、分数等
 
                     });
                     $("#submit").click(function () {
+						$("body").mLoading("show")
                         $("#save").trigger('click', 'submit');
                     });
                     break;

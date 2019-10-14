@@ -475,7 +475,7 @@ public class CompanyService {
 				}
 				
 			}
-			if("8".equals(reporttype) || "10".equals(reporttype)){
+			if("8".equals(reporttype) || "9".equals(reporttype)){
 			//爬取分支机构(分公司)
 			try{
 				if(branches!=null&&branches.size()>0){

@@ -17,8 +17,10 @@ import org.apache.commons.lang.StringUtils;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.credit.translate.model.TranslateModel;
 import com.hailian.system.dict.DictCache;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.aop.Before;
@@ -155,6 +157,24 @@ public class ReportTranslateController extends BaseProjectController {
 			    	}
 			    	
 				}
+			}
+			if("type_of_enterprise_remark".equals(key)){
+				//企业类型注释
+				if(jsonObject.containsKey("id")&&jsonObject.get("id")!=null){
+					String companyId=jsonObject.get("id")+"";
+					CreditCompanyInfo company=CreditCompanyInfo.dao.findById(companyId);
+					if(company!=null&&company.get("company_type")!=null){
+						SysDictDetail dict=SysDictDetail.dao.findById(company.get("company_type"));
+						if(dict!=null){
+							if("en".equals(targetlanguage)){
+								value=dict.get("detail_content")+"";
+							}else{
+								value=dict.get("detail_remark")+"";
+							}
+						}
+					}
+				}
+				
 			}
 			jsonObject.put(key, value);
 			}

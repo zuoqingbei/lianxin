@@ -95,7 +95,7 @@ public class JFlyFoxUtils {
 
 	// admin:1RHFCLt64uOOViCTzgSaww== test:ldKI9edsQVM=
 	public static void main(String[] args) {
-		String password = "admin123";
+		String password = "12345678";
 		String tmp = passwordEncrypt(password);
 		System.out.println(tmp);
 		System.out.println(passwordDecrypt(tmp));

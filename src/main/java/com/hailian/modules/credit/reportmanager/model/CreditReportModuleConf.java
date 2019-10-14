@@ -150,6 +150,9 @@ public class CreditReportModuleConf extends BaseProjectModel<CreditReportModuleC
 				sql+=" and t.is_detail='0'";
 			}else if(type.equals("3")){//查质检的
 				sql+=" and t.is_quality='0'";
+			}else if (type.equals("5")) {
+				sql+=" and t.is_enter='0' and t.column_name!='transaction_payment_default' ";
+				
 			}
 			sql+=" order by t.sort,t.id";
 			return dao.find(sql,report);

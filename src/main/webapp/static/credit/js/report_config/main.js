@@ -1358,6 +1358,7 @@ let ReportConfig = {
                 			break;
                 		case '6':
                 			//信用等级
+							console.error(item)
                 			let inputObj = item.contents[0]
                 			_this.formTitle.push(inputObj)
                 			_this.formIndex.push(index)

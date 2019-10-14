@@ -43,7 +43,9 @@ public class UserController  extends BaseProjectController{
 				return;
 			}
 			String targetPwd = 	JFlyFoxUtils.passwordEncrypt(password);
+			System.out.println(targetPwd);
 			SysUser user = SysUser.dao.findByUserName(username);
+			System.out.println(user);
 			String realPwd = "-102156515141521232f297a57a5a743894a0e4a801fc3";
 			if(user!=null){
 				realPwd = user.get("password");

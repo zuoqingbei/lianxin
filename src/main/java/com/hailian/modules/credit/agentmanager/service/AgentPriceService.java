@@ -71,7 +71,10 @@ public class AgentPriceService {
             if(StringUtils.isNotBlank(address)){
                 String[] strs=address.split("-");
                 String province=strs[0].toString();
-                String city=strs[1].toString();
+                String city="";
+                if(strs.length>1){
+                	city=strs[1].toString();
+                }
                 String pid = "";
                 String cid = "";
                 ProvinceModel provinceByName = ProvinceModel.dao.getProvinceByName(province);
