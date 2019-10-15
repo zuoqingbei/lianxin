@@ -1049,6 +1049,12 @@ let OrderDetail = {
         if (item.title.small_module_type !== '21') {
             $(".main .table-content").append($wrap);
         }
+        //法人股东详情表格重叠问题
+        if(this.getUrl(item, otherProperty).indexOf('getBootStrapTable?tableName=credit_company_legal_shareholder_detail&className=CreditCompanyLegalShareholderDetail&')!==-1 ){
+
+            $($($wrap.find(".module-content")[0]).find('table')[0]).css('width','200%');
+            $($($wrap.find(".module-content")[0]).find('table')[0]).css('max-width','200%');
+        }
         // 绑数
         $.post(this.getUrl(item, otherProperty), {selectInfo: this.selectInfo}, (data) => {
                 if (data.rows) {
