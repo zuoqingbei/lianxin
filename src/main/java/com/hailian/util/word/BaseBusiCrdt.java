@@ -333,6 +333,10 @@ public class BaseBusiCrdt extends BaseWord{
                 if("business_date_end".equals(columnName)){
                 	System.out.println(111);
                 }
+                String k = conf.get("word_key") + "";
+                if("profitablity_sumup".equals(k)||"liquidity_sumup".equals(k)||"leverage_sumup".equals(k)){
+                	s+="&tableName="+tableName+"&className="+clName;
+                }
                 if (s == null || "".equals(s)) {
                     continue;
                 }

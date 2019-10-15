@@ -107,9 +107,7 @@ public class BaseWord {
         System.out.println(bd);*/
     	String[] a = "|w ".split("\\|");
     	
-    	for (int i=0;i<a.length;i++) {
-    		System.out.println(i+a[i]);
-		}
+    	System.out.println(parseUrl("getSelete?type=profitablity_sumup&selectedId=1020&disPalyCol=detail_name&tableName=credit_company_subtables_profitablity&className=CreditCompanySubtablesProfitablity"));
     }
     private static List<String> mergerKeyList = new ArrayList<>();
     private static List<String> mergerValueList = new ArrayList<>();

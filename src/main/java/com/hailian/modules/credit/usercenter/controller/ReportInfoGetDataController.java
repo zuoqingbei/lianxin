@@ -280,6 +280,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         	return new ArrayList<>();
         }
         CreditReportModuleConf confModel = CreditReportModuleConf.dao.findById(confId);
+        List<CreditReportModuleConf> children= CreditReportModuleConf.dao.find("select * from credit_report_module_conf where "
+        		+ "parent_temp=? and field_type='select' and column_name is not null and del_flag=0 ORDER BY sort asc,id asc",confId);
         if(confModel==null) {return null;}
         getSource = confModel.getStr("get_source");
 
@@ -383,6 +385,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 }
                 dictIdToString(rows, selectInfoMap,tableName);
             }
+            List<Map<Object, Object>> selectInfoMap =new ArrayList<Map<Object,Object>>();
+            for(CreditReportModuleConf m:children){
+            	String column=m.get("column_name")+"";
+            	Map<Object, Object> map=new HashMap<Object, Object>();
+            	map.put(m.get("get_source"), column);
+            	selectInfoMap.add(map);
+            }
+            if (selectInfoMap.size()>0) {
+                // 解析前端传入的字符串
+                // 将id转化为字典表中对应的字符串
+                dictIdToString2(rows, selectInfoMap,tableName);
+            }
+            
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             renderJson(new ResultType(0, "类文件未找到异常!"));

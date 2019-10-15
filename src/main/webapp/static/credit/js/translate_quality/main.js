@@ -914,7 +914,7 @@ let ReportConfig = {
                         options = data.selectStr
                     }
                 })
-                cw_bottom_html += `<div class="bottom-html"><div class="cw-bottom p-4">
+               /** cw_bottom_html += `<div class="bottom-html"><div class="cw-bottom p-4">
     								<label class="control-label">${this_content[10].temp_name}</label>
     								<select disabled = 'disabled' class="form-control my-3 ${this_content[10].column_name}" id="${this_content[10].column_name}cw" name="${this_content[10].column_name}">${options}</select>
     								<textarea disabled = 'disabled' class="form-control ${this_content[11].column_name}" id="${this_content[11].column_name}cw" name="${this_content[11].column_name}" placeholder="${this_content[11].place_hold}"></textarea>
@@ -933,7 +933,7 @@ let ReportConfig = {
     								<label class="control-label">${this_content[16].temp_name}</label>
     								<input disabled = 'disabled' class="form-control my-3 ${this_content[16].column_name}" id="${this_content[16].column_name}cw" name="${this_content[16].column_name}" />
     								<textarea disabled = 'disabled' class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
-    							 </div></div>`
+    							 </div></div>`**/
             } else {
                 let addtext = cw_title[1].place_hold
                 let conf_id = cw_title[0].id
@@ -1189,10 +1189,13 @@ let ReportConfig = {
                                 _this.dsAlterSource = item.title.alter_source;
                                 contentHtml += `<div class="bg-f pb-4 mb-3 gjds"><a class="l-title dsModal" name="anchor${item.title.id}" id="titleDs${index}">${item.title.temp_name}</a>`
                             } else {
-                                _this.cwGetSource = item.title.get_source;
-                                _this.cwAlterSource = item.title.alter_source;
-                                _this.cwDeleteSource = item.title.remove_source;
-                                contentHtml += `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+								if(item.title.temp_name!='Key Financial Items'){
+									_this.cwGetSource = item.title.get_source;
+									_this.cwAlterSource = item.title.alter_source;
+									_this.cwDeleteSource = item.title.remove_source;
+									contentHtml += `<div class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwModal" name="anchor${item.title.id}" id="titleCw${index}">${item.title.temp_name}</a>`
+								}
+                                
                             }
                         } else if (smallModileType !== '-2' && smallModileType !== '5') {
                             contentHtml += `<div class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="title${index}">${item.title.temp_name}</a>`
@@ -1503,7 +1506,7 @@ let ReportConfig = {
 
 
                     let item_en = modulesToEn[index]
-                    if (!item_en || !item_en.title.temp_name || item_en.title.temp_name.includes('质检意见')) {
+                    if (!item_en || !item_en.title.temp_name ||item_en.title.temp_name=='Key Financial Items'|| item_en.title.temp_name.includes('质检意见')) {
                         return
                     }
                     let smallModileTypeEn = item_en.smallModileType
@@ -1514,7 +1517,10 @@ let ReportConfig = {
 //                		_this.cwGetSource = item.title.get_source;
 //                		_this.cwAlterSource = item.title.alter_source;
 //                		_this.cwDeleteSource = item.title.remove_source;
-                        contentHtml += `<div data-qualityId="${item.title.id}" class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
+						if(item.title.temp_name!='Key Financial Items'){
+							contentHtml += `<div data-qualityId="${item.title.id}" class="bg-f pb-4 mb-3 gjcw"><a class="l-title cwmodal" name="anchor${item.title.id}" id="titleCwEn${index}">${item_en.title.temp_name}</a>`
+						}
+                        
                     } else if (smallModileTypeEn !== '-2' && smallModileTypeEn !== '5' && smallModileTypeEn !== '2') {
                         contentHtml += `<div data-qualityId="${item.title.id}" class="bg-f pb-4 mb-3"><a class="l-title" name="anchor${item.title.id}" id="titleEn${index}">${item_en.title.temp_name}</a>`
                     }

@@ -419,7 +419,66 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			}
 		}
 	}
-	
+	public static void dictIdToString2(List<BaseProjectModel> rows,List<Map<Object,Object>>  selectInfoMap,String className){
+		for (Map<Object, Object> entry : selectInfoMap) {
+			for (Object key : entry.keySet()) {
+				//将字典id转化
+				String selectSource = (""+key).trim();
+				if(StringUtils.isNotBlank(selectSource)&&selectSource.split("\\?").length>1){
+						String columnName = (""+(entry.get(key))).trim();
+						String[] data=selectSource.split("\\?")[1].split("&");
+						String type ="";
+						String disPalyCol = "";
+						for(String s:data){
+							if(s.startsWith("disPalyCol")){
+								disPalyCol=s.split("=")[1];
+							}
+							if(s.startsWith("type")){
+								type=s.split("=")[1];
+							}
+						}
+						for (BaseProjectModel model : rows) {
+							
+							if("country".equals(type)) {
+								String value ="";;
+								String flagStr = "name";
+								if("detail_name_en".equals(disPalyCol)) {
+									flagStr += "_en";
+								}
+								
+								value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id='"+  model.get(columnName) +"'");
+								if(StrUtils.isEmpty(value)) {
+									columnName =countryColumn.get(className);
+									value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id='"+  model.get(columnName) +"'");
+								}
+								model.put(columnName+"_dictname",value==null?"":value);
+							}else {
+								if(columnName.contains("id_type")){
+									System.out.println("id_type");
+								}
+								String targetValue =  model.get(columnName)!=null? model.get(columnName)+"" : "";
+								if(!StrUtils.isEmpty(targetValue)) {
+									String a = "";
+									String[] tempStrs = targetValue.split("\\$");
+									if(tempStrs!=null) {
+										for (String tempStr : tempStrs) {
+											if(!StrUtils.isEmpty(tempStr)) {
+												String finalValue = DictCache.getValueByCode(type, tempStr, disPalyCol);
+												if(finalValue!=null)
+													a += ","+finalValue;
+											}
+										}
+									}
+									model.put(columnName+"_dictname",a.length()>0?a.substring(1,a.length()):"");
+								}else {
+									model.put(columnName+"_dictname","");
+								}
+							}
+						}
+				}
+			}
+		}
+	}
 	/**
 	 * 判断是否是公司主表
 	 */

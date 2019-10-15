@@ -795,7 +795,7 @@ let ReportConfig = {
     									<!-- 上传下载按钮 -->
     									<div class="btn-group">
     										<button class="btn btn-default mr-3 cwDown" >${this_content[2].temp_name}</button>
-    										<button class="btn btn-default mr-3 cwDownData" style="background-color: #37485a;color:#fff;">${this_content[17].temp_name}</button>
+    										<button class="btn btn-default mr-3 cwDownData" style="background-color: #37485a;color:#fff;">${this_content[10].temp_name}</button>
 						    				<button class="aa-btn btn btn-primary cwUp" style="position:relative">
 						    					<form class="uploadForm" enctype="multipart/form-data" action="" method="POST" >
 						    						<input style="opacity:0;cursor:pointer;width:100%;height:100%;position:absolute;left:0;top:0" type="file" name="file" class="fileInp">
@@ -820,7 +820,7 @@ let ReportConfig = {
     									<input class="form-control dateInp2"  id="${this_content[7].column_name}cw" type="text" name=${this_content[7].column_name}  placeholder=${this_content[7].place_hold} />
     								</div>
     							</div>`
-    			let tempUrl1 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[10]['get_source'];
+    			/**let tempUrl1 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[10]['get_source'];
     			let tempUrl2 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[12]['get_source'];
     			let tempUrl3 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[14]['get_source'];
     			let tempUrl4 = BASE_PATH+ 'credit/front/ReportGetData/' +this_content[16]['get_source'];
@@ -879,7 +879,8 @@ let ReportConfig = {
 								</div></div>`
 								//<textarea class="form-control ${this_content[17].column_name}" id="${this_content[17].column_name}cw" name="${this_content[17].column_name}" placeholder="${this_content[17].place_hold}"></textarea>
 						})
-    		}else {
+    		**/
+			}else {
     			let addtext = cw_title[1].place_hold
     			let conf_id = cw_title[0].id
 //    			console.log(item,this_content,conf_id)
@@ -975,7 +976,7 @@ let ReportConfig = {
     		InitObj.initCwTable(tableCwId,cw_contents[1],_this.cwGetSource,_this.cwAlterSource,_this.cwDeleteSource,_this.rows)
     		InitObj.cwModalCompute(_this.cwAlterSource)
     		InitObj.downLoadCw(cw_contents[0][2].alter_source,_this.rows);
-			InitObj.downLoadCwData(cw_contents[0][17].alter_source,_this.rows);
+			InitObj.downLoadCwData(cw_contents[0][10].alter_source,_this.rows);
 			InitObj.upLoadCw(cw_contents[0][3].alter_source,_this.rows,_this.cwGetSource,_this.cwAlterSource,tableCwId);
 			InitObj.addNewCwModal(_this.cwConfigAlterSource,_this.rows);
     	},0)
@@ -1731,6 +1732,7 @@ let ReportConfig = {
     			InitObj.saveCwConfigInfo(_this.cwConfigAlterSource,_this.rows);
     			InitObj.saveDsConfigInfo(_this.dsConfigAlterSource,_this.rows);
     			$("#save").addClass("disabled")
+				
     			 let arr = Array.from($("#title"+item))
     			 arr.forEach((item,index)=>{
     				 if($(item).siblings(".radio-con").length !== 0) {
