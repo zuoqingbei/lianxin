@@ -127,10 +127,10 @@ let ReportConfig = {
                     rows.forEach((item, index) => {
                         //增加一列序号
                         item["order_num"] = index + 1
-                        if (item.brand_url) {
-                            let url = item.brand_url.includes("http") ? item.brand_url : `http://${item["brand_url"]}`
-                            item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
-                        }
+                        // if (item.brand_url) {
+                        //     let url = item.brand_url.includes("http") ? item.brand_url : `http://${item["brand_url"]}`
+                        //     item["brand_url"] = `<img src="${url}" style="height:40px;width:40px">`
+                        // }
                     })
                     $tableEn.bootstrapTable("load", rows)
                     setTimeout(() => {
