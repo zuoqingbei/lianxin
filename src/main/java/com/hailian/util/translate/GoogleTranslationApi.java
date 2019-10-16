@@ -13,7 +13,7 @@ public class GoogleTranslationApi {
 	    private static int i = 0;
 	    private static Querier<GoogleTranslatorHtml> querierTrans = null;
 	    public static void main(String[] args) {
-	         String result = translateCht("出资者/股东");
+	         String result = translateEnglish("该评估为揭示目标公司付款习惯和支付能力作参考。基于三个重要因素：交易支付历史（通过询问现阶段目标公司供货商）、我方收集目标公司的不正当支付记录和债务追讨记录。");
 	         System.out.println(result);
 	    }
 	    public static String translateEnglish(String text){

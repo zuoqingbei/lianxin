@@ -106,6 +106,7 @@ public final class GoogleTranslatorHtml extends AbstractTranslator
     JsonNode jsonNode1 = jsonNode.get(0);
     String replaceText = jsonNode1.asText();
     replaceText = replaceText.replaceAll("<i>[\\s\\S]*?</i>", "").replaceAll("<b>", "").replaceAll("</b>", "");
+    replaceText=replaceText.replaceAll("&#39;", "'");
     return replaceText;
   }
 
