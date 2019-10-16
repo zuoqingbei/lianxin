@@ -61,6 +61,9 @@ let ReportConfig = {
             }
 //          // 定义一个数据用于存放向后台传递的参数； 
             let selectInfo = []
+            let selectInfoEn = []
+            let infoObj = {};
+            let infoEnObj = {};
             //console.log("======",titles)
             //console.log("++++++",contents)
             //console.log("#######",_this.selectInfoObj)
@@ -68,7 +71,21 @@ let ReportConfig = {
             	//if(+_this.selectInfoObj["parent_temp"] === titles[index]["id"]) {
                 //哪个表格有select，就传
                 //delete _this.selectInfoObj["parent_temp"]
-             selectInfo.push(_this.selectInfoObj)
+            for(let item in this.selectInfoObj){
+                if(item.indexOf('_en')!==-1){
+                    infoEnObj[item] = this.selectInfoObj[item];
+                    var i = item.split('_en')[0]
+                    infoObj[i] = this.selectInfoObj[item];
+                }else{
+                    infoObj[item] = this.selectInfoObj[item];
+                    var i = item+'_en';
+                    infoEnObj[i] = this.selectInfoObj[item];
+
+                }
+            }
+             // selectInfo.push(_this.selectInfoObj)
+             selectInfo.push(infoObj)
+             selectInfoEn.push(infoEnObj)
                //}
             let tempRows = []
             //合计
@@ -217,7 +234,7 @@ let ReportConfig = {
                 url:urlEN, // 请求后台的URL（*）
                 method : 'post', // 请求方式（*）post/get
                 queryParams:function(param){
-                    param.selectInfo = JSON.stringify(selectInfo)
+                    param.selectInfo = JSON.stringify(selectInfoEn)
                     return param
                 },
                 sidePagination: 'server',
@@ -546,15 +563,18 @@ let ReportConfig = {
             <div class="modal-body" style="align-items:center">
                	<div class="form-group my-3">
                		<label class="control-label mb-1">错误的翻译结果</label>
-               		<input type="text" class="form-control wrongEn">
+               		<!--<input type="text" class="form-control wrongEn">-->
+               		<textarea class="form-control wrongEn" rows="4"></textarea>
                	</div>
                	<div class="form-group my-3">
                		<label class="control-label mb-1">正确的翻译结果</label>
-               		<input type="text" class="form-control correctEn">
+               		<!--<input type="text" class="form-control correctEn">-->
+               		<textarea class="form-control correctEn" rows="4"></textarea>
                	</div>
                	<div class="form-group my-3">
                		<label class="control-label mb-1">正确的中文简体</label>
-               		<input type="text" class="form-control correctCh">
+               		<!--<input type="text" class="form-control correctCh">-->
+               		<textarea class="form-control correctCh" rows="4"></textarea>
                	</div>
             </div>
             <div class="modal-footer" style="justify-content:center">
