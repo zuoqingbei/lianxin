@@ -1916,13 +1916,24 @@ let ReportConfig = {
             					</table>
             					</div>`
                             }else if(!item_en.title.temp_name.includes('质检意见')){
-                                contentHtml += `<div class="table-content1" style="background:#fff">
-            					<table id="table${index}En"
-            					data-toggle="table"
-            					style="position: relative;table-layout: fixed"
-            					>
-            					</table>
-            					</div>`
+                                if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information'))){
+                                    contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
+            					                        <table id="table${index}En"
+            					                            data-toggle="table"
+            					                            style="position: relative;"
+            					                        >
+            					                        </table>
+            					                    </div>`
+                                }else{
+                                    contentHtml += `<div class="table-content1" style="background:#fff">
+            					                        <table id="table${index}En"
+            					                        data-toggle="table"
+            					                        style="position: relative; table-layout: fixed"
+            					                        >
+                                                        </table>
+                                                    </div>`
+                                }
+
                             }
 
                             break;
