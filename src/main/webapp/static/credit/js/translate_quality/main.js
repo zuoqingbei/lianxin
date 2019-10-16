@@ -104,6 +104,10 @@ let ReportConfig = {
             if (!contentsEn) {
                 return
             }
+			if(urlEN.indexOf("CreditCompanyCreditlevelTableDict")!=-1){
+				urlEN=urlEN.replace('credit_company_creditlevel_table_dict','credit_company_creditlevel_table_dict_en');
+				urlEN=urlEN.replace('CreditCompanyCreditlevelTableDict','CreditCompanyCreditlevelTableDictEn');
+			}
             $tableEn.bootstrapTable({
                 height: 300,
                 columns: _this.tableColumns(contentsEn, 'en', index, _this.idArrEn[index]),
@@ -463,8 +467,18 @@ let ReportConfig = {
                         }
                         if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydj' && temp.rows[0]) {
                             //信用等级
-                            let name = $(item).next().find("input").attr("name")
-                            $(item).next().find("input").val(temp.rows[0][name])
+							//console.error(temp.rows[0])
+							let name = $(item).next().find("input").attr("name")
+							let url = BASE_PATH + 'system/dict/getDictName?id='+temp.rows[0][name];
+							$.ajax({
+								type:'get',
+								url,
+								async:false,
+								dataType:'json',
+								success:(data)=>{
+										 $(item).next().find("input").val(data.detail_name);
+								}
+							})
                             return;
                         }
                         if ($(item).next().hasClass("textarea-module")) {
@@ -542,7 +556,16 @@ let ReportConfig = {
                 if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
                     //信用等级
                     let name = $(item).next().find("input").attr("name")
-                    $(item).next().find("input").val(tempData[name])
+					let url = BASE_PATH + 'system/dict/getDictName?id='+tempData[name];
+					$.ajax({
+						type:'get',
+						url,
+						async:false,
+						dataType:'json',
+						success:(data)=>{
+								 $(item).next().find("input").val(data.detail_name_en);
+						}
+					})
                     return;
                 }
                 if ($(item).next().hasClass("textarea-module")) {
@@ -642,7 +665,16 @@ let ReportConfig = {
                     if ($(item).next().attr("id") && $(item).next().attr("id") === 'xydjEn') {
                         //信用等级
                         let name = $(item).next().find("input").attr("name")
-                        $(item).next().find("input").val(temp.rows[0][name])
+						let url = BASE_PATH + 'system/dict/getDictName?id='+temp.rows[0][name];
+							$.ajax({
+								type:'get',
+								url,
+								async:false,
+								dataType:'json',
+								success:(data)=>{
+									$(item).next().find("input").val(data.detail_name_en);
+								}
+							})
                         return;
                     }
                     if ($(item).next().hasClass("textarea-module")) {
@@ -1395,6 +1427,7 @@ let ReportConfig = {
                             let inputObj = item.contents[0]
                             _this.formTitle.push(inputObj)
                             _this.formIndex.push(index)
+							//console.error(inputObj)
                             contentHtml += `<div class="form-group form-inline p-4 mx-3" id="xydj">
 					                          <label >${inputObj.temp_name}</label>
 					                          <input disabled="disabled" type="text" id=${inputObj.column_name} name=${inputObj.column_name} class="form-control mx-3" placeholder="" aria-describedby="helpId" style="border-color:#1890ff">
@@ -1719,7 +1752,7 @@ let ReportConfig = {
                             _this.contentsArrEn.push(tableContents)
                             _this.titleEn.push(item_en.title)
                             contentHtml += `<div class="table-content1" style="background:#fff">
-			                				<table id="table${index}"
+			                				<table id="table${index}En"
 			                				style="position: relative"
 			                				>
 			                				</table>

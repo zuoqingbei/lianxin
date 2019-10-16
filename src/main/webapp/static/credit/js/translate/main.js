@@ -71,11 +71,6 @@ let ReportConfig = {
              selectInfo.push(_this.selectInfoObj)
                //}
             let tempRows = []
-			if(urlTemp=='getBootStrapTable?tableName=credit_company_naturalperson_shareholder_detail&className=CreditCompanyNaturalpersonShareholderDetail*company_id'){
-			console.log(urlEN)
-			console.log($tableEn)
-			//debugger;
-		}
             //合计
             if(titles[index]["get_source"].includes("credit_company_shareholder")) {
                 $table.bootstrapTable({
@@ -212,6 +207,10 @@ let ReportConfig = {
                     }
                 });
             }
+			if(urlEN.indexOf("CreditCompanyCreditlevelTableDict")!=-1){
+				urlEN=urlEN.replace('credit_company_creditlevel_table_dict','credit_company_creditlevel_table_dict_en');
+				urlEN=urlEN.replace('CreditCompanyCreditlevelTableDict','CreditCompanyCreditlevelTableDictEn');
+			}
             $tableEn.bootstrapTable({
                 height:300,
                 columns: _this.tableColumns(contentsEn,'en',index,_this.idArrEn[index]),
@@ -454,7 +453,6 @@ let ReportConfig = {
                         break;
                     case 'select':
                         if(!ele.get_source) {return}
-                        console.log("我是ele:",ele)
                         let url = BASE_PATH + 'credit/front/ReportGetData/' + ele.get_source
                         ele.get_source = ele.get_source.replace(new RegExp(/&/g),"$")
                         _this.selectInfoObj[ele.get_source] = ele.column_name
@@ -2340,7 +2338,7 @@ let ReportConfig = {
 								}
 //	   							console.log(allTableData)
                                 tableTitlesEn.forEach((item,index)=>{
-                                    if(allTableData[index]){
+                                    if(allTableData[index]&&index!=9){
                                         allTableData[index].forEach((e,i)=>{
                                             //循环表格中的数据，如果有select不翻译
                                             //币种不翻译

@@ -612,6 +612,28 @@ public class BaseBusiCrdt extends BaseWord{
         List<String> excelPath = new ArrayList<>();
         List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
         if(finanConfList!=null && finanConfList.size()>0) {
+        	boolean hasBig=false;
+        	boolean hasFinancial=false;
+        	for (CreditCompanyFinancialStatementsConf financialConf : finanConfList) {
+                String finanId = financialConf.getInt("id") + "";
+                int realFinanceTypes = financialConf.getInt("type") ;
+            	List<CreditCompanyFinancialEntry> entryList= CreditCompanyFinancialEntry.dao.find("select * from credit_company_financial_entry where conf_id=?"
+            			+ " and( begin_date_value !='0' or end_date_value!='0') and del_flag=0 order by sort_no,id ",
+				  Arrays.asList(new String[] {finanId}).toArray());
+            	 map.put("financial", new MiniTableRenderData(null));
+                 map.put("bigFinancial", new MiniTableRenderData(null));
+                 if(entryList!=null&&entryList.size()>0){
+                	 if(realFinanceTypes==3||realFinanceTypes==4) {
+                		 //大数
+                		 hasBig=true;
+                	 }else {
+                		 hasFinancial=true;
+                	 }
+                 }
+            }
+        	if(!hasBig&&!hasFinancial){
+        		 hasFinancial=true;
+        	}
             for (CreditCompanyFinancialStatementsConf financialConf : finanConfList) {
                 String begin = financialConf.get("date1");
                 String end = financialConf.get("date2");
@@ -624,7 +646,15 @@ public class BaseBusiCrdt extends BaseWord{
                     if(financeType!=-1) {break;}
                 }*/
                //word里财务模块生成
-               financial(financialConf, map,reportType);
+              //财务-表格
+                if((realFinanceTypes==3||realFinanceTypes==4)) {
+                	//大数
+                	if(hasBig)
+                	 financial(financialConf, map,reportType);
+                }else{
+                	if(hasFinancial)
+                	 financial(financialConf, map,reportType);
+                }
               //生成财务报告EXCEL
                String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
                excelPath.add(expath);

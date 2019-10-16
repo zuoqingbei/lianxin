@@ -207,7 +207,17 @@ let OrderDetail = {
                                         $(this).children().eq(data.rows[0][column_name] - 1).prop('checked', true);
                                     } else {
                                         $(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
+										
+										if(column_name=='profitablity_sumup'||column_name=='liquidity_sumup'
+										||column_name=='leverage_sumup'||column_name=='overall_financial_condition_sumup'){
+											if(data.rows[0][column_name+"_dictname"]==''){
+												$(this).text(Public.textFilter(data.rows[0][column_name], 'null'));
+											}else{
+												$(this).text(Public.textFilter(data.rows[0][column_name+"_dictname"], 'null'));
+											}
+										}
                                     }
+									
                                 });
                                 $wrap.find('div.moneyCol [data-column_name]').text(function () {
                                     return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');
@@ -218,6 +228,7 @@ let OrderDetail = {
 								 $("span[data-column_name='transaction_payment_default']").prev().text('');
 								 $("span[data-column_name='transaction_payment_default']").parent().removeClass("col-md-4");
 								}
+								
                             } else {
                                 console.warn(item.title.temp_name + '-表单-没有返回数据！')
                             }

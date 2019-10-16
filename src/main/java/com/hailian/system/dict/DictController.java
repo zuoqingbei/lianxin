@@ -20,7 +20,12 @@ public class DictController extends BaseProjectController {
 	public void index() {
 		list();
 	}
-
+	public void getDictName(){
+		String id = getPara("id", "");
+		SysDictDetail d=new SysDictDetail();
+		d=SysDictDetail.dao.findById(id);
+		renderJson(d);
+	}
 	public void list() {
 		SysDictDetail attr = getModelByAttr(SysDictDetail.class);
 		StringBuffer sql = new StringBuffer(" from sys_dict_detail t,sys_dict d where t.dict_type = d.dict_type  and   t.del_flag=0");

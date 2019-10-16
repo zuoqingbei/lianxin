@@ -164,7 +164,7 @@ public class ReportTranslateController extends BaseProjectController {
 					String companyId=jsonObject.get("id")+"";
 					CreditCompanyInfo company=CreditCompanyInfo.dao.findById(companyId);
 					if(company!=null&&company.get("company_type")!=null){
-						SysDictDetail dict=SysDictDetail.dao.findById(company.get("company_type"));
+						SysDictDetail dict=SysDictDetail.dao.findById(company.get("company_type")+"");
 						if(dict!=null){
 							if("en".equals(targetlanguage)){
 								value=dict.get("detail_content")+"";

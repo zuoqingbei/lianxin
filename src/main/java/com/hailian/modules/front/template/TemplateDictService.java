@@ -424,6 +424,12 @@ public class TemplateDictService extends BaseService {
         return sb.toString();
     }
 	
-
+    public String getSysDictName(String id,String showColumnName) {
+        SysDictDetail d=SysDictDetail.dao.findById(id);
+        if(d!=null){
+        	return d.get("showColumnName")+"";
+        }
+        return "";
+    }
 	
 }

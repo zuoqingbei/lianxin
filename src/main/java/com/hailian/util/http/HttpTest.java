@@ -195,7 +195,7 @@ public class HttpTest implements IHttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/CourtAnnoV4/SearchCourtNotice?key="+qichacha_key+"&pageSize="+pageSize+"&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtAnnoV4/SearchCourtNotice?key="+qichacha_key+"&pageSize="+pageSize+"&searchKey="+conpanyName+"&isExactlySame=true&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -220,7 +220,7 @@ public class HttpTest implements IHttpTest {
 		if(StringUtils.isBlank(pageIndex)){
 			pageIndex="1";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/tm/Search?key="+qichacha_key+"&pageSize="+pageSize+"&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/tm/SearchByApplicant?key="+qichacha_key+"&pageSize="+pageSize+"&keyword="+conpanyName+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
@@ -848,7 +848,7 @@ public class HttpTest implements IHttpTest {
 		if(StringUtils.isEmpty(pageSize)){
 			pageSize="30";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/ECIRelationV4/SearchInvestment?key="+qichacha_key+"&keyWord="+CompanyName+"&pageSize="+pageSize+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/ECIRelationV4/GetInvestmentList?key="+qichacha_key+"&keyWord="+CompanyName+"&pageSize="+pageSize+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);
