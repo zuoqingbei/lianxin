@@ -265,8 +265,18 @@ let InitObj = {
 			let cwModals = Array.from($(".gjcw"));
 			//财务计算
 			let _this = this
+			let _index = 0;
+			$('label').each(function () {
+				if($(this).text()==='营业收入统计时间段'){
+					// console.log($($(this).next('input')[0]).attr('id'))
+					_index = $($(this).next('input')[0]).attr('id').split('_')[6];
+				}
+			})
 			cwModals.forEach((seft,i)=>{
 				$(seft).find("table").on("blur","input[type='number']",(e)=>{
+					$('#total_assets_'+_index).val($($('.class4_num')[0]).val());
+					$('#period_for_equity_of_stockholder_'+_index).val($($('.class6')[0]).val());
+					$('#business_income_'+_index).val($($('.class7_num')[0]).val());
 					// console.log('计算开始-----------------')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")
@@ -451,6 +461,9 @@ let InitObj = {
 					// }
 				})
 				$(seft).find("table").on("blur","input[type='text']",(e)=>{
+					$('#total_assets_'+_index).val($($('.class4_num')[0]).val());
+					$('#period_for_equity_of_stockholder_'+_index).val($($('.class6')[0]).val());
+					$('#business_income_'+_index).val($($('.class7_num')[0]).val());
 					// console.log('调用接口修改数据')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")

@@ -602,11 +602,24 @@ let ReportConfig = {
 				    	}
 				 }
 			 })
-	    	
     	
     	
     	})
-    	
+		//行业情况的模块行业代码填写完之后报告摘要的行业代码联动
+		let index1 = 0;
+		let index2 = 0;
+		$('label').each(function () {
+			if($(this).text()==='营业收入统计时间段'){
+				// console.log($($(this).next('input')[0]).attr('id'))
+				index1 = $($(this).next('input')[0]).attr('id').split('_')[6];
+			}else if($(this).text()==='行业名称'){
+				console.log($($(this).next('input')[0]).attr('id').split('_'))
+				index2 = $($(this).next('input')[0]).attr('id').split('_')[2];
+			}
+		})
+		$('#industry_code_'+index2).blur((e)=>{
+			$('#industry_code_'+index1).val($(e.target).val());
+		})
     },
     tabChange(){
         /**tab切换事件 */
