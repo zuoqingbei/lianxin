@@ -2355,6 +2355,7 @@ let ReportConfig = {
                             		this.isFormTranslated=false;
 									this.tableTranlateNum = 0   //翻译表格条数计数器
 									this.formTranlateNum = 0  //翻译表单条数计数器
+									$("#save").trigger("click");
 								}
 //	   							console.log(allTableData)
                                 tableTitlesEn.forEach((item,index)=>{
@@ -2684,6 +2685,7 @@ let ReportConfig = {
                                 		this.isFormTranslated=false;
 										this.tableTranlateNum = 0 ;
 										this.formTranlateNum = 0;
+										$("#save").trigger("click");
                     				}
                     				
                     			}
@@ -2760,7 +2762,7 @@ let ReportConfig = {
 						delete dataJsonObj["sort_no"]
 						delete dataJsonObj["risk_evaluation"]
 					}
-					if(!dataJsonObj['company_id']){
+					if(!dataJsonObj['company_id_en']){
 						this.formSaveNum++;
 						return;
 					}

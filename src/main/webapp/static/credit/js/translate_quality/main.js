@@ -224,7 +224,7 @@ let ReportConfig = {
                                             if(lang=="ch"){
                                                 total = '合计'
                                             }else{
-                                                total = '合计'
+                                                total = 'Total'
                                             }
 
                                         }else if(ele.column_name !== 'sh_name') {

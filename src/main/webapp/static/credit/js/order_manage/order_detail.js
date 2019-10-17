@@ -1037,7 +1037,8 @@ let OrderDetail = {
         }
         // 有图表的取截止时间
         if (item.smallModileType === '11') {
-            $wrap.find(".module-content").append(`<h4>${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span></h4>`);
+            /*$wrap.find(".module-content").append(`<h4>${this.english ? 'as of: ' : '截止时间'}：<span class="asOf"></span></h4>`);*/
+			$wrap.find(".module-content").append(`<h4>${'截止时间'}：<span class="asOf"></span></h4>`);
             $.get(this.getUrl(item, 'remark'), (data) => {
                 if (data.rows && data.rows.length > 0) {
                     $wrap.find('.asOf').text(`${data.rows[0] ? data.rows[0].date : ''}`);

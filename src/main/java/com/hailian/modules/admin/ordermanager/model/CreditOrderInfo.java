@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.api.constant.RoleCons;
 import com.hailian.modules.credit.settle.SettleController;
 import com.hailian.system.rolemenu.SysRoleMenu;
@@ -983,7 +984,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		StringBuffer fromSql = new StringBuffer();
 		//参数集合
 		List<Object> params = new ArrayList<Object>();
-			selectSql.append(" select c.*,c.speed as speedid,c.country as countryid, ");
+			selectSql.append(" select DISTINCT c.*,c.speed as speedid,c.country as countryid, ");
 			selectSql.append(" s1.name AS country, ");
 			selectSql.append(" s2.name AS reportType, ");
 			selectSql.append(" s2.info_language, ");
@@ -1149,7 +1150,18 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			fromSql.append(" order by ").append(orderBy).append(",c.ID desc ");
 		}
 		String selectSqlStr = selectSql.toString();
-		return CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr ,fromSql.toString(), params.toArray());
+		Page<CreditOrderInfo> pager = CreditOrderInfo.dao.paginate(new Paginator(pageNumber, pagerSize), selectSqlStr ,fromSql.toString(), params.toArray());
+		for(CreditOrderInfo m:pager.getList()){
+			if(ReportTypeCons.BUSI_EN.equals(m.get("report_type")+"")){
+				//商业报告英文 将company_id_en替换
+				String orderId=m.get("id")+"";
+				CreditCompanyInfo com=CreditCompanyInfo.dao.findFirst("SELECT * from credit_company_info where order_id=? and sys_language='612' and del_flag=0", orderId);
+				if(com!=null){
+					m.put("company_id_en", com.get("id")+"");
+				}
+			}
+		}
+		return pager;
 	}
 	/**
 	 * 

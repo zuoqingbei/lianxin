@@ -4,21 +4,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.credit.notice.model.NoticeLogModel;
-import com.hailian.modules.credit.notice.model.NoticeModel;
-import com.hailian.util.DateUtils;
+import net.sf.json.JSONArray;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.component.base.BaseProjectModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyForNote;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtablesLeverage;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtablesLiquidity;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtablesOverall;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanySubtablesProfitablity;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.notice.model.NoticeLogModel;
+import com.hailian.modules.credit.notice.model.NoticeModel;
 import com.hailian.system.dict.DictCache;
+import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
 import com.jfinal.plugin.activerecord.Db;
-
-import net.sf.json.JSONArray;
 
 public abstract class ReportInfoGetData extends BaseProjectController {
   /**
@@ -211,6 +216,49 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			String companyId=null;
 			for (Map<Object, Object> entry : entrys) {
 				boolean exit=checkExist(isMainTable, entry);
+				if("com.hailian.modules.admin.ordermanager.model.CreditCompanySubtables".equals(className)){
+					CreditCompanySubtables c=CreditCompanySubtables.dao.findFirst("SELECT * FROM `credit_company_subtables` where company_id=? "
+							+ "and sys_language=? and del_flag=0 ORDER BY create_date desc",entry.get("company_id")+"",sysLanguage);
+					if(c!=null){
+						exit=true;
+						entry.put("id",c.get("id")+"");
+					}
+				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanyForNote").equals(className)){
+					CreditCompanyForNote c=CreditCompanyForNote.dao.findFirst("SELECT * FROM `credit_company_for_note` where company_id=? "
+							+ "and sys_language=? and del_flag=0 ORDER BY create_date desc",entry.get("company_id")+"",sysLanguage);
+					if(c!=null){
+						exit=true;
+						entry.put("id",c.get("id")+"");
+					}
+				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesLeverage").equals(className)){
+					CreditCompanySubtablesLeverage c=CreditCompanySubtablesLeverage.dao.findFirst("SELECT * FROM `credit_company_subtables_leverage` where company_id=? "
+							+ "and sys_language=? and del_flag=0 ORDER BY create_date desc",entry.get("company_id")+"",sysLanguage);
+					if(c!=null){
+						exit=true;
+						entry.put("id",c.get("id")+"");
+					}
+				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesLiquidity").equals(className)){
+					CreditCompanySubtablesLiquidity c=CreditCompanySubtablesLiquidity.dao.findFirst("SELECT * FROM `credit_company_subtables_liquidity` where company_id=? "
+							+ "and sys_language=? and del_flag=0 ORDER BY create_date desc",entry.get("company_id")+"",sysLanguage);
+					if(c!=null){
+						exit=true;
+						entry.put("id",c.get("id")+"");
+					}
+				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesOverall").equals(className)){
+					CreditCompanySubtablesOverall c=CreditCompanySubtablesOverall.dao.findFirst("SELECT * FROM `credit_company_subtables_overall` where company_id=? "
+							+ "and sys_language=? and del_flag=0 ORDER BY create_date desc",entry.get("company_id")+"",sysLanguage);
+					if(c!=null){
+						exit=true;
+						entry.put("id",c.get("id")+"");
+					}
+				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesProfitablity").equals(className)){
+					CreditCompanySubtablesProfitablity c=CreditCompanySubtablesProfitablity.dao.findFirst("SELECT * FROM `credit_company_subtables_profitablity` where company_id=? "
+							+ "and sys_language=? and del_flag=0 ORDER BY create_date desc",entry.get("company_id")+"",sysLanguage);
+					if(c!=null){
+						exit=true;
+						entry.put("id",c.get("id")+"");
+					}
+				}
 				if(isMainTable) {
 					String id = entry.get("company_id")+"";
 					companyId=id;
@@ -269,7 +317,12 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 			boolean needDetele= "true".equals(isTranslate)&&!isCompanyMainTable() &&companyId!=null;
 			//副表和备注表不删除
 			 if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanyForNote").equals(className) ||
-					 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtables").equals(className)){
+					 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtables").equals(className)||
+					 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesLeverage").equals(className)||
+					 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesLiquidity").equals(className)||
+					 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesOverall").equals(className)||
+					 (ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesProfitablity").equals(className)
+					 ){
 				 needDetele = false;
 			 }
 			 if(needDetele){

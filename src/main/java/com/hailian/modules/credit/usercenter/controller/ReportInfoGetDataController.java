@@ -126,7 +126,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 2018/11/8 lzg 修改或者新增bootStrapTable式的数据
 	 */
 	public void alterBootStrapTable() {
-		if("CreditCompanyHis".equals(getPara("className"))) {
+		if("CreditCompanySubtables".equals(getPara("className"))) {
 			int a = 0;
 			a++;
 		}
@@ -173,6 +173,10 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     cci.set("id",companyId).set("industry_code",industryCode).update();
                 }
             }
+            if("CreditCompanySubtables".equals(getPara("className"))) {
+    			int a = 0;
+    			a++;
+    		}
 			this.infoEntry(isTranslate,entrys, PAKAGENAME_PRE + className, StrUtils.isEmpty(targetlanguage)?SimplifiedChinese:targetlanguage,isCompanyMainTable(),reportType);
 			renderJson(new ResultType(1, "操作成功!"));
 		} catch (ClassNotFoundException e) {
@@ -326,7 +330,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             	//出资情况 要去重
             	targetStr = "select DISTINCT sh_name,contribution,company_id,money,currency,sys_language  from " + tableName + " where del_flag=0 and " + sqlSuf + " 1=1 ";
             }*/
-            targetStr = this.sortStatementSpecialHandling(targetStr,className);//对语句有条件的特殊处理
+            targetStr = this.sortStatementSpecialHandling(targetStr,className,isCompanyMainTable);//对语句有条件的特殊处理
             if(StringUtils.isNotBlank(companyId)&&"credit_company_info".equals(tableName)&&"CreditCompanyInfo".equals(className)){
             	targetStr="SELECT deta.detail_name as speed_name,info.*,detai.detail_name AS area,t. NAME AS reportType,cu.`name` AS custom_name,de.detail_name AS speeds,de.detail_name AS reportLanguage,det.name AS countryName,c.*,a1.detail_name as businessincome_type,a2.detail_name  as totalassets_type,a3.detail_name as periodofstockholder_type,a4.detail_name as statusName ";
             	targetStr+=" from "+ tableName + " c LEFT JOIN credit_order_info info ON c.order_id = info.id LEFT JOIN credit_custom_info cu ON info.custom_id = cu.id";
@@ -337,7 +341,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             	targetStr += "LEFT JOIN credit_report_type t ON t.id = info.report_type WHERE 	c." + sqlSuf + " 1=1 ";
             }
             if("credit_transaction_payment".equals(tableName)&&"CreditTransactionPayment".equals(className)){
-            	targetStr="SELECT * FROM `credit_transaction_payment` WHERE del_flag=0";
+            	targetStr="SELECT * FROM `credit_transaction_payment` WHERE del_flag=0 ORDER BY 	create_date DESC";
             }
             rows = model.find(targetStr);
             //处理联信编码 lianxin_id 若“徐州开达精细化工有限公司”之前有创建过商业报告订单，则将之前订单号作为联信编码，若有多个，取最新的订单号
@@ -411,10 +415,14 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         return rows;
     }
 
-    private String sortStatementSpecialHandling(String targetStr, String className) {
+    private String sortStatementSpecialHandling(String targetStr, String className,boolean isCompanyMainTable) {
     	//历史记录表添加日期降序语句
         if("CreditCompanyHis".equals(className.trim())) {
         	targetStr += " order by date desc ";
+        }else if(isCompanyMainTable||"CreditCompanyForNote".equals(className)||"CreditCompanySubtables".equals(className)
+        		||"CreditCompanySubtablesLeverage".equals(className)||"CreditCompanySubtablesLiquidity".equals(className)
+        		||"CreditCompanySubtablesOverall".equals(className)||"CreditCompanySubtablesProfitablity".equals(className)) {
+        	targetStr += " ORDER BY 	create_date DESC ";
         }
 		return targetStr;
 	}
@@ -1129,15 +1137,19 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             SysDictDetail sysDict = cache.get(Integer.parseInt(id));
             if (sysDict != null) {
                 //英文
-                if ("613".equals(sysLanguage)) {
-                    if(ReportTypeCons.ROC_ZH.equals(reportType)){
-                        return sysDict.get("detail_name_tw") + "";
-                    }else{
-                        return sysDict.get("detail_name_en") + "";
-                    }
-                } else {
-                    return sysDict.get("detail_name") + "";
-                }
+            	if(ReportTypeCons.BUSI_EN.equals(reportType)){
+            		return sysDict.get("detail_name_en") + "";
+            	}else{
+            		if ("613".equals(sysLanguage)) {
+            			if(ReportTypeCons.ROC_ZH.equals(reportType)){
+            				return sysDict.get("detail_name_tw") + "";
+            			}else{
+            				return sysDict.get("detail_name_en") + "";
+            			}
+            		} else {
+            			return sysDict.get("detail_name") + "";
+            		}
+            	}
             }
         } else {
             System.out.println("此信息输出不影响程序往下运行，异常id=" + id);

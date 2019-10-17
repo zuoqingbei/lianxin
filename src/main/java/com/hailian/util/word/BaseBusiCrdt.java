@@ -115,6 +115,13 @@ public class BaseBusiCrdt extends BaseWord{
         String customId = order.getStr("custom_id");
         String orderId = order.getInt("id") + "";
         //获取公司信息
+        String otherCompany="";
+        if(ReportTypeCons.BUSI_EN.equals(reportType)){
+        	String sql = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
+        	CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
+        	otherCompany = companyInfo.getInt("id")+"";
+        	sysLanguage="612";
+        }
         String sql = "select * from credit_company_info t where t.order_id = ? and t.sys_language=?";
         CreditCompanyInfo companyInfo = CreditCompanyInfo.dao.findFirst(sql,orderId,sysLanguage);
         String companyId = companyInfo.getInt("id")+"";
@@ -380,7 +387,9 @@ public class BaseBusiCrdt extends BaseWord{
                                 	String value= model.get(key23+"")+"";
                                	 value = getValue(reportType, sysLanguage,
 											sdf, fieldType, value);
-                                   map.put(word_key,value);
+	                               	if("remarks".equals(k)&&ReportTypeCons.BUSI_EN.equals(reportType)){
+	                                	value=TransApi.Trans(value, "en");
+	                                }
                                     map.put(word_key, value);
                                     continue;
                                 }
@@ -428,49 +437,17 @@ public class BaseBusiCrdt extends BaseWord{
             if("8".equals(moduleType)){
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
                 //取列值
-                LinkedHashMap<String, String> cols = new LinkedHashMap<String, String>();
                 //取列值
+                String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
                 for (int i = 0; i < child.size(); i++) {
                     CreditReportModuleConf module = child.get(i);
-                    String column_name = module.getStr("column_name");
-                    String get_source = module.getStr("get_source");
-                    cols.put(column_name, get_source);
-                }
-                /*for (int i = 0; i < child.size(); i++) {
-                    CreditReportModuleConf module = child.get(i);
-                    String column_name = module.getStr("column_name");
-                    String temp_name = module.getStr("temp_name");
-                    String field_type = module.getStr("field_type");
-                    cols.put(column_name, temp_name + "|" + field_type);
-                }*/
-                //取数据
-                /*for (int i = 0; i < rows.size(); i++) {
-                    BaseProjectModel model = (BaseProjectModel) rows.get(0);
-                    for (String column : cols.keySet()) {
-                        //取值
-                        String value = model.get(column) != null ? model.get(column) + "" : "";
-                        String get_source = cols.get(column);
-                        String[] items = get_source.split("&");
-                        StringBuffer html = new StringBuffer();
-                        for(int j=0;j<items.length;j++) {
-                            String[] item = items[j].split("-");
-                            if (value.equals(item[0])) {
-                                html.append(new String(new int[]{0x2611}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
-                            } else {
-                                html.append(new String(new int[]{0x2610}, 0, 1) + " " + item[1].trim().replace("</br>", "\r") + " ");
-                            }
-                        }
-                        Style style = new Style();
-                        if(ReportTypeCons.ROC_ZH.equals(reportType)||ReportTypeCons.ROC_EN.equals(reportType)) {
-                            style.setFontFamily("PMingLiU");
-                        }
-                        map.put(column, new TextRenderData(html.toString(), style));
+                    if(StringUtils.isNotBlank(module.getStr("get_source"))){
+                    	get_source=module.getStr("get_source");
                     }
-                }*/
+                }
                 if (rows!=null && rows.size()>0) {
                     BaseProjectModel model = (BaseProjectModel) rows.get(0);
                     //取单选数据
-                    String get_source = "1-极好&2-好&3-一般&4-较差&5-差&6-尚无法评估";
                     String value = model.get("overall_rating")+"";
                     String[] items = get_source.split("&");
                     StringBuffer html = new StringBuffer();
@@ -537,31 +514,34 @@ public class BaseBusiCrdt extends BaseWord{
                 List rows = report.getTableData(sysLanguage, companyId, tableName, className, confId, "",reportType);
                 List<LinkedHashMap<String, String>> datas = BaseWord.formatData(child,rows);
                 //准备图形数据
-                DefaultCategoryDataset barDataSet = new DefaultCategoryDataset();
-                DefaultCategoryDataset lineDataSet = new DefaultCategoryDataset();
-                for (LinkedHashMap<String, String> m : datas) {
-                    Object[] keys = m.keySet().toArray();
-                    String n = m.get(keys[0]);
-                    String v1 = m.get(keys[1]);
-                    String v2 = m.get(keys[2]);
-                    Double value1 = 0d , value2=0d;
-                    try {
-                        if (v1 != null && !"".equals(v1)) {
-                            v1 = m.get(keys[1]);
-                            value1 = Double.parseDouble(v1);
+                if(datas!=null&&datas.size()>0){
+                	DefaultCategoryDataset barDataSet = new DefaultCategoryDataset();
+                    DefaultCategoryDataset lineDataSet = new DefaultCategoryDataset();
+                    for (LinkedHashMap<String, String> m : datas) {
+                        Object[] keys = m.keySet().toArray();
+                        String n = m.get(keys[0]);
+                        String v1 = m.get(keys[1]);
+                        String v2 = m.get(keys[2]);
+                        Double value1 = 0d , value2=0d;
+                        try {
+                            if (v1 != null && !"".equals(v1)) {
+                                v1 = m.get(keys[1]);
+                                value1 = Double.parseDouble(v1);
+                            }
+                            if (v2 != null && !"".equals(v2)) {
+                                v2 = m.get(keys[2]);
+                                value2 = Double.parseDouble(v2);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        if (v2 != null && !"".equals(v2)) {
-                            v2 = m.get(keys[2]);
-                            value2 = Double.parseDouble(v2);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        barDataSet.addValue(value1, "y1", n);
+                        lineDataSet.addValue(value2,"y2",n);
                     }
-                    barDataSet.addValue(value1, "y1", n);
-                    lineDataSet.addValue(value2,"y2",n);
+                    BaseWord.createBarChart(title,barDataSet,lineDataSet, _prePath + "bar.jpg");
+                    map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
                 }
-                BaseWord.createBarChart(title,barDataSet,lineDataSet, _prePath + "bar.jpg");
-                map.put("bar", new PictureRenderData(600, 300, _prePath + "bar.jpg"));
+                
             }
             //行业情况-GDP-柱图/线图
             if("10353".equals(tableId)){
@@ -610,7 +590,12 @@ public class BaseBusiCrdt extends BaseWord{
         
         //财务模块生成
         List<String> excelPath = new ArrayList<>();
-        List<CreditCompanyFinancialStatementsConf> finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
+        List<CreditCompanyFinancialStatementsConf> finanConfList = new ArrayList<CreditCompanyFinancialStatementsConf>();
+        if(ReportTypeCons.BUSI_EN.equals(reportType)){
+        	finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",otherCompany);
+        }else{
+        	finanConfList = CreditCompanyFinancialStatementsConf.dao.findByWhere(" where company_id=? and del_flag=0 ",companyId);
+        }
         if(finanConfList!=null && finanConfList.size()>0) {
         	boolean hasBig=false;
         	boolean hasFinancial=false;
@@ -1367,6 +1352,11 @@ public class BaseBusiCrdt extends BaseWord{
             //取数据
             //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
             List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType+"");
+            if(ReportTypeCons.BUSI_EN.equals(reportType)){
+            	for(CreditCompanyFinancialEntry e:finDataRows){
+            		e.put("item_name", e.get("item_name_en"));
+            	}
+            }
             int j = 0;
             Integer old = null;
             for (CreditCompanyFinancialEntry ccf : finDataRows) {
@@ -1527,13 +1517,31 @@ public class BaseBusiCrdt extends BaseWord{
                     }
                 }
                 String itemName = ccf.getStr("item_name");
-                String beginValue = ccf.getInt("begin_date_value")+"";
+                String beginValue = ccf.get("begin_date_value")+"";
                 if("0".equals(beginValue+"")){
                     beginValue = "--";
+                }else{
+                	//添加千分位
+                	try {
+                        DecimalFormat df = new DecimalFormat("###,###.##");
+                        NumberFormat nf = NumberFormat.getInstance();
+                        beginValue = df.format(nf.parse(beginValue));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
                 String endValue = ccf.get("end_date_value")+"";
                 if("0".equals(endValue+"")){
                     endValue = "--";
+                }else{
+                	//添加千分位
+                	try {
+                        DecimalFormat df = new DecimalFormat("###,###.##");
+                        NumberFormat nf = NumberFormat.getInstance();
+                        endValue = df.format(nf.parse(endValue));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
                 /*Integer is_sum_option = ccf.getInt("is_sum_option");
                 Style sumStyle = new Style();
@@ -1548,6 +1556,7 @@ public class BaseBusiCrdt extends BaseWord{
                 Style sumStyle = new Style();
                 sumStyle.setFontSize(11);
                 sumStyle.setFontFamily("宋体");
+                sumStyleValue.setAlign(STJc.RIGHT);
                 if((financeType==1||financeType==2)&&("流动资产合计".equals(itemName)||"Total Current Assets".equals(itemName)||
                 		"资产总额".equals(itemName)||"Total Assets".equals(itemName)||
                 		"流动负债合计".equals(itemName)||"TOTAL CURRENT LIABILITIES".equals(itemName)||

@@ -482,7 +482,9 @@ public class BaseWord {
                                val = "合計 Total";
                             }else  if(ReportTypeCons.ROC_EN.equals(reportType)) {//ROC English
                                val = "合計 Total";
-                           }else if(ReportTypeCons.BUSI_ZH.equals(reportType)||ReportTypeCons.BUSI_EN.equals(reportType)){//商业报告
+                           }else if(ReportTypeCons.BUSI_EN.equals(reportType)){//商业报告
+                               val = "Total";
+                           }else if(ReportTypeCons.BUSI_ZH.equals(reportType)){//商业报告
                                if("612".equals(sysLanguage)){
                                    val = "合计";
                                }else{
@@ -559,7 +561,12 @@ public class BaseWord {
         	//如果是商业报告的股东信息 需要将出资金额和币种合并到一列
         	String currency=CreditCompanyInfo.dao.findCompanyCurrency(companyId, sysLanguage, reportType);
         	Map<String, String> colMap = cols.get("contribution");
-        	colMap.put("temp_name", "出资金额"+"("+currency+")");
+        	if(ReportTypeCons.BUSI_EN.equals(reportType)){
+        		colMap.put("temp_name", "Amount"+"("+currency+")");
+        	}else{
+        		colMap.put("temp_name", "出资金额"+"("+currency+")");
+        	}
+        	
         	cols.put("contribution", colMap);
         };
         //表格边框
