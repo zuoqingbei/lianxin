@@ -53,7 +53,25 @@ let ReportConfig = {
                 })
             }
             let selectInfo = []
-            selectInfo.push(_this.selectInfoObj)
+            let selectInfoEn = []
+            let infoObj = {};
+            let infoEnObj = {};
+            for(let item in this.selectInfoObj){
+                if(item.indexOf('_en')!==-1){
+                    infoEnObj[item] = this.selectInfoObj[item];
+                    var i = item.split('_en')[0]
+                    infoObj[i] = this.selectInfoObj[item];
+                }else{
+                    infoObj[item] = this.selectInfoObj[item];
+                    var i = item+'_en';
+                    infoEnObj[i] = this.selectInfoObj[item];
+
+                }
+            }
+            // selectInfo.push(_this.selectInfoObj)
+            selectInfo.push(infoObj)
+            selectInfoEn.push(infoEnObj)
+            // selectInfo.push(_this.selectInfoObj)
 
             let tempRows = []
             $table.bootstrapTable({
@@ -115,7 +133,7 @@ let ReportConfig = {
                 url: urlEN, // 请求后台的URL（*）
                 method: 'post', // 请求方式（*）post/get
                 queryParams: function (param) {
-                    param.selectInfo = JSON.stringify(selectInfo)
+                    param.selectInfo = JSON.stringify(selectInfoEn)
                     return param
                 },
                 sidePagination: 'server',

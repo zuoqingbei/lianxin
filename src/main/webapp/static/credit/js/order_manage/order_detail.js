@@ -805,6 +805,7 @@ let OrderDetail = {
         * type10Items：其data_source可获取表格数据内容，其中parent_sector、son_sector和表格顺序对应
         * */
         let [type9MulText, type9TableHead, type10Items] = bigData ? [this.type9BigData, this.type9TableHeadBigData, this.type10BigData] : [this.type9MulText, this.type9TableHead, this.type10Items];
+        console.log(type9MulText, type9TableHead, type10Items)
         let $tableBox = $('<div class="tableBox m-4"><h4 class="text-center p-3"></h4></div>');
         let $allTable = $('<div class="tableAll"></div>');
         type9TableHead.forEach(function (item) { //每个表格组的标题
@@ -838,10 +839,10 @@ let OrderDetail = {
                     if (addTableMark.includes(row.parent_sector + '-' + row.son_sector)) {
                         //孩子顺序是固定的
                         let firstSonOrder = addTableMark.find((str) => str.slice(0, 1) === row.parent_sector + '').split('-')[1];
-                        $allTable.children().eq(row.parent_sector - 1 - (bigData ? 4 : 0)).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
+                        $allTable.children().eq(row.parent_sector - 1 - 0).find('table').eq(row.son_sector - firstSonOrder).find('tbody')
                             .append(`<tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr>`)
                     } else {
-                        $allTable.children().eq(row.parent_sector - 1 - (bigData ? 4 : 0))
+                        $allTable.children().eq(row.parent_sector - 1 - 0)
                             .append(`<table class="table table-hover"><tbody><tr><td><span class="trName">${row.item_name}</span></td><td>${row.begin_date_value}</td><td>${row.end_date_value}</td></tr></tbody></table>`)
                         addTableMark.push(row.parent_sector + '-' + row.son_sector);
                     }
@@ -1126,7 +1127,7 @@ let OrderDetail = {
                             let [isBrand, aHref] = [false, ''];
                             if (item.title.temp_name === '商标' && index === 3) {
                                 isBrand = true;
-                                aHref = row[columnName].includes('http') ? row[columnName] : 'http://' + row[columnName];
+                                aHref = row[columnName].indexOf('http')!==-1 ? row[columnName] : 'http://' + row[columnName];
                             }
                             let tdData = isBrand ? `<a href= ${aHref} target="_blank"><img src=${aHref} alt="商标"></a>` : row[columnName];
                             $tr.append(`<td>${Public.textFilter(tdData, 'null', '-')}</td>`);// 没数据的显示 “-”
