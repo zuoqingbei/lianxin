@@ -132,7 +132,7 @@ public class SendMailUtil {
                 InternetAddress.parse(recipientAddress, false));
 //        msg.addRecipients(Message.RecipientType.CC, InternetAddress.parse(SenderAddress));//抄送给自己
         msg.addRecipients(Message.RecipientType.CC, InternetAddress.parse(recipientAddressCC));
-        msg.setSubject(title);
+        msg.setSubject(MimeUtility.encodeText(title, "utf-8", "B"));
         msg.setSentDate(new Date());
         msg.setHeader("Disposition-Notification-To","1");
         
@@ -141,9 +141,9 @@ public class SendMailUtil {
         MimeBodyPart messageBodyPart = new MimeBodyPart();
         messageBodyPart.removeHeader("Content-Type");
         messageBodyPart.removeHeader("Content-Transfer-Encoding");
-        messageBodyPart.addHeader("Content-Type", "text/html; charset=gbk");
+        messageBodyPart.addHeader("Content-Type", "text/html; charset=UTF-8");
         messageBodyPart.addHeader("Content-Transfer-Encoding", "base64");
-        messageBodyPart.setContent(content, "text/html;charset=GBK");
+        messageBodyPart.setContent(content, "text/html;charset=UTF-8");
         multipart.addBodyPart(messageBodyPart);
         //内嵌图片
         try {
@@ -171,7 +171,7 @@ public class SendMailUtil {
         	                 messageBodyPart.setDataHandler(dataHandler);
         	                 String subStringB = fileURL.substring(fileURL.lastIndexOf("/")+1);
 //        	                 messageBodyPart.setFileName(MimeUtility.encodeText(subStringB));
-        	                 messageBodyPart.setFileName(MimeUtility.encodeText(name));
+        	                 messageBodyPart.setFileName(MimeUtility.encodeText(name,"UTF-8",null));
         	                 
         	                 multipart.addBodyPart(messageBodyPart);
         				  }
@@ -243,7 +243,7 @@ public class SendMailUtil {
     	Map<String,String> map=new HashMap<String, String>();
     	map.put("哈哈.doc", "http://60.205.229.238:9980/zhengxin_File/2018-11-16/1a183ad043a64af0bde653aa718cd144.doc");
     	list.add(map);
-    	new SendMailUtil("dou_shuihai@163.com", "", "你好", "mycontent<br>zzssssssssssssssssssssssssssss<br>", list).sendEmail();
+    	new SendMailUtil("qingbei.zuo@hlsofttech.com", "", "你好", "mycontent<br>zzssssssssssssssssssssssssssss<br>", list).sendEmail();
     	System.out.println("ok");
     	
 	}

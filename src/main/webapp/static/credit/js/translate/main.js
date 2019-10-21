@@ -2493,7 +2493,6 @@ let ReportConfig = {
 						this.tableSaveNum++;
                         console.log(this.tableSaveNum,this.tableTotal)
 						if(this.tableSaveNum%this.tableTotal==0){
-                            _this.initTable(1)
 							this.isTableSaved=true;
 							this.tableSaveNum=0;
 							if(this.isFormSaved){
@@ -2503,6 +2502,7 @@ let ReportConfig = {
 								this.isFormSaved = false;
 								this.tableSaveNum=0;
 								this.formSaveNum=0;
+								 _this.initTable(1)
 							}
 						}
 						 //console.log("table",this.tableSaveNum,this.isTableSaved,this.isFormSaved,this.tableTotal)
@@ -2765,7 +2765,6 @@ let ReportConfig = {
                         }
 
                     })
-
                     var pa={"dataJson":"","sys_language":"","className":""};
 	                pa.className=url.split("*")[0].split("=")[1];
 					delete dataJsonObj["null"]
@@ -2777,7 +2776,7 @@ let ReportConfig = {
 						delete dataJsonObj["sort_no"]
 						delete dataJsonObj["risk_evaluation"]
 					}
-					if(!dataJsonObj['company_id_en']){
+					if(!dataJsonObj['company_id']){
 						this.formSaveNum++;
 						return;
 					}
@@ -2795,7 +2794,6 @@ let ReportConfig = {
 							this.formSaveNum++;
 							console.log(this.formSaveNum,this.formTotal)
 							if(this.formSaveNum%this.formTotal==0){
-                                _this.initTable(1)
 								this.isFormSaved=true;
 								this.formSaveNum=0;
 								if(this.isTableSaved){
@@ -2805,6 +2803,7 @@ let ReportConfig = {
 									this.isFormSaved = false;
 									this.tableSaveNum=0;
 									this.formSaveNum=0;
+									_this.initTable(1)
 								}
 							}
                            // console.log(this.formSaveNum,this.isTableSaved,formIndexEn.length)

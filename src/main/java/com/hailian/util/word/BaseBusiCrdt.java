@@ -146,6 +146,15 @@ public class BaseBusiCrdt extends BaseWord{
         //报告名称
         //String reportName = reportTypeModel.getStr("name");
         String reportName = referenceNum;
+        String reportNamePrd = "";
+        if(ReportTypeCons.BUSI_EN.equals(reportType)){
+        	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='613'",orderId);
+        	reportNamePrd=c.getStr("name");
+        }else if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+        	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='612'",orderId);
+        	reportNamePrd=c.getStr("name");
+        }
+        reportName=reportNamePrd+"("+reportName+")";
         //保存的文件名
         //String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
         String _prePath = webRoot + "/upload/tmp/" + orderCode;
@@ -341,8 +350,11 @@ public class BaseBusiCrdt extends BaseWord{
                 	System.out.println(111);
                 }
                 String k = conf.get("word_key") + "";
-                if("profitablity_sumup".equals(k)||"liquidity_sumup".equals(k)||"leverage_sumup".equals(k)){
+                if("profitablity_sumup".equals(k)||"liquidity_sumup".equals(k)||"leverage_sumup".equals(k)||"overall_financial_condition_sumup".equals(k)){
                 	s+="&tableName="+tableName+"&className="+clName;
+                }
+                if("overall_financial_condition_sumup".equals(k)){
+                	System.out.println(1);
                 }
                 if (s == null || "".equals(s)) {
                     continue;

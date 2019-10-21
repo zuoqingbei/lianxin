@@ -812,6 +812,30 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
     		+ "LEFT JOIN sys_dict_detail d on d.detail_id=f.order_state "
     		+ "LEFT JOIN sys_user u on u.userid=f.create_oper "
     		+ "where  f.order_num=?",order_num);
+     SysDictDetail dict=SysDictDetail.dao.findFirst("SELECT i.update_date,d.detail_id,d.detail_name  from credit_order_info i LEFT JOIN sys_dict_detail d on d.detail_id=i.`status` where i.num=?",order_num);
+     if(dict!=null){
+    	 String statusName=dict.get("detail_name")+"";
+    	 if(flows!=null&&flows.size()>0){
+    		 CreditOrderFlow flow=flows.get(flows.size()-1);
+    		 if(StringUtils.isNotBlank(statusName)&&!statusName.equals(flow.getStr("order_status"))){
+    			 CreditOrderFlow ff=new CreditOrderFlow();
+    			 ff.put("detail_id", dict.get("detail_id")+"");
+    			 ff.put("order_state", dict.get("detail_name")+"");
+    			 ff.put("create_oper", flow.get("create_oper")+"");
+    			 String d=dict.get("update_date")+"";
+    			 if(StringUtils.isNotBlank(d)){
+    				 if(d.length()>9){
+    					 ff.put("create_time",d.substring(0,10));
+    				 }else{
+    					 ff.put("create_time",d);
+    				 }
+    			 }else{
+    				 ff.put("create_time",flow.get("create_time")+"");
+    			 }
+    			 flows.add(ff);
+    		 }
+    	 }
+     }
      renderJson(record.set("rows", flows).set("total", flows!=null?flows.size():null));		
     }
     /**

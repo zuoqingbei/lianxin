@@ -278,9 +278,9 @@ public class HttpTest implements IHttpTest {
 			JSONObject courtnotice = t.getSubsidiaries(companyName,"1",PAGESIZE);//开庭公告
 			String courtnoticestatus = courtnotice.getString("Result");
 			System.out.println(courtnoticestatus);
-			JSONObject json = t.getYjapi(companyName.trim());//获取api企业信息数据
+			/*JSONObject json = t.getYjapi(companyName.trim());//获取api企业信息数据
 			JSONArray brandandpatentstatus =json.getJSONObject("Result").getJSONArray("Partners");
-			System.out.println(brandandpatentstatus);
+			System.out.println(brandandpatentstatus);*/
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
