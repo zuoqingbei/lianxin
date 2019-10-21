@@ -1419,20 +1419,22 @@ public class BaseBusiCrdt extends BaseWord{
                             	title = "";
                                 break;
                             case 6:
-                                //title = "负债及所有者权益";
-                            	title = "";
-                                break;
-                            case 7:
-                                //title = "毛利润";
                             	if(isEnglish){
                             		title = "Income Statement";
                             	}else{
                             		title = "利润表";
                             	}
                                 break;
-                            case 8:
-                                //title = "营业利润";
+                            case 7:
+                                //title = "毛利润";
                             	title = "";
+                                break;
+                            case 8:
+                            	if(isEnglish){
+                            		title = "Key Ratios";
+                            	}else{
+                            		title = "重要比率表";
+                            	}
                                 break;
                             case 9:
                                 //title = "税前利润";
@@ -1441,13 +1443,6 @@ public class BaseBusiCrdt extends BaseWord{
                             case 10:
                                 //title = "所得税费用";
                             	title = "";
-                                break;
-                            case 11:
-                            	if(isEnglish){
-                            		title = " Key Ratios";
-                            	}else{
-                            		title = "重要比率表";
-                            	}
                                 break;
                         }
                         if (financeType == 1 || financeType == 2) {
