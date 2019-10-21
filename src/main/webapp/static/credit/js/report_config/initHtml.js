@@ -291,9 +291,9 @@ let InitObj = {
                         period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*10000;
                         business_income =  Number($($('.class7_num')[0]).val())*10000;
                     }
-					$('#total_assets_'+_index).val(total_assets);
-					$('#period_for_equity_of_stockholder_'+_index).val(period_for_equity_of_stockholder);
-					$('#business_income_'+_index).val(business_income);
+					$('#total_assets_'+_index).val(this.format(total_assets));
+					$('#period_for_equity_of_stockholder_'+_index).val(this.format(period_for_equity_of_stockholder));
+					$('#business_income_'+_index).val(this.format(business_income));
 					// console.log('计算开始-----------------')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")
@@ -495,9 +495,9 @@ let InitObj = {
                         period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*10000;
                         business_income =  Number($($('.class7_num')[0]).val())*10000;
                     }
-                    $('#total_assets_'+_index).val(total_assets);
-                    $('#period_for_equity_of_stockholder_'+_index).val(period_for_equity_of_stockholder);
-                    $('#business_income_'+_index).val(business_income);
+                    $('#total_assets_'+_index).val(this.format(total_assets));
+                    $('#period_for_equity_of_stockholder_'+_index).val(this.format(period_for_equity_of_stockholder));
+                    $('#business_income_'+_index).val(this.format(business_income));
 					// console.log('调用接口修改数据')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")
@@ -1288,6 +1288,9 @@ initSelect2(){
 	$("select.select2.form-control").select2({
 		multiple: true,
 	})
+},
+format (num) {
+    return (num.toFixed() + '').replace(/\d{1,3}(?=(\d{3})+(\.\d*)?$)/g, '$&,');
 }
 }
 
