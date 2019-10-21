@@ -68,7 +68,7 @@ let Public = {
         		url:  BASE_PATH +'credit/sysuser/notice/list',
         		type:'post',
         		data:{
-        			recordsperpage:'100000'
+        			recordsperpage:'20'
         		},
         		success:(data)=>{
         			console.log(data)

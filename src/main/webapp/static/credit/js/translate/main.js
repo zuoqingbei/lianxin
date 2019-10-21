@@ -2377,8 +2377,23 @@ let ReportConfig = {
                                             //循环表格中的数据，如果有select不翻译
                                             //币种不翻译
                                             if(e["currency"]) {
-                                                e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
-                                            }
+                                                //e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
+												if(_this.rows["report_type"] === '12'){
+													e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'tw');
+												}else if( _this.rows["report_type"] === '14' ){
+													e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'en');
+												}else if( _this.rows["report_type"] === '8'|| _this.rows["report_type"] === '9'  ){
+													e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'en');
+												}
+                                            }else if(e["registered_capital_currency"]) {
+												if(_this.rows["report_type"] === '12'){
+													e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'tw');
+												}else if( _this.rows["report_type"] === '14' ){
+													e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'en');
+												}else if( _this.rows["report_type"] === '8'|| _this.rows["report_type"] === '9'  ){
+													e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'en');
+												}
+											}
                                         })
 										console.log("#table"+idArrEn[index] + 'En')
                                         console.log(allTableData[index])
@@ -2440,7 +2455,7 @@ let ReportConfig = {
 
                     let arr = Object.keys(ele)
                     arr.forEach((item,index)=>{
-                        ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
+                        ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
                     })
                 })
 				if(!data[0]['company_id']){
@@ -2545,7 +2560,7 @@ let ReportConfig = {
                     }
                     let arr = Object.keys(ele)
                     arr.forEach((item,index)=>{
-                        ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
+                        ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
                     })
                 })
 				if(!data[0]['company_id']){
@@ -2731,14 +2746,14 @@ let ReportConfig = {
                             let name =$(item).next().find("select").attr("name")
                             let val =$(item).next().find("select option:selected").val()
                             val = val?val:''
-                            dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                            dataJsonObj[name] = val.replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
                         }else if($(item).next().hasClass("textarea-module")) {
                             //无标题多行文本输入框
                             let name =$(item).next().find("textarea").attr("name")
                             let val =$(item).next().find("textarea").val()
                             let id = $(item).next().find("textarea").attr("entityid")
                             dataJsonObj["id"] = id
-                            dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                            dataJsonObj[name] = val.replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
                         }else if($(item).next().find("input").hasClass("float-date")){
                             //浮动非财务
                             let name =$(item).next().find("input").attr("name")
@@ -2759,7 +2774,7 @@ let ReportConfig = {
                                 dataJsonObj["id"] = entryid
                                 for(let i in tempObj){
                                     if(tempObj.hasOwnProperty(i))
-                                        dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                                        dataJsonObj[i] = tempObj[i].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
                                 }
                             })
                         }
@@ -2829,14 +2844,14 @@ let ReportConfig = {
                             let name =$(item).next().find("select").attr("name")
                             let val =$(item).next().find("select option:selected").val()
                             val = val?val:''
-                            dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                            dataJsonObj[name] = val.replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
                         }else if($(item).next().hasClass("textarea-module")) {
                             //无标题多行文本输入框
                             let name =$(item).next().find("textarea").attr("name")
                             let val =$(item).next().find("textarea").val()
                             let id = $(item).next().find("textarea").attr("entityid")
                             dataJsonObj["id"] = id
-                            dataJsonObj[name] = val.replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                            dataJsonObj[name] = val.replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
                         }else if($(item).next().find("input").hasClass("float-date")){
                             //浮动非财务
                             let name =$(item).next().find("input").attr("name")
@@ -2857,7 +2872,7 @@ let ReportConfig = {
                                 dataJsonObj["id"] = entryid
                                 for(let i in tempObj){
                                     if(tempObj.hasOwnProperty(i))
-                                        dataJsonObj[i] = tempObj[i].replace(/:/g,'锟斤拷锟斤拷之锟斤拷锟窖э拷锟').replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                                        dataJsonObj[i] = tempObj[i].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
                                 }
                             })
                         }
@@ -2929,7 +2944,23 @@ let ReportConfig = {
 				//循环表格中的数据，如果有select不翻译
 				//币种不翻译
 				if(e["currency"]) {
-					e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
+					//e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
+					if(_this.rows["report_type"] === '12'){
+						e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'tw');
+					}else if( _this.rows["report_type"] === '14' ){
+						e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'en');
+					}else if( _this.rows["report_type"] === '8'|| _this.rows["report_type"] === '9'  ){
+						e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'en');
+					}
+					
+				}else if(e["registered_capital_currency"]) {
+					if(_this.rows["report_type"] === '12'){
+						e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'tw');
+					}else if( _this.rows["report_type"] === '14' ){
+						e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'en');
+					}else if( _this.rows["report_type"] === '8'|| _this.rows["report_type"] === '9'  ){
+						e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'en');
+					}
 				}
 			})
 			
@@ -2942,6 +2973,29 @@ let ReportConfig = {
 					$(item).text(Number($(item).text().replace(/,/g,"")).toLocaleString('en-US'))
 				}
 			})
+		}
+	},
+	getCurrencyEn(name,lan){
+		let ch=['英镑','港币','美元','瑞士法郎','新加坡元','日元','加拿大元','澳大利亚元','欧元','人民币'];
+		let en=['GBP','HKD','USD','CHF','SGD','JPY','CAD','AUD','EUD','CNY'];
+		let tw=['英鎊','港幣','美元','瑞士法郎','新加坡元','日元','加拿大元','澳大利亞元','歐元','人民幣'];
+		let index=-1;
+		for(var x=0;x<ch.length;x++){
+			if(ch[x]==name){
+				index=x;
+				break;
+			}
+		}
+		if(index!=-1){
+			if(lan=='tw'){
+				return tw[index];
+			}else if(lan=='en'){
+				return en[index];
+			}else{
+				return ch[index];
+			}
+		}else{
+			return name;
 		}
 	},
 	 deleteEmptyProperty(object){
