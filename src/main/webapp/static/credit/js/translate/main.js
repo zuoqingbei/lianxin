@@ -22,7 +22,7 @@ let ReportConfig = {
         }
         return JSON.stringify(newObj).replace(/\"/g,"").replace("{","").replace("}","").replace(/,/g,";")
     },
-    initTable(){
+    initTable(flag){
         /**
          * 表格初始化
          */
@@ -97,7 +97,7 @@ let ReportConfig = {
                     url:urlCH, // 请求后台的URL（*）
                     method : 'post', // 请求方式（*）post/get
                     queryParams:function(param){
-                    	//console.log("selectInfo::",selectInfo)
+                        //console.log("selectInfo::",selectInfo)
                         param.selectInfo = JSON.stringify(selectInfo)
                         return param
                     },
@@ -144,27 +144,27 @@ let ReportConfig = {
                         var mId=3;
                         var lis=$(".l-title");
                         for(var x=0;x<lis.length;x++){
-                        	var item=lis[x];
-							//console.log($(item).text())
-                        	if($(item).text()=='股东信息'||$(item).text()=='Shareholders'||$(item).text()=='出资情况'){
-                        		var id=$(item).attr("id");
-                        		if(id.indexOf("title")!=-1&&id.indexOf("En")==-1){
-                        			mId=id.replace("title","");
-                        			mId=mId.replace("En","");
-                        		}
-								break;
-                        	}
+                            var item=lis[x];
+                            //console.log($(item).text())
+                            if($(item).text()=='股东信息'||$(item).text()=='Shareholders'||$(item).text()=='出资情况'){
+                                var id=$(item).attr("id");
+                                if(id.indexOf("title")!=-1&&id.indexOf("En")==-1){
+                                    mId=id.replace("title","");
+                                    mId=mId.replace("En","");
+                                }
+                                break;
+                            }
                         }
                         //console.log(mId)
-						//$("#table"+mId).parent().parent().find(".fixed-table-footer").find(".th-inner").eq(2).html("");
+                        //$("#table"+mId).parent().parent().find(".fixed-table-footer").find(".th-inner").eq(2).html("");
                         var h=$("#table"+mId).parent().parent().find(".fixed-table-footer").html();
                         h=h.replace(/<td/g,"<td style='border:none!important'")
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").html(h);
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer")
-                        .css({"margin-right":"0px"}).css({"position":"relative"}).css({"top":"-20px"})
-                        .css({"display":"block"});
-						$("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find("tr").eq(0).append('<td style=""><div class="th-inner"></div><div class="fht-cell" style=""></div></td>');
-                       
+                            .css({"margin-right":"0px"}).css({"position":"relative"}).css({"top":"-20px"})
+                            .css({"display":"block"});
+                        $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find("tr").eq(0).append('<td style=""><div class="th-inner"></div><div class="fht-cell" style=""></div></td>');
+
                         $("#table"+mId+"En").parent().css({"height":"90%"});
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計");
                     }
@@ -176,7 +176,7 @@ let ReportConfig = {
                     url:urlCH, // 请求后台的URL（*）
                     method : 'post', // 请求方式（*）post/get
                     queryParams:function(param){
-                    	//console.log("selectInfo2:",selectInfo)
+                        //console.log("selectInfo2:",selectInfo)
                         param.selectInfo = JSON.stringify(selectInfo)
                         return param
                     },
@@ -267,11 +267,14 @@ let ReportConfig = {
                     }, 200);
                 },
                 onClickRow:(row,dom)=>{
-                  //  console.log(row)
+                    //  console.log(row)
                     _this.tableRowIndex = $tableEn.find("tr").index($(dom)) //第几行编辑，从1开始
                 }
 
             });
+            if(flag){
+                $table.bootstrapTable('refresh')
+            }
 
 
         })
@@ -1298,7 +1301,7 @@ let ReportConfig = {
                     _this.initmodal();
                     InitObjTrans.addressInit();
                     InitObjTrans.regChecked();
-                    _this.initTable();
+                    _this.initTable(0);
                     _this.initFloat();
                     InitObjTrans.dateInit();
                     InitObjTrans.initSelect2();
@@ -2490,6 +2493,7 @@ let ReportConfig = {
 						this.tableSaveNum++;
                         console.log(this.tableSaveNum,this.tableTotal)
 						if(this.tableSaveNum%this.tableTotal==0){
+                            _this.initTable(1)
 							this.isTableSaved=true;
 							this.tableSaveNum=0;
 							if(this.isFormSaved){
@@ -2791,6 +2795,7 @@ let ReportConfig = {
 							this.formSaveNum++;
 							console.log(this.formSaveNum,this.formTotal)
 							if(this.formSaveNum%this.formTotal==0){
+                                _this.initTable(1)
 								this.isFormSaved=true;
 								this.formSaveNum=0;
 								if(this.isTableSaved){
