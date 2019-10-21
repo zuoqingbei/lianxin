@@ -422,7 +422,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
         }else if(isCompanyMainTable||"CreditCompanyForNote".equals(className)||"CreditCompanySubtables".equals(className)
         		||"CreditCompanySubtablesLeverage".equals(className)||"CreditCompanySubtablesLiquidity".equals(className)
         		||"CreditCompanySubtablesOverall".equals(className)||"CreditCompanySubtablesProfitablity".equals(className)) {
-        	targetStr += " ORDER BY 	create_date DESC ";
+        	targetStr += " order by 	create_date desc ";
         }
 		return targetStr;
 	}

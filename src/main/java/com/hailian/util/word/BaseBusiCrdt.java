@@ -837,8 +837,9 @@ public class BaseBusiCrdt extends BaseWord{
         removeConf(child,removeColumns);
         String money = model.get(requiredColumns)+"";//钱
         String currency = model.get(removeColumns[0])+"";//币种类型
-        String dateStr;//统计时间
+        String dateStr="";//统计时间
         try{
+        	if(removeColumns.length>1)
             dateStr = model.get(removeColumns[1])+"";
         }catch (Exception e){
             e.printStackTrace();
@@ -1065,6 +1066,9 @@ public class BaseBusiCrdt extends BaseWord{
             if(!isNotNull(dateStr)){
                 return  null;
             }
+            if("长期".equals(dateStr)){
+            	return dateStr;
+            }
             SimpleDateFormat sourcesdf = new SimpleDateFormat(sourceFormat);
             SimpleDateFormat targetSdf = new SimpleDateFormat(targetFormat);
             if(isNotNull(separater)){
@@ -1077,7 +1081,7 @@ public class BaseBusiCrdt extends BaseWord{
                 	return targetSdf.format(date1);
                 }else{
                 	if("至".equals(targetSeparater)){
-                		return "从"+targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
+                		return /*"从"+*/targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
                 	}
                 	return targetSdf.format(date1)+targetSeparater+targetSdf.format(date2);
                 }

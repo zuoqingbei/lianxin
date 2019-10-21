@@ -1084,9 +1084,10 @@ let OrderDetail = {
                         switch (item.smallModileType) {
                             //饼图
                             case '11':
-                                let money = row[item.contents[2].column_name];
+						
+                                let money = row[item.contents[3].column_name];
                                 chartData.push({
-                                    name: row[item.contents[0].column_name],
+                                    name: row[item.contents[1].column_name],
                                     value: money.includes('%') ? money.slice(0, -1) - 0 : money - 0
                                 });
                                 break;

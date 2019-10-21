@@ -273,13 +273,13 @@ public class HttpTest implements IHttpTest {
 		//searchWide("中国沈阳国际经济技术合作公司和平分公司","1","1","");
 		try {
 			HttpTest t=new HttpTest();
-			String companyName="中信建设有限责任公司";
-			String PAGESIZE="5";
-			JSONObject courtnotice = t.getCourtNotice(companyName,"1",PAGESIZE);//开庭公告
+			String companyName="中国化学工程股份有限公司";
+			String PAGESIZE="30";
+			JSONObject courtnotice = t.getSubsidiaries(companyName,"1",PAGESIZE);//开庭公告
 			String courtnoticestatus = courtnotice.getString("Result");
 			System.out.println(courtnoticestatus);
-			JSONObject brandandpatent = t.getBrandandpatent(companyName,"1",PAGESIZE);//企业图标
-			String brandandpatentstatus = brandandpatent.getString("Result");
+			JSONObject json = t.getYjapi(companyName.trim());//获取api企业信息数据
+			JSONArray brandandpatentstatus =json.getJSONObject("Result").getJSONArray("Partners");
 			System.out.println(brandandpatentstatus);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -848,7 +848,7 @@ public class HttpTest implements IHttpTest {
 		if(StringUtils.isEmpty(pageSize)){
 			pageSize="30";
 		}
-		HttpGet get = new HttpGet("http://api.qichacha.com/ECIRelationV4/GetInvestmentList?key="+qichacha_key+"&keyWord="+CompanyName+"&pageSize="+pageSize+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/ECIInvestment/GetInvestmentList?key="+qichacha_key+"&searchKey="+CompanyName+"&pageSize="+pageSize+"&pageIndex="+pageIndex);//精确查询
 		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
 		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
 		get.addHeader("Token", token);

@@ -391,7 +391,7 @@ public class CompanyService {
 								natural.set("sys_language", sys_language);
 								natural.set("name", name);
 								naturalpersonShareholderDetailList.add(natural);
-							}else if("法人股东".equals(StockType)){
+							}else if("法人股东".equals(StockType)||"企业法人".equals(StockType)){
 								CreditCompanyLegalShareholderDetail legal=new CreditCompanyLegalShareholderDetail();
 								legal.set("company_id", companyId);
 								legal.set("sys_language", sys_language);

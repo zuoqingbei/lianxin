@@ -126,6 +126,10 @@ let ReportConfig = {
 				urlEN=urlEN.replace('credit_company_creditlevel_table_dict','credit_company_creditlevel_table_dict_en');
 				urlEN=urlEN.replace('CreditCompanyCreditlevelTableDict','CreditCompanyCreditlevelTableDictEn');
 			}
+			if(urlEN.indexOf("CreditCompanyCreditlevelDescribeDict")!=-1){
+				urlEN=urlEN.replace('credit_company_creditlevel_describe_dict','credit_company_creditlevel_describe_dict_en');
+				urlEN=urlEN.replace('CreditCompanyCreditlevelDescribeDict','CreditCompanyCreditlevelDescribeDictEn');
+			}
             $tableEn.bootstrapTable({
                 height: 300,
                 columns: _this.tableColumns(contentsEn, 'en', index, _this.idArrEn[index]),
@@ -1780,6 +1784,10 @@ let ReportConfig = {
                             if (explainUrl === null) {
                                 return;
                             }
+							if(explainUrl.indexOf("CreditCompanyCreditlevelDescribeDict")!=-1){
+								explainUrl=explainUrl.replace('credit_company_creditlevel_describe_dict','credit_company_creditlevel_describe_dict_en');
+								explainUrl=explainUrl.replace('CreditCompanyCreditlevelDescribeDict','CreditCompanyCreditlevelDescribeDictEn');
+							}
                             let paramObj = {}
                             if (explainUrl.split("*")[1]) {
                                 let tempParam = explainUrl.split("*")[1].split("$");//必要参数数组

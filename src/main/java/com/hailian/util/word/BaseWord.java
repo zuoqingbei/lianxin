@@ -467,6 +467,9 @@ public class BaseWord {
                         if ("number".equals(fieldType) || "money".equals(fieldType)) {
                             String val = totalRow.get(column);
                             val = val != null ? val.replaceAll(",", "") : "0";
+                            if(StringUtils.isBlank(value)){
+                            	value="0";
+                            }
                             val = new BigDecimal(val).add(new BigDecimal(value.replaceAll(",", ""))).toString();
                             if ("money".equals(fieldType)) {
                                 DecimalFormat df = new DecimalFormat("###,###.##");
@@ -525,7 +528,11 @@ public class BaseWord {
                     try {
                         DecimalFormat df = new DecimalFormat("###,###.##");
                         NumberFormat nf = NumberFormat.getInstance();
-                        value = df.format(nf.parse(value));
+                        if(StringUtils.isNotBlank(value)&&!"\"\"".equals(value)){
+                        	value = df.format(nf.parse(value));
+                        }else{
+                        	value="0";
+                        }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

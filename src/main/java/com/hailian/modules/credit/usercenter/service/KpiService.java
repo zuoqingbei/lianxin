@@ -157,8 +157,8 @@ public class KpiService {
 	    List<Object[]> flagStrList = Db.query("select begin_date_value,end_date_value from credit_company_financial_entry where del_flag=0 and conf_id in ("+strIds+")");
 		for (Object[] objects : flagStrList) {
 			if(objects!=null){
-				Integer a = (Integer) objects[0];  Integer b = (Integer) objects[1] ;
-				if(a!=null&&a!=0||b!=null&&b!=0){//若有值且值不为0
+				Object a = objects[0];  Object b =  objects[1] ;
+				if(a!=null&&"0".equals(a+"")||b!=null&&"0".equals(b+"")){//若有值且值不为0
 					return price;
 				}
 			}
