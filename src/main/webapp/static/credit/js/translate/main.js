@@ -166,7 +166,7 @@ let ReportConfig = {
 						$("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find("tr").eq(0).append('<td style=""><div class="th-inner"></div><div class="fht-cell" style=""></div></td>');
                        
                         $("#table"+mId+"En").parent().css({"height":"90%"});
-                        $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("合計");
+                        $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find(".th-inner").eq(0).html("Total");
                     }
                 });
             }else{
