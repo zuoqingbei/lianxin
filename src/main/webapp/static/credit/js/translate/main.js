@@ -2355,7 +2355,7 @@ let ReportConfig = {
                             oneTableData[i] = data
                             allTableData[index] = oneTableData
 							//this.total表示所有表格多少行数据
-							console.log(this.isTableTranslated,this.isFormTranslated,this.tableTranlateNum,this.total)
+							// console.log(this.isTableTranslated,this.isFormTranslated,this.tableTranlateNum,this.total)
 							//this.setTranlateTableData(index,allTableData,idArrEn);
                             if(this.tableTranlateNum === this.total){
                                 //如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
@@ -2371,9 +2371,8 @@ let ReportConfig = {
 									this.formTranlateNum = 0  //翻译表单条数计数器
 									$("#save").trigger("click");
 								}
-//	   							console.log(allTableData)
                                 tableTitlesEn.forEach((item,index)=>{
-                                    if(allTableData[index]&&index!=9){
+                                    if(allTableData[index]){
                                         allTableData[index].forEach((e,i)=>{
                                             //循环表格中的数据，如果有select不翻译
                                             //币种不翻译
@@ -2382,6 +2381,7 @@ let ReportConfig = {
                                             }
                                         })
 										console.log("#table"+idArrEn[index] + 'En')
+                                        console.log(allTableData[index])
                                         $("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
                                         $("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
                                         $("#table"+idArrEn[index] + 'En').find(".moneyCol").each((index,item)=>{
