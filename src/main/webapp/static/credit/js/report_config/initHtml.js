@@ -274,9 +274,26 @@ let InitObj = {
 			})
 			cwModals.forEach((seft,i)=>{
 				$(seft).find("table").on("blur","input[type='number']",(e)=>{
-					$('#total_assets_'+_index).val($($('.class4_num')[0]).val());
-					$('#period_for_equity_of_stockholder_'+_index).val($($('.class6')[0]).val());
-					$('#business_income_'+_index).val($($('.class7_num')[0]).val());
+				    let total_assets = 0;
+				    let period_for_equity_of_stockholder = 0;
+				    let business_income = 0;
+					console.log($('#currency_ubitcw').val());
+					if($('#currency_ubitcw').val() == '660'){
+                        total_assets = $($('.class4_num')[0]).val();
+                        period_for_equity_of_stockholder = $($('.class6')[0]).val();
+                        business_income = $($('.class7_num')[0]).val();
+                    }else if($('#currency_ubitcw').val() == '661'){
+                        total_assets = Number($($('.class4_num')[0]).val())*1000;
+                        period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*1000;
+                        business_income =  Number($($('.class7_num')[0]).val())*1000;
+                    }else if($('#currency_ubitcw').val() == '662'){
+                        total_assets = Number($($('.class4_num')[0]).val())*10000;
+                        period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*10000;
+                        business_income =  Number($($('.class7_num')[0]).val())*10000;
+                    }
+					$('#total_assets_'+_index).val(total_assets);
+					$('#period_for_equity_of_stockholder_'+_index).val(period_for_equity_of_stockholder);
+					$('#business_income_'+_index).val(business_income);
 					// console.log('计算开始-----------------')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")
@@ -461,9 +478,26 @@ let InitObj = {
 					// }
 				})
 				$(seft).find("table").on("blur","input[type='text']",(e)=>{
-					$('#total_assets_'+_index).val($($('.class4_num')[0]).val());
-					$('#period_for_equity_of_stockholder_'+_index).val($($('.class6')[0]).val());
-					$('#business_income_'+_index).val($($('.class7_num')[0]).val());
+                    let total_assets = 0;
+                    let period_for_equity_of_stockholder = 0;
+                    let business_income = 0;
+                    console.log($('#currency_ubitcw').val());
+                    if($('#currency_ubitcw').val() == '660'){
+                        total_assets = $($('.class4_num')[0]).val();
+                        period_for_equity_of_stockholder = $($('.class6')[0]).val();
+                        business_income = $($('.class7_num')[0]).val();
+                    }else if($('#currency_ubitcw').val() == '661'){
+                        total_assets = Number($($('.class4_num')[0]).val())*1000;
+                        period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*1000;
+                        business_income =  Number($($('.class7_num')[0]).val())*1000;
+                    }else if($('#currency_ubitcw').val() == '662'){
+                        total_assets = Number($($('.class4_num')[0]).val())*10000;
+                        period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*10000;
+                        business_income =  Number($($('.class7_num')[0]).val())*10000;
+                    }
+                    $('#total_assets_'+_index).val(total_assets);
+                    $('#period_for_equity_of_stockholder_'+_index).val(period_for_equity_of_stockholder);
+                    $('#business_income_'+_index).val(business_income);
 					// console.log('调用接口修改数据')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")
