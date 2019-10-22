@@ -869,7 +869,8 @@ public class HomeController extends BaseProjectController {
 			if(infoLanguage.equals("612")) { common.set("sys_language", "612"); common.remove("id").save();companInfoId = common.get("id");}
 		}else if("213".equals(language)){
 			company.set("sys_language", "612");
-			company.remove("id").save();
+			company.remove("id");
+			company.save();
 			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
 			if(infoLanguage.equals("613")) { common.set("sys_language", "613"); common.remove("id").save();  companInfoId = common.get("id");}
 			if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();  companInfoId = common.get("id");}

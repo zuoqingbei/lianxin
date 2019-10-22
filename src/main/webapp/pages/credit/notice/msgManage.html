@@ -417,7 +417,7 @@ $("#toReadAll").click(function(){
         $('.menutop li').click(function () {
         	var index=$(this).index();
         	var noticeId=$(that).parent().attr('id');
-        	console.log($(that).parent().attr('id'))
+        	console.log($(this).text())
             $(that).find('img').remove();
             var star = $(this).find('img').clone(true);
             $(that).append(star);
@@ -445,7 +445,8 @@ $("#toReadAll").click(function(){
         function tolabel(index,noticeId){
         	$.post('/credit/sysuser/notice/label',{"labelId":index,"noticeId":noticeId},function(data){
     			if(data.statusCode===1){
-    				
+				    Public.message("success",data.message);
+    				agentchange('')
     			}else{
     				Public.message("error",data.message);
     			}

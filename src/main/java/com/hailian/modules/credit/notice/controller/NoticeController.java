@@ -149,42 +149,59 @@ public class NoticeController extends BaseProjectController {
      */
     public void label(){
         String noticeId = getPara("noticeId");
-        String labelId = getPara("labelId");
-        if(labelId.equals("0")){
-            labelId="red.png";
-        }
-        if(labelId.equals("1")){
-            labelId="yellow.png";
-        }
-        if(labelId.equals("2")){
-            labelId="green.png";
-        }
-        if(labelId.equals("3")){
-            labelId="blue.png";
-        }
-        if(labelId.equals("4")){
-            labelId="Violet.png";
-        }
-        if(labelId.equals("5")){
-            labelId="gray.png";
-        }
-
-        Integer userid = getSessionUser().getUserid();
-        String sql="update credit_notice_log set label=? where user_id=?";
-        List<Object> params=new ArrayList<Object>();
-        params.add(labelId);
-        params.add(userid);
-        if(StringUtils.isNotBlank(noticeId)){
-            sql+=" and notice_id=?";
-            params.add(noticeId);
-        }
-        int update = Db.update(sql,params.toArray());
-        if(update<=0){
-            ResultType resultType = new ResultType(2,"操作失败");
-            renderJson(resultType);
+        String labelId = getPara("labelId","");
+        if(StringUtils.isBlank(labelId)&&StringUtils.isNotBlank(noticeId)){
+        	//表示删除
+        	Integer userid = getSessionUser().getUserid();
+        	String sql="DELETE FROM `credit_notice_log` where notice_id=? and user_id=?";
+        	List<Object> params=new ArrayList<Object>();
+        	params.add(noticeId);
+        	params.add(userid);
+        	int update = Db.update(sql,params.toArray());
+        	if(update<=0){
+        		ResultType resultType = new ResultType(2,"操作失败");
+        		renderJson(resultType);
+        	}else{
+        		ResultType resultType = new ResultType(1,"删除成功");
+        		renderJson(resultType);
+        	}
         }else{
-            ResultType resultType = new ResultType(1,"标记成功");
-            renderJson(resultType);
+        	if(labelId.equals("0")){
+        		labelId="red.png";
+        	}
+        	if(labelId.equals("1")){
+        		labelId="yellow.png";
+        	}
+        	if(labelId.equals("2")){
+        		labelId="green.png";
+        	}
+        	if(labelId.equals("3")){
+        		labelId="blue.png";
+        	}
+        	if(labelId.equals("4")){
+        		labelId="Violet.png";
+        	}
+        	if(labelId.equals("5")){
+        		labelId="gray.png";
+        	}
+        	
+        	Integer userid = getSessionUser().getUserid();
+        	String sql="update credit_notice_log set label=? where user_id=?";
+        	List<Object> params=new ArrayList<Object>();
+        	params.add(labelId);
+        	params.add(userid);
+        	if(StringUtils.isNotBlank(noticeId)){
+        		sql+=" and notice_id=?";
+        		params.add(noticeId);
+        	}
+        	int update = Db.update(sql,params.toArray());
+        	if(update<=0){
+        		ResultType resultType = new ResultType(2,"操作失败");
+        		renderJson(resultType);
+        	}else{
+        		ResultType resultType = new ResultType(1,"标记成功");
+        		renderJson(resultType);
+        	}
         }
     }
     public void releaseNotice() {

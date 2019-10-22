@@ -335,8 +335,10 @@ public class OrderPoiController extends BaseProjectController {
 							orderReal.set("remarks", remarks);
 						} 
 						order.set("receiver_date", new Date());
-						orderList.add(order);
-						orderListReal.add(orderReal);
+						if(orderReal.get("custom_id")!=null&&StringUtils.isNotBlank(orderReal.get("custom_id")+"")){
+							orderList.add(order);
+							orderListReal.add(orderReal);
+						}
 				  }
 			  }
 		}
