@@ -1041,7 +1041,10 @@ public class BaseBusiCrdt extends BaseWord{
             try {
                 DecimalFormat df = new DecimalFormat("###,###.##");
                 NumberFormat nf = NumberFormat.getInstance();
-                if(!StrUtils.isEmpty(money)) {
+                if("null".equals(money)){
+                	money="";
+                }
+                if(!StrUtils.isEmpty(money)&&money!=null&&!"null".equals(money)) {
                 	money = df.format(nf.parse(money));
                 }
             } catch (ParseException e) {
@@ -1176,6 +1179,10 @@ public class BaseBusiCrdt extends BaseWord{
 		    try {
 		        DecimalFormat df = new DecimalFormat("###,###.##");
 		        NumberFormat nf = NumberFormat.getInstance();
+		        if("null".equals(value)){
+		        	value="";
+                }
+		        if(StringUtils.isNotBlank(value))
 		        value = df.format(nf.parse(value));
 		    } catch (ParseException e) {
 		        e.printStackTrace();
@@ -1578,7 +1585,7 @@ public class BaseBusiCrdt extends BaseWord{
                 		"营业利润".equals(itemName)||"Operating Profit".equals(itemName)||
                 		"税前利润".equals(itemName)||"Profit before tax".equals(itemName)||
                 		"净利润".equals(itemName)||"Profits".equals(itemName))){
-                	sumStyle.setBold(true);
+                	sumStyle.setBold(false);
                 }
                 RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString(),sumStyleValue), new TextRenderData(endValue.toString(),sumStyleValue));
                 tempRow.setStyle(tableStyle);

@@ -476,6 +476,9 @@ public class BaseWord {
                                 NumberFormat nf = NumberFormat.getInstance();
                                 val = df.format(nf.parse(val));
                             }
+                            if("0".equals(val)){
+                            	val="--";
+                            }
                             totalRow.put(column, val);
                         } else {
                             String val = totalRow.get(column);
@@ -488,11 +491,7 @@ public class BaseWord {
                            }else if(ReportTypeCons.BUSI_EN.equals(reportType)){//商业报告
                                val = "Total";
                            }else if(ReportTypeCons.BUSI_ZH.equals(reportType)){//商业报告
-                               if("612".equals(sysLanguage)){
-                                   val = "合计";
-                               }else{
-                                   val = "Total";
-                               }
+                        	   val = "合计";
                            }
 
                             totalRow.put(column,val);
@@ -517,6 +516,9 @@ public class BaseWord {
                     }
                     if(selName.contains(",")) {
                         selName = selName.substring(0, selName.length() - 1);
+                    }
+                    if(selName.startsWith(",")){
+                    	selName=selName.replaceFirst(",", "");
                     }
                     value = selName;
                 }

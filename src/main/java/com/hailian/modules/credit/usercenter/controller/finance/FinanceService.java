@@ -184,8 +184,10 @@ public class FinanceService {
 			for (CreditCompanyFinancialEntry  entry : entryList) {
 				if(entry==null)continue;
 				if(!(entry.getInt("is_default")==null)&&entry.getInt("is_default")==1) {//如果该条实体是默认选项
-					String otherLanguageItemValue = englishDictList.get(index).get("item_name");index++;
-					entry.put("item_name_en", otherLanguageItemValue);
+					if(englishDictList.size()-1>index){
+						String otherLanguageItemValue = englishDictList.get(index).get("item_name");index++;
+						entry.put("item_name_en", otherLanguageItemValue);
+					}
 				}else {
 					String itemValue = entry.get("item_name");
 					if(StringUtils.isEmpty(itemValue)) {continue;}

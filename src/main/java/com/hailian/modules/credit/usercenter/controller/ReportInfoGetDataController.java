@@ -126,7 +126,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 2018/11/8 lzg 修改或者新增bootStrapTable式的数据
 	 */
 	public void alterBootStrapTable() {
-		if("CreditCompanySubtables".equals(getPara("className"))) {
+		if("CreditCompanySubtablesProfitablity".equals(getPara("className"))) {
 			int a = 0;
 			a++;
 		}
@@ -173,7 +173,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     cci.set("id",companyId).set("industry_code",industryCode).update();
                 }
             }
-            if("CreditCompanySubtables".equals(getPara("className"))) {
+            if("CreditCompanySubtablesProfitablity".equals(getPara("className"))) {
     			int a = 0;
     			a++;
     		}
@@ -1163,6 +1163,8 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 //英文
             	if(ReportTypeCons.BUSI_EN.equals(reportType)){
             		return sysDict.get("detail_name_en") + "";
+            	}if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+            		return sysDict.get("detail_name") + "";
             	}else{
             		if ("613".equals(sysLanguage)) {
             			if(ReportTypeCons.ROC_ZH.equals(reportType)){

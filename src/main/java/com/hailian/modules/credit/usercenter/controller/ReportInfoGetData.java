@@ -222,6 +222,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					if(c!=null){
 						exit=true;
 						entry.put("id",c.get("id")+"");
+					}else{
+						exit=false;
 					}
 				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanyForNote").equals(className)){
 					CreditCompanyForNote c=CreditCompanyForNote.dao.findFirst("SELECT * FROM `credit_company_for_note` where company_id=? "
@@ -229,6 +231,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					if(c!=null){
 						exit=true;
 						entry.put("id",c.get("id")+"");
+					}else{
+						exit=false;
 					}
 				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesLeverage").equals(className)){
 					CreditCompanySubtablesLeverage c=CreditCompanySubtablesLeverage.dao.findFirst("SELECT * FROM `credit_company_subtables_leverage` where company_id=? "
@@ -236,6 +240,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					if(c!=null){
 						exit=true;
 						entry.put("id",c.get("id")+"");
+					}else{
+						exit=false;
 					}
 				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesLiquidity").equals(className)){
 					CreditCompanySubtablesLiquidity c=CreditCompanySubtablesLiquidity.dao.findFirst("SELECT * FROM `credit_company_subtables_liquidity` where company_id=? "
@@ -243,6 +249,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					if(c!=null){
 						exit=true;
 						entry.put("id",c.get("id")+"");
+					}else{
+						exit=false;
 					}
 				}else if((ReportInfoGetDataController.PAKAGENAME_PRE+"CreditCompanySubtablesOverall").equals(className)){
 					CreditCompanySubtablesOverall c=CreditCompanySubtablesOverall.dao.findFirst("SELECT * FROM `credit_company_subtables_overall` where company_id=? "
@@ -257,6 +265,8 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 					if(c!=null){
 						exit=true;
 						entry.put("id",c.get("id")+"");
+					}else{
+						exit=false;
 					}
 				}
 				if(isMainTable) {

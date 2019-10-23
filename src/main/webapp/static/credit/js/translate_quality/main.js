@@ -1947,7 +1947,10 @@ let ReportConfig = {
                     dealQualityData('update', param, 'isSave'); //质检意见、分数等
                 });
                 $("#commit").click(function (e, param) {
-                	 $("body").mLoading("show")
+                	 $("body").mLoading("show");
+					 setTimeout(()=>{
+						$("body").mLoading("hide");
+					},120000);
                     // $("#save").trigger('click', 'submit');
                     _this.getQualitySelectData('update'); //质检结果
                     dealQualityData('update', 'submit', 'isCommit'); //质检意见、分数等

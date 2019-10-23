@@ -2379,19 +2379,19 @@ let ReportConfig = {
                                             if(e["currency"]) {
                                                 //e["currency"] = _this.tableDataArr[index]["rows"][i]["currency"]
 												if(_this.rows["report_type"] === '12'){
-													e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'tw');
+													e["currency"] =this.getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'tw');
 												}else if( _this.rows["report_type"] === '14' ){
-													e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'en');
+													e["currency"] =this.getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'en');
 												}else if( _this.rows["report_type"] === '8'|| _this.rows["report_type"] === '9'  ){
-													e["currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'en');
+													e["currency"] =this.getCurrencyEn( _this.tableDataArr[index]["rows"][i]["currency"],'en');
 												}
                                             }else if(e["registered_capital_currency"]) {
 												if(_this.rows["report_type"] === '12'){
-													e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'tw');
+													e["registered_capital_currency"] =this.getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'tw');
 												}else if( _this.rows["report_type"] === '14' ){
-													e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'en');
+													e["registered_capital_currency"] =this.getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'en');
 												}else if( _this.rows["report_type"] === '8'|| _this.rows["report_type"] === '9'  ){
-													e["registered_capital_currency"] =getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'en');
+													e["registered_capital_currency"] =this.getCurrencyEn( _this.tableDataArr[index]["rows"][i]["registered_capital_currency"],'en');
 												}
 											}
                                         })
