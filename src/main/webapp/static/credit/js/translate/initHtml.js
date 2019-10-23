@@ -84,7 +84,7 @@ let InitObjTrans = {
 			success:(data)=>{
 				$(".gjds").attr("dsConfigid",data["rows"][0]["id"])
 				data.rows.forEach((item,index)=>{
-					$(".ds-date").each((index,ele)=>{
+					$(".ds-date").find("input").each((index,ele)=>{
 						let name = $(ele).attr("name")
 						$(ele).val(item[name])
 					})
@@ -135,12 +135,14 @@ let InitObjTrans = {
 				data.forEach((item,index)=>{
 					//每个item代表每个财务模块的配置数据
 					let inputs = Array.from($(cwModalArr[index]).siblings(".top-html").find("input[type='text']"))
+					let input_range = Array.from($(cwModalArr[index]).siblings(".cw-range").find("input[type='text']"))
 					let inputss =  Array.from($(".cw-date"));
 					inputss.forEach((item,index)=>{
 						if(!$(item).hasClass("cw-range")){
 							inputs = inputs.concat(Array.from($(item).find("input")))
 						}
 					})
+					inputs = inputs.concat(input_range)
 					let selects = Array.from($(cwModalArr[index]).siblings(".top-html").find("select"))
 					selects = selects.concat(Array.from($(cwModalArr[index]).siblings(".cw-unit").find("select")))
 					let radios = Array.from($(cwModalArr[index]).siblings(".top-html").find("input[type='radio']"))
