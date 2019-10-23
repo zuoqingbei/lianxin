@@ -1205,7 +1205,7 @@ let ReportConfig = {
 		                        				case 'number':
 			                    						formGroup += `<div class="form-group">
 					                        							<label for="" class="mb-2">${item.temp_name}</label>
-					                        							<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''+''} type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+					                        							<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''+''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} type="number" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 					                        							<p class="errorInfo">${item.error_msg}</p>
 				                        							</div>`
 		                        					
@@ -1213,7 +1213,7 @@ let ReportConfig = {
 		                        				case 'money':
 		                        					formGroup += `<div class="form-group">
 		                        						<label for="" class="mb-2">${item.temp_name}</label>
-		                        						<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
+		                        						<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} type="text" class="form-control money-checked" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name} reg=${item.reg_validation}>
 		                        						<p class="errorInfo">${item.error_msg}</p>
 		                        						</div>`
 		                        						
@@ -1222,7 +1222,7 @@ let ReportConfig = {
 		                        					formGroup += `<div class="form-group date-form" style="position: relative">
                                                                     <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 1rem;top: 2.4rem;width: 1rem;height: 1.125rem;">
 												            		<label for="" class="mb-2">${item.temp_name}</label>
-												            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+												            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 												            		<p class="errorInfo">${item.error_msg}</p>
 											            		</div>`
 		                        					break;
@@ -1230,7 +1230,7 @@ let ReportConfig = {
 		                        					formGroup += `<div class="form-group date-scope-form" style="position: relative;">
                                                         <img src="${BASE_PATH }static/credit/imgs/total_manage/calen.png" alt="" style="position: absolute;right: 1rem;top: 2.4rem;width: 1rem;height: 1.125rem;">
 									            		<label for="" class="mb-2">${item.temp_name}</label>
-									            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
+									            		<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} type="text" class="form-control" id="${item.column_name}_${ind}" placeholder="" name=${item.column_name}>
 									            		<p class="errorInfo">${item.error_msg}</p>
 								            		</div>`
 		                        					break;
@@ -1251,7 +1251,7 @@ let ReportConfig = {
 							            				success:(data)=>{
 							            				formGroup += `<div class="form-group">
 										            					<label for="" class="mb-2">${item.temp_name}</label>
-										            					<select ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
+										            					<select ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} name=${item.column_name} id="${item.column_name}_${ind}" class="form-control">
 										            						${data.selectStr}
 										            					</select>
 							            							</div>`
@@ -1271,7 +1271,7 @@ let ReportConfig = {
 							            					let a = data.selectStr.replace(/value/g,'a')
 							            					formGroup += `<div class="form-group">
 							            						<label for="" class="mb-2">${item.temp_name}</label>
-							            						<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
+							            						<input ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} name=${item.column_name} id="${item.column_name}_${ind}" class="form-control" list="cars">
 							            						<datalist id="cars">
 							            							${a}
 							            						</datalist>
@@ -1283,7 +1283,7 @@ let ReportConfig = {
 							            		case 'textarea':
 							            			formGroup += `  <div class="form-group"  style="width: 100%">
 									                                    <label  class="mb-2">${item.temp_name}</label>
-									                                    <textarea ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
+									                                    <textarea ${outItem.title.is_disable==='1'||item.is_disable==='1'?"disabled":''} ${outItem.title.is_disable==='2'||item.is_disable==='2'?"readonly":''} class="form-control"  style="width: 100%;height: 6rem" name=${item.column_name} id="${item.column_name}_${ind}"></textarea>
 									                                </div>`
 									                break;
 		        							    default :

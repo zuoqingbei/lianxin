@@ -62,11 +62,12 @@ let InitObj = {
 				dataJsonObj[radioName] = radioVal
 
 				let inputs_top = Array.from($(item).find(".top-html").find("input"))
+				let inputs_range = Array.from($(item).find(".cw-range").find("input"))
 				let selects_top = Array.from($(item).find(".top-html").find("select"))
 				let inputs_bottom = Array.from($(item).find(".bottom-html").find("input"))
 				let selects_bottom = Array.from($(item).find(".bottom-html").find("select"))
 				let textareas_bottom = Array.from($(item).find(".bottom-html").find("textarea"))
-				let inputs_all = inputs_top.concat(inputs_bottom)
+				let inputs_all = inputs_top.concat(inputs_bottom).concat(inputs_range)
 				let selects_all = selects_top.concat(selects_bottom)
 				inputs_all.forEach((item,index)=>{
 					let id = $(item).attr("id");
@@ -131,7 +132,7 @@ let InitObj = {
 					// console.log(data)
 					$(".gjds").attr("dsConfigid",data["rows"][0]["id"])
 					data.rows.forEach((item,index)=>{
-						$(".ds-date").each((index,ele)=>{
+						$(".ds-date").find("input").each((index,ele)=>{
 							let name = $(ele).attr("name")
 							$(ele).val(item[name])
 						})
@@ -184,12 +185,14 @@ let InitObj = {
 					data.forEach((item,index)=>{
 						//每个item代表每个财务模块的配置数据
 						let inputs = Array.from($(cwModalArr[index]).siblings(".top-html").find("input[type='text']"))
+						let input_range = Array.from($(cwModalArr[index]).siblings(".cw-range").find("input[type='text']"))
 						let inputss =  Array.from($(".cw-date"));
 						inputss.forEach((item,index)=>{
 							if(!$(item).hasClass("cw-range")){
 								inputs = inputs.concat(Array.from($(item).find("input")))
 							}
 						})
+						inputs = inputs.concat(input_range)
 						let selects = Array.from($(cwModalArr[index]).siblings(".top-html").find("select"))
 						selects = selects.concat(Array.from($(cwModalArr[index]).siblings(".cw-unit").find("select")))
 						let radios = Array.from($(cwModalArr[index]).siblings(".top-html").find("input[type='radio']"))
@@ -291,9 +294,9 @@ let InitObj = {
                         period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*10000;
                         business_income =  Number($($('.class7_num')[0]).val())*10000;
                     }
-					$('#total_assets_'+_index).val(this.format(total_assets));
-					$('#period_for_equity_of_stockholder_'+_index).val(this.format(period_for_equity_of_stockholder));
-					$('#business_income_'+_index).val(this.format(business_income));
+					$('#total_assets_'+_index).val(total_assets);
+					$('#period_for_equity_of_stockholder_'+_index).val(period_for_equity_of_stockholder);
+					$('#business_income_'+_index).val(business_income);
 					// console.log('计算开始-----------------')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")
@@ -495,9 +498,9 @@ let InitObj = {
                         period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*10000;
                         business_income =  Number($($('.class7_num')[0]).val())*10000;
                     }
-                    $('#total_assets_'+_index).val(this.format(total_assets));
-                    $('#period_for_equity_of_stockholder_'+_index).val(this.format(period_for_equity_of_stockholder));
-                    $('#business_income_'+_index).val(this.format(business_income));
+                    $('#total_assets_'+_index).val(total_assets);
+                    $('#period_for_equity_of_stockholder_'+_index).val(period_for_equity_of_stockholder);
+                    $('#business_income_'+_index).val(business_income);
 					// console.log('调用接口修改数据')
 					let className = $(e.target).attr("class")
 					let entityid = $(e.target).attr("entityid")
