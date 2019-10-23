@@ -2427,6 +2427,10 @@ let ReportConfig = {
 					this.isFormSaved = false;
 					this.tableSaveNum=0;
 					this.formSaveNum=0;
+					this.isTableSaved = false;
+					this.isFormSaved = false;
+					this.tableSaveNum=0;
+					this.formSaveNum=0;
                 },300000);
                 console.log('保存1',this.tableTotal)
 				//console.log(tableTitlesEn)
@@ -2535,6 +2539,10 @@ let ReportConfig = {
 					this.isFormCommited = false;
 					this.tableCommitNum=0;
 					this.formCommitNum=0;
+					this.isTableTranslated = false;
+					this.isFormTranslated=false;
+					this.tableTranlateNum = 0 ;
+					this.formTranlateNum = 0;
                 },300000);
 				$("body").mLoading("show");
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");

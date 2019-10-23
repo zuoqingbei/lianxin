@@ -290,6 +290,11 @@ public class BaseWord {
                         selName = selName.substring(0, selName.length() - 1);
                     }
                     value = selName;
+                } 
+                else if ("number".equals(fieldType)||"money".equals(fieldType)) {
+                	if(StringUtils.isBlank(value)||"\"\"".equals(value)||"0".equals(value)){
+                		value="--";
+                    }
                 }
                 else if ("country".equals(fieldType)) {
                     value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
@@ -467,6 +472,9 @@ public class BaseWord {
                         if ("number".equals(fieldType) || "money".equals(fieldType)) {
                             String val = totalRow.get(column);
                             val = val != null ? val.replaceAll(",", "") : "0";
+                            if("--".equals(val)){
+                            	val="0";
+                            }
                             if(StringUtils.isBlank(value)){
                             	value="0";
                             }
@@ -530,13 +538,18 @@ public class BaseWord {
                     try {
                         DecimalFormat df = new DecimalFormat("###,###.##");
                         NumberFormat nf = NumberFormat.getInstance();
-                        if(StringUtils.isNotBlank(value)&&!"\"\"".equals(value)){
+                        if(StringUtils.isNotBlank(value)&&!"\"\"".equals(value)&&!"0".equals(value)){
                         	value = df.format(nf.parse(value));
                         }else{
-                        	value="0";
+                        	value="--";
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
+                    }
+                } 
+                else if ("number".equals(fieldType)) {
+                	if(StringUtils.isBlank(value)||"\"\"".equals(value)||"0".equals(value)){
+                		value="--";
                     }
                 }
                 //日期
@@ -867,15 +880,23 @@ public class BaseWord {
                 }else if("money".equals(fieldType)) {
                     //处理千位符号
                     try {
-                        DecimalFormat df = new DecimalFormat("###,###.##");
-                        NumberFormat nf = NumberFormat.getInstance();
-                        if(!StrUtils.isEmpty(value)) {
-                        	 value = df.format(nf.parse(value));
-                        }
+                    	 DecimalFormat df = new DecimalFormat("###,###.##");
+                         NumberFormat nf = NumberFormat.getInstance();
+                         if(StringUtils.isNotBlank(value)&&!"\"\"".equals(value)&&!"0".equals(value)){
+                         	value = df.format(nf.parse(value));
+                         }else{
+                         	value="--";
+                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                } else {
+                } 
+                else if ("number".equals(fieldType)) {
+                	if(StringUtils.isBlank(value)||"\"\"".equals(value)||"0".equals(value)){
+                		value="--";
+                    }
+                }
+                else {
                     if("business_date_end".equals(column)) {
                         //营业期限只有两种格式1. 自xxxx至xxxx  2.长期
                         if (value.contains("至")) {
@@ -1413,11 +1434,20 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 //处理千位符号
                 else if ("money".equals(fieldType)) {
                     try {
-                        DecimalFormat df = new DecimalFormat("###,###.##");
-                        NumberFormat nf = NumberFormat.getInstance();
-                        value = df.format(nf.parse(value));
+                    	 DecimalFormat df = new DecimalFormat("###,###.##");
+                         NumberFormat nf = NumberFormat.getInstance();
+                         if(StringUtils.isNotBlank(value)&&!"\"\"".equals(value)&&!"0".equals(value)){
+                         	value = df.format(nf.parse(value));
+                         }else{
+                         	value="--";
+                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
+                    }
+                }
+                else if ("number".equals(fieldType)) {
+                	if(StringUtils.isBlank(value)||"\"\"".equals(value)||"0".equals(value)){
+                		value="--";
                     }
                 }
                 //日期
@@ -1680,9 +1710,13 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                         for (String  tempStr: tempList) {
                             String[] temp_ = tempStr.split(":");
                             if(temp_.length>1){
-                            	rowList.add(RowRenderData.build(new TextRenderData(temp_[0]), new TextRenderData(temp_[1])));
+                            	if(temp_[1]==null||StringUtils.isBlank(temp_[1])){
+                            		rowList.add(RowRenderData.build(new TextRenderData(temp_[0]), new TextRenderData("--")));
+                            	}else{
+                            		rowList.add(RowRenderData.build(new TextRenderData(temp_[0]), new TextRenderData(temp_[1])));
+                            	}
                             }else{
-                            	rowList.add(RowRenderData.build(new TextRenderData(temp_[0]), new TextRenderData("")));
+                            	rowList.add(RowRenderData.build(new TextRenderData(temp_[0]), new TextRenderData("--")));
                             }
                             
                         }
