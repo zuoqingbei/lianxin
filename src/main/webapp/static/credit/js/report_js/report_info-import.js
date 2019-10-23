@@ -269,7 +269,9 @@ let Verify = {
                     			$($(".analyze").get(index)).css({"color":"#007bff","cursor":"pointer"});
                     		}
                     		//翻译
-                    		if(item.report_language === '215' || item.report_language === '213') {
+                    		if((item.report_language === '215' || item.report_language === '213')&&(
+							item.report_type !== '8' && item.report_type !== '9'
+							)) {
                     			//报告语言如果是中文简体或者英文
                     			$($(".translate").get(index)).css({"color":"#ccc","cursor":"default"})
                     			$($(".translate").get(index)).unbind()

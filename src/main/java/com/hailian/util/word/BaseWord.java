@@ -723,6 +723,25 @@ public class BaseWord {
 		 }
 		return result;
 	}
+    protected static String detailDateLv(String date, String reportType) {
+    	if(date == null) {return "";}
+    	String result = "";
+    	String split=" - ";
+    	try {
+    		if(date.indexOf(split)!=-1){
+        		String[] sts=date.split(split);
+        		result = detailDate(sdf.parse(sts[0]),reportType);
+        		if(sts.length>1){
+        			result =result+split+ detailDate(sdf.parse(sts[1]),reportType);
+        		}
+        	}else{
+        		result = detailDate(sdf.parse(date),reportType);
+        	}
+    	} catch (Exception e) {
+    		// TODO: handle exception
+    	}
+		return result;
+	}
 
 	/**
      * 生成表头

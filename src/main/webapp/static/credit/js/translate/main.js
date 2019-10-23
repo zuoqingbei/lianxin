@@ -2511,7 +2511,7 @@ let ReportConfig = {
                     success:(data)=>{
 						this.tableSaveNum++;
                         console.log(this.tableSaveNum,this.tableTotal)
-						if(this.tableSaveNum%this.tableTotal==0){
+						if(this.tableSaveNum%this.tableTotal==0||this.tableSaveNum%(this.tableTotal+1)==0){
 							this.isTableSaved=true;
 							this.tableSaveNum=0;
 							if(this.isFormSaved){
@@ -2616,7 +2616,7 @@ let ReportConfig = {
                         // console.log(data)
 						this.tableCommitNum++;
                         console.log(this.tableCommitNum,this.tableTotal)
-						if(this.tableCommitNum%this.tableTotal==0){
+						if(this.tableCommitNum%this.tableTotal==0||this.tableCommitNum%(this.tableTotal+1)==0){
 							this.isTableCommited =true;
 							this.tableCommitNum=0;
 							if(this.isFormCommited){
@@ -2695,7 +2695,7 @@ let ReportConfig = {
                     	pa.className=formTitleSourceClassName.split("=")[1];
                         url += `?targetlanguage=en&reportType=${_this.rows["report_type"]}&_random=${Math.random()}&${formTitleSourceClassName}&isTranslate=true`
                     }
-					delete _this.formDataArr[index]["null"]
+					//delete _this.formDataArr[index]["null"]
                     pa.dataJson=JSON.stringify(_this.formDataArr[index]);
                     pa.isTranslate=true;
                     if(_this.formDataArr[index]==undefined){
@@ -2816,7 +2816,7 @@ let ReportConfig = {
                         success:(data)=>{
 							this.formSaveNum++;
 							console.log(this.formSaveNum,this.formTotal)
-							if(this.formSaveNum%this.formTotal==0){
+							if(this.formSaveNum%this.formTotal==0||this.formSaveNum%(this.formTotal+1)==0){
 								this.isFormSaved=true;
 								this.formSaveNum=0;
 								if(this.isTableSaved){
@@ -2915,7 +2915,7 @@ let ReportConfig = {
 							this.formCommitNum++;
 							//console.log(data)
 							console.log(this.formCommitNum,this.formTotal)
-							if(this.formCommitNum%this.formTotal==0){
+							if(this.formCommitNum%this.formTotal==0||this.formCommitNum%(this.formTotal+1)==0){
 								this.isFormCommited =true;
 								this.formCommitNum=0;
 								if(this.isTableCommited){

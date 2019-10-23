@@ -592,7 +592,9 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                 if (deal.equals("1")) {//1 完成 2退回 3修改
                     //分析完成，判断订单报告语言，213，215，没有翻译，质检完成则发送报告邮件
                     CreditOrderInfo info = CreditOrderInfo.dao.findFirst("select * from credit_order_info where id=?", orderId);
-                    if (info.get("report_language").equals("213") || info.get("report_language").equals("215")) {
+                    if ((info.get("report_language").equals("213") || info.get("report_language").equals("215"))
+                    		&&info.get("report_type").equals(ReportTypeCons.BUSI_EN)
+                    		&&info.get("report_type").equals(ReportTypeCons.BUSI_ZH)) {
                         status = "311";
                         agentPrice = AgentPriceService.service.getAgentPriceByOrder(orderId);
                     } else {
@@ -684,7 +686,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
      * @return true翻译  false不翻译
      */
     private boolean isTrans(CreditOrderInfo info){
-        if((info.get("report_language").equals("216")||info.get("report_language").equals("217")
+        if((info.get("report_language").equals("216")||info.get("report_language").equals("217")||info.get("report_type").equals(ReportTypeCons.BUSI_ZH)
                 ||(info.get("report_type").equals(ReportTypeCons.BASE_EN)||info.get("report_type").equals(ReportTypeCons.BUSI_EN)||info.get("report_type").equals(ReportTypeCons.CRED_EN)))
                 &&(!info.get("report_type").equals("10") || !info.get("report_type").equals("11"))){
             //1. 报告语言，216中文简体+英文  ，217中文繁体+英文 除信用报告 其余都是走翻译

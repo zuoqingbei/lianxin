@@ -1326,6 +1326,8 @@ public class BaseBusiCrdt extends BaseWord{
         String lrbegin = financialConf.get("date3");
         String lrend = financialConf.get("date4");
         String financialConfId = financialConf.getInt("id") + "";
+        boolean isMerge = (financialConf.get("is_merge")+"").equals("1");
+        String titlPrd="";
         int financeType = financialConf.getInt("type") ;
         String companyName = financialConf.get("company_name")+"";//公司名称
         //判断语言类型
@@ -1338,6 +1340,13 @@ public class BaseBusiCrdt extends BaseWord{
             tableStyle.setHasBorder(false);
             isEnglish=true;
             tableStyle.setAlign(STJc.LEFT);
+        }
+        if(isMerge){
+        	if(isEnglish){
+        		titlPrd="Merge ";
+        	}else{
+        		titlPrd="合并";
+        	}
         }
         String currencyId = financialConf.get("currency")+"";//币种id
         String currency = ReportInfoGetDataController.dictIdToString(currencyId,reportType,language);
@@ -1359,10 +1368,16 @@ public class BaseBusiCrdt extends BaseWord{
             begin = detailDate(sdf.parse(begin),reportType);
             if(!StrUtils.isEmpty(end))
             end = detailDate(sdf.parse(end),reportType);
-            if(!StrUtils.isEmpty(lrbegin))
+            /*if(!StrUtils.isEmpty(lrbegin))
             	lrbegin = detailDate(sdf.parse(lrbegin),reportType);
             if(!StrUtils.isEmpty(lrend))
-            	lrend = detailDate(sdf.parse(lrend),reportType);
+            	lrend = detailDate(sdf.parse(lrend),reportType);*/
+            if(!StrUtils.isEmpty(lrbegin)){
+            	lrbegin = detailDateLv(lrbegin,reportType);
+            }
+            if(!StrUtils.isEmpty(lrend)){
+            	lrend = detailDateLv(lrend,reportType);
+            }
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -1427,9 +1442,9 @@ public class BaseBusiCrdt extends BaseWord{
                                 break;
                             case 6:
                             	if(isEnglish){
-                            		title = "Income Statement";
+                            		title = titlPrd+"Income Statement";
                             	}else{
-                            		title = "利润表";
+                            		title = titlPrd+"利润表";
                             	}
                                 break;
                             case 7:
@@ -1438,9 +1453,9 @@ public class BaseBusiCrdt extends BaseWord{
                                 break;
                             case 8:
                             	if(isEnglish){
-                            		title = "Key Ratios";
+                            		title = titlPrd+"Key Ratios";
                             	}else{
-                            		title = "重要比率表";
+                            		title = titlPrd+"重要比率表";
                             	}
                                 break;
                             case 9:
@@ -1462,8 +1477,8 @@ public class BaseBusiCrdt extends BaseWord{
 
                         //大标题
                         if(StringUtils.isNotBlank(title)){
-                        	if("利润表".equals(title)||"重要比率表".equals(title)||
-                        			"Income Statement".equals(title)||"Key Ratios".equals(title)){
+                        	if((titlPrd+"利润表").equals(title)||(titlPrd+"重要比率表").equals(title)||
+                        			(titlPrd+"Income Statement").equals(title)||(titlPrd+"Key Ratios").equals(title)){
                         		//居中 
                         		Style titileStyle = new Style();
                         		titileStyle.setBold(true);
@@ -1495,15 +1510,16 @@ public class BaseBusiCrdt extends BaseWord{
                             if(isEnglish){
                             	t="Balance Sheet";
                             }
+                            t=titlPrd+t;
                         	rowList.add(RowRenderData.build(
                         			new TextRenderData(""),
                         			new TextRenderData(t, header),
                         			new TextRenderData("")));
                         }
                         if("关键财务项目".equals(title)||"财务报表".equals(title)
-                        		||"利润表".equals(title)||"重要比率表".equals(title)||
+                        		||(titlPrd+"利润表").equals(title)||(titlPrd+"重要比率表").equals(title)||
                         		"Key Financial Items".equals(title)||"Financial Statement".equals(title)
-                        		||"Income Statement".equals(title)||"Key Ratios".equals(title)){
+                        		||(titlPrd+"Income Statement").equals(title)||(titlPrd+"Key Ratios").equals(title)){
                         	//添加币种行
                         	Style header = new Style();
                             header.setBold(true);
@@ -1518,7 +1534,7 @@ public class BaseBusiCrdt extends BaseWord{
                         			new TextRenderData(""),
                         			new TextRenderData(c, header)));
                         	//添加时间
-                        	if("利润表".equals(title)||"Income Statement".equals(title)){
+                        	if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
                         		//利润读取date3 date4  其他都是date1、date2
                         		rowList.add(RowRenderData.build(
                             			new TextRenderData(""),
@@ -1575,7 +1591,8 @@ public class BaseBusiCrdt extends BaseWord{
                 sumStyle.setFontSize(11);
                 sumStyle.setFontFamily("宋体");
                 sumStyleValue.setAlign(STJc.RIGHT);
-                if((financeType==1||financeType==2)&&("流动资产合计".equals(itemName)||"Total Current Assets".equals(itemName)||
+                sumStyle.setBold(false);
+                /*if((financeType==1||financeType==2)&&("流动资产合计".equals(itemName)||"Total Current Assets".equals(itemName)||
                 		"资产总额".equals(itemName)||"Total Assets".equals(itemName)||
                 		"流动负债合计".equals(itemName)||"TOTAL CURRENT LIABILITIES".equals(itemName)||
                 		"负债合计".equals(itemName)||"Equities".equals(itemName)||
@@ -1586,7 +1603,7 @@ public class BaseBusiCrdt extends BaseWord{
                 		"税前利润".equals(itemName)||"Profit before tax".equals(itemName)||
                 		"净利润".equals(itemName)||"Profits".equals(itemName))){
                 	sumStyle.setBold(false);
-                }
+                }*/
                 RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString(),sumStyleValue), new TextRenderData(endValue.toString(),sumStyleValue));
                 tempRow.setStyle(tableStyle);
                 rowList.add(tempRow);

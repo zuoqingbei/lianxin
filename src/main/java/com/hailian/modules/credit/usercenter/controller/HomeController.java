@@ -49,6 +49,7 @@ import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
 import com.hailian.util.word.BaseBusiCrdt;
+import com.hailian.util.word.BusiUtil;
 import com.hailian.util.word.Roc102;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
@@ -725,7 +726,19 @@ public class HomeController extends BaseProjectController {
                 } else {
                     Roc102.reportTable(order, reportType, "612", userid,extend);
                 }
-            } else {
+            }/*else if (ReportTypeCons.BUSI_ZH.equals(reportType) ){
+    			if ("213".equals(report_language)) {
+    				BaseBusiCrdt.reportTable(order, "8", "612", userid);
+    			}else{
+    				BusiUtil.reportTableCh(order, userid);
+    			}
+    		}else if (ReportTypeCons.BUSI_EN.equals(reportType)){
+    			if ("215".equals(report_language)) {
+    				BaseBusiCrdt.reportTable(order, "9", "613", userid);
+    			}else{
+    				BusiUtil.reportTableEn(order, userid);
+    			}
+    		} */else {
                 if ("213".equals(report_language)) {
                     BaseBusiCrdt.reportTable(order, reportType, "612", userid,extend);
                 } else if ("215".equals(report_language)) {
@@ -840,18 +853,27 @@ public class HomeController extends BaseProjectController {
 				companInfoId = company.get("id");//当报告语言为214时默认公司id
 			}
 		}else if("215".equals(language)){
-			company.set("sys_language", "613");
-			company.remove("id").save();
-			if(infoLanguage.equals("612")) {
-				common.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
-				common.remove("id").save();
-				companInfoId = common.get("id");
-			}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
-			    companInfoId = company.get("id");
-			}else if(infoLanguage.equals("614")) {
-				common.set("sys_language", "614"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
-				common.remove("id").save();
-				companInfoId = common.get("id");//当报告语言为214时默认公司id
+			if(ReportTypeCons.BUSI_EN.equals(reprotType) ||ReportTypeCons.BUSI_ZH.equals(reprotType)){
+				company.set("sys_language", "612");
+				company.remove("id").save();
+				if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
+				common.set("sys_language", "613");common.remove("id").save();
+				if(infoLanguage.equals("613")) { companInfoId = common.get("id");}
+				if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();companInfoId = common.get("id");}
+			}else{
+				company.set("sys_language", "613");
+				company.remove("id").save();
+				if(infoLanguage.equals("612")) {
+					common.set("sys_language", "612"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
+					common.remove("id").save();
+					companInfoId = common.get("id");
+				}else if(infoLanguage.equals("613")) {//当填报语言为613时候则创建对应实体并保存对应实体id到orderInfo表中
+					companInfoId = company.get("id");
+				}else if(infoLanguage.equals("614")) {
+					common.set("sys_language", "614"); //当填报语言为612时候则创建对应实体并保存对应实体id到orderInfo表中
+					common.remove("id").save();
+					companInfoId = common.get("id");//当报告语言为214时默认公司id
+				}
 			}
 		}else if("216".equals(language)){
 			company.set("sys_language", "612");
@@ -868,12 +890,19 @@ public class HomeController extends BaseProjectController {
 			if(infoLanguage.equals("613")){companInfoId = common.get("id");}
 			if(infoLanguage.equals("612")) { common.set("sys_language", "612"); common.remove("id").save();companInfoId = common.get("id");}
 		}else if("213".equals(language)){
-			company.set("sys_language", "612");
-			company.remove("id");
-			company.save();
-			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
-			if(infoLanguage.equals("613")) { common.set("sys_language", "613"); common.remove("id").save();  companInfoId = common.get("id");}
-			if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();  companInfoId = common.get("id");}
+			if(ReportTypeCons.BUSI_EN.equals(reprotType) ||ReportTypeCons.BUSI_ZH.equals(reprotType)){
+				company.set("sys_language", "612");
+				company.remove("id");
+				company.save();
+				common.set("sys_language", "613"); common.remove("id").save();  companInfoId = common.get("id");
+			}else{
+				company.set("sys_language", "612");
+				company.remove("id");
+				company.save();
+				if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
+				if(infoLanguage.equals("613")) { common.set("sys_language", "613"); common.remove("id").save();  companInfoId = common.get("id");}
+				if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();  companInfoId = common.get("id");}
+			}
 		}
 		if(org.apache.commons.lang3.StringUtils.isNotBlank(companyid)) {
 			//引用之前的报告，就无需企查查接口，降低成本

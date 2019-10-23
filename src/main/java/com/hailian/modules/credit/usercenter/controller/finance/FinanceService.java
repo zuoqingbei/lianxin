@@ -175,8 +175,8 @@ public class FinanceService {
 		if(StrUtils.isEmpty(financialConfId)||realType==null) {return new ArrayList<>();}
 		CreditCompanyFinancialEntry model = new CreditCompanyFinancialEntry();
 		List<CreditCompanyFinancialEntry> entryList
-				= model.find("select * from credit_company_financial_entry where conf_id=?  and del_flag=0 order by sort_no,id ",
-				  Arrays.asList(new String[] {financialConfId}).toArray());
+				= model.find("select * from credit_company_financial_entry where conf_id=? and type=?  and del_flag=0 order by sort_no,id ",
+				  Arrays.asList(new String[] {financialConfId,type}).toArray());
 		//获取当前财务对应的英文版字典
 		List<CreditCompanyFinancialDict> englishDictList = DictCache.getFinancialDictMap().get(realType);
 		if(englishDictList!=null) {
