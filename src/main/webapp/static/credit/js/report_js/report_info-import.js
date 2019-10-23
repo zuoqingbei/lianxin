@@ -290,7 +290,7 @@ let Verify = {
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".write").get(index)).addClass("disable")
-                    		}else if(item.status === '293'||item.status === '295'||item.status === '694') {
+                    		}else if(item.status === '293'||item.status === '295'||item.status === '694'||item.status === '291') {
 //                    			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
