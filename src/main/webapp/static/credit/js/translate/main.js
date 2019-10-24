@@ -273,7 +273,7 @@ let ReportConfig = {
 
             });
             if(flag){
-                $table.bootstrapTable('refresh')
+                $tableEn.bootstrapTable('refresh')
             }
 
 
