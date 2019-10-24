@@ -894,7 +894,8 @@ public class HomeController extends BaseProjectController {
 				company.set("sys_language", "612");
 				company.remove("id");
 				company.save();
-				common.set("sys_language", "613"); common.remove("id").save();  companInfoId = common.get("id");
+				companInfoId = company.get("id");
+				common.set("sys_language", "613"); common.remove("id").save();  
 			}else{
 				company.set("sys_language", "612");
 				company.remove("id");

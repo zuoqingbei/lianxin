@@ -2461,6 +2461,7 @@ let ReportConfig = {
                     arr.forEach((item,index)=>{
                         ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
                     })
+
                 })
 				if(!data[0]['company_id']){
 					this.tableSaveNum++;

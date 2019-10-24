@@ -1950,7 +1950,7 @@ let ReportConfig = {
                 	 $("body").mLoading("show");
 					 setTimeout(()=>{
 						$("body").mLoading("hide");
-					},120000);
+					},240000);
                     // $("#save").trigger('click', 'submit');
                     _this.getQualitySelectData('update'); //质检结果
                     dealQualityData('update', 'submit', 'isCommit'); //质检意见、分数等

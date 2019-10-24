@@ -148,7 +148,7 @@ public class BaseBusiCrdt extends BaseWord{
         String reportName = referenceNum;
         String reportNamePrd = "";
         if(ReportTypeCons.BUSI_EN.equals(reportType)){
-        	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='613'",orderId);
+        	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='612'",orderId);
         	reportNamePrd=c.getStr("name");
         }else if(ReportTypeCons.BUSI_ZH.equals(reportType)){
         	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='612'",orderId);
