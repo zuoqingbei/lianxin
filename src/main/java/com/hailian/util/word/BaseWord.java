@@ -1690,7 +1690,13 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 }
                 else if ("country".equals(fieldType)) {
                     value = !"".equals(value) ? CountryModel.getCountryById(value,reportType,sysLanguage) : "N/A";
-                }else  if("date".equals(fieldType)&&!StrUtils.isEmpty(value)){
+                }
+                else if ("number".equals(fieldType)) {
+                	if(StringUtils.isBlank(value)||"\"\"".equals(value)||"0".equals(value)){
+                		value="--";
+                    }
+                }
+                else  if("date".equals(fieldType)&&!StrUtils.isEmpty(value)){
                     try {
                         value = detailDate(sdf.parse(value),reportType);
                     } catch (ParseException e) {
