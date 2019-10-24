@@ -726,7 +726,7 @@ public class HomeController extends BaseProjectController {
                 } else {
                     Roc102.reportTable(order, reportType, "612", userid,extend);
                 }
-            }/*else if (ReportTypeCons.BUSI_ZH.equals(reportType) ){
+            }else if (ReportTypeCons.BUSI_ZH.equals(reportType) ){
     			if ("213".equals(report_language)) {
     				BaseBusiCrdt.reportTable(order, "8", "612", userid);
     			}else{
@@ -738,7 +738,7 @@ public class HomeController extends BaseProjectController {
     			}else{
     				BusiUtil.reportTableEn(order, userid);
     			}
-    		}*/ else {
+    		} else {
                 if ("213".equals(report_language)) {
                     BaseBusiCrdt.reportTable(order, reportType, "612", userid,extend);
                 } else if ("215".equals(report_language)) {
