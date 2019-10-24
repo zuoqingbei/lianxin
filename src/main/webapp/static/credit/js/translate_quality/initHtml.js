@@ -617,7 +617,7 @@ let InitObjTransQua = {
 			//自动计算合计
 			const $table_a = $('#'+tableCwIds[1]);
 //			console.log($table_a.find("input")[0])
-			$($table_a.find("input")[0]).trigger("blur")
+// 			$($table_a.find("input")[0]).trigger("blur")
 			$(".bg-gray").parent("td").parent("tr").css("background","#fafafa")
 			
 			//点击新增一行按钮
