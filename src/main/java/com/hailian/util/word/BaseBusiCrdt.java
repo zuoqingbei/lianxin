@@ -744,23 +744,28 @@ public class BaseBusiCrdt extends BaseWord{
                     //移除统计时间
                     removeConf(child,  "emp_num_date");
                     //合并数据
-                    String empNum = null;
+                    String empNum = "";
                     if(model.get("emp_num")!=null){
                         empNum = model.get("emp_num")+"";
                     }
                     String empNumDate =  String.valueOf(model.get("emp_num_date"));
                     empNumDate = timeRangeHandling(empNumDate, "","", "yyyy-mm-dd","yyyy年MM月dd日");
-                    if(!StringUtils.isEmpty(empNum)){
-                        if(!StringUtils.isEmpty(empNumDate)){
-                            if(ReportTypeCons.BUSI_ZH.equals(reportType)){
-                                model.set("emp_num",empNum+" ("+empNumDate+")");
+                    if(StringUtils.isBlank(empNum)&&StringUtils.isBlank(empNumDate)){
+                    	model.set("emp_num","--");
+                    }else{
+                    	if(!StringUtils.isEmpty(empNum)){
+                            if(!StringUtils.isEmpty(empNumDate)){
+                                if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                                    model.set("emp_num",empNum+" ("+empNumDate+")");
+                                }else{
+                                    model.set("emp_num","("+empNumDate+") "+empNum);
+                                }
                             }else{
-                                model.set("emp_num","("+empNumDate+") "+empNum);
+                                model.set("emp_num",empNum);
                             }
-                        }else{
-                            model.set("emp_num",empNum);
                         }
                     }
+                    
                 }catch (Exception e){
                     e.printStackTrace();
                 }

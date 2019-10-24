@@ -738,7 +738,7 @@ public class HomeController extends BaseProjectController {
     			}else{
     				BusiUtil.reportTableEn(order, userid);
     			}
-    		} */else {
+    		}*/ else {
                 if ("213".equals(report_language)) {
                     BaseBusiCrdt.reportTable(order, reportType, "612", userid,extend);
                 } else if ("215".equals(report_language)) {
