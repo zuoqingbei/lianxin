@@ -884,8 +884,7 @@ upLoadCw(url,rows,getSource,alterSource,tableCwId){
 	 * getSource:财务getSource
 	 */
 	let _this = this
-	$(document).on("change",'.fileInp',(e)=>{
-		//$(e.target).parents(".aa-btn").addClass("loading")
+	$(".fileInp").unbind().change(function(e){
 		$("body").mLoading("show");//显示loading组件
 		let file = $(e.target).prop('files')[0];
 		let id = $(e.target).parents(".gjcw").attr("cwconfigid")
@@ -906,8 +905,31 @@ upLoadCw(url,rows,getSource,alterSource,tableCwId){
 				}
 			}
 		})
-
 	})
+	// $(document).on("change",'.fileInp',(e)=>{
+	// 	//$(e.target).parents(".aa-btn").addClass("loading")
+	// 	$("body").mLoading("show");//显示loading组件
+	// 	let file = $(e.target).prop('files')[0];
+	// 	let id = $(e.target).parents(".gjcw").attr("cwconfigid")
+	// 	$(e.target).siblings(".report_type").val(rows["report_type"])
+	// 	$(e.target).siblings(".ficConf_id").val(id)
+	// 	$(e.target).parent("form").attr("action",BASE_PATH + `credit/front/ReportGetData/` +url)
+	// 	$(e.target).parent("form").ajaxSubmit({
+	// 		success:(data)=>{
+	// 			$("body").mLoading("hide");//隐藏loading组件
+	// 			if(data.statusCode === 0){
+	// 				Public.message("error",data.message)
+	// 			}else if(data.statusCode === 1){
+	// 				Public.message("success",data.message)
+	// 				_this.refreshCwModal(tableCwId,getSource,id,rows)
+	// 				$(e.target).val("")
+	// 				_this.saveCwSummation(alterSource)
+	// 				// _this.saveCwEveryTableSUmmation(alterSource)
+	// 			}
+	// 		}
+	// 	})
+	//
+	// })
 },
 saveCwEveryTableSUmmation(alterSource){
 	//保存财务每一个表格下面的合计
