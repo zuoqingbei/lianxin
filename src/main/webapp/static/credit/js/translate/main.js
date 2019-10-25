@@ -1941,7 +1941,7 @@ let ReportConfig = {
             					</table>
             					</div>`
                             }else if(!item_en.title.temp_name.includes('质检意见')){
-                                if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders'))){
+                                if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders')|| item_en.title.temp_name.includes('Court Announcement'))){
                                     contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
             					                        <table id="table${index}En"
             					                            data-toggle="table"
@@ -1967,7 +1967,7 @@ let ReportConfig = {
                             _this.idArrEn.push(index)
                             _this.contentsArrEn.push(item_en.contents)
                             _this.titleEn.push(item_en.title)
-                            if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders'))){
+                            if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders')|| item_en.title.temp_name.includes('Court Announcement'))){
                                 contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
             					                        <table id="table${index}En"
             					                            data-toggle="table"
