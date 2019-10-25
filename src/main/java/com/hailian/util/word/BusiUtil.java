@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -833,12 +834,13 @@ public class BusiUtil extends BaseWord{
 	        //客户参考号
 	        map.put("reference_num",referenceNum);
 	        //订单公司名称
-	        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
-	            //  map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
-	              map.put("company", order.getStr("right_company_name_en"));
-	          }else{
-	              map.put("company", companyInfo.getStr("name_en"));
-	          }
+	      //订单公司名称
+	         if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+	           //  map.put("company", TransApi.Trans(order.getStr("right_company_name_en"), "cht"));
+	             map.put("company", order.getStr("right_company_name_en"));
+	         }else{
+	             map.put("company", companyInfo.getStr("name_en"));
+	         }
 	        //联信编码
 	        map.put("code", companyInfo.getStr("lianxin_id"));
 	        map.put("date", sdf.format(new Date()));
@@ -1378,6 +1380,7 @@ public class BusiUtil extends BaseWord{
 	            map.put("financial", new MiniTableRenderData(null));
 	            map.put("bigFinancial", new MiniTableRenderData(null));
 	        }
+	        //
 	        map = (HashMap<String, Object>) dealDataMapByreportType(reportType,map);
 	        if(extend!=null){
 	        	map.put("order_code", extend.get("order_code"));
@@ -1455,7 +1458,14 @@ public class BusiUtil extends BaseWord{
 	                        empNum = model.get("emp_num")+"";
 	                    }
 	                    String empNumDate =  String.valueOf(model.get("emp_num_date"));
-	                    empNumDate = timeRangeHandling(empNumDate, "","", "yyyy-mm-dd","yyyy年MM月dd日");
+	                    //格式化日期
+	                    //SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+	                    SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+	                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+	                    	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
+	                    }
+	                    empNumDate = timeRangeHandling(empNumDate, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+	                    //empNumDate = timeRangeHandling(empNumDate, "","", "yyyy-mm-dd","yyyy年MM月dd日");
 	                    if(StringUtils.isBlank(empNum)&&StringUtils.isBlank(empNumDate)){
 	                    	model.set("emp_num","--");
 	                    }else{
@@ -1568,12 +1578,24 @@ public class BusiUtil extends BaseWord{
 	            dateStr = "";
 	        }
 	        //格式化日期
-	        dateStr = timeRangeHandling(dateStr, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
+	        SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+	        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+	        	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
+	        }
+	        dateStr = timeRangeHandling(dateStr, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
 	        String targetStr = "";
 
 	        if(isNotNull(money)){
+	        	//添加千分位
+	        	try {
+	        		 DecimalFormat df = new DecimalFormat("###,###.##");
+	                 NumberFormat nf = NumberFormat.getInstance();
+	                 money = df.format(nf.parse(money));
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 	            if(isNotNull(currency)){
-	                currency = dictIdToString(currency, reportType, sysLanguage);
+	                currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
 	                if(isNotNull(currency)){
 	                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
 	                        targetStr = money+" "+currency;
@@ -1626,7 +1648,7 @@ public class BusiUtil extends BaseWord{
 	            //修改值 合并值
 	            if(isNotNull(money)){
 	                if(isNotNull(currency)){
-	                    currency = dictIdToString(currency, reportType, sysLanguage);
+	                    currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
 	                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
 	                        model.set(sourceField,money+" "+currency);
 	                    }else{
@@ -1695,7 +1717,12 @@ public class BusiUtil extends BaseWord{
 	        if(isNotNull(parities_date)){
 	        	String dateStr;//统计时间
 	            //格式化日期
-	            dateStr = timeRangeHandling(parities_date, null,ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
+	            SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+	            if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+	            	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
+	            }
+	            dateStr = timeRangeHandling(parities_date, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+	            //dateStr = timeRangeHandling(parities_date, null,ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
 	        	parities+="("+dateStr+")";
 	        }
 	        //合并值
@@ -1715,7 +1742,12 @@ public class BusiUtil extends BaseWord{
 	        if(isNotNull(parities)){
 	        	String dateStr=null;//统计时间
 	            //格式化日期
-	            dateStr = timeRangeHandling(parities, "至",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
+	        	 SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+	             if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+	             	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
+	             }
+	             dateStr = timeRangeHandling(parities, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+	            //dateStr = timeRangeHandling(parities, "至",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
 	        	if(dateStr!=null)
 	            parities=dateStr;
 	        }
@@ -1751,7 +1783,10 @@ public class BusiUtil extends BaseWord{
 	            try {
 	                DecimalFormat df = new DecimalFormat("###,###.##");
 	                NumberFormat nf = NumberFormat.getInstance();
-	                if(!StrUtils.isEmpty(money)) {
+	                if("null".equals(money)){
+	                	money="";
+	                }
+	                if(!StrUtils.isEmpty(money)&&money!=null&&!"null".equals(money)) {
 	                	money = df.format(nf.parse(money));
 	                }
 	            } catch (ParseException e) {
@@ -1760,7 +1795,7 @@ public class BusiUtil extends BaseWord{
 	            //修改值 合并值
 	            if(isNotNull(money)){
 	                if(isNotNull(currency)){
-	                    currency = dictIdToString(currency, reportType, sysLanguage);
+	                    currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
 	                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
 	                        model.set(sourceField,money+" "+currency);
 	                    }else{
@@ -1773,6 +1808,47 @@ public class BusiUtil extends BaseWord{
 	        }catch (Exception e){
 	            e.printStackTrace();
 	        }
+	    }
+	    /**
+	     * 时间范围格式化处理
+	     * @param dateStr
+	     * @param separater
+	     * @param targetSeparater
+	     * @param sourceFormat
+	     * @param targetFormat
+	     * @return
+	     */
+	    private static String timeRangeHandling(String dateStr, String separater,String targetSeparater, SimpleDateFormat sourcesdf ,SimpleDateFormat targetSdf) {
+	        try{
+	            if(!isNotNull(dateStr)){
+	                return  null;
+	            }
+	            if("长期".equals(dateStr)){
+	            	return dateStr;
+	            }
+	            if(isNotNull(separater)){
+	            	Date date2=null;
+	                Date date1 = sourcesdf.parse( dateStr.split(separater)[0].trim());
+	                if(dateStr.split(separater).length>1){
+	                	date2 = sourcesdf.parse( dateStr.split(separater)[1].trim());
+	                }
+	                if(date2==null){
+	                	return targetSdf.format(date1);
+	                }else{
+	                	if("至".equals(targetSeparater)){
+	                		return /*"从"+*/targetSdf.format(date1)+" "+targetSeparater+" "+targetSdf.format(date2);
+	                	}
+	                	return targetSdf.format(date1)+" "+targetSeparater+" "+targetSdf.format(date2);
+	                }
+	            }else{
+	                Date date1 = sourcesdf.parse(dateStr);
+	                return  targetSdf.format(date1);
+	            }
+	        }catch (Exception e){
+	            e.printStackTrace();
+	            return null;
+	        }
+
 	    }
 	    /**
 	     * 时间范围格式化处理
@@ -2116,16 +2192,29 @@ public class BusiUtil extends BaseWord{
 	        //CreditCompanyFinancialStatementsConf config = CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
 	        //String companyName = config.get("company_name")+"";//公司名称
 	        try {
-	            if(!StrUtils.isEmpty(begin))
-	            begin = detailDate(sdf.parse(begin),reportType);
-	            if(!StrUtils.isEmpty(end))
-	            end = detailDate(sdf.parse(end),reportType);
-	            if(!StrUtils.isEmpty(lrbegin)){
-	            	lrbegin = detailDateLv(lrbegin,reportType);
-	            }
-	            if(!StrUtils.isEmpty(lrend)){
-	            	lrend = detailDateLv(lrend,reportType);
-	            }
+	        	//时间中文
+	        	if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+	        		if(!StrUtils.isEmpty(begin))
+	                    begin = detailDate(sdf.parse(begin),reportType);
+	                    if(!StrUtils.isEmpty(end))
+	                    end = detailDate(sdf.parse(end),reportType);
+	                    if(!StrUtils.isEmpty(lrbegin))
+	                    	lrbegin = detailDate(sdf.parse(lrbegin),reportType);
+	                    if(!StrUtils.isEmpty(lrend))
+	                    	lrend = detailDate(sdf.parse(lrend),reportType);
+	        	}else{
+	        		if(!StrUtils.isEmpty(begin))
+		            	begin = sdf.format(sdf.parse(begin)); 
+		            if(!StrUtils.isEmpty(end))
+		            	end = sdf.format(sdf.parse(end)); 
+		            if(!StrUtils.isEmpty(lrbegin)){
+		            	lrbegin = sdf.format(sdf.parse(lrbegin)); 
+		            }
+		            if(!StrUtils.isEmpty(lrend)){
+		            	lrend = sdf.format(sdf.parse(lrend)); 
+		            }
+	        	}
+	            
 	        } catch (ParseException e) {
 	            e.printStackTrace();
 	        }
@@ -2275,7 +2364,7 @@ public class BusiUtil extends BaseWord{
 	                            header.setFontSize(11);
 	                            String c=currencyStr + "：" + currency + "（" + currencyUnit + "）";
 	                            if(isEnglish){
-	                            	c=currencyStr + "" + currency + "" + currencyUnit + "";
+	                            	c=currencyStr + " " + currency + " " + currencyUnit + "";
 	                            }
 	                        	rowList.add(RowRenderData.build(
 	                        			new TextRenderData(""),

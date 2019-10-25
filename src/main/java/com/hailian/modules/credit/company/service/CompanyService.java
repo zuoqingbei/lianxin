@@ -562,9 +562,9 @@ public class CompanyService {
 								CreditCompanySubsidiaries model = new CreditCompanySubsidiaries();
 								JSONObject subsidiaries = (JSONObject)jsonArray.get(j);
 								String comStatus = subsidiaries.getString("Status");
-								if("吊销".equals(comStatus)||"注销".equals(comStatus)){
+								/*if("吊销".equals(comStatus)||"注销".equals(comStatus)){
 									continue;
-								}
+								}*/
 
 								String name = subsidiaries.getString("Name");
 								String lianxinCode = "";//联信编码
@@ -654,7 +654,70 @@ public class CompanyService {
 
 
 	public void enterpriseGrabOther(String companyId,String companyName,String sys_language) throws Exception{
-
+		
+		//失信被执行
+		JSONObject brokenPromisesJson = iHttpTest.getBrokenPromises(companyName,"1",PAGESIZE);//被执行人信息
+		String brokenPromisestatus = brokenPromisesJson.getString("Status");
+		if("200".equals(brokenPromisestatus)){
+			CreditCompanyBrokenPromises.dao.deleteBycomIdAndLanguage(companyId, sys_language);//删除
+			List<CreditCompanyBrokenPromises> brokenPromiselist=new ArrayList<CreditCompanyBrokenPromises>();
+				JSONArray jsonArray = brokenPromisesJson.getJSONArray("Result");
+				 
+				if(jsonArray !=null && jsonArray.size()>0){
+										for(int j=0;j<jsonArray.size();j++){
+											CreditCompanyBrokenPromises model=new CreditCompanyBrokenPromises();
+						JSONObject brokenPromisesPerson = (JSONObject)jsonArray.get(j);
+						String case_no = brokenPromisesPerson.getString("Anno");
+						model.set("case_no", case_no);
+						String file_time = brokenPromisesPerson.getString("Liandate");
+						model.set("file_time", file_time);
+						String court = brokenPromisesPerson.getString("Executegov");
+						model.set("court", court);
+						model.set("company_id", companyId);
+						model.set("sys_language", sys_language);
+						brokenPromiselist.add(model);
+					}
+				}
+			//}
+			if(CollectionUtils.isNotEmpty(brokenPromiselist)){
+				Db.batchSave(brokenPromiselist, brokenPromiselist.size());
+			}
+		}
+		//被执行人信息
+		JSONObject brokenPromisesPersonJson = iHttpTest.getBrokenPromisesPerson(companyName,"1",PAGESIZE);//被执行人信息
+		String brokenPromisesPersonstatus = brokenPromisesPersonJson.getString("Status");
+		if("200".equals(brokenPromisesPersonstatus)){
+			
+			CreditCompanyBrokenPromisesPerson.dao.deleteBycomIdAndLanguage(companyId, sys_language);//删除
+			List<CreditCompanyBrokenPromisesPerson> judgmentdoclist=new ArrayList<CreditCompanyBrokenPromisesPerson>();
+				JSONArray jsonArray = brokenPromisesPersonJson.getJSONArray("Result");
+				 
+				if(jsonArray !=null && jsonArray.size()>0){
+										for(int j=0;j<jsonArray.size();j++){
+						CreditCompanyBrokenPromisesPerson model=new CreditCompanyBrokenPromisesPerson();
+						JSONObject brokenPromisesPerson = (JSONObject)jsonArray.get(j);
+						String case_no = brokenPromisesPerson.getString("Anno");
+						model.set("case_no", case_no);
+						String file_time = brokenPromisesPerson.getString("Liandate");
+						model.set("file_time", file_time);
+						String court = brokenPromisesPerson.getString("ExecuteGov");
+						model.set("court", court);
+						String objective = brokenPromisesPerson.getString("Biaodi");
+						model.set("objective", objective);
+						model.set("company_id", companyId);
+						model.set("sys_language", sys_language);
+						judgmentdoclist.add(model);
+					}
+				}
+			//}
+			if(CollectionUtils.isNotEmpty(judgmentdoclist)){
+				Db.batchSave(judgmentdoclist, judgmentdoclist.size());
+			}
+		}
+		
+		
+		
+		
 		JSONObject caipanjson = iHttpTest.getJudgmentDoc(companyName,"1",PAGESIZE);//裁判文书
 		String caipanstatus = caipanjson.getString("Status");
 		if("200".equals(caipanstatus)){

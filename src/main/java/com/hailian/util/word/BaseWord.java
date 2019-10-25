@@ -33,8 +33,8 @@ import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.upload.UploadFile;
-
 import com.mysql.jdbc.RowData;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
@@ -1696,6 +1696,11 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 		value="--";
                     }
                 }
+                else if (("address".equals(moduleName)||"business_address".equals(moduleName))&&"area".equals(column)) {
+                	if(StringUtils.isBlank(value)||"\"\"".equals(value)||"0".equals(value)){
+                		value="--";
+                    }
+                }
                 else  if("date".equals(fieldType)&&!StrUtils.isEmpty(value)){
                     try {
                         value = detailDate(sdf.parse(value),reportType);
@@ -1706,7 +1711,31 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 }else {
                     value = !"".equals(value) ? value : "N/A";
                 }
-
+                if("zhaiyao".equals(moduleName)&&"name".equals(column)&&ReportTypeCons.BUSI_EN.equals(reportType)){
+                	CreditCompanyInfo c=CreditCompanyInfo.dao.findById(companyId);
+                	CreditOrderInfo o=CreditOrderInfo.dao.findById(c.get("order_id")+"");
+    	 	        CreditCompanyInfo c1 = CreditCompanyInfo.dao.findById(o.get("company_id")+"");
+    	 	        String name=c1.getStr("name");
+    	 	        if(StringUtils.isBlank(name)){
+    	 	        	name="N/A";
+    	 	        }
+    	 	       value=name;
+                }
+                if("zhaiyao".equals(moduleName)&&"name_en".equals(column)&&ReportTypeCons.BUSI_EN.equals(reportType)){
+                	CreditCompanyInfo c=CreditCompanyInfo.dao.findById(companyId);
+                	CreditOrderInfo o=CreditOrderInfo.dao.findById(c.get("order_id")+"");
+    	 	        List<CreditCompanyInfo> in = CreditCompanyInfo.dao.find("select * from credit_company_info where order_id=? and del_flag=0",c.get("order_id")+"");
+    	 	        for(CreditCompanyInfo m:in){
+    	 	        	if(!(m.get("id")+"").equals(o.get("company_id")+"")){
+    	 	        		String name=m.getStr("name");
+    	 	        		if(StringUtils.isBlank(name)){
+    	 	        			name="N/A";
+    	 	        		}
+    	 	        		value=name;
+    	 	        		
+    	 	        	}
+    	 	        }
+                }
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
                 //二合一的特殊处理
@@ -1774,11 +1803,11 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
     		Style style = new Style();
     		style.setColor("000000");
     		style.setFontFamily("宋体");
-        	/*if(i==1){
+        	if(i==1){
         		style.setBold(true);
         	}else{
         		style.setBold(false);
-        	}*/
+        	}
             rowList.add(RowRenderData.build(
                     new TextRenderData(ReportTypeCons.BUSI_ZH.equals(reportType)?InvestmentSituationTempName[2*i+1]:InvestmentSituationTempName[2*i], style),
                     new TextRenderData(ReportTypeCons.BUSI_ZH.equals(reportType)?InvestmentSituationValue[2*i+1]:InvestmentSituationValue[2*i], style)));

@@ -20,4 +20,8 @@ public interface IHttpTest {
     JSONObject getSubsidiaries(String CompanyName,String pageIndex,String pageSize) throws Exception;
     @URLAnnotation("http://api.qichacha.com/ECIV4/SearchWide")
     JSONObject searchWide(String CompanyName,String pageIndex,String pageSize,String type) throws Exception;
+    @URLAnnotation("http://api.qichacha.com/CourtV4/SearchZhiXing")
+    JSONObject getBrokenPromisesPerson(String conpanyName,String pageIndex,String pageSize) throws Exception;
+    @URLAnnotation("http://api.qichacha.com/CourtV4/SearchShiXin")
+    JSONObject getBrokenPromises(String conpanyName,String pageIndex,String pageSize) throws Exception;
 }

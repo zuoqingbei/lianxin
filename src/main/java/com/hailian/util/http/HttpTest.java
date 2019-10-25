@@ -143,6 +143,58 @@ public class HttpTest implements IHttpTest {
 		}
 		return json;
 	}
+	//被执行人信息
+	public  JSONObject getBrokenPromisesPerson(String conpanyName,String pageIndex,String pageSize) throws Exception{
+		if(StringUtils.isBlank(pageIndex)){
+			pageIndex="1";
+		}
+		//HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/SearchJudgmentDoc?key="+qichacha_key+"&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtV4/SearchZhiXing?key="+qichacha_key+"&pageSize="+pageSize+"&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return json;
+	}
+	//失信被执行
+	public  JSONObject getBrokenPromises(String conpanyName,String pageIndex,String pageSize) throws Exception{
+		if(StringUtils.isBlank(pageIndex)){
+			pageIndex="1";
+		}
+		//HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/SearchJudgmentDoc?key="+qichacha_key+"&pageSize=50&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		HttpGet get = new HttpGet("http://api.qichacha.com/CourtV4/SearchShiXin?key="+qichacha_key+"&pageSize="+pageSize+"&isExactlySame=true&searchKey="+conpanyName+"&pageIndex="+pageIndex);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return json;
+	}
 	//裁判文书详情
 	public  JSONObject getJudgmentDocDetail(String id) throws Exception{
 		HttpGet get = new HttpGet("http://api.qichacha.com/JudgeDocV4/GetJudgementDetail?key="+qichacha_key+"&id="+id);//精确查询
@@ -273,7 +325,7 @@ public class HttpTest implements IHttpTest {
 		//searchWide("中国沈阳国际经济技术合作公司和平分公司","1","1","");
 		try {
 			HttpTest t=new HttpTest();
-			String companyName="中国化学工程股份有限公司";
+			String companyName="乐视网信息技术（北京）股份有限公司";
 			String PAGESIZE="30";
 			JSONObject courtnotice = t.getSubsidiaries(companyName,"1",PAGESIZE);//开庭公告
 			String courtnoticestatus = courtnotice.getString("Result");
@@ -281,6 +333,9 @@ public class HttpTest implements IHttpTest {
 			/*JSONObject json = t.getYjapi(companyName.trim());//获取api企业信息数据
 			JSONArray brandandpatentstatus =json.getJSONObject("Result").getJSONArray("Partners");
 			System.out.println(brandandpatentstatus);*/
+			/*JSONObject caipanjson = t.getJudgmentDoc(companyName,"1",PAGESIZE);//裁判文书
+			String caipanjsons = caipanjson.getString("Result");
+			System.out.println(caipanjsons);*/
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
