@@ -9,6 +9,7 @@ let ReportConfig = {
     tableRowIndex:null,
     orderNum:'',
     wrongTranslate:'',
+    tableDataArr:[],
     init(){
         this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -27,8 +28,10 @@ let ReportConfig = {
          * 表格初始化
          */
         let _this = this
-        this.total= 0
-        this.tableDataArr = []
+        this.total= 0;
+        if(!flag){
+            this.tableDataArr = [];
+        }
         this.tableDataArrEn = []
         let tableNum = 0;//计数器
         console.log(this.rows["company_id"])
