@@ -1941,7 +1941,7 @@ let ReportConfig = {
             					</table>
             					</div>`
                             }else if(!item_en.title.temp_name.includes('质检意见')){
-                                if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information'))){
+                                if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders'))){
                                     contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
             					                        <table id="table${index}En"
             					                            data-toggle="table"
@@ -1967,13 +1967,23 @@ let ReportConfig = {
                             _this.idArrEn.push(index)
                             _this.contentsArrEn.push(item_en.contents)
                             _this.titleEn.push(item_en.title)
-                            contentHtml += `<div class="table-content1" style="background:#fff">
-			                				<table id="table${index}En"
-			                				data-toggle="table"
-			                				style="position: relative;table-layout: fixed"
-			                				>
-			                				</table>
-            				</div>`
+                            if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders'))){
+                                contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
+            					                        <table id="table${index}En"
+            					                            data-toggle="table"
+            					                            style="position: relative;"
+            					                        >
+            					                        </table>
+            					                    </div>`
+                            }else{
+                                contentHtml += `<div class="table-content1" style="background:#fff">
+            					                        <table id="table${index}En"
+            					                        data-toggle="table"
+            					                        style="position: relative; table-layout: fixed"
+            					                        >
+                                                        </table>
+                                                    </div>`
+                            }
 
                             break;
                         case '2':

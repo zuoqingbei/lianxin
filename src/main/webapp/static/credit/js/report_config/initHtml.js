@@ -333,8 +333,8 @@ let InitObj = {
 					$(seft).find(`.class83`).val(+ldzc1=== 0?0:(ldzc1/ldfz1).toFixed(2))
 					$(seft).find(`.classa83`).val(+ldzc2=== 0?0:(ldzc2/ldfz2).toFixed(2))
 					//速动比率
-					$(seft).find(`.class84`).val(+ldfz1 === 0?0:(ldzc1-ch1/ldfz1).toFixed(2))
-					$(seft).find(`.classa84`).val(+ldfz2 === 0?0:(ldzc2-ch2/ldfz2).toFixed(2))
+					$(seft).find(`.class84`).val(+ldfz1 === 0?0:((ldzc1-ch1)/ldfz1).toFixed(2))
+					$(seft).find(`.classa84`).val(+ldfz2 === 0?0:((ldzc2-ch2)/ldfz2).toFixed(2))
 					//资产负债率
 					$(seft).find(`.class85`).val(+zcze1 === 0?0:(fzze1/zcze1).toFixed(2))
 					$(seft).find(`.classa85`).val(+zcze2 === 0?0:(fzze2/zcze2).toFixed(2))
