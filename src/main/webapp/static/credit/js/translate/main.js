@@ -9,6 +9,7 @@ let ReportConfig = {
     tableRowIndex:null,
     orderNum:'',
     wrongTranslate:'',
+    tableDataArr:[],
     init(){
         this.rows = JSON.parse(localStorage.getItem("row"));
         this.initContent();
@@ -27,8 +28,10 @@ let ReportConfig = {
          * 表格初始化
          */
         let _this = this
-        this.total= 0
-        this.tableDataArr = []
+        this.total= 0;
+        if(!flag){
+            this.tableDataArr = [];
+        }
         this.tableDataArrEn = []
         let tableNum = 0;//计数器
         console.log(this.rows["company_id"])
@@ -1941,7 +1944,7 @@ let ReportConfig = {
             					</table>
             					</div>`
                             }else if(!item_en.title.temp_name.includes('质检意见')){
-                                if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders'))){
+                                if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders')|| item_en.title.temp_name.includes('Court Announcement'))){
                                     contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
             					                        <table id="table${index}En"
             					                            data-toggle="table"
@@ -1967,7 +1970,7 @@ let ReportConfig = {
                             _this.idArrEn.push(index)
                             _this.contentsArrEn.push(item_en.contents)
                             _this.titleEn.push(item_en.title)
-                            if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders'))){
+                            if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders')|| item_en.title.temp_name.includes('Court Announcement'))){
                                 contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
             					                        <table id="table${index}En"
             					                            data-toggle="table"
