@@ -282,17 +282,17 @@ let InitObj = {
 				    let business_income = 0;
 					console.log($('#currency_ubitcw').val());
 					if($('#currency_ubitcw').val() == '660'){
-                        total_assets = $($('.class4_num')[0]).val();
-                        period_for_equity_of_stockholder = $($('.class6')[0]).val();
-                        business_income = $($('.class7_num')[0]).val();
+                        total_assets = _this.format($($('.class4_num')[0]).val());
+                        period_for_equity_of_stockholder = _this.format($($('.class6')[0]).val());
+                        business_income = _this.format($($('.class7_num')[0]).val());
                     }else if($('#currency_ubitcw').val() == '661'){
-                        total_assets = Number($($('.class4_num')[0]).val())*1000;
-                        period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*1000;
-                        business_income =  Number($($('.class7_num')[0]).val())*1000;
+                        total_assets = _this.format(Number($($('.class4_num')[0]).val())*1000);
+                        period_for_equity_of_stockholder =  _this.format(Number($($('.class6')[0]).val())*1000);
+                        business_income =  _this.format(Number($($('.class7_num')[0]).val())*1000);
                     }else if($('#currency_ubitcw').val() == '662'){
-                        total_assets = Number($($('.class4_num')[0]).val())*10000;
-                        period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*10000;
-                        business_income =  Number($($('.class7_num')[0]).val())*10000;
+                        total_assets = _this.format(Number($($('.class4_num')[0]).val())*10000);
+                        period_for_equity_of_stockholder =  _this.format(Number($($('.class6')[0]).val())*10000);
+                        business_income =  _this.format(Number($($('.class7_num')[0]).val())*10000);
                     }
 					$('#total_assets_'+_index).val(total_assets);
 					$('#period_for_equity_of_stockholder_'+_index).val(period_for_equity_of_stockholder);
@@ -486,17 +486,17 @@ let InitObj = {
                     let business_income = 0;
                     console.log($('#currency_ubitcw').val());
                     if($('#currency_ubitcw').val() == '660'){
-                        total_assets = $($('.class4_num')[0]).val();
-                        period_for_equity_of_stockholder = $($('.class6')[0]).val();
-                        business_income = $($('.class7_num')[0]).val();
+                        total_assets = _this.format($($('.class4_num')[0]).val());
+                        period_for_equity_of_stockholder = _this.format($($('.class6')[0]).val());
+                        business_income = _this.format($($('.class7_num')[0]).val());
                     }else if($('#currency_ubitcw').val() == '661'){
-                        total_assets = Number($($('.class4_num')[0]).val())*1000;
-                        period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*1000;
-                        business_income =  Number($($('.class7_num')[0]).val())*1000;
+                        total_assets = _this.format(Number($($('.class4_num')[0]).val())*1000);
+                        period_for_equity_of_stockholder =  _this.format(Number($($('.class6')[0]).val())*1000);
+                        business_income =  _this.format(Number($($('.class7_num')[0]).val())*1000);
                     }else if($('#currency_ubitcw').val() == '662'){
-                        total_assets = Number($($('.class4_num')[0]).val())*10000;
-                        period_for_equity_of_stockholder =  Number($($('.class6')[0]).val())*10000;
-                        business_income =  Number($($('.class7_num')[0]).val())*10000;
+                        total_assets = _this.format(Number($($('.class4_num')[0]).val())*10000);
+                        period_for_equity_of_stockholder =  _this.format(Number($($('.class6')[0]).val())*10000);
+                        business_income =  _this.format(Number($($('.class7_num')[0]).val())*10000);
                     }
                     $('#total_assets_'+_index).val(total_assets);
                     $('#period_for_equity_of_stockholder_'+_index).val(period_for_equity_of_stockholder);
