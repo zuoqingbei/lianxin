@@ -122,7 +122,7 @@ let Filing = {
           }
       
           $(e.target).parents(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-                                        <input type="file" name="" id="upload_file" value="" class="file-input" />
+                                        <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
                                         <div class="over-box">
                                           <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
                                           <p class="mt-2">上传附件</p>
@@ -134,7 +134,7 @@ let Filing = {
       $(".file-upload").on('click','.uploadFile .close',function(e){
 	        if($(e.target).parents(".upload-over").length<6 && $(e.target).parents(".upload-over").siblings(".uploadFile.mt-3.mr-4:not(.upload-over)").length<1 ){
 	        	$(e.target).parents(".file-upload").append(`<div class="uploadFile mt-3 mr-4">
-	                <input type="file" name="" id="upload_file" value="" class="file-input" />
+	                <input type="file" name="Files_${that.fileNum}" id="upload_file" value="" class="file-input" />
 	                 <div class="over-box">
 		                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABxSURBVGhD7c9BCsAwCABB//82/9RcPJRibg1rYAe8BCRuSDojM5/31PM9DKAZQDOAZgDNAJoBNANoBtCwgO/H06bO3OuWJk2dudctTZo6c69bmjR15nnYx38xgGYAzQCaATQDaAbQDKAZQLs+QLpCxAKykAXNUf4CGwAAAABJRU5ErkJggg==">
 		                <p class="mt-2">上传附件</p>
