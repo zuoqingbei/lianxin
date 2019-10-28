@@ -3088,6 +3088,7 @@ let ReportConfig = {
 
         //点击提交按钮
         $("#submit_revise").click(()=>{
+            console.log(123)
             let error_phrase_en = $(".wrongEn").val();
             let correct_phrase_en = $(".correctEn").val();
             let correct_phrase_ch = $(".correctCh").val();
@@ -3095,9 +3096,10 @@ let ReportConfig = {
                 Public.message("info","错误的英文和正确的英文不能为空")
                 return
             }
-            //console.log(_this.currentDom)
+            // console.log(_this.currentDom)
             let newTxt = _this.wrongTranslate.replace(error_phrase_en,correct_phrase_en)
-            _this.currentDom.val(newTxt)
+            // _this.currentDom.val(newTxt)
+            _this.currentDom.val(correct_phrase_en)
             $.ajax({
                 url:BASE_PATH + 'credit/translatelibrary/saveTranslate',
                 type:'post',
