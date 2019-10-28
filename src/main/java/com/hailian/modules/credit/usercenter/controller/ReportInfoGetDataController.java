@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -20,6 +21,7 @@ import com.hailian.api.constant.RoleCons;
 import com.hailian.component.base.BaseProjectModel;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyGdp;
@@ -48,6 +50,7 @@ import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
 import com.hailian.util.word.MainReport;
 import com.jfinal.kit.HttpKit;
+import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Record;
 import com.jfinal.upload.UploadFile;
 
@@ -126,7 +129,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 2018/11/8 lzg 修改或者新增bootStrapTable式的数据
 	 */
 	public void alterBootStrapTable() {
-		if("CreditCompanySubtablesProfitablity".equals(getPara("className"))) {
+		if("CreditCompanyCourtannouncement".equals(getPara("className"))) {
 			int a = 0;
 			a++;
 		}
@@ -173,7 +176,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
                     cci.set("id",companyId).set("industry_code",industryCode).update();
                 }
             }
-            if("CreditCompanySubtablesProfitablity".equals(getPara("className"))) {
+            if("CreditCompanyCourtannouncement".equals(getPara("className"))) {
     			int a = 0;
     			a++;
     		}

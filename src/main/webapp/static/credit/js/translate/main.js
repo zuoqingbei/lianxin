@@ -2469,7 +2469,8 @@ let ReportConfig = {
 
                     let arr = Object.keys(ele)
                     arr.forEach((item,index)=>{
-                        ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
+                        //ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
+						ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item]:ele[item]
                     })
 
                 })
@@ -2579,7 +2580,8 @@ let ReportConfig = {
                     }
                     let arr = Object.keys(ele)
                     arr.forEach((item,index)=>{
-                        ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
+                        //ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1').replace(/{/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷2").replace(/]/g, "锟э窖拷锟锟斤拷锟斤拷*锟斤拷3"):ele[item]
+						ele[item] = ele[item]!==null && typeof ele[item] === 'string'?ele[item]:ele[item]
                     })
                 })
 				if(!data[0]['company_id']){
@@ -2765,14 +2767,14 @@ let ReportConfig = {
                             let name =$(item).next().find("select").attr("name")
                             let val =$(item).next().find("select option:selected").val()
                             val = val?val:''
-                            dataJsonObj[name] = val.replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                            dataJsonObj[name] = val
                         }else if($(item).next().hasClass("textarea-module")) {
                             //无标题多行文本输入框
                             let name =$(item).next().find("textarea").attr("name")
                             let val =$(item).next().find("textarea").val()
                             let id = $(item).next().find("textarea").attr("entityid")
                             dataJsonObj["id"] = id
-                            dataJsonObj[name] = val.replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                            dataJsonObj[name] = val
                         }else if($(item).next().find("input").hasClass("float-date")){
                             //浮动非财务
                             let name =$(item).next().find("input").attr("name")
@@ -2793,7 +2795,7 @@ let ReportConfig = {
                                 dataJsonObj["id"] = entryid
                                 for(let i in tempObj){
                                     if(tempObj.hasOwnProperty(i))
-                                        dataJsonObj[i] = tempObj[i].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                                        dataJsonObj[i] = tempObj[i]
                                 }
                             })
                         }
@@ -2863,14 +2865,14 @@ let ReportConfig = {
                             let name =$(item).next().find("select").attr("name")
                             let val =$(item).next().find("select option:selected").val()
                             val = val?val:''
-                            dataJsonObj[name] = val.replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                            dataJsonObj[name] = val
                         }else if($(item).next().hasClass("textarea-module")) {
                             //无标题多行文本输入框
                             let name =$(item).next().find("textarea").attr("name")
                             let val =$(item).next().find("textarea").val()
                             let id = $(item).next().find("textarea").attr("entityid")
                             dataJsonObj["id"] = id
-                            dataJsonObj[name] = val.replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                            dataJsonObj[name] = val
                         }else if($(item).next().find("input").hasClass("float-date")){
                             //浮动非财务
                             let name =$(item).next().find("input").attr("name")
@@ -2891,7 +2893,7 @@ let ReportConfig = {
                                 dataJsonObj["id"] = entryid
                                 for(let i in tempObj){
                                     if(tempObj.hasOwnProperty(i))
-                                        dataJsonObj[i] = tempObj[i].replace(/,/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷').replace(/}/g,'锟э窖拷锟锟斤拷锟斤拷*锟斤拷1')
+                                        dataJsonObj[i] = tempObj[i]
                                 }
                             })
                         }

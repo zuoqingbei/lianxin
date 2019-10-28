@@ -201,10 +201,10 @@ public class TransApi {
     }
 	
 	public static void main(String[] args) {
-		String trans = Trans("密良","cht");
+		String trans = Trans("监事会主席","en");
 		System.out.println(trans);
-		String transTOEn = Trans("山东省青岛市高新区汇智桥路151号中科研发城2号楼5层13室","en");
-		System.out.println(transTOEn);
+		/*String transTOEn = Trans("山东省青岛市高新区汇智桥路151号中科研发城2号楼5层13室","en");
+		System.out.println(transTOEn);*/
 	}
 }
 

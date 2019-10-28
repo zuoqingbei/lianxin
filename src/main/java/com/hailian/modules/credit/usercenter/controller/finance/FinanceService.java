@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialDict;
@@ -177,6 +178,35 @@ public class FinanceService {
 		List<CreditCompanyFinancialEntry> entryList
 				= model.find("select * from credit_company_financial_entry where conf_id=? and type=?  and del_flag=0 order by sort_no,id ",
 				  Arrays.asList(new String[] {financialConfId,type}).toArray());
+		//对rows处理
+		//获取当前财务对应的英文版字典
+		List<CreditCompanyFinancialDict> dictList = CreditCompanyFinancialDict.dao.find("SELECT * FROM `credit_company_financial_dict` where type=? and del_flag=0",type);
+		List<CreditCompanyFinancialEntry> data=new ArrayList<CreditCompanyFinancialEntry>();
+		if(dictList.size()!=entryList.size()){
+			for(CreditCompanyFinancialDict d:dictList){
+				for(CreditCompanyFinancialEntry c:entryList){
+					if(d.getStr("item_name").equals(c.getStr("item_name"))){
+						data.add(c);
+						break;
+					}
+				}
+			}
+			if(data.size()==dictList.size()){
+				List<CreditCompanyFinancialEntry> dele=new ArrayList<CreditCompanyFinancialEntry>();
+				for(CreditCompanyFinancialEntry c:entryList){
+					if(!data.contains(c)){
+						c.put("del_flag","1");
+						dele.add(c);
+					}
+				}
+				if(CollectionUtils.isNotEmpty(dele)){
+					Db.batchUpdate(dele, dele.size());
+				}
+				entryList=data;
+				//更新其他
+				
+			}
+		}
 		//获取当前财务对应的英文版字典
 		List<CreditCompanyFinancialDict> englishDictList = DictCache.getFinancialDictMap().get(realType);
 		if(englishDictList!=null) {

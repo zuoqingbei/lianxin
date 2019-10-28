@@ -562,9 +562,9 @@ public class CompanyService {
 								CreditCompanySubsidiaries model = new CreditCompanySubsidiaries();
 								JSONObject subsidiaries = (JSONObject)jsonArray.get(j);
 								String comStatus = subsidiaries.getString("Status");
-								/*if("吊销".equals(comStatus)||"注销".equals(comStatus)){
+								if("吊销".equals(comStatus)||"注销".equals(comStatus)){
 									continue;
-								}*/
+								}
 
 								String name = subsidiaries.getString("Name");
 								String lianxinCode = "";//联信编码
