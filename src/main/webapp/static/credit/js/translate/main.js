@@ -2409,7 +2409,6 @@ let ReportConfig = {
 											}
                                         })
 										console.log("#table"+idArrEn[index] + 'En')
-                                        console.log(allTableData[index])
                                         $("#table"+idArrEn[index] + 'En').bootstrapTable("removeAll");
                                         $("#table"+idArrEn[index] + 'En').bootstrapTable("append",allTableData[index]);
                                         $("#table"+idArrEn[index] + 'En').find(".moneyCol").each((index,item)=>{
@@ -2448,6 +2447,7 @@ let ReportConfig = {
                 console.log('保存1',this.tableTotal)
 				//console.log(tableTitlesEn)
                 let data = $("#table"+idArrEn[index] + 'En').bootstrapTable("getData");
+                console.log(data);
                 var pa={"dataJson":"","sys_language":"","className":""};
                 if(data.length === 0 || !Array.isArray(data)){this.tableSaveNum++; return}
                 data.forEach((ele,i)=>{
@@ -2483,18 +2483,15 @@ let ReportConfig = {
 				}
                 let $modals = $("#modalEn"+idArrEn[index])
                 let $selects = $modals.find(".modal-body").find("select")
-                // console.log(data)
-                $selects.each((index,item)=>{
-                    let name = $(item).attr("name")
-					if(name==null||name=='null'){
-						return
-					}
-                    let val = $("#"+$(item).attr("id")+' option:selected').val()
-                    data.forEach((ele)=>{
-                        if(ele[name]){
-                            ele[name] = val
+
+                data.forEach((ele)=>{
+                    for(let i in ele){
+                        if(i.indexOf('_dict_id')>-1){
+                            ele[i.split('_dict_id')[0]] = ele[i];
+                            delete ele[i];
                         }
-                    })
+                    }
+
                 })
                  data.forEach((ele,i)=>{
 					delete ele["null"]
@@ -2593,14 +2590,22 @@ let ReportConfig = {
 				}
                 let $modals = $("#modalEn"+idArrEn[index])
                 let $selects = $modals.find(".modal-body").find("select")
-                $selects.each((index,item)=>{
-                    let name = $(item).attr("name")
-                    let val = $("#"+$(item).attr("id")+' option:selected').val()
-                    data.forEach((ele)=>{
-                        if(ele[name]){
-                            ele[name] = val
+                // $selects.each((index,item)=>{
+                //     let name = $(item).attr("name")
+                //     let val = $("#"+$(item).attr("id")+' option:selected').val()
+                //     data.forEach((ele)=>{
+                //         if(ele[name]){
+                //             ele[name] = val
+                //         }
+                //     })
+                // })
+                data.forEach((ele)=>{
+                    for(let i in ele){
+                        if(i.indexOf('_dict_id')>-1){
+                            ele[i.split('_dict_id')[0]] = ele[i];
+                            delete ele[i];
                         }
-                    })
+                    }
                 })
 				 data.forEach((ele,i)=>{
 						delete ele["null"]
