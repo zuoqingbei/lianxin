@@ -1154,11 +1154,17 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		for(CreditOrderInfo m:pager.getList()){
 			if(ReportTypeCons.BUSI_EN.equals(m.get("report_type")+"")){
 				//商业报告英文 将company_id_en替换
-				String orderId=m.get("id")+"";
+				List<CreditCompanyInfo> in = CreditCompanyInfo.dao.find("select * from credit_company_info where order_id=? and del_flag=0",m.get("id")+"");
+	 	        for(CreditCompanyInfo info:in){
+	 	        	if(!(info.get("id")+"").equals(m.get("company_id")+"")){
+	 	        		m.put("company_id_en", info.get("id")+"");
+	 	        	}
+	 	        }
+				/*String orderId=m.get("id")+"";
 				CreditCompanyInfo com=CreditCompanyInfo.dao.findFirst("SELECT * from credit_company_info where order_id=? and sys_language='612' and del_flag=0", orderId);
 				if(com!=null){
 					m.put("company_id_en", com.get("id")+"");
-				}
+				}*/
 			}
 		}
 		return pager;

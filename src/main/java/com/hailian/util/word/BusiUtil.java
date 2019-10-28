@@ -66,21 +66,19 @@ public class BusiUtil extends BaseWord{
 	    private static Object o = new Object();
 	    public static void main(String []args){
 	        try {
-	            /*String urlStr = "http://120.27.46.160:9980/report_type/2018-12-17/396-20181217173409.docx";
-	            URL url = new URL(urlStr);
-	            HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-	            //设置是否要从 URL 连接读取数据,默认为true
-	            uc.setDoInput(true);
-	            uc.connect();
-	            InputStream iputstream = uc.getInputStream();*/
-	            //System.out.println(file.getName());
-	            //BaseWord.buildWord(null, iputstream, "");
-
-	            //String str = BaseInfoZh.downloadFile("http://tm-image.qichacha.com/a460ea8b52eda230294f1bb618c3dfc8.jpg","h:/");
-	            //System.out.println(str);
-
-	            //String str = String.format("%010s", "a12");
-	            //System.out.println(str);
+	        	 SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+	        	 String empNumDate="2019-10-26";
+	        	 SimpleDateFormat s=new SimpleDateFormat("yyyy-MM-dd");
+	        	 Date d=s.parse(empNumDate);
+	        	  System.out.println(sdf_en_hy.format(d));
+                 empNumDate = timeRangeHandling(empNumDate, " - ","to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
+	            System.out.println(empNumDate);
+	        /*	String empNumDate="2019-10-26";
+	        	Date d = new Date();
+	        	 SimpleDateFormat s=new SimpleDateFormat("yyyy-MM-dd");
+	        	 d=s.parse(empNumDate);
+	        	SimpleDateFormat df = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH);
+	        	System.out.println(df.format(d));*/
 	        }catch (Exception e){
 	            e.printStackTrace();
 	        }
@@ -102,7 +100,14 @@ public class BusiUtil extends BaseWord{
 	    		Map<String, String> file1=(Map<String, String>) m1.get("files");
 	    		Map<String, String> file2=(Map<String, String>) m2.get("files");
 	    		fileList.putAll(file1);
-	    		fileList.putAll(file2);
+	    		for(String key:file2.keySet()){//keySet获取map集合key的集合  然后在遍历key即可
+		    		if(fileList.containsKey(key)){
+		    			fileList.put(key+"_"+sdf.format(new Date()), file2.get(key));
+		    		}else{
+		    			fileList.put(key, file2.get(key));
+		    		}
+		    	}
+	    		//fileList.putAll(file2);
 	    		String reportName=m1.get("reportName")+"";
             	String customId=m1.get("customId")+"";
             	sendMail(reportName,customId, sortFiles(fileList));
@@ -134,8 +139,15 @@ public class BusiUtil extends BaseWord{
 	    		Map<String, String> fileList = new HashMap<String, String>();
 	    		Map<String, String> file1=(Map<String, String>) m1.get("files");
 	    		Map<String, String> file2=(Map<String, String>) m2.get("files");
-	    		fileList.putAll(file2);
+	    		//fileList.putAll(file2);
 	    		fileList.putAll(file1);
+	    		for(String key:file2.keySet()){//keySet获取map集合key的集合  然后在遍历key即可
+		    		if(fileList.containsKey(key)){
+		    			fileList.put(key+"_"+sdf.format(new Date()), file2.get(key));
+		    		}else{
+		    			fileList.put(key, file2.get(key));
+		    		}
+		    	}
 	    		String reportName=m1.get("reportName")+"";
             	String customId=m1.get("customId")+"";
             	sendMail(reportName,customId, sortFiles(fileList));
@@ -197,14 +209,18 @@ public class BusiUtil extends BaseWord{
 	        map.put("code", companyInfo.getStr("lianxin_id"));
 	        map.put("date", sdf.format(new Date()));
 	        map.put("order_code",orderCode);
-	        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
-	        map.put("currentTime",sdf2.format(new Date()));
+	        SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+            if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+            	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
+            }
+	        //SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
+	        map.put("currentTime",sdf_en_hy.format(new Date()));
 
 	        //报告名称
 	        //String reportName = reportTypeModel.getStr("name");
 	        String reportName = referenceNum;
 	        String reportNamePrd = "";
-	        if(isCh){
+	       /* if(isCh){
 	        	//原报告是中文
 	        	 if(ReportTypeCons.BUSI_EN.equals(reportType)){
 	 	        	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='613'",orderId);
@@ -221,7 +237,20 @@ public class BusiUtil extends BaseWord{
 	 	        	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='613'",orderId);
 	 	        	reportNamePrd=c.getStr("name");
 	 	        }
-	        }
+	        }*/
+	    	List<CreditCompanyInfo> in = CreditCompanyInfo.dao.find("select * from credit_company_info where order_id=? and del_flag=0",orderId);
+ 	        for(CreditCompanyInfo info:in){
+ 	        	if(ReportTypeCons.BUSI_EN.equals(reportType)){
+ 	        		if(!(info.get("id")+"").equals(order.get("company_id")+"")){
+ 	        			reportNamePrd=info.getStr("name");
+ 	 	        	}
+ 	        	}else{
+ 	        		if((info.get("id")+"").equals(order.get("company_id")+"")){
+ 	        			reportNamePrd=info.getStr("name");
+ 	 	        	}
+ 	        	}
+ 	        	
+ 	        }
 	        reportName=reportNamePrd+"("+reportName+")";
 	        //保存的文件名
 	        //String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
@@ -845,14 +874,18 @@ public class BusiUtil extends BaseWord{
 	        map.put("code", companyInfo.getStr("lianxin_id"));
 	        map.put("date", sdf.format(new Date()));
 	        map.put("order_code",orderCode);
-	        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
-	        map.put("currentTime",sdf2.format(new Date()));
+	        SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+            if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+            	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
+            }
+	        //SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
+	        map.put("currentTime",sdf_en_hy.format(new Date()));
 
 	        //报告名称
 	        //String reportName = reportTypeModel.getStr("name");
 	        String reportName = referenceNum;
 	        String reportNamePrd = "";
-	        if(isCh){
+	       /* if(isCh){
 	        	//原报告是中文
 	        	 if(ReportTypeCons.BUSI_EN.equals(reportType)){
 	 	        	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='613'",orderId);
@@ -869,7 +902,20 @@ public class BusiUtil extends BaseWord{
 	 	        	CreditCompanyInfo c = CreditCompanyInfo.dao.findFirst("select * from credit_company_info t where t.order_id = ? and t.sys_language='613'",orderId);
 	 	        	reportNamePrd=c.getStr("name");
 	 	        }
-	        }
+	        }*/
+			List<CreditCompanyInfo> in = CreditCompanyInfo.dao.find("select * from credit_company_info where order_id=? and del_flag=0",orderId);
+ 	        for(CreditCompanyInfo info:in){
+ 	        	if(ReportTypeCons.BUSI_EN.equals(reportType)){
+ 	        		if(!(info.get("id")+"").equals(order.get("company_id")+"")){
+ 	        			reportNamePrd=info.getStr("name");
+ 	 	        	}
+ 	        	}else{
+ 	        		if((info.get("id")+"").equals(order.get("company_id")+"")){
+ 	        			reportNamePrd=info.getStr("name");
+ 	 	        	}
+ 	        	}
+ 	        	
+ 	        }
 	        reportName=reportNamePrd+"("+reportName+")";
 	        //保存的文件名
 	        //String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
@@ -1464,22 +1510,25 @@ public class BusiUtil extends BaseWord{
 	                    if(ReportTypeCons.BUSI_ZH.equals(reportType)){
 	                    	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
 	                    }
-	                    empNumDate = timeRangeHandling(empNumDate, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+	                    empNumDate = timeRangeHandling(empNumDate, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
 	                    //empNumDate = timeRangeHandling(empNumDate, "","", "yyyy-mm-dd","yyyy年MM月dd日");
 	                    if(StringUtils.isBlank(empNum)&&StringUtils.isBlank(empNumDate)){
 	                    	model.set("emp_num","--");
 	                    }else{
 	                    	if(!StringUtils.isEmpty(empNum)){
-	                            if(!StringUtils.isEmpty(empNumDate)){
-	                                if(ReportTypeCons.BUSI_ZH.equals(reportType)){
-	                                    model.set("emp_num",empNum+" ("+empNumDate+")");
-	                                }else{
-	                                    model.set("emp_num","("+empNumDate+") "+empNum);
-	                                }
-	                            }else{
-	                                model.set("emp_num",empNum);
-	                            }
-	                        }
+	                 		   DecimalFormat df = new DecimalFormat("###,###.##");
+	                            NumberFormat nf = NumberFormat.getInstance();
+	                            empNum = df.format(nf.parse(empNum));
+	                             if(!StringUtils.isEmpty(empNumDate)){
+	                                 if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+	                                     model.set("emp_num",empNum+" ("+empNumDate+")");
+	                                 }else{
+	                                     model.set("emp_num",empNum+"("+empNumDate+") ");
+	                                 }
+	                             }else{
+	                                 model.set("emp_num",empNum);
+	                             }
+	                         }
 	                    }
 	                }catch (Exception e){
 	                    e.printStackTrace();
@@ -1582,7 +1631,7 @@ public class BusiUtil extends BaseWord{
 	        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
 	        	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
 	        }
-	        dateStr = timeRangeHandling(dateStr, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+	        dateStr = timeRangeHandling(dateStr, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
 	        String targetStr = "";
 
 	        if(isNotNull(money)){
@@ -1721,7 +1770,7 @@ public class BusiUtil extends BaseWord{
 	            if(ReportTypeCons.BUSI_ZH.equals(reportType)){
 	            	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
 	            }
-	            dateStr = timeRangeHandling(parities_date, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+	            dateStr = timeRangeHandling(parities_date, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
 	            //dateStr = timeRangeHandling(parities_date, null,ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
 	        	parities+="("+dateStr+")";
 	        }
@@ -1746,7 +1795,7 @@ public class BusiUtil extends BaseWord{
 	             if(ReportTypeCons.BUSI_ZH.equals(reportType)){
 	             	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
 	             }
-	             dateStr = timeRangeHandling(parities, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+	             dateStr = timeRangeHandling(parities, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
 	            //dateStr = timeRangeHandling(parities, "至",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
 	        	if(dateStr!=null)
 	            parities=dateStr;

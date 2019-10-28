@@ -140,9 +140,14 @@ public class BaseBusiCrdt extends BaseWord{
         map.put("code", companyInfo.getStr("lianxin_id"));
         map.put("date", sdf.format(new Date()));
         map.put("order_code",orderCode);
-        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
-        map.put("currentTime",sdf2.format(new Date()));
-
+        /*SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
+        map.put("currentTime",sdf2.format(new Date()));*/
+        SimpleDateFormat sdf_en_hy = new SimpleDateFormat("dd MMMM yyyy",Locale.ENGLISH);
+        if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+        	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
+        }
+        //SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy 年 MM 月 dd 日 HH:mm:ss");
+        map.put("currentTime",sdf_en_hy.format(new Date()));
         //报告名称
         //String reportName = reportTypeModel.getStr("name");
         String reportName = referenceNum;
@@ -753,16 +758,19 @@ public class BaseBusiCrdt extends BaseWord{
                     if(ReportTypeCons.BUSI_ZH.equals(reportType)){
                     	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
                     }
-                    empNumDate = timeRangeHandling(empNumDate, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+                    empNumDate = timeRangeHandling(empNumDate, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
                     if(StringUtils.isBlank(empNum)&&StringUtils.isBlank(empNumDate)){
                     	model.set("emp_num","--");
                     }else{
                     	if(!StringUtils.isEmpty(empNum)){
+                		   DecimalFormat df = new DecimalFormat("###,###.##");
+                           NumberFormat nf = NumberFormat.getInstance();
+                           empNum = df.format(nf.parse(empNum));
                             if(!StringUtils.isEmpty(empNumDate)){
                                 if(ReportTypeCons.BUSI_ZH.equals(reportType)){
                                     model.set("emp_num",empNum+" ("+empNumDate+")");
                                 }else{
-                                    model.set("emp_num","("+empNumDate+") "+empNum);
+                                    model.set("emp_num",empNum+"("+empNumDate+") ");
                                 }
                             }else{
                                 model.set("emp_num",empNum);
@@ -871,7 +879,7 @@ public class BaseBusiCrdt extends BaseWord{
         if(ReportTypeCons.BUSI_ZH.equals(reportType)){
         	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
         }
-        dateStr = timeRangeHandling(dateStr, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+        dateStr = timeRangeHandling(dateStr, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
         String targetStr = "";
 
         if(isNotNull(money)){
@@ -1010,7 +1018,7 @@ public class BaseBusiCrdt extends BaseWord{
             if(ReportTypeCons.BUSI_ZH.equals(reportType)){
             	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
             }
-            dateStr = timeRangeHandling(parities_date, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+            dateStr = timeRangeHandling(parities_date, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
             //dateStr = timeRangeHandling(parities_date, null,ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
         	parities+="("+dateStr+")";
         }
@@ -1035,7 +1043,7 @@ public class BaseBusiCrdt extends BaseWord{
              if(ReportTypeCons.BUSI_ZH.equals(reportType)){
              	sdf_en_hy=new SimpleDateFormat("yyyy年MM月dd日");
              }
-             dateStr = timeRangeHandling(parities, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-mm-dd"),sdf_en_hy);
+             dateStr = timeRangeHandling(parities, " - ",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", new SimpleDateFormat("yyyy-MM-dd"),sdf_en_hy);
             //dateStr = timeRangeHandling(parities, "至",ReportTypeCons.BUSI_ZH.equals(reportType)?"至":"to", "yyyy-mm-dd","yyyy年MM月dd日");
         	if(dateStr!=null)
             parities=dateStr;

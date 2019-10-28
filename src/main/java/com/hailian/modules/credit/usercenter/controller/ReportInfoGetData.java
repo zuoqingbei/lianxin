@@ -455,6 +455,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 							 columnName =countryColumn.get(className);
 							 value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id='"+  model.get(columnName) +"'");
 						 }
+						model.put(columnName+"_dict_id",model.get(columnName));
 						model.put(columnName,value==null?"":value);
 					}else {
 						if(columnName.contains("id_type")){
@@ -474,8 +475,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 								 }
 							 }
 							 model.put(columnName,a.length()>0?a.substring(1,a.length()):"");
+							 model.put(columnName+"_dict_id",targetValue);
 						}else {
 							model.put(columnName,"");
+							model.put(columnName+"_dict_id",targetValue);
 						}
 					}
 				}
@@ -514,6 +517,7 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 									columnName =countryColumn.get(className);
 									value = Db.queryStr("select "+flagStr+" from credit_country where del_flag=0 and id='"+  model.get(columnName) +"'");
 								}
+								model.put(columnName+"_dict_id",model.get(columnName));
 								model.put(columnName+"_dictname",value==null?"":value);
 							}else {
 								if(columnName.contains("id_type")){
@@ -533,8 +537,10 @@ public abstract class ReportInfoGetData extends BaseProjectController {
 										}
 									}
 									model.put(columnName+"_dictname",a.length()>0?a.substring(1,a.length()):"");
+									model.put(columnName+"_dict_id",targetValue);
 								}else {
 									model.put(columnName+"_dictname","");
+									model.put(columnName+"_dict_id",targetValue);
 								}
 							}
 						}
