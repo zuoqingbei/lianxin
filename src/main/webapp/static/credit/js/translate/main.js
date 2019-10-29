@@ -164,7 +164,7 @@ let ReportConfig = {
                         h=h.replace(/<td/g,"<td style='border:none!important'")
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").html(h);
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer")
-                            .css({"margin-right":"0px"}).css({"position":"relative"}).css({"top":"-20px"})
+                            .css({"margin-right":"0px"}).css({"position":"relative"}).css({"top":"0px"})
                             .css({"display":"block"});
                         $("#table"+mId+"En").parent().parent().find(".fixed-table-footer").find("tr").eq(0).append('<td style=""><div class="th-inner"></div><div class="fht-cell" style=""></div></td>');
 
@@ -1323,6 +1323,7 @@ let ReportConfig = {
                         }
                     })
                 },0)
+
                 /**
                  * 头部
                  */
