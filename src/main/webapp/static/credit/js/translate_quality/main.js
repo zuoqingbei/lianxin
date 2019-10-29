@@ -1145,6 +1145,8 @@ let ReportConfig = {
                             $(item).addClass("abc")
                         }
                     })
+                    // 质检结果下拉列表
+                    this.setQualitySelect();
                 }, 0)
                 /**
                  * 头部
@@ -1956,8 +1958,8 @@ let ReportConfig = {
                     dealQualityData('update', 'submit', 'isCommit'); //质检意见、分数等
                 });
 
-                // 质检结果下拉列表
-                this.setQualitySelect();
+                // // 质检结果下拉列表
+                // this.setQualitySelect();
             }
         })
     },
