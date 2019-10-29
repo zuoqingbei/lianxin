@@ -284,6 +284,7 @@ let Verify = {
                     		//293信息录入
                     		//295代理中
                     		//694 系统查询完毕
+                            //296 代理结束
                     		if(item.status === '301'){
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
@@ -292,7 +293,7 @@ let Verify = {
                     			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".write").get(index)).addClass("disable")
-                    		}else if(item.status === '293'||item.status === '295'||item.status === '694'||item.status === '291') {
+                    		}else if(item.status === '293'||item.status === '295'||item.status === '296'||item.status === '694'||item.status === '291') {
 //                    			$($(".recordName").get(index)).addClass("disable")
                     			$($(".analyze").get(index)).addClass("disable")
                     			$($(".translate").get(index)).addClass("disable")
