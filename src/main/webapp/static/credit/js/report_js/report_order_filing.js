@@ -116,7 +116,7 @@ let Filing = {
           $(this).parent(".uploadFile").addClass("upload-over");
           $(this).css("visibility","hidden")
           $(this).siblings(".over-box").html(`<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button><img src=${fileicon} /><p class="filename">${filename}</p>`);
-          if($(e.target).parents(".uploadFile").siblings().length>3) {
+          if($(e.target).parents(".uploadFile").siblings().length>4) {
             return;
           }
       
