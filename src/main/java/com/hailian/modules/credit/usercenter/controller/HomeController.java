@@ -816,6 +816,12 @@ public class HomeController extends BaseProjectController {
 		if(null!=theSameOrder) {
 			company=CreditCompanyInfo.dao.getCompanyById(theSameOrder.getStr("company_id").toString());
 			companyid=company.get("id").toString();
+			SysDictDetail d=SysDictDetail.dao.findById(company.get("company_type")+"");
+			if(d!=null){
+				if(ReportTypeCons.BUSI_EN.equals(reprotType)&&"216".equals(language)){
+					company.set("type_of_enterprise_remark", d.get("detail_remark"));
+				}
+			}
 		}
 		
 		company.remove("id");
@@ -877,10 +883,12 @@ public class HomeController extends BaseProjectController {
 			}
 		}else if("216".equals(language)){
 			if(ReportTypeCons.BUSI_EN.equals(reprotType) ){
-				company.set("sys_language", "612");
+				company.set("sys_language", "613");
 				company.remove("id").save();
 				companInfoId = company.get("id");
-				common.set("sys_language", "613");common.remove("id").save();
+				common.set("sys_language", "612");common.remove("id").save();
+				/*if(infoLanguage.equals("613")) { companInfoId = common.get("id");}
+				if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();companInfoId = common.get("id");}*/
 			}else if(ReportTypeCons.BUSI_ZH.equals(reprotType)){
 				company.set("sys_language", "612");
 				company.remove("id").save();
@@ -921,8 +929,14 @@ public class HomeController extends BaseProjectController {
 		}
 		if(org.apache.commons.lang3.StringUtils.isNotBlank(companyid)) {
 			//引用之前的报告，就无需企查查接口，降低成本
-			Thread td = new Thread(new threadEnterGrabTheSameCompany(companyid, reprotType, "612"));
-			td.start();
+			if(ReportTypeCons.BUSI_EN.equals(reprotType)&&"216".equals(language)){
+				Thread td = new Thread(new threadEnterGrabTheSameCompany(companyid, reprotType, "613"));
+				td.start();
+			}else{
+				Thread td = new Thread(new threadEnterGrabTheSameCompany(companyid, reprotType, "612"));
+				td.start();
+			}
+		
 		}
 
 		return companInfoId;

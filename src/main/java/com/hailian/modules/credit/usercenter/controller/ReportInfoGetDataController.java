@@ -129,7 +129,7 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
 	 * 2018/11/8 lzg 修改或者新增bootStrapTable式的数据
 	 */
 	public void alterBootStrapTable() {
-		if("CreditCompanyCourtannouncement".equals(getPara("className"))) {
+		if("CreditCompanyBrandandpatent".equals(getPara("className"))) {
 			int a = 0;
 			a++;
 		}
@@ -161,7 +161,12 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             if(jsonStr==null||"".equals(jsonStr.trim())||!jsonStr.contains("{")||!jsonStr.contains(":")){
                 throw new IllegalAccessException();
             }
-            List<Map<Object, Object>> entrys = parseJsonArray(jsonStr);
+            List<Map<Object, Object>> entrys = new ArrayList<Map<Object,Object>>();
+            if("CreditCompanyBrandandpatent".equals(getPara("className"))) {
+            	entrys=parseJsonArray2(jsonStr);
+            }else{
+            	entrys=parseJsonArray(jsonStr);
+            }
             String companyId = String.valueOf(entrys.get(0).get("company_id"));
             orderId =  CreditCompanyInfo.dao.findFirst("select order_id from credit_company_info where id = ? ",new String[]{companyId}).get("order_id")+"";
             reportType =  CreditOrderInfo.dao.findFirst("select report_type from credit_order_info where id = ?",new String[]{orderId}).get("report_type")+"";
