@@ -1293,6 +1293,9 @@ public class BaseBusiCrdt extends BaseWord{
             Integer id = model.getInt("id");
             String url = model.getStr("brand_url");
             if(StringUtils.isNotEmpty(url)) {
+            	if(url.indexOf("<img")!=-1){
+            		url=getImgStr(url);
+            	}
                 map.put("img" + id, new PictureRenderData(120, 120, downloadFile(url, brandPath)));
             }
         }

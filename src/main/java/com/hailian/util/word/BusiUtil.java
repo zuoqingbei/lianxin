@@ -243,14 +243,29 @@ public class BusiUtil extends BaseWord{
  	        	if(ReportTypeCons.BUSI_EN.equals(reportType)){
  	        		if(!(info.get("id")+"").equals(order.get("company_id")+"")){
  	        			reportNamePrd=info.getStr("name");
+ 	        			if("null".equals(reportNamePrd)||StringUtils.isBlank(reportNamePrd)){
+ 	        				if(StringUtils.isNotBlank(info.getStr("name_en"))){
+ 	        					reportNamePrd=info.getStr("name_en");
+ 	        				}
+ 	        			}
  	 	        	}
  	        	}else{
  	        		if((info.get("id")+"").equals(order.get("company_id")+"")){
  	        			reportNamePrd=info.getStr("name");
+ 	        			if("null".equals(reportNamePrd)||StringUtils.isBlank(reportNamePrd)){
+ 	        				if(StringUtils.isNotBlank(info.getStr("name_en"))){
+ 	        					reportNamePrd=info.getStr("name_en");
+ 	        				}
+ 	        			}
  	 	        	}
  	        	}
  	        	
  	        }
+ 	        if("null".equals(reportNamePrd)||StringUtils.isBlank(reportNamePrd)){
+				if(StringUtils.isNotBlank(order.getStr("company_by_report"))){
+					reportNamePrd=order.getStr("company_by_report");
+				}
+			}
 	        reportName=reportNamePrd+"("+reportName+")";
 	        //保存的文件名
 	        //String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
@@ -426,6 +441,9 @@ public class BusiUtil extends BaseWord{
 	                    }
 	                } else if ("h".equals(tableType)) {
 	                    //"出资情况"需要增加合计项
+	                	 if("credit_company_brandandpatent".equals(tableName)){
+	                		 System.out.println(1);
+	                	 }
 	                    boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
 	                    table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,"",companyId);
 	                }else if("z".equals(tableType)){
@@ -916,6 +934,11 @@ public class BusiUtil extends BaseWord{
  	        	}
  	        	
  	        }
+ 	       if("null".equals(reportNamePrd)||StringUtils.isBlank(reportNamePrd)){
+				if(StringUtils.isNotBlank(order.getStr("company_by_report"))){
+					reportNamePrd=order.getStr("company_by_report");
+				}
+			}
 	        reportName=reportNamePrd+"("+reportName+")";
 	        //保存的文件名
 	        //String _prePath = webRoot + "/upload/tmp/" + reportType + sysLanguage + companyId;
@@ -1091,6 +1114,9 @@ public class BusiUtil extends BaseWord{
 	                    }
 	                } else if ("h".equals(tableType)) {
 	                    //"出资情况"需要增加合计项
+	                	 if("credit_company_brandandpatent".equals(tableName)){
+	                		 System.out.println(1);
+	                	 }
 	                    boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
 	                    table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,"",companyId);
 	                }else if("z".equals(tableType)){
@@ -2094,11 +2120,17 @@ public class BusiUtil extends BaseWord{
 	        String brandPath = PathKit.getWebRootPath()+ "/upload/brand";
 	        //获取图片
 	        List<CreditCompanyBrandandpatent> list = CreditCompanyBrandandpatent.dao.getBrandandpatent(companyId,sysLanguage);
+	        if(list==null||list.size()==0){
+	        	 list = CreditCompanyBrandandpatent.dao.getBrandandpatent(companyId);
+	        }
 	        HashMap<String, Object> map = new HashMap<String, Object>();
 	        for (CreditCompanyBrandandpatent model : list) {
 	            Integer id = model.getInt("id");
 	            String url = model.getStr("brand_url");
 	            if(StringUtils.isNotEmpty(url)) {
+	            	if(url.indexOf("<img")!=-1){
+	            		url=getImgStr(url);
+                	}
 	                map.put("img" + id, new PictureRenderData(120, 120, downloadFile(url, brandPath)));
 	            }
 	        }

@@ -1,39 +1,32 @@
 package com.hailian.util.word;
 
-import com.deepoove.poi.XWPFTemplate;
-import com.deepoove.poi.data.MiniTableRenderData;
-import com.deepoove.poi.data.RowRenderData;
-import com.deepoove.poi.data.TextRenderData;
-import com.deepoove.poi.data.style.Style;
-import com.deepoove.poi.data.style.TableStyle;
-import com.hailian.api.constant.ReportTypeCons;
-import com.hailian.component.base.BaseProjectModel;
-import com.hailian.modules.admin.file.model.CreditUploadFileModel;
-import com.hailian.modules.admin.file.service.UploadFileService;
-import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
-import com.hailian.modules.admin.ordermanager.model.CreditOperationLog;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
-import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
-import com.hailian.modules.credit.common.model.CountryModel;
-import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
-import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
-import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
-import com.hailian.modules.credit.usercenter.model.ResultType;
-import com.hailian.modules.credit.utils.FileTypeUtils;
-import com.hailian.modules.credit.utils.Office2PDF;
-import com.hailian.modules.credit.utils.SendMailUtil;
-import com.hailian.modules.front.template.TemplateDictService;
-import com.hailian.system.dict.SysDictDetail;
-import com.hailian.system.user.SysUser;
-import com.hailian.util.Config;
-import com.hailian.util.DateUtils;
-import com.hailian.util.FtpUploadFileUtils;
-import com.hailian.util.SplitString;
-import com.hailian.util.StrUtils;
-import com.hailian.util.translate.TransApi;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.upload.UploadFile;
-import com.mysql.jdbc.RowData;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -55,23 +48,37 @@ import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
-import org.jfree.ui.Align;
 import org.jfree.ui.TextAnchor;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
 
-import java.awt.*;
-import java.io.*;
-import java.math.BigDecimal;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.List;
-
-import javax.xml.soap.Detail;
+import com.deepoove.poi.XWPFTemplate;
+import com.deepoove.poi.data.MiniTableRenderData;
+import com.deepoove.poi.data.RowRenderData;
+import com.deepoove.poi.data.TextRenderData;
+import com.deepoove.poi.data.style.Style;
+import com.deepoove.poi.data.style.TableStyle;
+import com.hailian.api.constant.ReportTypeCons;
+import com.hailian.component.base.BaseProjectModel;
+import com.hailian.modules.admin.file.model.CreditUploadFileModel;
+import com.hailian.modules.admin.file.service.UploadFileService;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
+import com.hailian.modules.credit.common.model.CountryModel;
+import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
+import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
+import com.hailian.modules.credit.utils.FileTypeUtils;
+import com.hailian.modules.credit.utils.Office2PDF;
+import com.hailian.modules.credit.utils.SendMailUtil;
+import com.hailian.modules.front.template.TemplateDictService;
+import com.hailian.system.user.SysUser;
+import com.hailian.util.Config;
+import com.hailian.util.DateUtils;
+import com.hailian.util.FtpUploadFileUtils;
+import com.hailian.util.StrUtils;
+import com.hailian.util.translate.TransApi;
+import com.jfinal.plugin.activerecord.Db;
 
 /**
  * poi-tl
@@ -105,9 +112,8 @@ public class BaseWord {
         BigDecimal bd2 = new BigDecimal("1");
         bd.add(bd2);
         System.out.println(bd);*/
-    	String[] a = "|w ".split("\\|");
-    	
-    	System.out.println(parseUrl("getSelete?type=profitablity_sumup&selectedId=1020&disPalyCol=detail_name&tableName=credit_company_subtables_profitablity&className=CreditCompanySubtablesProfitablity"));
+    	String value=getImgStr("<a href=\"http://tm-image.qichacha.com/6ca46634a287ab9f373ba3801a5e1752.jpg?x-oss-process=style/small\" ><img src=\"http://tm-image.qichacha.com/6ca46634a287ab9f373ba3801a5e1752.jpg?x-oss-process=style/small\"></a>");
+    	System.out.println("jjjj="+value);
     }
     private static List<String> mergerKeyList = new ArrayList<>();
     private static List<String> mergerValueList = new ArrayList<>();
@@ -403,7 +409,27 @@ public class BaseWord {
     	}
 		return style;
 	}
-
+    public static String getImgStr(String htmlStr) {
+    	String img = "";
+    	Pattern p_image;
+    	Matcher m_image;
+    	List<String> pics = new ArrayList();
+    	String regEx_img ="<img.*src\\s*=\\s*(.*?)[^>]*?>";
+    	p_image = Pattern.compile(regEx_img, Pattern.CASE_INSENSITIVE);
+    	m_image = p_image.matcher(htmlStr);
+    	while (m_image.find()) {
+    	img = img + "," + m_image.group();
+    	Matcher m = Pattern.compile("src\\s*=\\s*\"?(.*?)(\"|>|\\s+)").matcher(img);
+    	while (m.find()) {
+    		pics.add(m.group(1));
+    		}
+    	}
+    	if(pics.size()>0){
+    		return pics.get(0);
+    	}else{
+    		return "";
+    	}
+   }
 	/**
      * 生成表格 - 横表
      * @param child
@@ -465,6 +491,11 @@ public class BaseWord {
                 Integer id = model.getInt("id");
                 String value = "";
                 value = model.get(column) != null ? model.get(column) + "" : "";
+                if("Trademark Design".equals(tempName)||"商标图案".equals(tempName)){
+                	if(value.indexOf("<img")!=-1){
+                		value=getImgStr(value);
+                	}
+                }
                 //合计项计算
                 if(hasTotal) {
                     try {
@@ -1081,7 +1112,7 @@ public class BaseWord {
             // {0}:key {1}:value {2}:百分比 {3}:sum
             plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}(占{2})"));
             // 将内存中的图片写到本地硬盘
-            ChartUtilities.saveChartAsJPEG(new File(filePath), chart, 600, 300);
+            ChartUtilities.saveChartAsJPEG(new File(filePath), chart, 1200, 600);
         } catch (Exception e) {
             e.printStackTrace();
         }

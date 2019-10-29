@@ -464,11 +464,7 @@ public class OrdermanagerController extends BaseProjectController{
 		String report_language=getPara("report_language");
 		companyname = URLDecoder.decode(companyname,"UTF-8");
 		//判断该公司是否存在于公司库中
-		CreditCompanyInfo company=CreditCompanyInfo.dao.findByENname(companyname);
-		CreditOrderInfo theSameOrder=null;
-		if(company!=null){
-			theSameOrder = OrderManagerService.service.isTheSameOrder(companyname,report_type,report_language, this);
-		}
+		CreditOrderInfo theSameOrder= OrderManagerService.service.isTheSameOrder(companyname,report_type,report_language, this);
 		if(theSameOrder!=null){
 			Map<String,Object> map=new HashMap<String, Object>();
 			ResultType resultType = new ResultType(1,"检测到相同公司名称");

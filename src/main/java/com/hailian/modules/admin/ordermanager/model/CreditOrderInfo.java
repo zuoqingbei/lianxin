@@ -1086,18 +1086,28 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			case OrderProcessController.orderFilingOfReport:
 				//状态为订单查档(国内) ,其维护在字典表中
 				fromSql.append(" and c.country='106' ");//国内
-				//已代理
-				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("2")) {
-					fromSql.append(" and status in('295','296')  ");
+				//已分配
+				if (StringUtils.isNotBlank(statuCode)&&"2".equals(statuCode)) {
+					fromSql.append(" and status in('295') and and c.agent_category !='' and c.agent_id!='' ");
 				}
 				//未代理
-				if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
+				/*if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
 					fromSql.append(" and status in('291','292','293','294','297') ");
 					// fromSql.append(" and status in('814') ");
 				}
 				//全部
 				if (StringUtils.isBlank(statuCode)) {
 					fromSql.append(" and status  in('291','292','293','294','297','295','296') ");
+				}
+				*/
+				//未分配
+				if (StringUtils.isNotBlank(statuCode)&&"1".equals(statuCode)) {
+					fromSql.append(" and status in('295')  and (c.agent_id is null or c.agent_category is null) ");
+					// fromSql.append(" and status in('814') ");
+				}
+				//全部
+				if (StringUtils.isBlank(statuCode)) {
+					fromSql.append(" and status  in('295') ");
 				}
 				//权限归属:质检员
 				//authority.append(" and (c.IQC= "+userId+")");

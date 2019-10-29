@@ -464,7 +464,7 @@ let Filing = {
           $("#remarks").html(row.remarks);
           
           _this.pageNumber = row.pageNumber;
-          console.log("pageNumber====="+pageNumber);
+          //console.log("pageNumber====="+pageNumber);
           pageSize = row.pageSize;
       	sortName = row.sortName;
       	sortOrder = row.sortOrder;
@@ -587,8 +587,11 @@ let Filing = {
             onLoadSuccess:(data)=>{
             	console.log(data)
             	data.rows.forEach((item,index)=>{
-            		if(item.status === '295'||item.status === '296') {
-//            			console.log(index,$table.find("tr").eq(index))
+            		/**if(item.status === '295'||item.status === '296') {
+            			$table.find("tr").eq(index+1).find(".dl").addClass("disable")
+            			$table.find("tr").eq(index+1).find("input[type='checkbox']").attr("disabled","disabled")
+            		}**/
+					if(!item.agent_id &&!item.agent_category) {
             			$table.find("tr").eq(index+1).find(".dl").addClass("disable")
             			$table.find("tr").eq(index+1).find("input[type='checkbox']").attr("disabled","disabled")
             		}

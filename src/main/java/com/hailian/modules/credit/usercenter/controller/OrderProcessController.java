@@ -358,7 +358,63 @@ public class OrderProcessController extends BaseProjectController{
         }
         return pager;
     }
-
+    /**
+     * 订单查档（国内）
+     * @param searchType
+     * @param status
+     * @return
+     */
+    private Page<CreditOrderInfo> PublicListMod(String searchType,String status1){
+        int pageNumber = getParaToInt("pageNumber",1);
+        int pageSize = getParaToInt("pageSize",10);
+        //从表单获取排序语句
+        String sortName = getPara("sortName");
+        String sortOrder = getPara("sortOrder");
+        String statusName=getPara("statusName");
+        String orderBy = "";
+        if(!StringUtil.isEmpty(sortName)){
+            if(sortOrder!=null){
+                orderBy = sortName+" "+sortOrder;
+            }else{
+                sortOrder = "";
+                orderBy = sortName+" desc ";
+            }
+        }else{
+            sortName = "";
+        }
+        //获取前台关键词
+        List<Object> keywords = new LinkedList<>();
+        CreditOrderInfo model = getModel(CreditOrderInfo.class);
+        for (Object  columnName: WEB_PARAM_NAMES.get(searchType)) {
+            if(StringUtil.isEmpty((String) getPara((String) columnName))){
+                keywords.add("");
+            }else{
+                keywords.add((String) getPara((String) columnName).trim());
+            }
+        }
+        //分页查询
+        Page<CreditOrderInfo> pager = CreditOrderInfo.dao.pagerOrder(pageNumber, pageSize,keywords, orderBy, searchType,statusName, this);
+        //插入回显数据
+        for (CreditOrderInfo page : pager.getList()) {
+            for (int i = 0; i <  WEB_PARAM_NAMES.get(searchType).size(); i++) {
+                page.put((String)WEB_PARAM_NAMES.get(searchType).get(i)+"Key",keywords.get(i));
+            }
+            page.put("pageNumber",pageNumber);
+            page.put("pageSize",pageSize);
+            page.put("sortName",sortName);
+            page.put("sortOrder",sortOrder);
+            //插入文件信息
+            Integer orderId = page.get("id");
+            String status = page.get("status");
+            List<CreditUploadFileModel> files = CreditUploadFileModel.dao.getByBusIdAndBusType(orderId+"", status, this);
+            for (CreditUploadFileModel creditUploadFileModel : files) {
+                creditUploadFileModel.set("view_url","http://"+ ip + ":" + searverPort+"/"+creditUploadFileModel.get("view_url"));
+                creditUploadFileModel.set("url","http://"+ ip + ":" + searverPort+"/"+creditUploadFileModel.get("url"));
+            }
+            page.put("files",files);
+        }
+        return pager;
+    }
     //修改或者删除功能公共雏形
     @SuppressWarnings("unused")
     private void PublicUpdateMod(Map<String,Object> map){

@@ -63,5 +63,9 @@ public class CreditCompanyBrandandpatent extends BaseProjectModel<CreditCompanyB
                 companyId,
                 sysLanguage);
     }
-	
+    public List<CreditCompanyBrandandpatent> getBrandandpatent(String companyId){
+        return dao.find("select * from credit_company_brandandpatent " +
+                "where company_id = ?  and del_flag = 0",
+                companyId);
+    }
 }
