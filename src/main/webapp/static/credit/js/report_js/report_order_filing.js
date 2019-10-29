@@ -1,3 +1,4 @@
+var tabIds="dl_btn1";
 let Filing = {
     init(){
         /**初始化函数 */
@@ -19,6 +20,7 @@ let Filing = {
  dl_btn3(){
     	
     	$("#dl_btn2").click(function(){
+			tabIds="dl_btn2";
             $(this).addClass('btn-primaryAc').siblings().removeClass('btn-primaryAc')
     		$("#table").bootstrapTable(
     			"refresh",
@@ -26,12 +28,14 @@ let Filing = {
     		)	
     	});
     	$("#dl_btn3").click(function(){
+			tabIds="dl_btn3";
             $(this).addClass('btn-primaryAc').siblings().removeClass('btn-primaryAc')
     		$("#table").bootstrapTable(
     			"refresh"
     		)	
     	});
     	$("#dl_btn1").click(function(){
+			tabIds="dl_btn1";
             $(this).addClass('btn-primaryAc').siblings().removeClass('btn-primaryAc')
     		$("#table").bootstrapTable(
     			"refresh",
@@ -40,8 +44,6 @@ let Filing = {
     	})
     },
     select(){
-      	 
-    	  console.log("234324");
            $.ajax({
       			type:"get",
       			 url : BASE_PATH+"credit/front/orderProcess/getAgent",
@@ -57,15 +59,12 @@ let Filing = {
       	        }
            	
       		})
-      		console.log($("#agency_id2")[0]);
             $("#agency_id2").on("change",()=>{
   	    	var agentId=$("#agency_id2 option:selected").val();
-  	    	console.log($("#agency_id2")[0]);
   	    	var html="";
   		 html+="<option value='-1' selected='selected'>请选择</option>"
   	 	$.post('/credit/front/orderProcess/getAgentCate',{"agentid":agentId},function(data){
   	 		
-  	 	console.log(data)
   	  for(item in data){
   		html+="<option  m-type='"+data[item].id+"' value='"+data[item].agent_category+"'>"+data[item].categoryName+"</option>";	        	
           }
@@ -154,8 +153,6 @@ let Filing = {
              		success: function(data) { // data 保存提交后返回的数据，一般为 json 数据
                         // 此处可对 data 作相关处理
                         //alert(JSON.stringify(data));
-             			 console.log(JSON.stringify(data));
-                        console.log(data.statusCode);
                         if(data.statusCode===1){
                         	 console.log("此处进入success状态,状态296");
                         	Public.message("success",data.message);
@@ -217,7 +214,7 @@ let Filing = {
             			if(data.statusCode===1){
                        	 console.log("此处进入success状态2222222222");
                        	Public.message("success",data.message);
-                       	$.ajax({
+                       /*	$.ajax({
     	           			type:"post",
     	               		url:BASE_PATH+"credit/front/orderProcess/listJson",
     	               		data:"pageNumber="+_this.pageNumber+"&pageSize="+pageSize+"&sortName="+sortName+"&sortOrder="+sortOrder+"&searchType=-7",
@@ -226,9 +223,8 @@ let Filing = {
     	           			 	$("#table").bootstrapTable("load",obj);
     	           			 	console.log(obj);
     	           			 }
-    	       			})
-                      
-                       
+    	       			})*/
+						$("#"+tabIds).trigger("click");
                        }else{
                        	 console.log("此处进入error状态");
                        	Public.message("error",data.message);
@@ -435,7 +431,6 @@ let Filing = {
       align: 'center',
       events: {
         "click .detail":(e,value,row,index)=>{
-          console.log(5555555555);
           $("#custom_id").html(row.custom_id);
           $("#customId").html(row.customId);
           $("#receiver_date").html(row.receiver_date);
@@ -472,7 +467,7 @@ let Filing = {
       	  $(".detail").removeAttr("data-toggle");
       	  $(".detail").removeAttr("data-target");
       	  var status=$("#status").val();
-      	  if("295"!=status) {
+      	  if(row.agent_id==''||row.agent_category==''||row.agent_id==null ||row.agent_category==null) {
       		Public.message("error","请先进行代理分配才可以上传附件");
       	  }else {
       		//data-toggle="modal" data-target="#exampleModalCenter" 
@@ -585,13 +580,15 @@ let Filing = {
 	           	 }
             },
             onLoadSuccess:(data)=>{
-            	console.log(data)
+            	
             	data.rows.forEach((item,index)=>{
             		/**if(item.status === '295'||item.status === '296') {
             			$table.find("tr").eq(index+1).find(".dl").addClass("disable")
             			$table.find("tr").eq(index+1).find("input[type='checkbox']").attr("disabled","disabled")
             		}**/
-					if(!item.agent_id &&!item.agent_category) {
+					
+					if(item.agent_id!='' &&item.agent_category!=''&&item.agent_id!=null &&item.agent_category!=null) {
+						console.log(item.agent_id,item.agent_category)
             			$table.find("tr").eq(index+1).find(".dl").addClass("disable")
             			$table.find("tr").eq(index+1).find("input[type='checkbox']").attr("disabled","disabled")
             		}

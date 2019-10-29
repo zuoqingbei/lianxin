@@ -9,11 +9,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.api.constant.RoleCons;
 import com.hailian.modules.admin.ordermanager.service.OrderManagerService;
 import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.util.http.HttpCrawler;
+
 import org.apache.commons.lang3.StringUtils;
+
+
 //import ch.qos.logback.core.status.Status;
 import com.feizhou.swagger.annotation.Api;
 import com.feizhou.swagger.utils.StringUtil;
@@ -1239,9 +1244,14 @@ class CrawlerThreed implements Runnable {
         @Override
         public void run() {
             try {
-                //查询填报语言
                 String infoLanguage = Db.query("select info_language from credit_report_type where id=?",reportType).get(0)+"";
-
+                //查询语言
+                /*if(ReportTypeCons.BUSI_EN.equals(reportType)||ReportTypeCons.BUSI_ZH.equals(reportType)){
+                	CreditCompanyInfo in = CreditCompanyInfo.dao.findFirst("select * from credit_company_info where order_id=? and del_flag=0",orderInfo.get("company_id")+"");
+                	if(in!=null){
+                		infoLanguage=in.get("sys_language")+"";
+                	}
+                }*/
                 //调用企查查接口
                 new CompanyService().enterpriseGrab(companyId, company, infoLanguage,reportType);
             } catch (Exception e) {

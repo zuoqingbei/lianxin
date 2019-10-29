@@ -1906,7 +1906,7 @@ let ReportConfig = {
     	$("select[name='company_type']").change((e)=>{
     		let $option = $(e.target).children("option:selected")
     		let reportType = this.rows.report_type
-    		console.log(typeof reportType)
+    		console.log(this.rows)
     		if(reportType === '12') {
     			//中文
     			let remark = $option.attr("m-detail-remark")
@@ -1915,6 +1915,10 @@ let ReportConfig = {
     			//英文
     			let con = $option.attr("m-detail-content")
     			$("textarea[name='type_of_enterprise_remark']").val(con==='null'?'':con)
+    		}else if(reportType === '8'||reportType === '9') {
+    			//中文
+    			let remark = $option.attr("m-detail-remark")
+    			$("textarea[name='type_of_enterprise_remark']").val(remark==='null'?'':remark)
     		}
     	})
     	

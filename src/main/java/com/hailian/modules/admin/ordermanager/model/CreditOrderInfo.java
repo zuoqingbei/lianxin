@@ -1088,7 +1088,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				fromSql.append(" and c.country='106' ");//国内
 				//已分配
 				if (StringUtils.isNotBlank(statuCode)&&"2".equals(statuCode)) {
-					fromSql.append(" and status in('295') and and c.agent_category !='' and c.agent_id!='' ");
+					fromSql.append(" and status in('295')  and c.agent_category !='' and c.agent_id!='' ");
 				}
 				//未代理
 				/*if (StringUtils.isNotBlank(statuCode)&&statuCode.equals("1")) {
@@ -1102,7 +1102,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 				*/
 				//未分配
 				if (StringUtils.isNotBlank(statuCode)&&"1".equals(statuCode)) {
-					fromSql.append(" and status in('295')  and (c.agent_id is null or c.agent_category is null) ");
+					fromSql.append(" and status in('295')  and (c.agent_id is null or c.agent_category is null or c.agent_category ='' or  c.agent_id ='') ");
 					// fromSql.append(" and status in('814') ");
 				}
 				//全部

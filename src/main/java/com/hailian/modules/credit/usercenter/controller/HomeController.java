@@ -876,12 +876,26 @@ public class HomeController extends BaseProjectController {
 				}
 			}
 		}else if("216".equals(language)){
-			company.set("sys_language", "612");
-			company.remove("id").save();
-			if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
-			common.set("sys_language", "613");common.remove("id").save();
-			if(infoLanguage.equals("613")) { companInfoId = common.get("id");}
-			if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();companInfoId = common.get("id");}
+			if(ReportTypeCons.BUSI_EN.equals(reprotType) ){
+				company.set("sys_language", "612");
+				company.remove("id").save();
+				companInfoId = company.get("id");
+				common.set("sys_language", "613");common.remove("id").save();
+			}else if(ReportTypeCons.BUSI_ZH.equals(reprotType)){
+				company.set("sys_language", "612");
+				company.remove("id").save();
+				if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
+				common.set("sys_language", "613");common.remove("id").save();
+				if(infoLanguage.equals("613")) { companInfoId = common.get("id");}
+				if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();companInfoId = common.get("id");}
+			}else{
+				company.set("sys_language", "612");
+				company.remove("id").save();
+				if(infoLanguage.equals("612")) { companInfoId = company.get("id");}
+				common.set("sys_language", "613");common.remove("id").save();
+				if(infoLanguage.equals("613")) { companInfoId = common.get("id");}
+				if(infoLanguage.equals("614")) { common.set("sys_language", "614"); common.remove("id").save();companInfoId = common.get("id");}
+			}
 		}else if("217".equals(language)){
 			company.set("sys_language", "614");
 			company.remove("id").save();
