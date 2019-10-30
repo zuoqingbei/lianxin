@@ -1145,8 +1145,7 @@ let ReportConfig = {
                             $(item).addClass("abc")
                         }
                     })
-                    // 质检结果下拉列表
-                    this.setQualitySelect();
+                    this.setQualitySelect()
                 }, 0)
                 /**
                  * 头部
@@ -1413,25 +1412,30 @@ let ReportConfig = {
                             _this.idArr.push(index)
                             _this.contentsArr.push(item.contents)
                             _this.title.push(item.title)
-                            if(item.title.temp_name && (item.title.temp_name.includes('股东') || item.title.temp_name.includes('管理层'))){
-                                //法人，自然人股东 不换行
+                            if(item.title.temp_name && item.title.temp_name.includes('股东详情')){
                                 contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
-            					<table id="table${index}"
-            					data-toggle="table"
-            					style="position: relative"
-            					>
-            					</table>
-            					</div>`
-                            }else{
+	             					<table id="table${index}"
+	             					data-toggle="table"
+	             					style="position: relative"
+	             					>
+	             					</table>
+	             					</div>`
+                            }else {
                                 contentHtml += `<div class="table-content1" style="background:#fff">
-				                				<table id="table${index}"
-				                				data-toggle="table"
-				                				style="position: relative"
-				                				>
-				                				</table>
-                				</div>`
+	             					<table id="table${index}"
+	             					data-toggle="table"
+	             					style="position: relative;table-layout: fixed;"
+	             					>
+	             					</table>
+	             					</div>`
                             }
-
+                            // contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
+				            //     				<table id="table${index}"
+				            //     				data-toggle="table"
+				            //     				style="position: relative"
+				            //     				>
+				            //     				</table>
+                			// 	</div>`
 
                             break;
                         case '11':
@@ -1730,25 +1734,23 @@ let ReportConfig = {
                             _this.idArrEn.push(index)
                             _this.contentsArrEn.push(item_en.contents)
                             _this.titleEn.push(item_en.title)
-                            if(item_en.title.temp_name && (item_en.title.temp_name.includes('股东详情') || item_en.title.temp_name.includes('管理层')||item_en.title.temp_name.includes('Shareholder')||item_en.title.temp_name.includes('Mangement'))){
-                                //法人，自然人股东 不换行
-                                contentHtml += contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
-			                				<table id="table${index}En"
-			                				data-toggle="table"
-			                				style="position: relative"
-			                				>
-			                				</table>
-            				</div>`
+                            if(item_en.title.temp_name && (item_en.title.temp_name.includes('Mangement') || item_en.title.temp_name.includes('Shareholder Information')|| item_en.title.temp_name.includes('Shareholders')|| item_en.title.temp_name.includes('Court Announcement'))){
+                                contentHtml += `<div class="table-content1 nowrap" style="background:#fff">
+            					                        <table id="table${index}En"
+            					                            data-toggle="table"
+            					                            style="position: relative;"
+            					                        >
+            					                        </table>
+            					                    </div>`
                             }else{
-                                contentHtml += `<div class="table-content1 " style="background:#fff">
-			                				<table id="table${index}En"
-			                				data-toggle="table"
-			                				style="position: relative"
-			                				>
-			                				</table>
-            				</div>`
+                                contentHtml += `<div class="table-content1" style="background:#fff">
+            					                        <table id="table${index}En"
+            					                        data-toggle="table"
+            					                        style="position: relative; table-layout: fixed"
+            					                        >
+                                                        </table>
+                                                    </div>`
                             }
-
 
                             break;
                         case '11':
