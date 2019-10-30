@@ -745,6 +745,7 @@ public class BusiUtil extends BaseWord{
 	        	if(!hasBig&&!hasFinancial){
 	        		 hasFinancial=true;
 	        	}
+	        	System.out.println(1);
 	            for (CreditCompanyFinancialStatementsConf financialConf : finanConfList) {
 	                String begin = financialConf.get("date1");
 	                String end = financialConf.get("date2");
@@ -767,7 +768,7 @@ public class BusiUtil extends BaseWord{
 	                	 financial(financialConf, map,reportType);
 	                }
 	              //生成财务报告EXCEL
-	               String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
+	               String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end,true);
 	               excelPath.add(expath);
 	               //财务-评价
 	               map.put("financial_eval", financialEval(financialConf,reportType,sysLanguage));
@@ -1440,7 +1441,7 @@ public class BusiUtil extends BaseWord{
 	                	 financial(financialConf, map,reportType);
 	                }
 	              //生成财务报告EXCEL
-	               String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
+	               String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end,false);
 	               excelPath.add(expath);
 	               //财务-评价
 	               map.put("financial_eval", financialEval(financialConf,reportType,sysLanguage));
@@ -2447,10 +2448,17 @@ public class BusiUtil extends BaseWord{
 	                            if(isEnglish){
 	                            	c=currencyStr + " " + currency + " " + currencyUnit + "";
 	                            }
-	                        	rowList.add(RowRenderData.build(
-	                        			new TextRenderData(""),
-	                        			new TextRenderData(""),
-	                        			new TextRenderData(c, header)));
+	                            Style unitStyle = new Style();
+	                            unitStyle.setBold(true);
+	                            unitStyle.setFontFamily("宋体");
+	                            unitStyle.setFontSize(11);
+	                            unitStyle.setAlign(STJc.RIGHT);
+	                            if(!((titlPrd+"Key Ratios").equals(title)||(titlPrd+"重要比率表").equals(title))){
+	                            	rowList.add(RowRenderData.build(
+	                            			new TextRenderData(""),
+	                            			new TextRenderData(""),
+	                            			new TextRenderData(c, unitStyle)));
+	                            }
 	                        	//添加时间
 	                        	if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
 	                        		//利润读取date3 date4  其他都是date1、date2
@@ -2548,7 +2556,35 @@ public class BusiUtil extends BaseWord{
 	     * @param end
 	     * @return
 	     */
-	    public static String financialExcel(int financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
+	    public static String financialExcel(int financeType,String financialConfId,String _prePath,String orderId,int userid,
+	    		String begin,String end,boolean isEnglish){
+	    	  CreditCompanyFinancialStatementsConf financialConf=CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
+	    	  boolean isMerge = (financialConf.get("is_merge")+"").equals("1");
+		        String titlPrd="";
+		        //判断语言类型
+		        String language = "612";
+		        String currencyStr = "单位";
+		        String reportType=ReportTypeCons.BUSI_ZH;
+		        if(isEnglish){
+		            language = "613";
+		            currencyStr = "Unit";
+		            reportType=ReportTypeCons.BUSI_EN;
+		        }
+		        if(isMerge){
+		        	if(isEnglish){
+		        		titlPrd="Consolidated ";
+		        	}else{
+		        		titlPrd="合并";
+		        	}
+		        }
+		        String currencyId = financialConf.get("currency")+"";//币种id
+		        String currency = dictIdToString(currencyId,reportType,language);
+		        String currencyUnitId = financialConf.get("currency_ubit")+"";//币种单位id
+		        String currencyUnit = dictIdToString(currencyUnitId,reportType,language);
+		        String c=currencyStr + "：" + currency + "（" + currencyUnit + "）";
+		        if(isEnglish){
+                	c=currencyStr + " " + currency + " " + currencyUnit + "";
+                }
 	        String filePath = "";
 	       // if(financeType==3){
 	            //todo 大数渲染
@@ -2566,7 +2602,7 @@ public class BusiUtil extends BaseWord{
 	                    entity.set("end_date_value","--");
 	                }
 	            }
-	            FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end);
+	            FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end,isEnglish,titlPrd,c,financialConf);
 	            try {
 	                String path = _prePath + ".xls";
 	                export.downloadExcel(path);

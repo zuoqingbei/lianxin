@@ -1620,10 +1620,17 @@ public class BaseBusiCrdt extends BaseWord{
                             if(isEnglish){
                             	c=currencyStr + " " + currency + " " + currencyUnit + "";
                             }
-                        	rowList.add(RowRenderData.build(
-                        			new TextRenderData(""),
-                        			new TextRenderData(""),
-                        			new TextRenderData(c, header)));
+                            Style unitStyle = new Style();
+                            unitStyle.setBold(true);
+                            unitStyle.setFontFamily("宋体");
+                            unitStyle.setFontSize(11);
+                            unitStyle.setAlign(STJc.RIGHT);
+                            if(!((titlPrd+"Key Ratios").equals(title)||(titlPrd+"重要比率表").equals(title))){
+                            	rowList.add(RowRenderData.build(
+                            			new TextRenderData(""),
+                            			new TextRenderData(""),
+                            			new TextRenderData(c, unitStyle)));
+                            }
                         	//添加时间
                         	if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
                         		//利润读取date3 date4  其他都是date1、date2

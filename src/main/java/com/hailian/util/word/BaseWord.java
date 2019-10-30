@@ -1832,7 +1832,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
 
     //Investment--投资情况 Company Name--公司名称 Shareholding(%)--投资比例
     static  String[] InvestmentSituationTempName = new String[]{"","","Investment","投资情况","Company Name","公司名称"};
-    static  String[] InvestmentSituationValue= new String[]{"","","","","Shareholding(%)","投资比例(%)"};
+    static  String[] InvestmentSituationValue= new String[]{"","","","","Shareholding (%)","投资比例(%)"};
     static void generatedInvestmentSituationConfHead(List<RowRenderData> rowList,String reportType ){
     	for (int i=0 ;i<InvestmentSituationTempName.length/2;i++) {
     		Style style = new Style();
