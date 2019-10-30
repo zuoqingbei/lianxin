@@ -560,10 +560,10 @@ public class HomeController extends BaseProjectController {
 			theSameOrder = OrderManagerService.service.getTheSameOrder(right_company_name_en,model.get("report_type")+"",model.get("report_language")+"", this);
 			CreditOrderInfo order = new CreditOrderInfo();
 			order.set("company_id",companInfoId);
-			order.set("is_fastsubmmit", theSameOrder.get("id"));
 			order.set("status", "311");
 			if(null!=theSameOrder) {
 				order.set("company_by_report",theSameOrder.get("company_by_report"));
+				order.set("is_fastsubmmit", theSameOrder.get("id"));
 			}
 			order.set("id",id);
 			order.update();

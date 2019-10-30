@@ -85,9 +85,14 @@ public class DictCache {
 		cache.add("sonSectorCodeList", sonSectorCodeList);
 		List<TranslateModel> translateDictList = TranslateModel.dao.refreshDict();
 		cache.add("translateDictList", translateDictList);
+		List<TranslateModel> preAreaTranslate = TranslateModel.dao.refreshPreAreaTranslate();
+		cache.add("preAreaTranslate", preAreaTranslate);
 	}
 	public static List<TranslateModel> getTranslateList() {
 		return cache.get("translateDictList");
+	}
+	public static List<TranslateModel> getPreAreaTranslate() {
+		return cache.get("preAreaTranslate");
 	}
 	public static Map<Integer, SysDictDetail> getCacheMap() {
 		return cache.get("map");

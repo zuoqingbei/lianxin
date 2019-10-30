@@ -28,6 +28,9 @@ public class TranslateModel extends BaseProjectModel<TranslateModel> {
 	public List<TranslateModel> refreshDict() {
 		return TranslateModel.dao.find("select * from credit_translate where del_flag=0 ");
 	}
+	public List<TranslateModel> refreshPreAreaTranslate() {
+		return TranslateModel.dao.find("select * from credit_translate where del_flag=0 and pre_deal=1 ");
+	}
 	/**
 	 * 列表展示
 	* @author doushuihai  

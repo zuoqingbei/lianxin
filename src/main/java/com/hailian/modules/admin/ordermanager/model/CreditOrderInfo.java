@@ -1372,7 +1372,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 	* @TODO
 	 */
 	public CreditOrderInfo isTheSameOrder(String company_id,String report_type,String report_language, BaseProjectController c) {
-		String sql="select t.* from credit_order_info t where t.right_company_name_en=? and t.report_type=? and t.report_language=? and (t. is_fastsubmmit='-1' or t. is_fastsubmmit is null) and t.del_flag=0 and t.status='311' order by t.create_date desc";
+		String sql="select t.* from credit_order_info t where t.right_company_name_en=? and t.report_type=? and t.report_language=? and (t. is_fastsubmmit='-1' or t. is_fastsubmmit is null or t. is_fastsubmmit='') and t.del_flag=0 and t.status='311' order by t.create_date desc";
 		return dao.findFirst(sql,company_id,report_type,report_language);
 	}
 	/**

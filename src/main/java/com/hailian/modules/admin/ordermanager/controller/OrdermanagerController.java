@@ -6,6 +6,7 @@ import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +26,8 @@ import com.hailian.jfinal.base.Paginator;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.file.model.CreditUploadFileModel;
 import com.hailian.modules.admin.file.service.UploadFileService;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderFlow;
@@ -469,6 +472,59 @@ public class OrdermanagerController extends BaseProjectController{
 			Map<String,Object> map=new HashMap<String, Object>();
 			ResultType resultType = new ResultType(1,"检测到相同公司名称");
 			map.put("flag", resultType);
+			theSameOrder.put("is_hava_finance","否");
+			//查询财务信息
+			CreditCompanyFinancialStatementsConf financialConf = CreditCompanyFinancialStatementsConf.dao.findFirst("SELECT * FROM `credit_company_financial_statements_conf`  where company_id=? and del_flag=0 and type=1 ",theSameOrder.get("company_id")+"");
+			//financialConf=CreditCompanyFinancialStatementsConf.dao.findById("927");
+			if(financialConf!=null) {
+		    	//查询财务是否有数
+		    	String finanId = financialConf.getInt("id") + "";
+		    	List<CreditCompanyFinancialEntry> entryList= CreditCompanyFinancialEntry.dao.find("select * from credit_company_financial_entry where conf_id=?"
+		    			+ " and( begin_date_value !='0' or end_date_value!='0') and del_flag=0 order by sort_no,id ",
+		    			Arrays.asList(new String[] {finanId}).toArray());
+		    	if(entryList!=null&&entryList.size()>0){
+		    		//表示财务有数据
+		    		theSameOrder.put("is_hava_finance","是");
+		    		String date1=financialConf.get("date1");
+		    		String date2=financialConf.get("date2");
+		    		if(StringUtils.isNotBlank(date1)&&StringUtils.isNotBlank(date2)){
+		    			theSameOrder.put("last_fiscal_year",date1+" 至 "+date2);
+		    		}else{
+		    			if(StringUtils.isNotBlank(date1)){
+		    				theSameOrder.put("last_fiscal_year",date1);
+		    			}
+		    			if(StringUtils.isNotBlank(date2)){
+		    				theSameOrder.put("last_fiscal_year",date2);
+		    			}
+		    		}
+		    	}
+		    }else{
+		    	//是否有大数
+		    	CreditCompanyFinancialStatementsConf big = CreditCompanyFinancialStatementsConf.dao.findFirst("SELECT * FROM `credit_company_financial_statements_conf`  where company_id=? and del_flag=0 and type=4 ",theSameOrder.get("company_id")+"");
+		    	 if(big!=null) {
+				    	//查询财务是否有数
+				    	String finanId = big.getInt("id") + "";
+				    	List<CreditCompanyFinancialEntry> entryList= CreditCompanyFinancialEntry.dao.find("select * from credit_company_financial_entry where conf_id=?"
+				    			+ " and( begin_date_value !='0' or end_date_value!='0') and del_flag=0 order by sort_no,id ",
+				    			Arrays.asList(new String[] {finanId}).toArray());
+				    	if(entryList!=null&&entryList.size()>0){
+				    		//表示财务有数据
+				    		theSameOrder.put("is_hava_finance","是");
+				    		String date1=big.get("date3");
+				    		String date2=big.get("date4");
+				    		if(StringUtils.isNotBlank(date1)&&StringUtils.isNotBlank(date2)){
+				    			theSameOrder.put("last_fiscal_year",date1+" 至 "+date2);
+				    		}else{
+				    			if(StringUtils.isNotBlank(date1)){
+				    				theSameOrder.put("last_fiscal_year",date1);
+				    			}
+				    			if(StringUtils.isNotBlank(date2)){
+				    				theSameOrder.put("last_fiscal_year",date2);
+				    			}
+				    		}
+				    	}
+				    }
+		    }
 			map.put("result", theSameOrder);
 			renderJson(map);
 		}else{

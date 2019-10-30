@@ -1,6 +1,7 @@
 package com.hailian.modules.credit.usercenter.controller;
 import java.io.File;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import com.hailian.modules.credit.company.service.CompanyService;
 import com.hailian.util.http.HttpCrawler;
 
 import org.apache.commons.lang3.StringUtils;
+
+
 
 
 //import ch.qos.logback.core.status.Status;
@@ -56,6 +59,7 @@ import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.modules.credit.utils.Office2PDF;
 import com.hailian.modules.front.template.TemplateDictService;
 import com.hailian.modules.front.template.TemplateSysUserService;
+import com.hailian.util.CharacterParser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
@@ -963,7 +967,7 @@ public class OrderProcessController extends BaseProjectController{
                 return;
             }
             //上传文件
-            ResultType result = uploadFile(orderId,oldStatus,upFileList,getSessionUser().getUserid(),null);
+            ResultType result = uploadFile(orderId,oldStatus,upFileList,/*getSessionUser().getUserid()*/1,null);
             Integer userid = getSessionUser().getUserid();
             CreditOperationLog.dao.addOneEntry(userid, null, "","/credit/front/orderProcess/statusSaveWithFileUpLoad");//操作日志记录
             if(result.getStatusCode()==0){
@@ -1027,9 +1031,9 @@ public class OrderProcessController extends BaseProjectController{
                 //将文件上传到服务器
                 boolean storePdfFile = true;
                 if(pdfFiles.size()>0) {
-                    storePdfFile = FtpUploadFileUtils.storeMoreFtpFile2(now+"",pdfFiles,storePath,ip,port,userName,password);
+                    storePdfFile = FtpUploadFileUtils.storeMoreFtpFile3(now+"",pdfFiles,storePath,ip,port,userName,password);
                 }
-                boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile2(now+"",commonFiles,storePath,ip,port,userName,password);
+                boolean storeCommonFile = FtpUploadFileUtils.storeMoreFtpFile3(now+"",commonFiles,storePath,ip,port,userName,password);
                 if(!storePdfFile){
                     return new ResultType(0, "预览文件生成异常!");
                 }
@@ -1044,7 +1048,10 @@ public class OrderProcessController extends BaseProjectController{
                     String originalFile = upFileList.get(i).getFileName();
                     //不带后缀的文件名
                     String originalFileName = FileTypeUtils.getName(originalFile);
-                    originalFileName="";
+                	CharacterParser c=new CharacterParser();
+                	originalFileName=c.getSpelling(originalFileName);
+                    //originalFileName=URLEncoder.encode(originalFileName, "UTF-8");
+                    //originalFileName="";
                     //根据文件后缀名判断文件类型
                     String ext = FileTypeUtils.getFileType(originalFile);
                     //上传到服务器时的文件名

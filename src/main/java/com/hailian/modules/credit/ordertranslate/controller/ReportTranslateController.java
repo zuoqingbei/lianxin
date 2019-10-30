@@ -15,6 +15,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectController;
 import com.hailian.jfinal.component.annotation.ControllerBind;
 import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
@@ -70,7 +71,7 @@ public class ReportTranslateController extends BaseProjectController {
 			 reporttype=getPara("reportType", p.getString("reportType"));//报告类型
 			 className = getPara("className", p.getString("className"));//模块的key
 		}
-		if("CreditCompanyHis".equals(className)){
+		if("CreditCompanyJudgmentdoc".equals(className)){
 			System.out.println(1);
 		}
 		JSONObject jsonObject = JSONObject.fromObject(json);
@@ -87,21 +88,21 @@ public class ReportTranslateController extends BaseProjectController {
 			if(isChinese(value)){
 				if(!isValidDate(value)){
 					try {
+						if("en".equals(targetlanguage)&&"caseno".equals(key)&&(ReportTypeCons.BUSI_ZH.equals(reporttype)||ReportTypeCons.BUSI_EN.equals(reporttype))){
+							//替换案例中的省简写
+							List<TranslateModel> translateDict =DictCache.getPreAreaTranslate();
+							if(translateDict==null){
+								translateDict=TranslateModel.dao.refreshPreAreaTranslate();
+							}
+							for(TranslateModel t:translateDict){
+								value=value.replaceAll(t.getStr("correct_phrase_ch"), t.getStr("correct_phrase"));
+							}
+							System.out.println(1);
+						}
 						if(!"12".equals(reporttype)){
 							value_en = TransApi.Trans(value/*.replace(" ", "").replace("%", "")*/,"en");
-
-							/*if(!"14".equals(reporttype)){//如果是102 ROC English
-								if(isPersonalName102(key)) {
-									value_en = SpellHelper.getUpEname(value.trim());
-								}
-							}*/
-							
 						}
 						
-						//102 ROC English 出资情况中出资者字段 翻译方式为getUpEname
-						/*if("14".equals(reporttype)&&"CreditCompanyShareholder".equals(className)){
-							value_en = SpellHelper.getUpEname(value.trim());
-						}*/
 						
 					} catch (Exception e) {
 						System.err.println(value+"   翻译为英文失败,"+e.getMessage());

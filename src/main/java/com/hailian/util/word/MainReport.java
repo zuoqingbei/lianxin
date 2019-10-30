@@ -1,6 +1,7 @@
 package com.hailian.util.word;
 
 import org.apache.log4j.Logger;
+
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.notice.model.NoticeLogModel;
@@ -37,7 +38,21 @@ public class MainReport {
                 } else {
                     Roc102.reportTable(order, reportType, "612", userid);
                 }
-            } else {
+            } 
+            else if (ReportTypeCons.BUSI_ZH.equals(reportType) ){
+    			if ("213".equals(report_language)) {
+    				BaseBusiCrdt.reportTable(order, "8", "612", userid);
+    			}else{
+    				BusiUtil.reportTableCh(order, userid);
+    			}
+    		}else if (ReportTypeCons.BUSI_EN.equals(reportType)){
+    			if ("215".equals(report_language)) {
+    				BaseBusiCrdt.reportTable(order, "9", "613", userid);
+    			}else{
+    				BusiUtil.reportTableEn(order, userid);
+    			}
+    		}
+            else {
                 if ("213".equals(report_language)) {
                     BaseBusiCrdt.reportTable(order, reportType, "612", userid);
                 } else if ("215".equals(report_language)) {
