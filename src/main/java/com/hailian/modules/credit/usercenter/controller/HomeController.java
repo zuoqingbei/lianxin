@@ -45,6 +45,7 @@ import com.hailian.system.dict.SysDictDetail;
 import com.hailian.system.menu.SysMenu;
 import com.hailian.system.user.SysUser;
 import com.hailian.system.user.UserSvc;
+import com.hailian.util.CharacterParser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
@@ -608,9 +609,10 @@ public class HomeController extends BaseProjectController {
 						String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 						String now=UUID.randomUUID().toString().replaceAll("-", "");
 						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
-						originalFileName=URLEncoder.encode(originalFileName, "UTF-8");
-						originalFileName="";
-						String FTPfileName=now+"."+ext;
+						//originalFileName=URLEncoder.encode(originalFileName, "UTF-8");
+						CharacterParser c=new CharacterParser();
+						originalFileName=c.getSpelling(originalFileName);
+						String FTPfileName=originalFileName+now+"."+ext;
 						String fileName=originalFileName+now;
 						String pdf_FTPfileName="";
 						ftpfileList.add(uploadFile.getFile());
@@ -627,7 +629,7 @@ public class HomeController extends BaseProjectController {
 							pdf_FTPfileName=FTPfileName;
 						}
 						//String now,List<File> filelist,String storePath,String url,int port,String userName,String password
-						boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile2(now, ftpfileList,storePath,ip,port,userName,password);//上传
+						boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile3(now, ftpfileList,storePath,ip,port,userName,password);//上传
 						if(storeFile){
 							String ftpName=originalFileName+now+"."+ext;
 							String factpath=storePath+"/"+ftpName;

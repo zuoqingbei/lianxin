@@ -624,9 +624,9 @@ public class BusiUtil extends BaseWord{
 	                }
 	                //如果所有股东投资比例和不等于100%，加上未知项
 	                if(total!=0) {
-	                    pds.setValue("未知", total);
+	                    pds.setValue("Others", total);
 	                }
-	                BaseWord.createPieChart(pds, _prePath + "pie.jpg");
+	                BaseWord.createPieChart(pds, _prePath + "pie.jpg",true);
 	                map.put("pie", new PictureRenderData(600, 300, _prePath + "pie.jpg"));
 	            }
 
@@ -1299,7 +1299,7 @@ public class BusiUtil extends BaseWord{
 	                if(total!=0) {
 	                    pds.setValue("未知", total);
 	                }
-	                BaseWord.createPieChart(pds, _prePath + "pie.jpg");
+	                BaseWord.createPieChart(pds, _prePath + "pie.jpg",false);
 	                map.put("pie", new PictureRenderData(600, 300, _prePath + "pie.jpg"));
 	            }
 
@@ -2252,7 +2252,7 @@ public class BusiUtil extends BaseWord{
 	        }
 	        if(isMerge){
 	        	if(isEnglish){
-	        		titlPrd="Merge ";
+	        		titlPrd="Consolidated ";
 	        	}else{
 	        		titlPrd="合并";
 	        	}

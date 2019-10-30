@@ -1089,10 +1089,10 @@ public class BaseWord {
      * @param pds
      * @param filePath
      */
-    public static void createPieChart(DefaultPieDataset pds, String filePath) {
+    public static void createPieChart(DefaultPieDataset pds, String filePath,boolean isEn) {
         try {
             // 分别是:显示图表的标题、需要提供对应图表的DateSet对象、是否显示图例、是否生成贴士以及是否生成URL链接
-            JFreeChart chart = ChartFactory.createPieChart("出资比例（%）", pds, true, false, true);
+            JFreeChart chart = ChartFactory.createPieChart("", pds, true, false, true);
             // 如果不使用Font,中文将显示不出来
             Font font = new Font("宋体", Font.BOLD, 12);
             // 设置图片标题的字体
@@ -1110,7 +1110,11 @@ public class BaseWord {
             plot.setBackgroundAlpha(0.0f);
             // 设置标签生成器(默认{0})
             // {0}:key {1}:value {2}:百分比 {3}:sum
-            plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}(占{2})"));
+            if(isEn){
+            	 plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}({2})"));
+            }else{
+            	 plot.setLabelGenerator(new StandardPieSectionLabelGenerator("{0}(占{2})"));
+            }
             // 将内存中的图片写到本地硬盘
             ChartUtilities.saveChartAsJPEG(new File(filePath), chart, 1200, 600);
         } catch (Exception e) {

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +27,7 @@ import com.hailian.modules.credit.resetpassword.controller.ResetPassWordControll
 import com.hailian.modules.credit.usercenter.model.ResultType;
 import com.hailian.modules.credit.utils.FileTypeUtils;
 import com.hailian.system.user.SysUser;
+import com.hailian.util.CharacterParser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.FtpUploadFileUtils;
@@ -214,10 +216,13 @@ public class NoticeController extends BaseProjectController {
         ftpfileList.add(uploadFile.getFile());
         String now=UUID.randomUUID().toString().replaceAll("-", "");
         String ext = FileTypeUtils.getFileType(uploadFile.getOriginalFileName());
-        String FTPfileName=now+"."+ext;
+        String originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
+        CharacterParser c=new CharacterParser();
+		originalFileName=c.getSpelling(originalFileName);
+        String FTPfileName=originalFileName+now+"."+ext;
         String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
         try {
-            boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile2(now,ftpfileList,storePath,ip,port,userName,password);
+            boolean storeFile = FtpUploadFileUtils.storeMoreFtpFile3(now,ftpfileList,storePath,ip,port,userName,password);
             if(storeFile){
                 Map<String, Object> map=new HashMap<String, Object>();
                 map.put("errno", 0);

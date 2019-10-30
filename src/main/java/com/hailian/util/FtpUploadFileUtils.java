@@ -67,7 +67,7 @@ public class FtpUploadFileUtils {
 			return result;
 		}
 	  
-	  public static boolean storeMoreFtpFile2(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException  {
+	 /* public static boolean storeMoreFtpFile2(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException  {
 			FileInputStream fis = null;
 			boolean result = true;
 			try {
@@ -101,7 +101,7 @@ public class FtpUploadFileUtils {
 				}
 			}
 			return result;
-		}
+		}*/
 	  public static boolean storeMoreFtpFile3(String now,List<File> filelist,String storePath,String url,int port,String userName,String password) throws FileNotFoundException  {
 			FileInputStream fis = null;
 			boolean result = true;

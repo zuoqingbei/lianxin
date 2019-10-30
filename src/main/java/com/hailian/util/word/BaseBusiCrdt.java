@@ -513,10 +513,18 @@ public class BaseBusiCrdt extends BaseWord{
                     total = total-value;
                 }
                 //如果所有股东投资比例和不等于100%，加上未知项
-                if(total!=0) {
-                    pds.setValue("未知", total);
+                boolean isEn=false;
+                if(ReportTypeCons.BUSI_EN.equals(reportType)&&"613".equals(sysLanguage)){
+                	isEn=true;
                 }
-                BaseWord.createPieChart(pds, _prePath + "pie.jpg");
+                if(total!=0) {
+                	if(isEn){
+                		 pds.setValue("Others", total);
+                	}else{
+                		 pds.setValue("未知", total);
+                	}
+                }
+                BaseWord.createPieChart(pds, _prePath + "pie.jpg",isEn);
                 map.put("pie", new PictureRenderData(600, 300, _prePath + "pie.jpg"));
             }
 
@@ -1417,7 +1425,7 @@ public class BaseBusiCrdt extends BaseWord{
         }
         if(isMerge){
         	if(isEnglish){
-        		titlPrd="Merge ";
+        		titlPrd="Consolidated ";
         	}else{
         		titlPrd="合并";
         	}

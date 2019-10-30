@@ -488,7 +488,23 @@ public class OrdermanagerController extends BaseProjectController{
 		    		String date1=financialConf.get("date1");
 		    		String date2=financialConf.get("date2");
 		    		if(StringUtils.isNotBlank(date1)&&StringUtils.isNotBlank(date2)){
-		    			theSameOrder.put("last_fiscal_year",date1+" 至 "+date2);
+		    			/*SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		                //此处会抛异常
+		               try {
+		            	    Date d1 = sdf.parse(date1);
+			                Date d2 = sdf.parse(date2);
+			                //获取毫秒数
+			                long longDate1 = d1.getTime();
+			                long longDate2 = d2.getTime();
+			                if(longDate1>longDate2){
+			                	theSameOrder.put("last_fiscal_year",date1);
+			                }else{
+			                	theSameOrder.put("last_fiscal_year",date2);
+			                }
+						} catch (Exception e) {
+							// TODO: handle exception
+						}*/
+		    			theSameOrder.put("last_fiscal_year",date1+" 、 "+date2);
 		    		}else{
 		    			if(StringUtils.isNotBlank(date1)){
 		    				theSameOrder.put("last_fiscal_year",date1);
@@ -513,7 +529,23 @@ public class OrdermanagerController extends BaseProjectController{
 				    		String date1=big.get("date3");
 				    		String date2=big.get("date4");
 				    		if(StringUtils.isNotBlank(date1)&&StringUtils.isNotBlank(date2)){
-				    			theSameOrder.put("last_fiscal_year",date1+" 至 "+date2);
+				    			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				                //此处会抛异常
+				              /* try {
+				            	    Date d1 = sdf.parse(date1);
+					                Date d2 = sdf.parse(date2);
+					                //获取毫秒数
+					                long longDate1 = d1.getTime();
+					                long longDate2 = d2.getTime();
+					                if(longDate1>longDate2){
+					                	theSameOrder.put("last_fiscal_year",date1);
+					                }else{
+					                	theSameOrder.put("last_fiscal_year",date2);
+					                }
+								} catch (Exception e) {
+									// TODO: handle exception
+								}*/
+				    			theSameOrder.put("last_fiscal_year",date1+" 、 "+date2);
 				    		}else{
 				    			if(StringUtils.isNotBlank(date1)){
 				    				theSameOrder.put("last_fiscal_year",date1);

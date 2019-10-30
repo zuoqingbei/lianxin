@@ -233,7 +233,7 @@ public class BusinessEn {
                     }
                     pds.setValue(n, value);
                 }
-                BaseWord.createPieChart(pds, _prePath + ".jpg");
+                BaseWord.createPieChart(pds, _prePath + ".jpg",false);
                 map.put("pie", new PictureRenderData(600, 300, _prePath + ".jpg"));
             }
         }
