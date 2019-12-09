@@ -317,6 +317,7 @@ public class BaseWord {
 
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
+                setBusiEnStyle(reportType, sysLanguage, style);
                 //二合一的特殊处理
                 if(merger(value,column,reportType,mergeList,rowList,style)) {
                     rowList.add(RowRenderData.build(new TextRenderData(cols.get(column).split("\\|")[0], style), new TextRenderData(value, style)));
@@ -329,6 +330,15 @@ public class BaseWord {
         }
         return new MiniTableRenderData(rowList);
     }
+
+	private static Style setBusiEnStyle(String reportType, String sysLanguage,
+			Style style) {
+		if(ReportTypeCons.BUSI_EN.equals(reportType)||(ReportTypeCons.BUSI_ZH.equals(reportType)&&"613".equals(sysLanguage))){
+		    style.setFontFamily("Arial");
+		    style.setFontSize(11);
+		}
+		return style;
+	}
     
     /**
          * 两个下拉选二合一的特殊处理
@@ -725,6 +735,7 @@ public class BaseWord {
                 }
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
+                style=setBusiEnStyle(reportType, sysLanguage, style);
                 row[j] = new TextRenderData(value, style);
                 j++;
             }
@@ -1653,6 +1664,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 }
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
+                style=setBusiEnStyle(reportType, sysLanguage, style);
 
                 row[j] = new TextRenderData(value, style);
                 j++;
@@ -1773,6 +1785,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                 }
                 //针对不同模块中的不同字段的样式的特殊处理
                 style = MiniTableRenderDataForCellStyle(moduleName,column,reportType,style);
+                style=setBusiEnStyle(reportType, sysLanguage, style);
                 //二合一的特殊处理
                 if(merger(value,column,reportType,mergeList,rowList,style)) {
                 	if((num==1)&&("legalDetails".equals(moduleName)||"leader".equals(moduleName))) {
