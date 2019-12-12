@@ -70,7 +70,7 @@ import com.jfinal.upload.UploadFile;
 @ControllerBind(controllerKey = "/credit/front/home")
 public class HomeController extends BaseProjectController {
 	private static final String path = "/pages/credit/usercenter/";
-	public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
+	//public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
 	public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
@@ -605,7 +605,7 @@ public class HomeController extends BaseProjectController {
 					String originalFileName=FileTypeUtils.getName(originalFile);
 					ext=FileTypeUtils.getFileType(originalFile);
 					
-					if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+					if (uploadFile != null /*&& uploadFile.getFile().length()<=maxPostSize*/ && FileTypeUtils.checkType(ext)) {
 						String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 						String now=UUID.randomUUID().toString().replaceAll("-", "");
 						originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
@@ -1058,7 +1058,7 @@ public class HomeController extends BaseProjectController {
 			//后缀名,文件类型
 			ext=FileTypeUtils.getFileType(originalFile);
 			
-			if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+			if (uploadFile != null /*&& uploadFile.getFile().length()<=maxPostSize */&& FileTypeUtils.checkType(ext)) {
 				
 				String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 				//为文件取新名字(汉字名字预览出问题)

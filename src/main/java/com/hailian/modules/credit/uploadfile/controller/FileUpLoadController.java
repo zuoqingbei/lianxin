@@ -41,7 +41,7 @@ import com.jfinal.upload.UploadFile;
 @ControllerBind(controllerKey = "/credit/file")
 public class FileUpLoadController extends BaseProjectController {
 	private static final String path = "/pages/credit/uploadfile/file_";
-	public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
+	//public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
 	public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
 	public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
 	public static final String userName = Config.getStr("ftp_userName");//域用户名
@@ -74,7 +74,7 @@ public class FileUpLoadController extends BaseProjectController {
 				model = getModel(CreditUploadFileModel.class);
 				business_id = model.get("business_id");
 				business_type = model.getInt("business_type");//检索条件-报告类型
-				if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+				if (uploadFile != null /*&& uploadFile.getFile().length()<=maxPostSize*/ && FileTypeUtils.checkType(ext)) {
 					String storePath = ftp_store+"/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 //					String now=DateUtils.getNow(DateUtils.YMDHMS);
 					String now=UUID.randomUUID().toString().replaceAll("-", "");
@@ -260,7 +260,7 @@ public class FileUpLoadController extends BaseProjectController {
 			if(uploadFile != null){
 				size=1;
 				ext=FileTypeUtils.getFileType(uploadFile.getOriginalFileName());
-				if (uploadFile != null && uploadFile.getFile().length()<=maxPostSize && FileTypeUtils.checkType(ext)) {
+				if (uploadFile != null /*&& uploadFile.getFile().length()<=maxPostSize */&& FileTypeUtils.checkType(ext)) {
 					String storePath ="report_type/"+DateUtils.getNow(DateUtils.YMD);//上传的文件在ftp服务器按日期分目录
 					originalFileName=FileTypeUtils.getName(uploadFile.getFile().getName());
 					   SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");

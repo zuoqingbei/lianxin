@@ -83,7 +83,7 @@ import com.jfinal.upload.UploadFile;
 @ControllerBind(controllerKey = "/credit/front/orderProcess")
 public class OrderProcessController extends BaseProjectController{
     //文件服务器配置
-    public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
+   // public static final int maxPostSize=Config.getToInt("ftp_maxPostSize");//上传文件最大容量
     public static final String ip = Config.getStr("ftp_ip");//ftp文件服务器 ip
     public static final int port = Config.getToInt("ftp_port");//ftp端口 默认21
     public static final String userName = Config.getStr("ftp_userName");//域用户名
@@ -1012,9 +1012,9 @@ public class OrderProcessController extends BaseProjectController{
                         return new ResultType(0, "请检查 "+originalFile+" 的格式!");
                     }
                     //检查大小
-                    if(uploadFile.getFile().length()>maxPostSize){
+                   /* if(uploadFile.getFile().length()>maxPostSize){
                         return new ResultType(0, originalFile+" 必须小于5兆!");
-                    }
+                    }*/
                     File pdf = null;
                     //如果上传文档不是pdf或者图片或者则转化为pdf，以作预览
                     if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)&&!ext.equalsIgnoreCase("html")){
