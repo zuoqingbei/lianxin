@@ -1037,7 +1037,8 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 			switch (searchType) {
 			case OrderProcessController.orderAllocation:
 				//状态为订单分配状态 ,其维护在字典表中
-				fromSql.append(" and status='291'  ");
+				//fromSql.append(" and status='291'  ");
+				fromSql.append(" and status!='311'  ");
 				break;
 			case OrderProcessController.orderVerifyOfOrder:
 				//客户确认(订单核实)状态 ,其维护在字典表中
