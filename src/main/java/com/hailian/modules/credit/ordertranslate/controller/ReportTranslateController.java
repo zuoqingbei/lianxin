@@ -3,6 +3,7 @@ package com.hailian.modules.credit.ordertranslate.controller;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,8 +25,6 @@ import com.hailian.system.dict.DictCache;
 import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
-import com.jfinal.aop.Before;
-import com.jfinal.ext.interceptor.POST;
 import com.jfinal.kit.HttpKit;
 
 /**
@@ -71,7 +70,7 @@ public class ReportTranslateController extends BaseProjectController {
 			 reporttype=getPara("reportType", p.getString("reportType"));//报告类型
 			 className = getPara("className", p.getString("className"));//模块的key
 		}
-		if("CreditCompanyJudgmentdoc".equals(className)){
+		if("CreditCompanyHis".equals(className)){
 			System.out.println(1);
 		}
 		JSONObject jsonObject = JSONObject.fromObject(json);
@@ -84,6 +83,9 @@ public class ReportTranslateController extends BaseProjectController {
 			String   key = (String) iterator.next();
 			String value = jsonObject.getString(key).replace("/n", "");
 			String value_en="";
+			if("change_back".equals(key)){
+				System.out.println(1);
+			}
 			String value_cht="";
 			if(isChinese(value)){
 				if(!isValidDate(value)){
@@ -260,21 +262,22 @@ public class ReportTranslateController extends BaseProjectController {
 	       SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 	       try {
 	          format.setLenient(false);
-	          format.parse(str);
+	          Date d=format.parse(str);
+	          String s=format.format(d);
+	          if(str.length()!=s.length()){
+	        	  convertSuccess=false;
+	          }
 	       } catch (ParseException e) {
 	           convertSuccess=false;
 	       } 
 	       return convertSuccess;
 	}
 	 
-	 
 	 public static void main(String[] args) {
 		//String  value_cht=TransApi.Trans("股权投资,股权投资管理,商务咨询,财务咨询(不得从事代理记账),实业投资,资产管理,投资咨询。【依法须经批准的项目,经相关部门批准后方可开展经营活动】","en");
 		//System.out.println(value_cht);
-		 String str = "有";
-		 System.out.println("如果有一天我变得很有钱!".indexOf(str));
-		 System.out.println("如果有一天我变得很有钱!".lastIndexOf(str));
-		 System.out.println(UUID.randomUUID());//2b4706b2-c1e3-4cd9-9915-4eaaeffcad75
+		 String str = "2016-03-20股东变更2016-03-21。";
+		 System.out.println(isValidDate(str));
 	}
 }
 

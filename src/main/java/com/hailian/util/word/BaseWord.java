@@ -1686,12 +1686,17 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
                                                    List rows,String sysLanguage,String companyId,List<Object> appendRowsForInvestmentSituation){
         List<RowRenderData> rowList = new ArrayList<RowRenderData>();
         LinkedHashMap<String,String> cols = new LinkedHashMap<String,String>();
-
+        if("zhaiyao".equals(moduleName)){
+        	System.out.println(1);
+        }
     	//取列值
         for(int i=0;i< child.size();i++) {
             CreditReportModuleConf module = child.get(i);
             String column_name = module.getStr("column_name");
             String temp_name = module.getStr("temp_name");
+            if("REGISTERED CAPITAL".equals(temp_name)){
+            	temp_name="Registered Capital";
+            }
             String field_type = module.getStr("field_type");
             String word_key = module.getStr("word_key");
             if("操作".equals(temp_name)||"Operation".equals(temp_name)||"Summary".equals(temp_name)) {

@@ -1617,8 +1617,18 @@ public class BaseBusiCrdt extends BaseWord{
                             header.setFontFamily("宋体");
                             header.setFontSize(11);
                             String c=currencyStr + "：" + currency + "（" + currencyUnit + "）";
+                            if("个".equals(currencyUnit)){
+                            	c=currencyStr + "：" + currency;
+                            }else if("千".equals(currencyUnit)){
+                            	c=currencyStr + "：" + currency + "（" + currencyUnit + "元）";
+                            }else  if("万".equals(currencyUnit)){
+                            	c=currencyStr + "：" + currency + "（" + currencyUnit + "元）";
+                            }
                             if(isEnglish){
                             	c=currencyStr + " " + currency + " " + currencyUnit + "";
+                            	if("'0".equals(currencyUnit.trim())){
+                            		c=currencyStr + " " + currency;
+                            	}
                             }
                             Style unitStyle = new Style();
                             unitStyle.setBold(true);
