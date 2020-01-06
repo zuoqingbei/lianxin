@@ -2470,7 +2470,7 @@ public class BusiUtil extends BaseWord{
 	                            			new TextRenderData(c, unitStyle)));
 	                            }
 	                        	//添加时间
-	                        	if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
+	                        	/*if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
 	                        		//利润读取date3 date4  其他都是date1、date2
 	                        		rowList.add(RowRenderData.build(
 	                            			new TextRenderData(""),
@@ -2481,6 +2481,18 @@ public class BusiUtil extends BaseWord{
 	                            			new TextRenderData(""),
 	                            			new TextRenderData(begin,header),
 	                            			new TextRenderData(end, header)));
+	                        	}*/
+	                            if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
+	                        		//利润读取date3 date4  其他都是date1、date2
+	                        		rowList.add(RowRenderData.build(
+	                            			new TextRenderData(""),
+	                            			new TextRenderData(lrend,header),
+	                            			new TextRenderData(lrbegin, header)));
+	                        	}else{
+	                        		rowList.add(RowRenderData.build(
+	                            			new TextRenderData(""),
+	                            			new TextRenderData(end,header),
+	                            			new TextRenderData(begin, header)));
 	                        	}
 	                        }
 
@@ -2540,7 +2552,7 @@ public class BusiUtil extends BaseWord{
 	                		"净利润".equals(itemName)||"Profits".equals(itemName))){
 	                	sumStyle.setBold(false);
 	                }*/
-	                RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString(),sumStyleValue), new TextRenderData(endValue.toString(),sumStyleValue));
+	                RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(endValue.toString(),sumStyleValue), new TextRenderData(beginValue.toString(),sumStyleValue));
 	                tempRow.setStyle(tableStyle);
 	                rowList.add(tempRow);
 	                j++;
