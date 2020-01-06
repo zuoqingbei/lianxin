@@ -14,6 +14,8 @@ public interface IHttpTest {
     JSONObject getCourtNotice(String conpanyName,String pageIndex,String pageSize) throws Exception;//开庭公告
     @URLAnnotation("http://api.qichacha.com/tm/SearchByApplicant")
     JSONObject getBrandandpatent(String conpanyName,String pageIndex,String pageSize) throws Exception;//企业商标 
+    @URLAnnotation("http://api.qichacha.com/tm/GetDetails")
+    JSONObject getBrandandpatentDetail(String id) throws Exception;//商标详情
     @URLAnnotation("http://api.qichacha.com/PatentV4/SearchPatents")
     JSONObject getPatent(String conpanyName,String pageIndex,String pageSize) throws Exception;//企业专利 
     @URLAnnotation("http://api.qichacha.com/ECIInvestment/GetInvestmentList")

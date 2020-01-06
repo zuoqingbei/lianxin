@@ -560,6 +560,10 @@ public class OrderProcessController extends BaseProjectController{
             }else{
                 map.put("status", code);
             }
+            if("295".equals(code)){
+            	//如果是发起查档 将之前的代理信息清除
+            	map.put("agent_id", "");
+            }
           //说明批量操作
             String ids=	getPara("ids");//订单批量重新分配
             if(StringUtils.isNotBlank(ids)) {

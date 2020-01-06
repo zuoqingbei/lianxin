@@ -476,7 +476,7 @@ public class CreditOrderInfo extends BaseProjectModel<CreditOrderInfo> implement
 		sql.append(" where 1 = 1 and t.del_flag='0' and t.company_id is not null ");
 		sql.append("and t.user_time_id is not null and t.order_type is not null and t.report_language is not null and t.status is not null ");
 		//判断是否是客服 服权限登录，全部订单、订单分配显示全部订单
-		SysUserRole roleMenu=SysUserRole.dao.findFirst(" select * from sys_user_role where userid=? and roleid=3",user.get("userid")+"");
+		SysUserRole roleMenu=SysUserRole.dao.findFirst(" select * from sys_user_role where userid=? and (roleid=3 or roleid=4)",user.get("userid")+"");
 		if (roleMenu==null&&!"1".equals(user.getInt("usertype").toString())) {
 			String userId = user.get("userid")+"";
 			//sql.append(" and t.create_by=? ");

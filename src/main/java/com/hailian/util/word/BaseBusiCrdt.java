@@ -1,5 +1,32 @@
 package com.hailian.util.word;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
+
 import com.deepoove.poi.data.MiniTableRenderData;
 import com.deepoove.poi.data.PictureRenderData;
 import com.deepoove.poi.data.RowRenderData;
@@ -8,38 +35,26 @@ import com.deepoove.poi.data.style.Style;
 import com.deepoove.poi.data.style.TableStyle;
 import com.hailian.api.constant.ReportTypeCons;
 import com.hailian.component.base.BaseProjectModel;
-import com.hailian.jfinal.base.BaseModel;
-import com.hailian.modules.admin.ordermanager.model.*;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyBrandandpatent;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialEntry;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyFinancialStatementsConf;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyIndustryInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyIndustrySituationTitleDict;
+import com.hailian.modules.admin.ordermanager.model.CreditCompanyInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditCustomInfo;
+import com.hailian.modules.admin.ordermanager.model.CreditOrderInfo;
 import com.hailian.modules.credit.common.model.CountryModel;
 import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
-import com.hailian.modules.credit.usercenter.controller.ReportInfoGetData;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.SendMailUtil;
-import com.hailian.system.user.SysUser;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
 import com.hailian.util.translate.TransApi;
 import com.jfinal.kit.PathKit;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.template.ext.directive.Str;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
-import org.openxmlformats.schemas.wordprocessingml.x2006.main.STJc;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
 
 /**
  * 基本信息报告样本
@@ -900,7 +915,9 @@ public class BaseBusiCrdt extends BaseWord{
 				// TODO: handle exception
 			}
             if(isNotNull(currency)){
-                currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
+            	/*if(isInteger(currency)){
+            	}*/
+            	currency = ReportInfoGetDataController.dictIdToString(currency, reportType, sysLanguage);
                 if(isNotNull(currency)){
                     if(ReportTypeCons.BUSI_ZH.equals(reportType)){
                         targetStr = money+" "+currency;
@@ -919,7 +936,10 @@ public class BaseBusiCrdt extends BaseWord{
         }
         model.set(requiredColumns,targetStr);
     }
-
+    public static boolean isInteger(String str) {  
+        Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");  
+        return pattern.matcher(str).matches();  
+    }
     /**
      *
      * @param child

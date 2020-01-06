@@ -1918,7 +1918,8 @@ let ReportConfig = {
                         orderId: this.rows.id || '',
                         id: this.rows.qualityDataId || '',
                         quality_opinion: $("#quality_opinion").val() || '',
-                        quality_deal: checkedIndex,
+                       // quality_deal: checkedIndex,
+					    quality_deal: 1,
                         quality_type: _this.rows.quality_type,
                         report_type: _this.rows.report_type,
                         grade: $("#grade").val() || 0

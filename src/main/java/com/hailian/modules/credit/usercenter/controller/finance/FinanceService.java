@@ -185,7 +185,7 @@ public class FinanceService {
 		if(dictList.size()!=entryList.size()){
 			for(CreditCompanyFinancialDict d:dictList){
 				for(CreditCompanyFinancialEntry c:entryList){
-					if(d.getStr("item_name").equals(c.getStr("item_name"))){
+					if(d.getStr("item_name").equals(c.getStr("item_name"))&&(d.get("son_sector")+"").equals((c.get("son_sector")+""))){
 						data.add(c);
 						break;
 					}

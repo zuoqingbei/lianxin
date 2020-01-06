@@ -962,4 +962,27 @@ public class HttpTest implements IHttpTest {
 		}
 		return json;
 	}
+	@Override
+	public JSONObject getBrandandpatentDetail(String id) throws Exception {
+		HttpGet get = new HttpGet("http://api.qichacha.com/tm/GetDetails?key="+qichacha_key+"&id="+id);//精确查询
+		String timestamp = String.valueOf((System.currentTimeMillis()/1000));//精确到秒的Unix时间戳
+		String token = encodeMd5(qichacha_key + timestamp + qichacha_secretkey);    //验证加密值
+		get.addHeader("Token", token);
+		get.addHeader("Timespan", timestamp);
+		CloseableHttpClient client = HttpClients.createDefault();
+		CloseableHttpResponse response = null;
+		String html = "";
+		JSONObject json=null;
+		try {
+			response = client.execute(get);
+			Header[] headers = response.getAllHeaders();
+			html = EntityUtils.toString(response.getEntity(), "utf-8");
+			json = JSONObject.fromObject(html);
+			return json;
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+
+		return json;
+	}
 }

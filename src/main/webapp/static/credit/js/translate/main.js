@@ -2375,17 +2375,7 @@ let ReportConfig = {
                                 //如果计数器的值等于中文所有表格数据的总条数，则翻译完成！
                             	this.isTableTranslated = true;
 								this.tableTranlateNum = 0  
-                            	if (this.isFormTranslated ) {
-									//如果表单也翻译完成
-                            		Public.message("success","表格翻译完成！")
-                            		$("body").mLoading("hide")
-                            		this.isTableTranslated = false;
-                            		this.isFormTranslated=false;
-									this.tableTranlateNum = 0   //翻译表格条数计数器
-									this.formTranlateNum = 0  //翻译表单条数计数器
-									$("#save").trigger("click");
-								}
-                                tableTitlesEn.forEach((item,index)=>{
+								  tableTitlesEn.forEach((item,index)=>{
                                     if(allTableData[index]){
                                         allTableData[index].forEach((e,i)=>{
                                             //循环表格中的数据，如果有select不翻译
@@ -2422,6 +2412,17 @@ let ReportConfig = {
                                     }
                                 })
                                 addTable();
+                            	if (this.isFormTranslated ) {
+									//如果表单也翻译完成
+                            		Public.message("success","表格翻译完成！")
+                            		$("body").mLoading("hide")
+                            		this.isTableTranslated = false;
+                            		this.isFormTranslated=false;
+									this.tableTranlateNum = 0   //翻译表格条数计数器
+									this.formTranlateNum = 0  //翻译表单条数计数器
+									$("#save").trigger("click");
+								}
+                              
                             }
 //
                         }
@@ -2733,6 +2734,7 @@ let ReportConfig = {
                     		success:(data)=>{
                     			this.formTranlateNum++;
                     			console.log(this.isTableTranslated,this.isFormTranslated,this.formTotal,this.formTranlateNum)
+								_this.bindFormDataEn(data,_this.formIndexEn[index])
                     			if(this.formTotal === this.formTranlateNum) {
                     				this.formTranlateNum = 0;
                     				//表单翻译完成
@@ -2749,7 +2751,7 @@ let ReportConfig = {
                     				}
                     				
                     			}
-                    			_this.bindFormDataEn(data,_this.formIndexEn[index])
+                    			
                     		}
                     	});
                     }

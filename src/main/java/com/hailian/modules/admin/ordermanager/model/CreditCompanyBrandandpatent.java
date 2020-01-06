@@ -20,9 +20,6 @@ public class CreditCompanyBrandandpatent extends BaseProjectModel<CreditCompanyB
 	private String RegNo ;
 	private String AppDate  ;
 	private String ImageUrl ;
-	
-
-	
 
 	public String getRegNo() {
 		return RegNo;

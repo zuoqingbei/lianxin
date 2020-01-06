@@ -891,7 +891,24 @@ public class CompanyService {
 				}*/
 				JSONArray jsonArray = brandandpatent.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
-					List<CreditCompanyBrandandpatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyBrandandpatent.class);
+					//List<CreditCompanyBrandandpatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyBrandandpatent.class);
+					List<CreditCompanyBrandandpatent>  list=new ArrayList<CreditCompanyBrandandpatent>();
+					for(int x=0;x<jsonArray.size();x++){
+						JSONObject o=jsonArray.getJSONObject(x);
+						CreditCompanyBrandandpatent c=new CreditCompanyBrandandpatent();
+						c.setAppDate("");
+						c.setImageUrl(o.getString("ImageUrl"));
+						c.setRegNo(o.getString("RegNo"));
+						JSONObject d = iHttpTest.getBrandandpatentDetail(o.getString("ID"));
+						if(d.getString("Status").equals("200")){
+							JSONObject j = d.getJSONObject("Result");
+							c.setAppDate(j.getString("RegDate"));
+						}
+						if(StringUtils.isNotBlank(c.getAppDate())){
+							//只有审核通过的商标才展示
+							list.add(c);
+						}
+					}
 					for(CreditCompanyBrandandpatent model:list){
 						model.set("company_id", companyId);
 						model.set("sys_language", sys_language);

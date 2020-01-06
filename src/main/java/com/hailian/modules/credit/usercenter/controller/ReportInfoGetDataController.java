@@ -1187,8 +1187,29 @@ public class ReportInfoGetDataController extends ReportInfoGetData {
             		}
             	}
             }
-        } else {
-            System.out.println("此信息输出不影响程序往下运行，异常id=" + id);
+        }else {
+        	 Map<String, SysDictDetail> cache = DictCache.getCacheNameMap();
+             SysDictDetail sysDict = cache.get(id);
+             if (sysDict != null) {
+                 //英文
+             	if(ReportTypeCons.BUSI_EN.equals(reportType)){
+             		return sysDict.get("detail_name_en") + "";
+             	}if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+             		return sysDict.get("detail_name") + "";
+             	}else{
+             		if ("613".equals(sysLanguage)) {
+             			if(ReportTypeCons.ROC_ZH.equals(reportType)){
+             				return sysDict.get("detail_name_tw") + "";
+             			}else{
+             				return sysDict.get("detail_name_en") + "";
+             			}
+             		} else {
+             			return sysDict.get("detail_name") + "";
+             		}
+             	}
+             }else{
+            	 System.out.println("此信息输出不影响程序往下运行，异常id=" + id);
+             }
         }
         return "";
     }

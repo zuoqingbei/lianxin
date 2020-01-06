@@ -48,6 +48,7 @@ public class DictCache {
 	 */
 	public static void initDict() {
 		Map<Integer, SysDictDetail> dictMap = new LinkedHashMap<Integer, SysDictDetail>();
+		Map<String, SysDictDetail> dictName = new LinkedHashMap<String, SysDictDetail>();
 		//财务字典表
 		List<CreditCompanyFinancialDict> simplifiedChineseDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=1 order by sort_no,id");
 		List<CreditCompanyFinancialDict>  englishDict = CreditCompanyFinancialDict.dao.find("select * from credit_company_financial_dict where del_flag=0 and type=2 order by sort_no,id");
@@ -78,9 +79,10 @@ public class DictCache {
 			
 			dictMap.put(detail.getInt("detail_id"), detail);
 			
-			
+			dictName.put(detail.getStr("detail_name"), detail);
 		}
 		cache.add("map", dictMap);
+		cache.add("dictName", dictName);
 		cache.add("financialDictMap", FinancialDictMap);
 		cache.add("sonSectorCodeList", sonSectorCodeList);
 		List<TranslateModel> translateDictList = TranslateModel.dao.refreshDict();
@@ -97,7 +99,9 @@ public class DictCache {
 	public static Map<Integer, SysDictDetail> getCacheMap() {
 		return cache.get("map");
 	}
-	
+	public static Map<String, SysDictDetail> getCacheNameMap() {
+		return cache.get("dictName");
+	}
 	public static Map<Integer,List<CreditCompanyFinancialDict>> getFinancialDictMap() {
 		return cache.get("financialDictMap");
 	}
