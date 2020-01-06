@@ -267,6 +267,10 @@ public class FinanceService {
 		}
 		//批量执行
 		if(!exitsId){
+			for(CreditCompanyFinancialEntry c:list){
+				c.set("begin_date_value", 0);
+				c.set("end_date_value", 0);
+			}
 			Db.batchSave(list, list.size());
 		}else{
 			Db.batchUpdate(list, list.size());

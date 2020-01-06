@@ -796,9 +796,15 @@ public class CompanyService {
 					for(int j=0;j<jsonArray.size();j++){
 						JSONObject CourtAnnouncement = (JSONObject)jsonArray.get(j);
 						CreditCompanyCourtannouncement model=new CreditCompanyCourtannouncement();
-						String Id = CourtAnnouncement.getString("Id");//id
+						/*String Id = CourtAnnouncement.getString("Id");//id
 						String Party = CourtAnnouncement.getString("Party");
-						model.set("party", Party);
+						model.set("party", Party);//被上诉人
+						*/
+						JSONArray b=CourtAnnouncement.getJSONArray("DefendantList");
+						if(b.size()>0){
+							String party = b.getJSONObject(0).getString("Name");
+							model.set("party", party);//publishedpage  上诉人
+						}
 						String Category = CourtAnnouncement.getString("Category");
 						model.set("category", Category);
 						String PublishedDate = CourtAnnouncement.getString("PublishedDate");//刊登日期
@@ -808,7 +814,7 @@ public class CompanyService {
 						JSONArray a=CourtAnnouncement.getJSONArray("ProsecutorList");
 						if(a.size()>0){
 							String PublishedPage = a.getJSONObject(0).getString("Name");
-							model.set("publishedpage", PublishedPage);
+							model.set("publishedpage", PublishedPage);//publishedpage  上诉人
 						}
 						String UploadDate = CourtAnnouncement.getString("UploadDate");//上传日期
 						model.set("uploaddate", dateFormat(UploadDate));
@@ -891,8 +897,8 @@ public class CompanyService {
 				}*/
 				JSONArray jsonArray = brandandpatent.getJSONArray("Result");
 				if(jsonArray !=null && jsonArray.size()>0){
-					//List<CreditCompanyBrandandpatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyBrandandpatent.class);
-					List<CreditCompanyBrandandpatent>  list=new ArrayList<CreditCompanyBrandandpatent>();
+					List<CreditCompanyBrandandpatent>  list= JSON.parseArray(jsonArray.toString(), CreditCompanyBrandandpatent.class);
+					/*List<CreditCompanyBrandandpatent>  list=new ArrayList<CreditCompanyBrandandpatent>();
 					for(int x=0;x<jsonArray.size();x++){
 						JSONObject o=jsonArray.getJSONObject(x);
 						CreditCompanyBrandandpatent c=new CreditCompanyBrandandpatent();
@@ -908,7 +914,7 @@ public class CompanyService {
 							//只有审核通过的商标才展示
 							list.add(c);
 						}
-					}
+					}*/
 					for(CreditCompanyBrandandpatent model:list){
 						model.set("company_id", companyId);
 						model.set("sys_language", sys_language);
