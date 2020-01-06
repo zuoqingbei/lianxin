@@ -5,8 +5,8 @@
     <diskStore path="C:/temp" />   
     <defaultCache maxElementsInMemory="10000" eternal="true" overflowToDisk="true" />  
     <cache name="kentrasoftCache"
-           maxElementsInMemory="0"  
-           maxElementsOnDisk="90000"   
+           maxElementsInMemory="0"
+           maxElementsOnDisk="90000"
            eternal="false"   
            overflowToDisk="true"   
            diskSpoolBufferSizeMB="2048"  

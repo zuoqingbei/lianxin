@@ -158,6 +158,7 @@ let Verify = {
                                   // $("#confirm_reason").html(row.confirm_reason);
                                   $("#orderId").val(row.id);
                                   $("#num23").html(row.num);
+                                  $("#agent_category").val(row.agent_category);
                                   pageNumber = row.pageNumber;
                                   pageSize = row.pageSize;
                                   sortName = row.sortName;
