@@ -8,6 +8,7 @@ import java.io.InputStream;
 import com.aspose.cells.License;
 import com.aspose.cells.Workbook;
 import com.aspose.words.Document;
+import com.aspose.words.PdfSaveOptions;
 
 public class Excel2Pdf {
 	private static boolean getLicense() {
@@ -77,6 +78,9 @@ public class Excel2Pdf {
            f=new File(pdfPath);
            FileOutputStream os = new FileOutputStream(f);
            Document doc = new Document(new FileInputStream(excelFile)); //Address是将要被转化的word文档
+           PdfSaveOptions options = new PdfSaveOptions();
+           options.setExportDocumentStructure(true);
+           options.setPageCount(15);
            doc.save(os, com.aspose.words.SaveFormat.PDF);//全面支持DOC, DOCX, OOXML, RTF HTML, OpenDocument, PDF, EPUB, XPS, SWF 相互转换
            long now = System.currentTimeMillis();
            os.close();
