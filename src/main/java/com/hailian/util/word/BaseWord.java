@@ -1270,7 +1270,8 @@ public class BaseWord {
                 //如果上传文档不是pdf或者图片或者则转化为pdf，以作预览
                 if (!ext.equals("pdf") && !FileTypeUtils.isImg(ext) && !ext.equalsIgnoreCase("html")) {
                     try {
-                        pdf = Office2PDF.toPdf(fl);
+                       // pdf = Office2PDF.toPdf(fl);
+                    	pdf = Office2PDF.excelPdfNew(fl);
                     }catch (Exception e){
                         e.printStackTrace();
                         ReportInfoGetData.outPutErroLog(log, e);

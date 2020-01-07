@@ -809,14 +809,14 @@ let ReportConfig = {
     									<div class="btn-group">
     										<button class="btn btn-default mr-3 cwDown" >${this_content[2].temp_name}</button>
     										<button class="btn btn-default mr-3 cwDownData" style="background-color: #37485a;color:#fff;">${this_content[10].temp_name}</button>
-						    				<button class="aa-btn btn btn-primary cwUp" style="position:relative">
+						    				<div class="aa-btn btn btn-primary cwUp" style="position:relative">
 						    					<form class="uploadForm" enctype="multipart/form-data" action="" method="POST" >
 						    						<input style="opacity:0;cursor:pointer;width:100%;height:100%;position:absolute;left:0;top:0" type="file" name="file" class="fileInp">
 						    						<input name="report_type" type="hidden" class="report_type"/>
 								    				<input name="ficConf_id" type="hidden" class="ficConf_id"/>
 						    					</form>
 						    					${this_content[3].temp_name}
-						    				</button>
+						    				</div>
     									</div>
     								</div>
     									<!-- 单位 -->

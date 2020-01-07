@@ -47,6 +47,25 @@
             <version>2.2</version>
             <scope>provided</scope>
         </dependency>
+       <!-- 
+		将jar安装到本地maven，不然无法打入jar
+		https://blog.csdn.net/hellboy0621/article/details/83277131
+		mvn install:install-file -Dfile=aspose-cells-8.5.2.jar -DgroupId=aspose-cells  -DartifactId=aspose-cells  -Dversion=1.0 -Dpackaging=jar
+		 -->
+		<dependency>
+			<groupId>aspose-cells</groupId>
+			<artifactId>aspose-cells</artifactId>
+			<version>1.0</version>
+		</dependency> 
+		
+		<!-- mvn install:install-file -Dfile=aspose-words-15.8.0-jdk16.jar -DgroupId=aspose-words  -DartifactId=aspose-words  -Dversion=1.0 -Dpackaging=jar -->
+		<dependency>
+			<groupId>aspose-words</groupId>
+			<artifactId>aspose-words</artifactId>
+			<version>1.0</version>
+		</dependency> 
+		
+        
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>

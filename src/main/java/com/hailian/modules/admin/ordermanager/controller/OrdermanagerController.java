@@ -236,8 +236,10 @@ public class OrdermanagerController extends BaseProjectController{
 						String pdf_FTPfileName="";
 						ftpfileList.add(uploadFile.getFile());
 						if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext)){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
-							File pdf = Office2PDF.toPdf(uploadFile);;
+							//File pdf = Office2PDF.toPdf(uploadFile);;
+							File pdf = Office2PDF.excelPdfNew(uploadFile);
 							pdf_FTPfileName=now+"."+"pdf";
+							if(pdf!=null)
 							ftpfileList.add(pdf);
 						}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext)){
 							pdf_FTPfileName=FTPfileName;
@@ -616,7 +618,8 @@ public class OrdermanagerController extends BaseProjectController{
 		String now=DateUtils.getNow(DateUtils.YMDHMS);
 		String type = FileTypeUtils.getFileType(uploadFile.getFileName());
 		String name = FileTypeUtils.getName(uploadFile.getFileName());
-		File convertFileToPdf = Office2PDF.convertFileToPdf(uploadFile.getFile(),name,type, projectStorePath);
+		//File convertFileToPdf = Office2PDF.convertFileToPdf(uploadFile.getFile(),name,type, projectStorePath);
+		File convertFileToPdf = Office2PDF.excelPdfNew(uploadFile);
 		return convertFileToPdf;
 	}
 	

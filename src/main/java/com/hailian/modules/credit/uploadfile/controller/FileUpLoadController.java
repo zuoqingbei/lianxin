@@ -85,8 +85,10 @@ public class FileUpLoadController extends BaseProjectController {
 					ftpfileList.add(uploadFile.getFile());
 					File pdf=null;
 					if(!ext.equals("pdf") && !FileTypeUtils.isImg(ext) && !ext.equalsIgnoreCase("html")){//如果上传文档不是pdf或者图片则转化为pdf，以作预览
-						pdf = Office2PDF.toPdf(uploadFile);
+						//pdf = Office2PDF.toPdf(uploadFile);
+						pdf = Office2PDF.excelPdfNew(uploadFile);
 						pdf_FTPfileName=now+"."+"pdf";
+						if(pdf!=null)
 						ftpfileList.add(pdf);
 					}else if(ext.equals("pdf") ||FileTypeUtils.isImg(ext) || ext.equalsIgnoreCase("html")){
 						pdf_FTPfileName=FTPfileName;

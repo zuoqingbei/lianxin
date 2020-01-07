@@ -184,7 +184,7 @@ public class CharacterParser {
      */
     public String getSpelling(String chs) {
     	if(StringUtils.isNotBlank(chs)){
-    		chs=chs.replaceAll(" ", "");
+    		chs=chs.replaceAll(" ", "").replaceAll("\\(", "").replaceAll("\\)", "").replaceAll("\\?", "");
     	}
         chs = chs.toLowerCase(Locale.getDefault());
         String key, value;
@@ -221,7 +221,7 @@ public class CharacterParser {
     }
     public static void main(String[] args) {
     	CharacterParser c=new CharacterParser();
-		System.out.println(c.getSpelling("我是张三aa"));
+		System.out.println(c.getSpelling("深圳市腾讯计算机系统有限公司(c?eshi20191225)"));
 	}
     /**
      * 获取一个汉字的拼音
