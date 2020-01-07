@@ -48,6 +48,7 @@ import com.hailian.modules.credit.common.model.ReportTypeModel;
 import com.hailian.modules.credit.reportmanager.model.CreditReportModuleConf;
 import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataController;
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
+import com.hailian.modules.credit.utils.Excel2Pdf;
 import com.hailian.modules.credit.utils.SendMailUtil;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
@@ -681,7 +682,12 @@ public class BaseBusiCrdt extends BaseWord{
                 	 financial(financialConf, map,reportType);
                 }
               //生成财务报告EXCEL
-               String expath = financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end);
+                String expath ="";
+                if(ReportTypeCons.BUSI_EN.equals(reportType)){
+                	expath=financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end,true);
+                }else{
+                	expath=financialExcel(realFinanceTypes,finanId,_prePath,orderId,userid,begin,end,false);
+                }
                excelPath.add(expath);
                //财务-评价
                map.put("financial_eval", financialEval(financialConf,reportType,sysLanguage));
@@ -1510,6 +1516,7 @@ public class BaseBusiCrdt extends BaseWord{
             Integer old = null;
             for (CreditCompanyFinancialEntry ccf : finDataRows) {
                 Integer son_sector = ccf.getInt("son_sector");
+                boolean beginBigger=false;
                 if(!"21".equals(reportType)) {
                     //判断新模块，第一行要加标题
                     if (old == null) {
@@ -1674,17 +1681,35 @@ public class BaseBusiCrdt extends BaseWord{
                             			new TextRenderData(begin,header),
                             			new TextRenderData(end, header)));
                         	}*/
+                           // beginBigger
+                            
                             if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
                         		//利润读取date3 date4  其他都是date1、date2
-                        		rowList.add(RowRenderData.build(
-                            			new TextRenderData(""),
-                            			new TextRenderData(lrend,header),
-                            			new TextRenderData(lrbegin, header)));
+                            	beginBigger=Excel2Pdf.compareDate(lrbegin, lrend);
+                            	if(beginBigger){
+                            		rowList.add(RowRenderData.build(
+                                			new TextRenderData(""),
+                                			new TextRenderData(lrbegin,header),
+                                			new TextRenderData(lrend, header)));
+                            	}else{
+                            		rowList.add(RowRenderData.build(
+                            				new TextRenderData(""),
+                            				new TextRenderData(lrend,header),
+                            				new TextRenderData(lrbegin, header)));
+                            	}
                         	}else{
-                        		rowList.add(RowRenderData.build(
-                            			new TextRenderData(""),
-                            			new TextRenderData(end,header),
-                            			new TextRenderData(begin, header)));
+                        		beginBigger=Excel2Pdf.compareDate(begin, end);
+                        		if(beginBigger){
+                        			rowList.add(RowRenderData.build(
+                                			new TextRenderData(""),
+                                			new TextRenderData(begin,header),
+                                			new TextRenderData(end, header)));
+                        		}else{
+                        			rowList.add(RowRenderData.build(
+                        					new TextRenderData(""),
+                        					new TextRenderData(end,header),
+                        					new TextRenderData(begin, header)));
+                        		}
                         	}
                         }
 
@@ -1744,9 +1769,15 @@ public class BaseBusiCrdt extends BaseWord{
                 		"净利润".equals(itemName)||"Profits".equals(itemName))){
                 	sumStyle.setBold(false);
                 }*/
-                RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(endValue.toString(),sumStyleValue), new TextRenderData(beginValue.toString(),sumStyleValue));
-                tempRow.setStyle(tableStyle);
-                rowList.add(tempRow);
+                if(beginBigger){
+                	 RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(beginValue.toString(),sumStyleValue), new TextRenderData(endValue.toString(),sumStyleValue));
+                     tempRow.setStyle(tableStyle);
+                     rowList.add(tempRow);
+                }else{
+                	 RowRenderData tempRow = RowRenderData.build(new TextRenderData(itemName, sumStyle), new TextRenderData(endValue.toString(),sumStyleValue), new TextRenderData(beginValue.toString(),sumStyleValue));
+                     tempRow.setStyle(tableStyle);
+                     rowList.add(tempRow);
+                }
                 j++;
             }
             //财务-表格
@@ -1770,7 +1801,7 @@ public class BaseBusiCrdt extends BaseWord{
      * @param end
      * @return
      */
-    public static String financialExcel(int financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end){
+    public static String financialExcel(int financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end,boolean isEnglish){
         String filePath = "";
        // if(financeType==3){
             //todo 大数渲染
@@ -1788,7 +1819,7 @@ public class BaseBusiCrdt extends BaseWord{
                     entity.set("end_date_value","--");
                 }
             }
-            FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end);
+            FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end,isEnglish);
             try {
                 String path = _prePath + ".xls";
                 export.downloadExcel(path);

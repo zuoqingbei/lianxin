@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.aspose.cells.License;
 import com.aspose.cells.Workbook;
 import com.aspose.words.Document;
@@ -66,7 +68,18 @@ public class Excel2Pdf {
           e.printStackTrace();
        }
      }
-    
+    public static boolean compareDate(String begin,String end) {
+    	   if(StringUtils.isBlank(begin)){
+    		   return true;
+    	   }
+    	   if(StringUtils.isBlank(end)){
+    		   return false;
+    	   }
+           long longDate = Long.valueOf(begin.replaceAll("[-\\s:]",""));
+           long endDate = Long.valueOf(end.replaceAll("[-\\s:]",""));
+           System.out.println(longDate);
+           return longDate>endDate;
+    }
     public static File doc2pdfNew(File excelFile, String name) {
         if (!getLicense()) { // 验证License 若不验证则转化出的pdf文档会有水印产生
            return null;
