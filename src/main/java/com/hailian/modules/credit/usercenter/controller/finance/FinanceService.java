@@ -157,6 +157,8 @@ public class FinanceService {
 				entrymodel.set("create_date", now);
 				entrymodel.set("update_by", userId);
 				entrymodel.set("update_date", now);
+				entrymodel.set("begin_date_value", 0);
+				entrymodel.set("end_date_value", 0);
 				targetList.add(entrymodel);
 			}
 			Db.batchSave(targetList, dictList.size());
