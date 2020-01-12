@@ -50,6 +50,8 @@ import com.hailian.modules.credit.usercenter.controller.ReportInfoGetDataControl
 import com.hailian.modules.credit.usercenter.controller.finance.FinanceService;
 import com.hailian.modules.credit.utils.Excel2Pdf;
 import com.hailian.modules.credit.utils.SendMailUtil;
+import com.hailian.system.dict.DictCache;
+import com.hailian.system.dict.SysDictDetail;
 import com.hailian.util.Config;
 import com.hailian.util.DateUtils;
 import com.hailian.util.StrUtils;
@@ -80,8 +82,8 @@ public class BaseBusiCrdt extends BaseWord{
             //System.out.println(file.getName());
             //BaseWord.buildWord(null, iputstream, "");
 
-            //String str = BaseInfoZh.downloadFile("http://tm-image.qichacha.com/a460ea8b52eda230294f1bb618c3dfc8.jpg","h:/");
-            //System.out.println(str);
+            String str = downloadFile("http://221.215.57.110:9982/zhengxin_File/2020-01-12/team1ca8d1a3c3fd343669e2fedcbe10aba8a.jpg","h:/");
+            System.out.println(str);
 
             //String str = String.format("%010s", "a12");
             //System.out.println(str);
@@ -300,6 +302,7 @@ public class BaseBusiCrdt extends BaseWord{
                 MiniTableRenderData table = null;
                 if("zhaiyao".equals(key)){
                     specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
+                   // rows.get(0).put("name_en", companyInfo.getStr("name_en"));
                 }
                 if("creditanalysis".equals(key)){
                     specialHandlingForTable(key,child,rows,reportType,sysLanguage) ;
@@ -350,6 +353,9 @@ public class BaseBusiCrdt extends BaseWord{
                     }
                 } else if ("h".equals(tableType)) {
                     //"出资情况"需要增加合计项
+                	 if("shangbiao".equals(key)){
+                		 System.out.println(1);
+                	 }
                     boolean hasTotal = "credit_company_shareholder".equals(tableName) ? true : false;
                     table = BaseWord.createTableH(key,reportType, child, rows, sysLanguage, hasTotal,"",companyId);
                 }else if("z".equals(tableType)){
@@ -1381,7 +1387,10 @@ public class BaseBusiCrdt extends BaseWord{
         try {
             byte[] buff = new byte[512];
             URL url = new URL(netUrl);
-            path = path + url.getPath();
+            String[] s=netUrl.split("\\?")[0].split("/");
+           path = path + s[s.length-1];
+           System.out.println(path );
+            //path = path + url.getPath();
             File file = new File(path);
             HttpURLConnection uc = (HttpURLConnection) url.openConnection();
             //设置是否要从 URL 连接读取数据,默认为true
@@ -1471,6 +1480,7 @@ public class BaseBusiCrdt extends BaseWord{
 
         //CreditCompanyFinancialStatementsConf config = CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
         //String companyName = config.get("company_name")+"";//公司名称
+        String split=" - ";
         try {
         	//时间中文
         	if(ReportTypeCons.BUSI_ZH.equals(reportType)){
@@ -1478,21 +1488,39 @@ public class BaseBusiCrdt extends BaseWord{
                     begin = detailDate(sdf.parse(begin),reportType);
                     if(!StrUtils.isEmpty(end))
                     end = detailDate(sdf.parse(end),reportType);
-                    if(!StrUtils.isEmpty(lrbegin))
-                    	lrbegin = detailDate(sdf.parse(lrbegin),reportType);
-                    if(!StrUtils.isEmpty(lrend))
-                    	lrend = detailDate(sdf.parse(lrend),reportType);
+                    if(!StrUtils.isEmpty(lrbegin)){
+                    	String[] s=lrbegin.split(split);
+                    	lrbegin = detailDate(sdf.parse(s[0]),reportType);
+                    	if(s.length>1){
+                    		lrbegin=lrbegin+split+detailDate(sdf.parse(s[1]),reportType);
+                    	}
+                    }
+                    if(!StrUtils.isEmpty(lrend)){
+                    	String[] s=lrend.split(split);
+                    	lrend = detailDate(sdf.parse(s[0]),reportType);
+                    	if(s.length>1){
+                    		lrend=lrend+split+detailDate(sdf.parse(s[1]),reportType);
+                    	}
+                    }
         	}else{
         		if(!StrUtils.isEmpty(begin))
 	            	begin = sdf.format(sdf.parse(begin)); 
 	            if(!StrUtils.isEmpty(end))
 	            	end = sdf.format(sdf.parse(end)); 
 	            if(!StrUtils.isEmpty(lrbegin)){
-	            	lrbegin = sdf.format(sdf.parse(lrbegin)); 
-	            }
-	            if(!StrUtils.isEmpty(lrend)){
-	            	lrend = sdf.format(sdf.parse(lrend)); 
-	            }
+                	String[] s=lrbegin.split(split);
+                	lrbegin = sdf.format(sdf.parse(s[0]));
+                	if(s.length>1){
+                		lrbegin=lrbegin+split+sdf.format(sdf.parse(s[1]));
+                	}
+                }
+                if(!StrUtils.isEmpty(lrend)){
+                	String[] s=lrend.split(split);
+                	lrend = sdf.format(sdf.parse(s[0]));
+                	if(s.length>1){
+                		lrend=lrend+split+sdf.format(sdf.parse(s[1]));
+                	}
+                }
         	}
             
         } catch (ParseException e) {
@@ -1684,8 +1712,9 @@ public class BaseBusiCrdt extends BaseWord{
                            // beginBigger
                             
                             if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
-                        		//利润读取date3 date4  其他都是date1、date2
-                            	beginBigger=Excel2Pdf.compareDate(lrbegin, lrend);
+                        		//利润读取date3 date4  其他都是date1、date2  2018-12-01 - 2019-01-01
+                            	//2019-12-01 - 2020-01-31
+                            	beginBigger=Excel2Pdf.compareDate(lrbegin.split(split)[0], lrend.split(split)[0]);
                             	if(beginBigger){
                             		rowList.add(RowRenderData.build(
                                 			new TextRenderData(""),
@@ -1789,6 +1818,39 @@ public class BaseBusiCrdt extends BaseWord{
         //}
         return rowList;
     }
+    /**
+     * 将id转化为字典表中对应的字符串
+     * @param id
+     * @param sysLanguage
+     */
+    public static String dictIdToString(String id,String reportType,String sysLanguage) {
+        //判断id必须是数字
+        if (id.matches("-?[0-9]+.*[0-9]*")){
+            Map<Integer, SysDictDetail> cache = DictCache.getCacheMap();
+            SysDictDetail sysDict = cache.get(Integer.parseInt(id));
+            if (sysDict != null) {
+                //英文
+            	if(ReportTypeCons.BUSI_EN.equals(reportType)){
+            		return sysDict.get("detail_name_en") + "";
+            	}if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+            		return sysDict.get("detail_name") + "";
+            	}else{
+            		if ("613".equals(sysLanguage)) {
+            			if(ReportTypeCons.ROC_ZH.equals(reportType)){
+            				return sysDict.get("detail_name_tw") + "";
+            			}else{
+            				return sysDict.get("detail_name_en") + "";
+            			}
+            		} else {
+            			return sysDict.get("detail_name") + "";
+            		}
+            	}
+            }
+        } else {
+            System.out.println("此信息输出不影响程序往下运行，异常id=" + id);
+        }
+        return "";
+    }
 
     /**
      * 财务生成Excel
@@ -1801,13 +1863,46 @@ public class BaseBusiCrdt extends BaseWord{
      * @param end
      * @return
      */
-    public static String financialExcel(int financeType,String financialConfId,String _prePath,String orderId,int userid,String begin,String end,boolean isEnglish){
+    public static String financialExcel(int financeType,String financialConfId,String _prePath,String orderId,int userid,
+    		String begin,String end,boolean isEnglish){
+    	  CreditCompanyFinancialStatementsConf financialConf=CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
+    	  boolean isMerge = (financialConf.get("is_merge")+"").equals("1");
+	        String titlPrd="";
+	        //判断语言类型
+	        String language = "612";
+	        String currencyStr = "单位";
+	        String reportType=ReportTypeCons.BUSI_ZH;
+	        if(isEnglish){
+	            language = "613";
+	            currencyStr = "Unit";
+	            reportType=ReportTypeCons.BUSI_EN;
+	        }
+	        if(isMerge){
+	        	if(isEnglish){
+	        		titlPrd="Consolidated ";
+	        	}else{
+	        		titlPrd="合并";
+	        	}
+	        }
+	        String currencyId = financialConf.get("currency")+"";//币种id
+	        String currency = dictIdToString(currencyId,reportType,language);
+	        String currencyUnitId = financialConf.get("currency_ubit")+"";//币种单位id
+	        String currencyUnit = dictIdToString(currencyUnitId,reportType,language);
+	        String c=currencyStr + "：" + currency + "（" + currencyUnit + "）";
+            if("个".equals(currencyUnit)){
+            	c=currencyStr + "：" + currency;
+            }else if("千".equals(currencyUnit)){
+            	c=currencyStr + "：" + currency + "（" + currencyUnit + "元）";
+            }else  if("万".equals(currencyUnit)){
+            	c=currencyStr + "：" + currency + "（" + currencyUnit + "元）";
+            }
+            if(isEnglish){
+            	c=currencyStr + " " + currency + " " + currencyUnit + "";
+            	if("'0".equals(currencyUnit.trim())){
+            		c=currencyStr + " " + currency;
+            	}
+            }
         String filePath = "";
-       // if(financeType==3){
-            //todo 大数渲染
-        //}else{
-            //财务
-            //Integer type = new ReportInfoGetDataController().getFinanceDictByReportType(reportType);
             List<CreditCompanyFinancialEntry> finDataRows = FinanceService.getFinancialEntryList(financialConfId, financeType+"");
             for(CreditCompanyFinancialEntry entity : finDataRows){
                 String a = entity.get("begin_date_value")+"";
@@ -1819,7 +1914,10 @@ public class BaseBusiCrdt extends BaseWord{
                     entity.set("end_date_value","--");
                 }
             }
-            FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end,isEnglish);
+            
+            
+            
+            FinancialExcelExport export = new FinancialExcelExport(finDataRows,begin,end,isEnglish,titlPrd,c,financialConf);
             try {
                 String path = _prePath + ".xls";
                 export.downloadExcel(path);

@@ -32,12 +32,13 @@ public class FinancialExcelExport extends SettlrExcelExportTemplate {
 	    this.begin = begin;
         this.end = end;
     }
-	public FinancialExcelExport(List<CreditCompanyFinancialEntry> list,String begin,String end,boolean isEnglish) {
+	public FinancialExcelExport(List<CreditCompanyFinancialEntry> list,String begin,String end,boolean isEnglish,String unit) {
 		super();
 		this.list = list;
 	    this.begin = begin;
         this.end = end;
         this.isEnglish=isEnglish;
+        this.unit=unit;
     }
 	
 	public FinancialExcelExport(List<CreditCompanyFinancialEntry> list,

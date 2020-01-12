@@ -2271,7 +2271,7 @@ public class BusiUtil extends BaseWord{
 	        }
 
 
-
+	        String split=" - ";
 	        //CreditCompanyFinancialStatementsConf config = CreditCompanyFinancialStatementsConf.dao.findById(financialConfId);
 	        //String companyName = config.get("company_name")+"";//公司名称
 	        try {
@@ -2281,21 +2281,49 @@ public class BusiUtil extends BaseWord{
 	                    begin = detailDate(sdf.parse(begin),reportType);
 	                    if(!StrUtils.isEmpty(end))
 	                    end = detailDate(sdf.parse(end),reportType);
-	                    if(!StrUtils.isEmpty(lrbegin))
+	                   /* if(!StrUtils.isEmpty(lrbegin))
 	                    	lrbegin = detailDate(sdf.parse(lrbegin),reportType);
 	                    if(!StrUtils.isEmpty(lrend))
-	                    	lrend = detailDate(sdf.parse(lrend),reportType);
+	                    	lrend = detailDate(sdf.parse(lrend),reportType);*/
+	                    if(!StrUtils.isEmpty(lrbegin)){
+	                    	String[] s=lrbegin.split(split);
+	                    	lrbegin = detailDate(sdf.parse(s[0]),reportType);
+	                    	if(s.length>1){
+	                    		lrbegin=lrbegin+split+detailDate(sdf.parse(s[1]),reportType);
+	                    	}
+	                    }
+	                    if(!StrUtils.isEmpty(lrend)){
+	                    	String[] s=lrend.split(split);
+	                    	lrend = detailDate(sdf.parse(s[0]),reportType);
+	                    	if(s.length>1){
+	                    		lrend=lrend+split+detailDate(sdf.parse(s[1]),reportType);
+	                    	}
+	                    }
 	        	}else{
 	        		if(!StrUtils.isEmpty(begin))
 		            	begin = sdf.format(sdf.parse(begin)); 
 		            if(!StrUtils.isEmpty(end))
 		            	end = sdf.format(sdf.parse(end)); 
-		            if(!StrUtils.isEmpty(lrbegin)){
+		           /* if(!StrUtils.isEmpty(lrbegin)){
 		            	lrbegin = sdf.format(sdf.parse(lrbegin)); 
 		            }
 		            if(!StrUtils.isEmpty(lrend)){
 		            	lrend = sdf.format(sdf.parse(lrend)); 
-		            }
+		            }*/
+		            if(!StrUtils.isEmpty(lrbegin)){
+	                	String[] s=lrbegin.split(split);
+	                	lrbegin = sdf.format(sdf.parse(s[0]));
+	                	if(s.length>1){
+	                		lrbegin=lrbegin+split+sdf.format(sdf.parse(s[1]));
+	                	}
+	                }
+	                if(!StrUtils.isEmpty(lrend)){
+	                	String[] s=lrend.split(split);
+	                	lrend = sdf.format(sdf.parse(s[0]));
+	                	if(s.length>1){
+	                		lrend=lrend+split+sdf.format(sdf.parse(s[1]));
+	                	}
+	                }
 	        	}
 	            
 	        } catch (ParseException e) {
@@ -2485,8 +2513,9 @@ public class BusiUtil extends BaseWord{
 	                            			new TextRenderData(end, header)));
 	                        	}*/
 	                            if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
-	                        		//利润读取date3 date4  其他都是date1、date2
-	                            	beginBigger=Excel2Pdf.compareDate(lrbegin, lrend);
+	                        		//利润读取date3 date4  其他都是date1、date2  2018-12-01 - 2019-01-01
+	                            	//2019-12-01 - 2020-01-31
+	                            	beginBigger=Excel2Pdf.compareDate(lrbegin.split(split)[0], lrend.split(split)[0]);
 	                            	if(beginBigger){
 	                            		rowList.add(RowRenderData.build(
 	                                			new TextRenderData(""),

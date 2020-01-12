@@ -2503,7 +2503,7 @@ let ReportConfig = {
 						delete ele["null"]
 						delete ele["level"]
 						delete ele["describe"]
-						delete ele["amount"]
+						//delete ele["amount"]
 						delete ele["sort_no"]
 						delete ele["risk_evaluation"]
 					})
@@ -2617,7 +2617,7 @@ let ReportConfig = {
 						delete ele["null"]
 						delete ele["level"]
 						delete ele["describe"]
-						delete ele["amount"]
+						//delete ele["amount"]
 						delete ele["sort_no"]
 						delete ele["risk_evaluation"]
 					})
@@ -2819,7 +2819,7 @@ let ReportConfig = {
 						delete dataJsonObj["null"]
 						 delete dataJsonObj["level"]
 						delete dataJsonObj["describe"]
-						delete dataJsonObj["amount"]
+						//delete dataJsonObj["amount"]
 						delete dataJsonObj["sort_no"]
 						delete dataJsonObj["risk_evaluation"]
 					}
@@ -2920,7 +2920,7 @@ let ReportConfig = {
 					if(formTitleSourceClassName=='className=CreditCompanyCreditanalysis'){
 						delete dataJsonObj["level"]
 						delete dataJsonObj["describe"]
-						delete dataJsonObj["amount"]
+						//delete dataJsonObj["amount"]
 						delete dataJsonObj["sort_no"]
 						delete dataJsonObj["risk_evaluation"]
 					}

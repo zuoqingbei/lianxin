@@ -191,6 +191,10 @@ let OrderDetail = {
                         $wrap.find(`span[data-column_name]`).each(function (index, item) {
                             let text = _this.row[$(this).data('column_name')];
                             $(this).text(Public.textFilter(text, 'null'));
+							if('speed_name'==$(this).data('column_name')){
+								text = _this.row['speed'];
+								$(this).text(Public.textFilter(text, 'null'));
+							}
                         });
                         $wrap.find('div.moneyCol [data-column_name]').text(function () {
                             return Number($(this).text().replace(/,/g, "")).toLocaleString('en-US');

@@ -1780,7 +1780,7 @@ static void sendErrorEmail(CreditOrderInfo order) throws Exception {
     	 	        List<CreditCompanyInfo> in = CreditCompanyInfo.dao.find("select * from credit_company_info where order_id=? and del_flag=0",c.get("order_id")+"");
     	 	        for(CreditCompanyInfo m:in){
     	 	        	if(!(m.get("id")+"").equals(o.get("company_id")+"")){
-    	 	        		String name=m.getStr("name");
+    	 	        		String name=m.getStr("name_en");
     	 	        		if(StringUtils.isBlank(name)){
     	 	        			name="N/A";
     	 	        		}
