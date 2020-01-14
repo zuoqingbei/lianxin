@@ -1022,6 +1022,13 @@ public class BaseBusiCrdt extends BaseWord{
             }else{
                 idType = "ID No";
             }
+        }else{
+        	targetFieldIsSelect = false;
+        	 if(ReportTypeCons.BUSI_ZH.equals(reportType)){
+                 idType = "身份证号码";
+             }else{
+                 idType = "ID No";
+             }
         }
         alertConf(idTypeColumn,idType,child,targetFieldIsSelect,sysLanguage,reportType);
         //合并值

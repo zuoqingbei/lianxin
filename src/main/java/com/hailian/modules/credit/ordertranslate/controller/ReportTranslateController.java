@@ -199,24 +199,26 @@ public class ReportTranslateController extends BaseProjectController {
 		}
 		Map<String,String> mapping = new HashMap<>();//占位符与字符的映射
 		for (TranslateModel translateModel : translateDict) {
-			String from = translateModel.get("correct_phrase_ch");//原来的中文
-			if(StrUtils.isEmpty(from)) {continue;}
-			if("科技".equals(from)) {
-				System.out.println("又到了");
-			}
-			String error = translateModel.get("error_phrase");//错误翻译
-			String right = translateModel.get("correct_phrase");//正确翻译
-			//1.原字中含有翻译库记录的原有的中文
-			
-			if(fromCustom.indexOf(from)!=-1) {
-				int errorIndex = fromBaidu.indexOf(error);
-				//2.百度翻译的内容中含有错误的翻译         
-				if(errorIndex!=-1) {
-					String placeHolder = UUID.randomUUID().toString();
-					fromBaidu = fromBaidu.replace(error, placeHolder);
-					mapping.put(placeHolder, right);
+			if(!"1".equals(translateModel.get("pre_deal")+"")){
+				String from = translateModel.get("correct_phrase_ch");//原来的中文
+				if(StrUtils.isEmpty(from)) {continue;}
+				if("科技".equals(from)) {
+					System.out.println("又到了");
 				}
+				String error = translateModel.get("error_phrase");//错误翻译
+				String right = translateModel.get("correct_phrase");//正确翻译
+				//1.原字中含有翻译库记录的原有的中文
 				
+				if(fromCustom.indexOf(from)!=-1) {
+					int errorIndex = fromBaidu.indexOf(error);
+					//2.百度翻译的内容中含有错误的翻译         
+					if(errorIndex!=-1) {
+						String placeHolder = UUID.randomUUID().toString();
+						fromBaidu = fromBaidu.replace(error, placeHolder);
+						mapping.put(placeHolder, right);
+					}
+					
+				}
 			}
 		}
 		for (String key : mapping.keySet()) {
