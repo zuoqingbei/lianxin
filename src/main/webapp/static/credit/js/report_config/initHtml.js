@@ -562,7 +562,7 @@ let InitObj = {
 			})
 			let tempRows =  []
 			returnData['rows'].forEach((item,index)=>{
-				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 				tempRows.push(item)
 			})
@@ -655,10 +655,10 @@ let InitObj = {
 					this.hjArr.push(item.class_name1)
 					if(index>8){
 						//非合计表合计项 给个class背景变色
-						item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
+						item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value='${item["begin_date_value"]}' class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
 						item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 					}else {
-						item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+						item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 						item["end_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 					}
 				}else {
@@ -667,14 +667,14 @@ let InitObj = {
 					}
 					if(item.class_name1&&(item.class_name1.indexOf('_num')!==-1)){
 						//计算比率表的项是数值类型
-						item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+						item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 						item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 					}else{
 						//不参与比率表计算的项是文本类型
-						item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+						item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 						item["end_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 					}
-					// item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+					// item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 					// item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 
 				}
@@ -1063,10 +1063,10 @@ refreshCwModal(tableCwIds,getSource,id,rows){
 			//合计项
 			if(index>8){
 				//非合计表合计项 给个class背景变色
-				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value='${item["begin_date_value"]}' class="form-control bg-gray ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}else {
-				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} disabled="disabled" value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
 		}else {
@@ -1075,14 +1075,14 @@ refreshCwModal(tableCwIds,getSource,id,rows){
 			}
 			if(item.class_name1&&(item.class_name1.indexOf('_num')!==-1)){
 				//计算比率表的项是数值类型
-				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}else{
 				//不参与比率表计算的项是文本类型
-				item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+				item["begin_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 				item["end_date_value"] = `<input type="text" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 			}
-			// item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["begin_date_value"]} class="form-control ${item.class_name1}" style="width:13.5rem"/>`
+			// item["begin_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value='${item["begin_date_value"]}' class="form-control ${item.class_name1}" style="width:13.5rem"/>`
 			// item["end_date_value"] = `<input type="number" entityid=${item.id} sonsector=${item.son_sector} parentsector=${item.parent_sector} value=${item["end_date_value"]} class="form-control ${item.class_name2}" style="width:13.5rem"/>`
 		}
 		if(returnData['rows'][index-1] && item.son_sector !== returnData['rows'][index-1]["son_sector"]) {

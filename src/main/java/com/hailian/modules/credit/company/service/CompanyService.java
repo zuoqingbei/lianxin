@@ -802,7 +802,13 @@ public class CompanyService {
 						*/
 						JSONArray b=CourtAnnouncement.getJSONArray("DefendantList");
 						if(b.size()>0){
-							String party = b.getJSONObject(0).getString("Name");
+							String party ="";
+							for(int x=0;x<b.size();x++){
+								party = party+b.getJSONObject(x).getString("Name")+",";
+							}
+							if(party.endsWith(",")){
+								party=party.substring(0,party.length()-1);
+							}
 							model.set("party", party);//publishedpage  上诉人
 						}
 						String Category = CourtAnnouncement.getString("Category");
@@ -813,7 +819,13 @@ public class CompanyService {
 						model.set("publishedpage", PublishedPage);*/
 						JSONArray a=CourtAnnouncement.getJSONArray("ProsecutorList");
 						if(a.size()>0){
-							String PublishedPage = a.getJSONObject(0).getString("Name");
+							String PublishedPage ="";
+							for(int x=0;x<a.size();x++){
+								PublishedPage = PublishedPage+a.getJSONObject(x).getString("Name")+",";
+							}
+							if(PublishedPage.endsWith(",")){
+								PublishedPage=PublishedPage.substring(0,PublishedPage.length()-1);
+							}
 							model.set("publishedpage", PublishedPage);//publishedpage  上诉人
 						}
 						String UploadDate = CourtAnnouncement.getString("UploadDate");//上传日期

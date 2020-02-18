@@ -75,8 +75,8 @@ public class Excel2Pdf {
     	   if(StringUtils.isBlank(end)){
     		   return false;
     	   }
-           long longDate = Long.valueOf(begin.replaceAll("[-\\s:]",""));
-           long endDate = Long.valueOf(end.replaceAll("[-\\s:]",""));
+           long longDate = Long.valueOf(begin.replaceAll("[-\\s:]","").replaceAll("年", "").replaceAll("月", "").replaceAll("日", ""));
+           long endDate = Long.valueOf(end.replaceAll("[-\\s:]","").replaceAll("年", "").replaceAll("月", "").replaceAll("日", ""));
            System.out.println(longDate);
            return longDate>endDate;
     }
@@ -126,11 +126,12 @@ public class Excel2Pdf {
       public static void main(String[] args) {
 
           //word 和excel 转为pdf
-          String filePaths="D:/com/广州安信医药有限公司.xls";
+         /* String filePaths="D:/com/广州安信医药有限公司.xls";
           String fileName="2";
          String pdfPath="D:/com/"+fileName+".pdf";
          //doc2pdf(filePaths, pdfPath);//filePaths需要转换的文件位置 pdfPath为存储位置
          String excel2pdf="D:/com/广州安信医药有限公司.xls";
-         excel2pdf(excel2pdf,pdfPath);
+         excel2pdf(excel2pdf,pdfPath);*/
+    	  compareDate("2018年12月31日", "2018年12月31日");
       } 
 }

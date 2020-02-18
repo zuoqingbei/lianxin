@@ -203,7 +203,9 @@ public class OrderPoiController extends BaseProjectController {
 							errornum++;
 							errormark+=errornum+".第"+(r)+"行，第E列信息漏填;";
 						}
-
+						if(r>10){
+							System.out.print(1);
+						}
 					  if("14".equals(reportTypeId)||"12".equals(reportTypeId)){
 						  order.set("report_language", "中文繁体+英文");
 						  orderReal.set("report_language", "217");

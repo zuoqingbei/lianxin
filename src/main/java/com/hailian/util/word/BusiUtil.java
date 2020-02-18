@@ -2362,61 +2362,67 @@ public class BusiUtil extends BaseWord{
 	                    if (j == 0) {
 	                        String title = "";
 	                        switch (son_sector.intValue()) {
-	                            case 1:
-	                            	if(isEnglish){
-	                            		title = "Key Financial Items";
-	                            	}else{
-	                            		title = "关键财务项目";
-	                            	}
-	                                break;
-	                            case 2:
-	                                //title = "流动资产";
-	                            	if(isEnglish){
-	                            		title="Financial Statement";
-	                            	}else{
-	                            		title="财务报表";
-	                            	}
-	                                break;
-	                            case 3:
-	                                //title = "非流动资产";
-	                            	title = "";
-	                                break;
-	                            case 4:
-	                                //title = "流动负债";
-	                            	title = "";
-	                                break;
-	                            case 5:
-	                                //title = "非流动负债";
-	                            	title = "";
-	                                break;
-	                            case 6:
-	                            	if(isEnglish){
-	                            		title = titlPrd+"Income Statement";
-	                            	}else{
-	                            		title = titlPrd+"利润表";
-	                            	}
-	                                break;
-	                            case 7:
-	                                //title = "毛利润";
-	                            	title = "";
-	                                break;
-	                            case 8:
-	                            	if(isEnglish){
-	                            		title = titlPrd+"Key Ratios";
-	                            	}else{
-	                            		title = titlPrd+"重要比率表";
-	                            	}
-	                                break;
-	                            case 9:
-	                                //title = "税前利润";
-	                            	title = "";
-	                                break;
-	                            case 10:
-	                                //title = "所得税费用";
-	                            	title = "";
-	                                break;
-	                        }
-	                        if (financeType == 1 || financeType == 2) {
+                            case 1:
+                            	if(isEnglish){
+                            		title = "Key Financial Items";
+                            	}else{
+                            		title = "关键财务项目";
+                            	}
+                                break;
+                            case 2:
+                                //title = "流动资产";
+                            	if(isEnglish){
+                            		title="Financial Statement";
+                            	}else{
+                            		title="财务报表";
+                            	}
+                                break;
+                            case 3:
+                                //title = "非流动资产";
+                            	title = "";
+                            	beginBigger=Excel2Pdf.compareDate(begin, end);
+                                break;
+                            case 4:
+                                //title = "流动负债";
+                            	title = "";
+                            	beginBigger=Excel2Pdf.compareDate(begin, end);
+                                break;
+                            case 5:
+                                //title = "非流动负债";
+                            	title = "";
+                            	beginBigger=Excel2Pdf.compareDate(begin, end);
+                                break;
+                            case 6:
+                            	if(isEnglish){
+                            		title = titlPrd+"Income Statement";
+                            	}else{
+                            		title = titlPrd+"利润表";
+                            	}
+                                break;
+                            case 7:
+                                //title = "毛利润";
+                            	title = "";
+                            	beginBigger=Excel2Pdf.compareDate(lrbegin.split(split)[0], lrend.split(split)[0]);
+                                break;
+                            case 8:
+                            	if(isEnglish){
+                            		title = titlPrd+"Key Ratios";
+                            	}else{
+                            		title = titlPrd+"重要比率表";
+                            	}
+                                break;
+                            case 9:
+                                //title = "税前利润";
+                            	title = "";
+                            	beginBigger=Excel2Pdf.compareDate(begin, end);
+                                break;
+                            case 10:
+                                //title = "所得税费用";
+                            	title = "";
+                            	beginBigger=Excel2Pdf.compareDate(lrbegin.split(split)[0], lrend.split(split)[0]);
+                                break;
+                        }
+	                        if ((financeType == 1 || financeType == 2)&&(!"所得税费用".equals(ccf.getStr("item_name"))&&!"Less: profit tax".equals(ccf.getStr("item_name")))) {
 	                            rowList.add(RowRenderData.build(
 	                                    new TextRenderData(""),
 	                                    new TextRenderData(""),
@@ -2543,12 +2549,84 @@ public class BusiUtil extends BaseWord{
 	                        	}
 	                        }
 
+	                    }else{
+	                    	String title = "";
+	                    	 switch (son_sector.intValue()) {
+	                            case 1:
+	                            	if(isEnglish){
+	                            		title = "Key Financial Items";
+	                            	}else{
+	                            		title = "关键财务项目";
+	                            	}
+	                                break;
+	                            case 2:
+	                                //title = "流动资产";
+	                            	if(isEnglish){
+	                            		title="Financial Statement";
+	                            	}else{
+	                            		title="财务报表";
+	                            	}
+	                                break;
+	                            case 3:
+	                                //title = "非流动资产";
+	                            	title = "";
+	                            	beginBigger=Excel2Pdf.compareDate(begin, end);
+	                                break;
+	                            case 4:
+	                                //title = "流动负债";
+	                            	title = "";
+	                            	beginBigger=Excel2Pdf.compareDate(begin, end);
+	                                break;
+	                            case 5:
+	                                //title = "非流动负债";
+	                            	title = "";
+	                            	beginBigger=Excel2Pdf.compareDate(begin, end);
+	                                break;
+	                            case 6:
+	                            	if(isEnglish){
+	                            		title = titlPrd+"Income Statement";
+	                            	}else{
+	                            		title = titlPrd+"利润表";
+	                            	}
+	                                break;
+	                            case 7:
+	                                //title = "毛利润";
+	                            	title = "";
+	                            	beginBigger=Excel2Pdf.compareDate(lrbegin.split(split)[0], lrend.split(split)[0]);
+	                                break;
+	                            case 8:
+	                            	if(isEnglish){
+	                            		title = titlPrd+"Key Ratios";
+	                            	}else{
+	                            		title = titlPrd+"重要比率表";
+	                            	}
+	                                break;
+	                            case 9:
+	                                //title = "税前利润";
+	                            	title = "";
+	                            	beginBigger=Excel2Pdf.compareDate(begin, end);
+	                                break;
+	                            case 10:
+	                                //title = "所得税费用";
+	                            	title = "";
+	                            	beginBigger=Excel2Pdf.compareDate(lrbegin.split(split)[0], lrend.split(split)[0]);
+	                                break;
+	                        }
+	                        if((titlPrd+"利润表").equals(title)||(titlPrd+"Income Statement").equals(title)){
+	                        	//利润读取date3 date4  其他都是date1、date2  2018-12-01 - 2019-01-01
+	                        	//2019-12-01 - 2020-01-31
+	                        	beginBigger=Excel2Pdf.compareDate(lrbegin.split(split)[0], lrend.split(split)[0]);
+	                        }else{
+	                        	beginBigger=Excel2Pdf.compareDate(begin, end);
+	                        }
 	                    }
 	                }
 	                String itemName = ccf.getStr("item_name");
 	                String beginValue = ccf.get("begin_date_value")+"";
-	                if("0".equals(beginValue+"")){
+	                if(org.apache.commons.lang3.StringUtils.isBlank(beginValue)){
 	                    beginValue = "--";
+	                }else if("0".equals(beginValue+"")){
+	                    beginValue = "0";
 	                }else{
 	                	//添加千分位
 	                	try {
@@ -2560,8 +2638,10 @@ public class BusiUtil extends BaseWord{
 	                    }
 	                }
 	                String endValue = ccf.get("end_date_value")+"";
-	                if("0".equals(endValue+"")){
+	                if(org.apache.commons.lang3.StringUtils.isBlank(endValue)){
 	                    endValue = "--";
+	                }else if("0".equals(endValue+"")){
+	                    endValue = "0";
 	                }else{
 	                	//添加千分位
 	                	try {
